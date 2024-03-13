@@ -1,7 +1,7 @@
 import './App.css'
 import { TestPage } from './pages'
 
-function App() {
+export const App = () => {
   return (
     <>
       <TestPage />
