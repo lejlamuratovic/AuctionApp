@@ -1,12 +1,13 @@
 package com.example.auctionapp.controller;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("api/v1/test")
 public class TestController {
-    @RequestMapping(method = RequestMethod.GET, path = "/test")
+    @GetMapping("/")
     public String controllerTest() {
         return "Hello world!";
     }
