@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { BASE_URL } from '../constants';
+import { BASE_URL } from 'constants';
 
 const TestPage = () => {
     const [data, setData] = useState();
