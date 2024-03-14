@@ -1,6 +1,6 @@
 import { TestPage } from './pages'
 
-export const App = () => {
+const App = () => {
   return (
     <>
       <TestPage />

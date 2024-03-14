@@ -5,7 +5,7 @@ const TestPage = () => {
     const [data, setData] = useState();
 
     useEffect(() => {
-        fetch(`${BASE_URL}v1/test/`)
+        fetch(`${BASE_URL}/test/`)
         .then(response => response.text())
         .then(data => setData(data))
         .catch(error => console.log(error));
