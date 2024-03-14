@@ -7,4 +7,11 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+configuration:
+  swagger:
+    app: 'Auction App'
+    description: 'Auction App project'
+    developer: 'Lejla Muratović'
+    email: 'lejlamuratovic6@gmail.com'
     
