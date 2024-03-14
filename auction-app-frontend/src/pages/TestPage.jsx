@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
-import { BASE_URL } from 'constants';
+import { BASE_URL } from 'src/constants';
 
 const TestPage = () => {
     const [data, setData] = useState();
 
     useEffect(() => {
-        fetch(`${BASE_URL}/test/`)
+        fetch(`${BASE_URL}/test`)
         .then(response => response.text())
         .then(data => setData(data))
         .catch(error => console.log(error));
