@@ -1,0 +1,21 @@
+@import "scss/index.scss";
+
+.user-status {
+  display: flex;
+  color: $white;
+  gap: 24px;
+}
+
+.user-status__links {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+
+  a {
+    all: unset;
+  }
+
+  span {
+    color: $neutral05;
+  }
+}

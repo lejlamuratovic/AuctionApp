@@ -1,11 +1,12 @@
-import { TestPage } from './pages'
+import BlackNavbar from "./components/BlackNavbar";
+import "scss/index.scss";
 
 const App = () => {
   return (
     <>
-      <TestPage />
+      <BlackNavbar />
     </>
-  )
-}
+  );
+};
 
 export default App;
