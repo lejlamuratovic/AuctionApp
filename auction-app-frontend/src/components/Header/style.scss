@@ -1,5 +1,15 @@
 @import "scss/index.scss";
 
+.header {
+  height: 40px;
+  width: 100%;
+  background-color: $neutral00;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 179px;
+}
+
 .user-status {
   display: flex;
   color: $white;

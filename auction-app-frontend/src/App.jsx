@@ -1,18 +1,18 @@
 import "scss/index.scss";
-import { WhiteNavbar } from "./components/WhiteNavbar";
-import { BlackNavbar } from "./components/BlackNavbar";
+import { Navbar } from "./components/Navbar";
+import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import { AboutUs, PrivacyPolicy, TermsAndConditions } from "./pages";
 
 const App = () => {
   return (
     <>
-      {/* <BlackNavbar /> */}
-      {/* <WhiteNavbar /> */}
+      <Header />
+      <Navbar />
       {/* <AboutUs /> */}
       {/* <TermsAndConditions /> */}
-      <PrivacyPolicy />
-      {/* <Footer /> */}
+      {/* <PrivacyPolicy /> */}
+      <Footer />
     </>
   );
 };

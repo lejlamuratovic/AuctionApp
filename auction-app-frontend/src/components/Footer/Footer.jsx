@@ -1,5 +1,5 @@
-import "./footer.scss";
 import { SocialMediaIcons } from "../SocialMediaIcons";
+import "./style.scss";
 
 const Footer = () => {
   return (
