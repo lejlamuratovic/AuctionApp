@@ -2,8 +2,7 @@ import "scss/index.scss";
 import { WhiteNavbar } from "./components/WhiteNavbar";
 import { BlackNavbar } from "./components/BlackNavbar";
 import { Footer } from "./components/Footer";
-import { AboutUs } from "./pages";
-import { TermsAndConditions } from "./pages";
+import { AboutUs, PrivacyPolicy, TermsAndConditions } from "./pages";
 
 const App = () => {
   return (
@@ -11,7 +10,8 @@ const App = () => {
       {/* <BlackNavbar /> */}
       {/* <WhiteNavbar /> */}
       {/* <AboutUs /> */}
-      <TermsAndConditions />
+      {/* <TermsAndConditions /> */}
+      <PrivacyPolicy />
       {/* <Footer /> */}
     </>
   );
