@@ -1,4 +1,4 @@
-import "./termsAndConditions.scss";
+import "./style.scss";
 
 const TermsAndConditions = () => {
   return (

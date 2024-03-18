@@ -1,8 +1,5 @@
-import React from "react";
-import "./aboutUs.scss";
-import aboutus1 from "assets/aboutus1.png";
-import aboutus2 from "assets/aboutus2.png";
-import aboutus3 from "assets/aboutus3.png";
+import { aboutUs1, aboutUs2, aboutUs3 } from "assets";
+import "./style.scss";
 
 const AboutUs = () => {
   return (
@@ -50,9 +47,9 @@ const AboutUs = () => {
           </p>
         </div>
         <div className="about-us-images">
-          <img src={aboutus1} alt="Description" />
-          <img src={aboutus2} alt="Description" />
-          <img src={aboutus3} alt="Description" />
+          <img src={aboutUs1} alt="Description" />
+          <img src={aboutUs2} alt="Description" />
+          <img src={aboutUs3} alt="Description" />
         </div>
       </div>
     </div>

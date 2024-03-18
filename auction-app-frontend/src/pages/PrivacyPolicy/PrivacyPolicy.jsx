@@ -1,5 +1,4 @@
-import "./privacyPolicy.scss";
-import "../TermsAndConditions/termsAndConditions.scss";
+import "./style.scss";
 
 const PrivacyPolicy = () => {
   return (

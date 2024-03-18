@@ -1,5 +1,5 @@
 import { NAV_ITEMS } from "src/constants";
-import appLogo from "assets/auction-app-logo.png";
+import appLogo from "assets/images/auction-app-logo.png";
 import "./style.scss";
 
 const Navbar = () => {
