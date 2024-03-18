@@ -11,7 +11,7 @@ const App = () => {
       <Navbar />
       {/* <AboutUs /> */}
       {/* <TermsAndConditions /> */}
-      {/* <PrivacyPolicy /> */}
+      <PrivacyPolicy />
       <Footer />
     </>
   );

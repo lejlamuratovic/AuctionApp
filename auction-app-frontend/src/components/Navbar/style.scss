@@ -8,29 +8,29 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 179px;
-}
 
-.app-logo img {
-  width: 163px;
-  height: 56px;
-}
-
-.navbar-items {
-  display: flex;
-  gap: 30px;
-
-  a {
-    all: unset;
-  }
-}
-
-.navbar-item {
-  &.active {
-    color: $primary;
+  img {
+    width: 163px;
+    height: 56px;
   }
 
-  &:hover {
-    color: $primary;
-    cursor: pointer;
+  .navbar-items {
+    display: flex;
+    gap: 30px;
+
+    a {
+      all: unset;
+    }
+
+    .navbar-item {
+      &.active {
+        color: $primary;
+      }
+
+      &:hover {
+        color: $primary;
+        cursor: pointer;
+      }
+    }
   }
 }

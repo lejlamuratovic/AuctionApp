@@ -8,24 +8,24 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 179px;
-}
 
-.user-status {
-  display: flex;
-  color: $white;
-  gap: 24px;
-}
+  .user-status {
+    display: flex;
+    color: $white;
+    gap: 24px;
 
-.user-status__links {
-  display: flex;
-  gap: 24px;
-  align-items: center;
+    .user-status-links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
 
-  a {
-    all: unset;
-  }
+      a {
+        all: unset;
+      }
 
-  span {
-    color: $neutral05;
+      span {
+        color: $neutral05;
+      }
+    }
   }
 }
