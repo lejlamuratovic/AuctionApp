@@ -1,8 +1,7 @@
 @import "scss/index.scss";
 
 .about-us {
-  display: flex;
-  flex-direction: column;
+  @include flex-column;
   padding: 0 173px;
   gap: 32px;
 

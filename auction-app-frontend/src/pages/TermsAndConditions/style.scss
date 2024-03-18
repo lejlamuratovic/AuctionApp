@@ -2,14 +2,12 @@
 
 .terms-and-conditions {
   width: 556px;
-  display: flex;
-  flex-direction: column;
+  @include flex-column;
   gap: 32px;
   margin: auto;
 
   .text-container {
-    display: flex;
-    flex-direction: column;
+    @include flex-column;
     gap: 32px;
 
     .body-semibold {

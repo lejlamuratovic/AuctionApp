@@ -1,5 +1,5 @@
 import { NAV_ITEMS } from "src/constants";
-import appLogo from "assets/images/auction-app-logo.png";
+import { logo } from "assets";
 import "./style.scss";
 
 const Navbar = () => {
@@ -9,7 +9,7 @@ const Navbar = () => {
   return (
     <div className="navbar">
       <div className="app-logo">
-        <img src={appLogo} alt="Auction App Logo" />
+        <img src={logo} alt="Auction App Logo" />
       </div>
       <div className="navbar-items body-regular">
         {NAV_ITEMS.map((item) => (

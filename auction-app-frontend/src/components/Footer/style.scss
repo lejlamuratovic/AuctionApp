@@ -9,8 +9,7 @@
   padding: 31px 161px 0 161px;
 
   .footer-column {
-    display: flex;
-    flex-direction: column;
+    @include flex-column;
     gap: 24px;
 
     .column-heading {
@@ -27,8 +26,7 @@
       }
 
       color: $neutral09;
-      display: flex;
-      flex-direction: column;
+      @include flex-column;
       gap: 12px;
     }
 
