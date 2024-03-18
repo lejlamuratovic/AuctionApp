@@ -1,0 +1,39 @@
+@import "scss/index.scss";
+
+.footer {
+  height: 356px;
+  width: 100%;
+  background-color: $neutral00;
+  display: flex;
+  justify-content: space-between;
+  padding: 31px 161px 0 161px;
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.column-heading {
+  color: $white;
+  opacity: 0.5;
+  text-transform: uppercase;
+}
+
+.column-content {
+  a {
+    all: unset;
+    display: block;
+    cursor: pointer;
+  }
+
+  color: $neutral09;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer .social-media-icons {
+  gap: 12px;
+}
