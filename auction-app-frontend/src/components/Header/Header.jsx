@@ -1,4 +1,4 @@
-import { SocialMediaIcons } from "../SocialMediaIcons";
+import { SocialMediaIcons } from "components/SocialMediaIcons";
 import "./style.scss";
 
 const Header = () => {
