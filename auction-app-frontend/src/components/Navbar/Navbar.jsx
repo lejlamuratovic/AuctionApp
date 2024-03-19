@@ -1,11 +1,9 @@
+import { NavLink } from "react-router-dom";
 import { NAV_ITEMS } from "src/constants";
 import { logo } from "assets";
 import "./style.scss";
 
 const Navbar = () => {
-  // hardcoded for now
-  const active = "HOME";
-
   return (
     <div className="navbar">
       <div className="app-logo">
@@ -13,15 +11,15 @@ const Navbar = () => {
       </div>
       <div className="navbar-items body-regular">
         {NAV_ITEMS.map((item) => (
-          <a
-            href={item.link}
-            className={`navbar-item ${
-              active === item.label ? "active body-bold" : ""
-            }`}
+          <NavLink
+            to={item.link}
+            className={({ isActive }) =>
+              isActive ? "navbar-item active" : "navbar-item"
+            }
             key={item.key}
           >
             {item.label}
-          </a>
+          </NavLink>
         ))}
       </div>
     </div>

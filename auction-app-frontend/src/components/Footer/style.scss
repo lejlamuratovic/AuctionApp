@@ -1,12 +1,13 @@
 @import "scss/index.scss";
 
 .footer {
-  height: 356px;
+  min-height: 356px;
   width: 100%;
   background-color: $neutral00;
   display: flex;
   justify-content: space-between;
   padding: 31px 161px 0 161px;
+  margin-top: 70px;
 
   .footer-column {
     @include flex-column;

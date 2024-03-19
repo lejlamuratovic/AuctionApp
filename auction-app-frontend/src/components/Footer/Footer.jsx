@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { SocialMediaIcons } from "components/SocialMediaIcons";
 import "./style.scss";
 
@@ -9,9 +10,9 @@ const Footer = () => {
           <p>Auction</p>
         </div>
         <div className="column-content">
-          <a href="/aboutus">About Us</a>
-          <a href="/termsandconditions">Terms and Conditions</a>
-          <a href="/privacypolicy">Privacy Policy</a>
+          <Link to="/about-us">About Us</Link>
+          <Link to="/terms-and-conditions">Terms And Conditions</Link>
+          <Link to="/privacy-policy">Privacy Policy</Link>
         </div>
       </div>
 

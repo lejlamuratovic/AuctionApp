@@ -1,16 +1,37 @@
-import "scss/index.scss";
 import { Navbar, Header, Footer } from "components";
-import { AboutUs, PrivacyPolicy, TermsAndConditions } from "./pages";
+import {
+  AboutUs,
+  PrivacyPolicy,
+  TermsAndConditions,
+  Home,
+  Shop,
+  MyAccount,
+} from "./pages";
+import { Routes, Route } from "react-router-dom";
+import "scss/index.scss";
 
 const App = () => {
   return (
     <>
       <Header />
       <Navbar />
-      {/* <AboutUs /> */}
-      {/* <TermsAndConditions /> */}
-      {/* <PrivacyPolicy /> */}
-      <Footer />
+      <div className="main-content">
+        <div className="container">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="/my-account" element={<MyAccount />} />
+            <Route path="/about-us" element={<AboutUs />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route
+              path="/terms-and-conditions"
+              element={<TermsAndConditions />}
+            />
+          </Routes>
+        </div>
+        <Footer />
+      </div>
     </>
   );
 };
