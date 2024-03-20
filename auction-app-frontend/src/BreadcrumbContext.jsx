@@ -11,25 +11,46 @@ export const BreadcrumbProvider = ({ children }) => {
   const [breadcrumbs, setBreadcrumbs] = useState({
     previous: null,
     current: null,
+    title: null,
   });
+
+  // state to keep track of the first render
+  const [isFirstRender, setIsFirstRender] = useState(true);
   const location = useLocation();
+
+  // function to set the title in the breadcrumb context
+  const setTitle = (title) => {
+    setBreadcrumbs((prev) => ({
+      ...prev,
+      title,
+    }));
+  };
 
   useEffect(() => {
     // ROUTES_MAP to get a label or "undefined" as a fallback
     const path = location.pathname;
-    const label = ROUTES_MAP[path] || "Undefined";
+    let label = ROUTES_MAP[path] || "Undefined";
 
-    // update breadcrumbs if the path has changed
-    if (path !== breadcrumbs.current?.path) {
-      setBreadcrumbs({
-        previous: breadcrumbs.current,
-        current: { path, label },
-      });
+    if (path.includes("/product-detail/")) {
+      // generic label for product detail page
+      label = "Product Detail";
     }
-  }, [location, breadcrumbs.current]);
+
+    if (path !== breadcrumbs.current?.path) {
+      setBreadcrumbs((prev) => ({
+        previous: !isFirstRender ? prev.current : null,
+        current: { path, label }, // update the current breadcrumb
+        title: label, // update the title
+      }));
+    }
+
+    if (isFirstRender) {
+      setIsFirstRender(false);
+    }
+  }, [location, isFirstRender]);
 
   return (
-    <BreadcrumbContext.Provider value={breadcrumbs}>
+    <BreadcrumbContext.Provider value={{ ...breadcrumbs, setTitle }}>
       {children}
     </BreadcrumbContext.Provider>
   );

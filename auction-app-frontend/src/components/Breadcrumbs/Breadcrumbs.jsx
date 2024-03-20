@@ -7,21 +7,23 @@ import { next } from "src/assets/icons";
 import "./style.scss";
 
 const Breadcrumbs = () => {
-  const { previous, current } = useBreadcrumb();
+  const { title, previous, current } = useBreadcrumb();
 
-  // if there is no previous breadcrumb, don't render anything
+  console.log({ title, previous, current });
+
+  // if there's no previous breadcrumb don't display the navigation
   if (!previous) {
     return null;
   }
 
   return (
     <div className="breadcrumbs body-regular">
-      <div className="breadcrumbs-left">{current?.label}</div>
+      <div className="breadcrumbs-left">{title}</div>
       {previous && (
         <div className="breadcrumbs-right">
           <Link to={previous.path}>{previous.label}</Link>
           <img src={next} alt="Next Page" />
-          {current?.label}
+          <span className="body-bold"> {current?.label}</span>
         </div>
       )}
     </div>
