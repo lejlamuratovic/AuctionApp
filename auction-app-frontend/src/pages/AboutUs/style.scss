@@ -2,7 +2,6 @@
 
 .about-us {
   @include flex-column;
-  padding: 0 173px;
   gap: 32px;
 
   .about-us-header {

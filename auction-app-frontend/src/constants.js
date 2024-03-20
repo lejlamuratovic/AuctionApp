@@ -17,3 +17,14 @@ export const NAV_ITEMS = [
     key: "my-account",
   },
 ];
+
+export const ROUTES_MAP = {
+  "/": "Home",
+  "/home": "Home",
+  "/shop": "Shop",
+  "/my-account": "My Account",
+  "/about-us": "About Us",
+  "/privacy-policy": "Privacy Policy",
+  "/terms-and-conditions": "Terms and Conditions",
+  // will add more routes
+};

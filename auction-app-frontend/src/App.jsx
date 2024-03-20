@@ -1,4 +1,5 @@
-import { Navbar, Header, Footer } from "components";
+import { Routes, Route } from "react-router-dom";
+import { Navbar, Header, Footer, Breadcrumbs } from "components";
 import {
   AboutUs,
   PrivacyPolicy,
@@ -7,7 +8,6 @@ import {
   Shop,
   MyAccount,
 } from "./pages";
-import { Routes, Route } from "react-router-dom";
 import "scss/index.scss";
 
 const App = () => {
@@ -17,6 +17,7 @@ const App = () => {
       <Navbar />
       <div className="main-content">
         <div className="container">
+          <Breadcrumbs />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />

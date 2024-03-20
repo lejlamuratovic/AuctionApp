@@ -20,15 +20,19 @@
     }
 
     .column-content {
+      color: $neutral09;
+      @include flex-column;
+      gap: 12px;
+
+      p {
+        all: unset;
+      }
+
       a {
         all: unset;
         display: block;
         cursor: pointer;
       }
-
-      color: $neutral09;
-      @include flex-column;
-      gap: 12px;
     }
 
     .social-media-icons {

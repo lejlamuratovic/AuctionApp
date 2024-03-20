@@ -5,5 +5,15 @@ import logo from "./images/auction-app-logo.png";
 import facebook from "./icons/facebook.svg";
 import instagram from "./icons/instagram.svg";
 import twitter from "./icons/twitter.svg";
+import next from "./icons/next.svg";
 
-export { aboutUs1, aboutUs2, aboutUs3, facebook, instagram, twitter, logo };
+export {
+  aboutUs1,
+  aboutUs2,
+  aboutUs3,
+  facebook,
+  instagram,
+  twitter,
+  logo,
+  next,
+};
