@@ -18,10 +18,6 @@
     display: flex;
     gap: 30px;
 
-    a {
-      all: unset;
-    }
-
     .navbar-item {
       &.active {
         color: $primary;

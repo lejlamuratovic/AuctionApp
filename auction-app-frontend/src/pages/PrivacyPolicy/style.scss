@@ -1,8 +1,8 @@
 @import "src/scss/index.scss";
 
 .privacy-policy {
-  width: 556px;
   @include flex-column;
+  width: 556px;
   gap: 32px;
   margin: auto;
 
