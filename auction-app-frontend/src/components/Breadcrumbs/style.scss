@@ -10,10 +10,10 @@
   }
 
   .breadcrumbs-right {
-    color: $primary;
     display: flex;
     align-items: center;
     gap: 16px;
+    color: $primary;
 
     a {
       cursor: pointer;
