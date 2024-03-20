@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
-import { Navbar, Header, Footer, Breadcrumbs } from "components";
+
+import { Navbar, Header, Footer, Breadcrumbs } from "src/components";
 import {
   AboutUs,
   PrivacyPolicy,
@@ -7,8 +8,9 @@ import {
   Home,
   Shop,
   MyAccount,
-} from "./pages";
-import "scss/index.scss";
+} from "src/pages";
+
+import "src/scss/index.scss";
 
 const App = () => {
   return (
@@ -17,7 +19,7 @@ const App = () => {
       <Navbar />
       <div className="main-content">
         <div className="container">
-          <Breadcrumbs />
+          {/* <Breadcrumbs /> */}
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />

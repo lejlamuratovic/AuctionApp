@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
-import { next } from "assets";
+
+import { next } from "src/assets/icons";
 import { ROUTES_MAP } from "src/constants";
+
 import "./style.scss";
 
 const Breadcrumbs = () => {

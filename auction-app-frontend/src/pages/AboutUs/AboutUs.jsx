@@ -1,4 +1,5 @@
-import { aboutUs1, aboutUs2, aboutUs3 } from "assets";
+import { aboutUs1, aboutUs2, aboutUs3 } from "src/assets/images";
+
 import "./style.scss";
 
 const AboutUs = () => {

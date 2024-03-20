@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
-import { facebook, instagram, twitter } from "assets";
+
+import { facebook, instagram, twitter } from "src/assets/icons";
+
 import "./style.scss";
 
 const SocialMediaIcons = () => {
