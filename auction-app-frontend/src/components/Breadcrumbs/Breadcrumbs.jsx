@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import { useBreadcrumb } from "src/BreadcrumbContext";
+import { useBreadcrumb } from "src/store/BreadcrumbContext";
 
 import { next } from "src/assets/icons";
 

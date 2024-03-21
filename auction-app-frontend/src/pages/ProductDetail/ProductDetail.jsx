@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import { useBreadcrumb } from "src/BreadcrumbContext";
+import { useBreadcrumb } from "src/store/BreadcrumbContext";
 
 const ProductDetail = () => {
   const { productId } = useParams();

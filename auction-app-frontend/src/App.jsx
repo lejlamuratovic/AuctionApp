@@ -11,7 +11,7 @@ import {
   ProductDetail,
 } from "src/pages";
 
-import { BreadcrumbProvider } from "src/BreadcrumbContext";
+import { BreadcrumbProvider } from "src/store/BreadcrumbContext";
 
 import "src/scss/index.scss";
 
