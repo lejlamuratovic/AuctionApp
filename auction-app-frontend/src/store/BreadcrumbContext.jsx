@@ -1,56 +1,53 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-import { ROUTES_MAP } from "src/constants";
+import { ROUTES_MAP, HIDE_BREADCRUMBS_ON_PATHS } from "src/constants";
 
 const BreadcrumbContext = createContext();
 
 export const useBreadcrumb = () => useContext(BreadcrumbContext);
 
 export const BreadcrumbProvider = ({ children }) => {
-  const [breadcrumbs, setBreadcrumbs] = useState({
-    previous: null,
-    current: null,
-    title: null,
-  });
-
-  // state to keep track of the first render
-  const [isFirstRender, setIsFirstRender] = useState(true);
+  const [title, setTitle] = useState("");
+  const [breadcrumbs, setBreadcrumbs] = useState([]);
   const location = useLocation();
-
-  // function to set the title in the breadcrumb context
-  const setTitle = (title) => {
-    setBreadcrumbs((prev) => ({
-      ...prev,
-      title,
-    }));
-  };
+  const hideBreadcrumbs = HIDE_BREADCRUMBS_ON_PATHS.includes(location.pathname); // hide breadcrumbs on certain paths
 
   useEffect(() => {
-    // ROUTES_MAP to get a label or "undefined" as a fallback
-    const path = location.pathname;
-    let label = ROUTES_MAP[path] || "Undefined";
+    const { pathname } = location;
 
-    if (path.includes("/product-detail/")) {
-      // generic label for product detail page
-      label = "Product Detail";
+    // regex to match product detail pages
+    const productDetailRegex = /^\/shop\/\d+(\/)?$/;
+    const isProductDetailPage = productDetailRegex.test(pathname);
+
+    // determine the label for the current page
+    const label = isProductDetailPage ? "Single Product" : ROUTES_MAP[pathname];
+
+    // update the title for non-product detail pages
+    if (!isProductDetailPage || !title) {
+      setTitle(label);
     }
 
-    if (path !== breadcrumbs.current?.path) {
-      setBreadcrumbs((prev) => ({
-        previous: !isFirstRender ? prev.current : null,
-        current: { path, label }, // update the current breadcrumb
-        title: label, // update the title
-      }));
-    }
-
-    if (isFirstRender) {
-      setIsFirstRender(false);
-    }
-  }, [location, isFirstRender]);
+    // if the pathname has changed, update breadcrumbs
+    setBreadcrumbs((prev) => {
+      // check if the previous page is the same as the current one to avoid duplication
+      if (prev.length && prev[prev.length - 1].path === pathname) {
+        // if already on the current page, don't add to breadcrumbs
+        return prev;
+      } else {
+        // reset the breadcrumbs
+        const newBreadcrumbs = prev.length
+          ? [prev[prev.length - 1], { path: pathname, label: label }]
+          : [{ path: pathname, label: label }];
+        return newBreadcrumbs;
+      }
+    });
+  }, [location, title]);
 
   return (
-    <BreadcrumbContext.Provider value={{ ...breadcrumbs, setTitle }}>
+    <BreadcrumbContext.Provider
+      value={{ title, setTitle, breadcrumbs, setBreadcrumbs, hideBreadcrumbs }}
+    >
       {children}
     </BreadcrumbContext.Provider>
   );

@@ -5,7 +5,7 @@ const Home = () => {
     <div>
       Home Page
       <br />
-      <Link to="/product-detail/1">Product 1</Link>
+      <Link to="/shop/1451514">Product 1</Link>
     </div>
   );
 };

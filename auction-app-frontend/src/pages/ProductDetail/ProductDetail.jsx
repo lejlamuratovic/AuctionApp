@@ -12,7 +12,7 @@ const ProductDetail = () => {
     setTitle(title); // set the title in the breadcrumb context
   }, [productId]);
 
-  return <div>Testing</div>;
+  return <div>Product Detail Page Content</div>;
 };
 
 export default ProductDetail;

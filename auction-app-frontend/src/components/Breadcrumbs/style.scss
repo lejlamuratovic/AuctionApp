@@ -10,9 +10,6 @@
   }
 
   .breadcrumbs-right {
-    display: flex;
-    align-items: center;
-    gap: 16px;
     color: $primary;
 
     a {
@@ -23,6 +20,7 @@
     img {
       width: 9.44px;
       height: 8.67px;
+      margin: 0 16px;
     }
   }
 }

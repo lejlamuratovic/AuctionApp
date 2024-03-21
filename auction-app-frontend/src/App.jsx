@@ -13,6 +13,8 @@ import {
 
 import { BreadcrumbProvider } from "src/store/BreadcrumbContext";
 
+import { ROUTE_PATHS } from "src/constants";
+
 import "src/scss/index.scss";
 
 const App = () => {
@@ -25,17 +27,22 @@ const App = () => {
           <div className="container">
             <Breadcrumbs />
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/shop" element={<Shop />} />
-              <Route path="/my-account" element={<MyAccount />} />
-              <Route path="/about-us" element={<AboutUs />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path={ROUTE_PATHS.HOME} element={<Home />} />
+              <Route path={ROUTE_PATHS.SHOP} element={<Shop />} />
+              <Route path={ROUTE_PATHS.MY_ACCOUNT} element={<MyAccount />} />
+              <Route path={ROUTE_PATHS.ABOUT_US} element={<AboutUs />} />
               <Route
-                path="/terms-and-conditions"
+                path={ROUTE_PATHS.PRIVACY_POLICY}
+                element={<PrivacyPolicy />}
+              />
+              <Route
+                path={ROUTE_PATHS.TERMS_AND_CONDITIONS}
                 element={<TermsAndConditions />}
               />
-              <Route path="/product-detail/:id" element={<ProductDetail />} />
+              <Route
+                path={ROUTE_PATHS.PRODUCT_DETAIL}
+                element={<ProductDetail />}
+              />
             </Routes>
           </div>
           <Footer />
