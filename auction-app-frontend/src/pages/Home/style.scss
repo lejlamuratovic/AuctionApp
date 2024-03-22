@@ -1,0 +1,31 @@
+@import "src/scss/index.scss";
+
+.categories {
+  width: 262px;
+
+  .categories-heading {
+    color: $primary;
+    padding: 26px 0;
+    text-transform: uppercase;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  li {
+    margin-bottom: 10px; // adjust as needed
+    cursor: pointer;
+
+    &:after {
+      content: "";
+      display: block;
+      height: 1px;
+      width: 100%;
+      background-color: $neutral09;
+      margin-top: 10px;
+    }
+  }
+}
