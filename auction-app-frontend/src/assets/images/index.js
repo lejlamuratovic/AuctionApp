@@ -3,5 +3,6 @@ import aboutUs2 from "./about-us-2.png";
 import aboutUs3 from "./about-us-3.png";
 import logo from "./auction-app-logo.png";
 import productImage1 from "./product-image-1.png";
+import productImage2 from "./product-image-2.png";
 
-export { aboutUs1, aboutUs2, aboutUs3, logo, productImage1 };
+export { aboutUs1, aboutUs2, aboutUs3, logo, productImage1, productImage2 };
