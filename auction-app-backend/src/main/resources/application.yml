@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/testdb
+    url: jdbc:postgresql://localhost:5432/auction_app
     username: root
     password: root
   jpa:
@@ -10,6 +10,14 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        format-sql: true;
+
+  flyway:
+    user: root
+    password: root
+    schemas: auction_app
+    url: jdbc:postgresql://localhost:5432/auction_app
+    locations: classpath:db/migrations
 
 configuration:
   swagger:
