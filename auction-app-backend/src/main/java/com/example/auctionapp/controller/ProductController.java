@@ -1,8 +1,10 @@
 package com.example.auctionapp.controller;
 
 import com.example.auctionapp.dto.request.ProductRequestDTO;
+import com.example.auctionapp.dto.response.CategoryDTO;
 import com.example.auctionapp.dto.response.ProductDTO;
 import com.example.auctionapp.service.ProductService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -51,5 +54,13 @@ public class ProductController {
     public ResponseEntity<ProductDTO> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/paginated")
+    public ResponseEntity<Page<ProductDTO>> getCategoriesPaginated(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "8") int size) {
+        Page<ProductDTO> productPage = productService.getProductsPaginated(page, size);
+        return ResponseEntity.ok(productPage);
     }
 }

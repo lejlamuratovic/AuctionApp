@@ -7,6 +7,9 @@ import com.example.auctionapp.entity.Product;
 import com.example.auctionapp.exceptions.repository.ResourceNotFoundException;
 import com.example.auctionapp.repository.CategoryRepository;
 import com.example.auctionapp.repository.ProductRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -85,5 +88,13 @@ public class ProductService {
     public void deleteProduct(Long id) {
         Optional<Product> product = productRepository.findById(id);
         product.ifPresent(productRepository::delete);
+    }
+
+    // get products paginated
+    public Page<ProductDTO> getProductsPaginated(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Product> productPage = productRepository.findAll(pageable);
+
+        return productPage.map(ProductDTO::new);
     }
 }

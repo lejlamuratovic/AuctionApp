@@ -9,7 +9,9 @@ export const useBreadcrumb = () => useContext(BreadcrumbContext);
 export const BreadcrumbProvider = ({ children }) => {
   const [title, setTitle] = useState("");
   const [breadcrumbs, setBreadcrumbs] = useState([]);
+
   const location = useLocation();
+
   const hideBreadcrumbs = HIDE_BREADCRUMBS_ON_PATHS.includes(location.pathname); // Hide breadcrumbs on certain paths
 
   const updateBreadcrumb = (location, title) => {

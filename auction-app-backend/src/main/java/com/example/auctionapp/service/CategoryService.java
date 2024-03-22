@@ -3,9 +3,11 @@ package com.example.auctionapp.service;
 import com.example.auctionapp.dto.request.CategoryRequestDTO;
 import com.example.auctionapp.dto.response.CategoryDTO;
 import com.example.auctionapp.entity.Category;
-import com.example.auctionapp.entity.Category;
 import com.example.auctionapp.exceptions.repository.ResourceNotFoundException;
 import com.example.auctionapp.repository.CategoryRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -62,5 +64,13 @@ public class CategoryService {
     public void deleteCategory(Long id) {
         Optional<Category> category = categoryRepository.findById(id);
         category.ifPresent(categoryRepository::delete);
+    }
+
+    // get exercises paginated
+    public Page<CategoryDTO> getCategoriesPaginated(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Category> categoryPage = categoryRepository.findAll(pageable);
+
+        return categoryPage.map(CategoryDTO::new);
     }
 }
