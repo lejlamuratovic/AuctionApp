@@ -1,5 +1,6 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+
 import { ROUTES_MAP, HIDE_BREADCRUMBS_ON_PATHS } from "src/constants";
 
 const BreadcrumbContext = createContext();
