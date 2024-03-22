@@ -8,7 +8,6 @@ import {
   Home,
   Shop,
   MyAccount,
-  ProductDetail,
 } from "src/pages";
 
 import { BreadcrumbProvider } from "src/store/BreadcrumbContext";
@@ -38,10 +37,6 @@ const App = () => {
               <Route
                 path={ROUTE_PATHS.TERMS_AND_CONDITIONS}
                 element={<TermsAndConditions />}
-              />
-              <Route
-                path={ROUTE_PATHS.PRODUCT_DETAIL}
-                element={<ProductDetail />}
               />
             </Routes>
           </div>

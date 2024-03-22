@@ -1,6 +1,5 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-
 import { ROUTES_MAP, HIDE_BREADCRUMBS_ON_PATHS } from "src/constants";
 
 const BreadcrumbContext = createContext();
@@ -11,9 +10,9 @@ export const BreadcrumbProvider = ({ children }) => {
   const [title, setTitle] = useState("");
   const [breadcrumbs, setBreadcrumbs] = useState([]);
   const location = useLocation();
-  const hideBreadcrumbs = HIDE_BREADCRUMBS_ON_PATHS.includes(location.pathname); // hide breadcrumbs on certain paths
+  const hideBreadcrumbs = HIDE_BREADCRUMBS_ON_PATHS.includes(location.pathname); // Hide breadcrumbs on certain paths
 
-  useEffect(() => {
+  const updateBreadcrumb = (location, title) => {
     const { pathname } = location;
 
     // regex to match product detail pages
@@ -22,7 +21,6 @@ export const BreadcrumbProvider = ({ children }) => {
 
     // determine the label for the current page
     const label = isProductDetailPage ? "Single Product" : ROUTES_MAP[pathname];
-
     // update the title for non-product detail pages
     if (!isProductDetailPage || !title) {
       setTitle(label);
@@ -35,14 +33,17 @@ export const BreadcrumbProvider = ({ children }) => {
         // if already on the current page, don't add to breadcrumbs
         return prev;
       } else {
-        // reset the breadcrumbs
         const newBreadcrumbs = prev.length
           ? [prev[prev.length - 1], { path: pathname, label: label }]
           : [{ path: pathname, label: label }];
         return newBreadcrumbs;
       }
     });
-  }, [location, title]);
+  };
+
+  useEffect(() => {
+    updateBreadcrumb(location, title);
+  }, [location]);
 
   return (
     <BreadcrumbContext.Provider

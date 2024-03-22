@@ -35,7 +35,6 @@ export const ROUTE_PATHS = {
   ABOUT_US: "/about-us",
   PRIVACY_POLICY: "/privacy-policy",
   TERMS_AND_CONDITIONS: "/terms-and-conditions",
-  PRODUCT_DETAIL: "/shop/:productId",
 };
 
 export const HIDE_BREADCRUMBS_ON_PATHS = [
