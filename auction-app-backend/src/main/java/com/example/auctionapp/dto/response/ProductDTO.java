@@ -1,22 +1,13 @@
 package com.example.auctionapp.dto.response;
 
-import com.example.auctionapp.entity.Category;
 import com.example.auctionapp.entity.Product;
-import jakarta.persistence.Column;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
 public class ProductDTO {
 
+    private Long id;
     private String name;
     private String description;
     private BigDecimal startPrice;
@@ -24,9 +15,10 @@ public class ProductDTO {
     private Date endDate;
     private String imageUrl;
     private String status;
-    private Category category;
+    private Long categoryId;
 
     public ProductDTO(Product product) {
+        this.id = product.getProductId();
         this.name = product.getName();
         this.description = product.getDescription();
         this.startPrice = product.getStartPrice();
@@ -34,7 +26,7 @@ public class ProductDTO {
         this.endDate = product.getEndDate();
         this.imageUrl = product.getImageUrl();
         this.status = product.getStatus();
-        this.category = product.getCategory();
+        this.categoryId = product.getCategory() != null ? product.getCategory().getCategoryId() : null;
     }
 
     public String getName() {
@@ -93,11 +85,19 @@ public class ProductDTO {
         this.status = status;
     }
 
-    public Category getCategory() {
-        return category;
+    public Long getId() {
+        return id;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 }

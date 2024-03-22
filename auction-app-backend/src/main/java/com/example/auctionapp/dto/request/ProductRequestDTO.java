@@ -1,5 +1,6 @@
 package com.example.auctionapp.dto.request;
 
+import com.example.auctionapp.dto.response.CategoryDTO;
 import com.example.auctionapp.entity.Category;
 import com.example.auctionapp.entity.Product;
 
@@ -15,7 +16,7 @@ public class ProductRequestDTO {
     private Date endDate;
     private String imageUrl;
     private String status;
-    private Category category;
+    private Long categoryId;
 
     public ProductRequestDTO() {
     }
@@ -28,7 +29,6 @@ public class ProductRequestDTO {
         this.endDate = product.getEndDate();
         this.imageUrl = product.getImageUrl();
         this.status = product.getStatus();
-        this.category = product.getCategory();
     }
 
     public Product toEntity() {
@@ -41,7 +41,7 @@ public class ProductRequestDTO {
         product.setEndDate(endDate);
         product.setImageUrl(imageUrl);
         product.setStatus(status);
-        product.setCategory(category);
+
         return product;
     }
 
@@ -101,11 +101,11 @@ public class ProductRequestDTO {
         this.status = status;
     }
 
-    public Category getCategory() {
-        return category;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 }
