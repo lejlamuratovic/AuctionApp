@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import { ProductGrid } from "src/components";
+import { ProductGrid, ErrorComponent, LoadingComponent } from "src/components";
 
 import { useCategoriesPaginated } from "src/hooks";
 import { useProductsPaginated } from "src/hooks";
@@ -37,8 +37,8 @@ const Home = () => {
     setPage((prevPage) => prevPage + 1);
   };
 
-  if (categoriesLoading || productsLoading) return <p>Loading...</p>;
-  if (categoriesError || productsError) return <p>Error</p>;
+  if (categoriesLoading || productsLoading) return <LoadingComponent />;
+  if (categoriesError || productsError) return <ErrorComponent />;
 
   return (
     <>

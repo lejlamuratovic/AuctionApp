@@ -1,6 +1,6 @@
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import { ProductCard } from "src/components";
+import { ProductCard, LoadingComponent } from "src/components";
 
 import "./style.scss";
 
@@ -10,9 +10,7 @@ const ProductGrid = ({ items, fetchMoreData, hasMore, loading }) => {
       dataLength={items.length}
       next={fetchMoreData}
       hasMore={hasMore}
-      loader={
-        <span className="body-semibold">{loading ? "Loading..." : ""}</span>
-      }
+      loader={<LoadingComponent />}
       className="product-grid"
       endMessage={<span className="body-semibold">End of product list</span>}
     >
