@@ -2,13 +2,16 @@ import { useState } from "react";
 
 import { ProductGrid } from "src/components";
 
-import { CATEGORIES } from "src/constants";
+import { useCategoriesPaginated } from "src/hooks";
+
 import { products } from "src/products.js";
 import { productImage2 } from "src/assets/images";
 
 import "./style.scss";
 
 const Home = () => {
+  const { categories, loading, error } = useCategoriesPaginated(0, 9);
+
   const [activeTab, setActiveTab] = useState("newArrivals");
   const [items, setItems] = useState(products.slice(0, 9));
   const [hasMore, setHasMore] = useState(true);
@@ -29,6 +32,9 @@ const Home = () => {
     return 0;
   });
 
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+
   return (
     <>
       <div className="home-container">
@@ -36,10 +42,10 @@ const Home = () => {
           <div className="categories body-regular">
             <div className="categories-heading">Categories</div>
             <ul>
-              {/* hardcoded for now */}
-              {CATEGORIES.map((category, index) => (
-                <li key={index}>{category}</li>
+              {categories.map((category) => (
+                <li key={category.id}>{category.name}</li>
               ))}
+              <li>All Categories</li>
             </ul>
           </div>
 
