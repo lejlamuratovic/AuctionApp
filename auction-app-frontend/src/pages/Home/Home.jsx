@@ -1,39 +1,44 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { ProductGrid } from "src/components";
 
 import { useCategoriesPaginated } from "src/hooks";
+import { useProductsPaginated } from "src/hooks";
 
-import { products } from "src/products.js";
 import { productImage2 } from "src/assets/images";
 
 import "./style.scss";
 
 const Home = () => {
-  const { categories, loading, error } = useCategoriesPaginated(0, 9);
-
   const [activeTab, setActiveTab] = useState("newArrivals");
-  const [items, setItems] = useState(products.slice(0, 9));
+  const [page, setPage] = useState(0);
+  const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(true);
 
-  const fetchMoreData = () => {
-    if (items.length >= products.length) {
-      setHasMore(false);
-      return;
-    }
+  const {
+    categories,
+    loading: categoriesLoading,
+    error: categoriesError,
+  } = useCategoriesPaginated(0, 9);
+  const {
+    products,
+    loading: productsLoading,
+    error: productsError,
+  } = useProductsPaginated(page, 8);
 
-    setTimeout(() => {
-      setItems(items.concat(products.slice(items.length, items.length + 10)));
-    }, 500);
+  useEffect(() => {
+    // concat new products to the existing items
+    setItems((prevItems) => [...prevItems, ...products]);
+    setHasMore(products.length > 0);
+  }, [products]);
+
+  const fetchMoreData = () => {
+    // fetch more products
+    setPage((prevPage) => prevPage + 1);
   };
 
-  // sort items based on active tab, not yet implemented
-  const sortedItems = [...items].sort((a, b) => {
-    return 0;
-  });
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  if (categoriesLoading || productsLoading) return <p>Loading...</p>;
+  if (categoriesError || productsError) return <p>Error</p>;
 
   return (
     <>
@@ -84,9 +89,10 @@ const Home = () => {
             )}
           </div>
           <ProductGrid
-            items={sortedItems}
+            items={items}
             fetchMoreData={fetchMoreData}
             hasMore={hasMore}
+            loading={productsLoading}
           />
         </div>
       </div>

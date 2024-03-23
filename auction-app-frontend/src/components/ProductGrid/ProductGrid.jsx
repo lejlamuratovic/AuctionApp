@@ -4,17 +4,20 @@ import { ProductCard } from "src/components";
 
 import "./style.scss";
 
-const ProductGrid = ({ items, fetchMoreData, hasMore }) => {
+const ProductGrid = ({ items, fetchMoreData, hasMore, loading }) => {
   return (
     <InfiniteScroll
       dataLength={items.length}
       next={fetchMoreData}
       hasMore={hasMore}
-      loader={<span className="body-semibold">Loading...</span>}
+      loader={
+        <span className="body-semibold">{loading ? "Loading..." : ""}</span>
+      }
       className="product-grid"
+      endMessage={<span className="body-semibold">End of product list</span>}
     >
-      {items.map((item, index) => (
-        <ProductCard key={index} {...item} />
+      {items.map((item) => (
+        <ProductCard key={item.id} {...item} />
       ))}
     </InfiniteScroll>
   );
