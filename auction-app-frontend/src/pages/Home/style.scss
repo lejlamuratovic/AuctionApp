@@ -88,6 +88,12 @@
 
   .products {
     margin-top: 90px;
+    -ms-overflow-style: none; // for IE and Edge
+
+    // for chrome safari and opera
+    ::-webkit-scrollbar {
+      display: none;
+    }
 
     .tabs {
       @include flex-row;

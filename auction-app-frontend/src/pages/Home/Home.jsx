@@ -64,8 +64,14 @@ const Home = () => {
 
   if (categoriesLoading || productsLoading || productLoading)
     return <LoadingComponent />;
-  if (categoriesError || productsError || productError)
-    return <ErrorComponent />;
+
+  const errorMessages = [];
+  if (categoriesError) errorMessages.push("Categories Loading Error");
+  if (productsError) errorMessages.push("Products Loading Error");
+  if (productError) errorMessages.push("Product Loading Error");
+
+  if (errorMessages.length > 0)
+    return <ErrorComponent message={errorMessages.join(", ")} />;
 
   return (
     <>
