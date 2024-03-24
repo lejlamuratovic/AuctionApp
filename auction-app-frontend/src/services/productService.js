@@ -1,7 +1,12 @@
 import { getRequest } from "src/utils/httpUtils";
 
-const getProductsPaginated = (page, size) => {
-  return getRequest(`/products/paginated?page=${page}&size=${size}`);
+export const fetchProducts = (endpoint, page, size) => {
+  return getRequest(`/products/${endpoint}?page=${page}&size=${size}`);
 };
 
-export { getProductsPaginated };
+export const getProductsPaginated = (page, size) =>
+  fetchProducts("paginated", page, size);
+export const getNewArrivals = (page, size) =>
+  fetchProducts("newArrivals", page, size);
+export const getLastChance = (page, size) =>
+  fetchProducts("lastChance", page, size);

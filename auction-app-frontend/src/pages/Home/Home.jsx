@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 
 import { ProductGrid, ErrorComponent, LoadingComponent } from "src/components";
 
-import { useCategoriesPaginated } from "src/hooks";
-import { useProductsPaginated } from "src/hooks";
+import { useCategoriesPaginated, useProductsPaginated } from "src/hooks";
+import { getNewArrivals, getLastChance } from "src/services/productService";
 
 import { productImage2 } from "src/assets/images";
 
@@ -20,20 +20,35 @@ const Home = () => {
     loading: categoriesLoading,
     error: categoriesError,
   } = useCategoriesPaginated(0, 9);
+
+  // determine fetching function based on activeTab
+  const endpoint = activeTab === "newArrivals" ? "newArrivals" : "lastChance";
   const {
-    products,
+    data: products,
     loading: productsLoading,
     error: productsError,
-  } = useProductsPaginated(page, 8);
+  } = useProductsPaginated(endpoint, page, 8);
 
   useEffect(() => {
-    // concat new products to the existing items
-    setItems((prevItems) => [...prevItems, ...products]);
+    // map from existing items for deduplication
+    const newItemsMap = new Map(items.map((item) => [item.id, item]));
+
+    // append new products and ignore duplicates
+    products.forEach((product) => {
+      newItemsMap.set(product.id, product);
+    });
+
+    // map back to an array
+    const uniqueItems = Array.from(newItemsMap.values());
+
+    setItems(uniqueItems);
     setHasMore(products.length > 0);
   }, [products]);
 
   const fetchMoreData = () => {
     // fetch more products
+    console.log("fetching more data");
+    console.log("products", products);
     setPage((prevPage) => prevPage + 1);
   };
 
@@ -77,16 +92,24 @@ const Home = () => {
 
         <div className="products">
           <div className="tabs">
-            {activeTab === "newArrivals" ? (
-              <h5 onClick={() => setActiveTab("newArrivals")}>New Arrivals</h5>
-            ) : (
-              <h6 onClick={() => setActiveTab("newArrivals")}>New Arrivals</h6>
-            )}
-            {activeTab === "lastChance" ? (
-              <h5 onClick={() => setActiveTab("lastChance")}>Last Chance</h5>
-            ) : (
-              <h6 onClick={() => setActiveTab("lastChance")}>Last Chance</h6>
-            )}
+            <h5
+              onClick={() => {
+                setActiveTab("newArrivals");
+                setPage(0);
+                setItems([]);
+              }}
+            >
+              New Arrivals
+            </h5>
+            <h5
+              onClick={() => {
+                setActiveTab("lastChance");
+                setPage(0);
+                setItems([]);
+              }}
+            >
+              Last Chance
+            </h5>
           </div>
           <ProductGrid
             items={items}

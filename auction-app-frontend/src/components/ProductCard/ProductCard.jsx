@@ -1,12 +1,10 @@
-import { productImage1 } from "src/assets/images";
-
 import "./style.scss";
 
-const ProductCard = ({ image, name, startPrice }) => {
+const ProductCard = ({ imageUrl, name, startPrice }) => {
   return (
     <div className="product-card">
       <div className="img-container">
-        <img src={productImage1} alt={name} />
+        <img src={imageUrl} alt={name} />
       </div>
       <div className="product-info">
         <h5>{name}</h5>
