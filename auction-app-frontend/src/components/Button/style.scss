@@ -1,0 +1,25 @@
+@import "src/scss/index.scss";
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  background-color: transparent;
+  border: 3px solid $primary;
+  color: $neutral00;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  gap: 8px;
+
+  &.disabled {
+    border-color: $neutral09;
+    cursor: not-allowed;
+  }
+
+  &.filled {
+    background-color: $primary;
+    border-color: $primary;
+    color: $white;
+  }
+}

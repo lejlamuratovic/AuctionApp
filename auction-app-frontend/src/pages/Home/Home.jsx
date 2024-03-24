@@ -1,12 +1,19 @@
 import { useState, useEffect } from "react";
 
-import { ProductGrid, ErrorComponent, LoadingComponent } from "src/components";
+import {
+  ProductGrid,
+  ErrorComponent,
+  LoadingComponent,
+  Button,
+} from "src/components";
 
 import {
   useCategoriesPaginated,
   useProductsPaginated,
   useProduct,
 } from "src/hooks";
+
+import { go } from "src/assets/icons";
 
 import "./style.scss";
 
@@ -80,7 +87,7 @@ const Home = () => {
                 <span className="product-name">{product.name}</span>
                 <span className="price">Start From ${product.startPrice}</span>
                 <p className="body-regular">{product.description}</p>
-                <button className="bid-btn body-bold">Bid Now</button>
+                <Button label="Bid now" iconSrc={go} />
               </div>
             </div>
             <div className="product-image">
