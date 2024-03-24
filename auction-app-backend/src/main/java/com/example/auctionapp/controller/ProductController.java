@@ -63,4 +63,20 @@ public class ProductController {
         Page<ProductDTO> productPage = productService.getProductsPaginated(page, size);
         return ResponseEntity.ok(productPage);
     }
+
+    @GetMapping("/newArrivals")
+    public ResponseEntity<Page<ProductDTO>> getNewArrivals(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "8") int size) {
+        Page<ProductDTO> productPage = productService.getNewArrivals(page, size);
+        return ResponseEntity.ok(productPage);
+    }
+
+    @GetMapping("/lastChance")
+    public ResponseEntity<Page<ProductDTO>> getLastChance(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "8") int size) {
+        Page<ProductDTO> productPage = productService.getLastChance(page, size);
+        return ResponseEntity.ok(productPage);
+    }
 }

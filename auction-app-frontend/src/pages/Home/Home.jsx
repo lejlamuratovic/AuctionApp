@@ -2,10 +2,11 @@ import { useState, useEffect } from "react";
 
 import { ProductGrid, ErrorComponent, LoadingComponent } from "src/components";
 
-import { useCategoriesPaginated, useProductsPaginated } from "src/hooks";
-import { getNewArrivals, getLastChance } from "src/services/productService";
-
-import { productImage2 } from "src/assets/images";
+import {
+  useCategoriesPaginated,
+  useProductsPaginated,
+  useProduct,
+} from "src/hooks";
 
 import "./style.scss";
 
@@ -15,6 +16,11 @@ const Home = () => {
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(true);
 
+  const {
+    product,
+    loading: productLoading,
+    error: productError,
+  } = useProduct(31); // hardcoded id for now
   const {
     categories,
     loading: categoriesLoading,
@@ -46,14 +52,13 @@ const Home = () => {
   }, [products]);
 
   const fetchMoreData = () => {
-    // fetch more products
-    console.log("fetching more data");
-    console.log("products", products);
     setPage((prevPage) => prevPage + 1);
   };
 
-  if (categoriesLoading || productsLoading) return <LoadingComponent />;
-  if (categoriesError || productsError) return <ErrorComponent />;
+  if (categoriesLoading || productsLoading || productLoading)
+    return <LoadingComponent />;
+  if (categoriesError || productsError || productError)
+    return <ErrorComponent />;
 
   return (
     <>
@@ -72,20 +77,14 @@ const Home = () => {
           <div className="highlighted-product">
             <div className="product-container">
               <div className="product-info body-semibold">
-                <span className="product-name">Running shoes</span>
-                <span className="price">Start From $59.00</span>
-                <p className="body-regular">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Vestibulum hendrerit odio a erat lobortis auctor. Curabitur
-                  sodales pharetra placerat. Aenean auctor luctus tempus. Cras
-                  laoreet et magna in dignissim. Nam et tincidunt augue. Vivamus
-                  quis malesuada velit. In hac habitasse platea dictumst.
-                </p>
+                <span className="product-name">{product.name}</span>
+                <span className="price">Start From ${product.startPrice}</span>
+                <p className="body-regular">{product.description}</p>
                 <button className="bid-btn body-bold">Bid Now</button>
               </div>
             </div>
             <div className="product-image">
-              <img src={productImage2} alt="Product Image" />
+              <img src={product.imageUrl} alt={product.name} />
             </div>
           </div>
         </div>

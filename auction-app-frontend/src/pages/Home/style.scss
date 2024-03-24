@@ -44,46 +44,53 @@
       @include flex-row;
       align-items: flex-start;
       width: 739px;
+      height: 420px;
       flex: 1;
+
+      .product-image {
+        height: 100%;
+
+        img {
+          max-height: 100%;
+          width: 357px;
+          object-fit: cover;
+        }
+      }
 
       .product-container {
         @include flex-row;
         justify-content: center;
         gap: 36px;
+        height: 420px;
         flex: 1;
-      }
 
-      .product-info {
-        @include flex-column;
-        width: 346px;
-        gap: 16px;
+        .product-info {
+          @include flex-column;
+          width: 346px;
+          gap: 16px;
 
-        p {
-          margin: 0;
-          color: $neutral05;
-        }
+          p {
+            margin: 0;
+            color: $neutral05;
+          }
 
-        .product-name {
-          color: $neutral00;
-        }
+          .product-name {
+            color: $neutral00;
+          }
 
-        .price {
-          color: $primary;
-        }
+          .price {
+            color: $primary;
+          }
 
-        .product-image {
-          width: 100%;
-          margin-top: 20px;
-        }
-
-        .bid-btn {
-          width: 170px;
-          height: 45px;
-          background-color: transparent;
-          border: 3px solid $primary;
-          color: $neutral00;
-          text-transform: uppercase;
-          margin-top: 40px;
+          .bid-btn {
+            width: 170px;
+            height: 45px;
+            background-color: transparent;
+            border: 3px solid $primary;
+            color: $neutral00;
+            text-transform: uppercase;
+            margin-top: 40px;
+          }
         }
       }
     }

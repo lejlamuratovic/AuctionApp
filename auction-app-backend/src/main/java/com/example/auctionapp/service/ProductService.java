@@ -10,6 +10,7 @@ import com.example.auctionapp.repository.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -95,6 +96,26 @@ public class ProductService {
         Pageable pageable = PageRequest.of(page, size);
         Page<Product> productPage = productRepository.findAll(pageable);
 
+        return productPage.map(ProductDTO::new);
+    }
+
+    public Page<ProductDTO> getProductsPaginatedAndSorted(int page, int size, Sort sort) {
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<Product> productPage = productRepository.findAll(pageable);
+        return productPage.map(ProductDTO::new);
+    }
+
+    // for new arrivals (startDate descending)
+    public Page<ProductDTO> getNewArrivals(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "startDate"));
+        Page<Product> productPage = productRepository.findAll(pageable);
+        return productPage.map(ProductDTO::new);
+    }
+
+    // for last chance (endDate ascending)
+    public Page<ProductDTO> getLastChance(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "endDate"));
+        Page<Product> productPage = productRepository.findAll(pageable);
         return productPage.map(ProductDTO::new);
     }
 }

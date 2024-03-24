@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 
-import { fetchProducts } from "src/services/productService";
+import { getProduct } from "src/services/productService";
 
-const useProductsPaginated = (endpoint, page, size) => {
-  const [data, setData] = useState([]);
+const useProduct = (id) => {
+  const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -11,8 +11,8 @@ const useProductsPaginated = (endpoint, page, size) => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const result = await fetchProducts(endpoint, page, size);
-        setData(result.content);
+        const result = await getProduct(id);
+        setProduct(result);
       } catch (err) {
         setError(err);
       } finally {
@@ -21,9 +21,9 @@ const useProductsPaginated = (endpoint, page, size) => {
     };
 
     fetchData();
-  }, [endpoint, page, size]);
+  }, []);
 
-  return { data, loading, error };
+  return { product, loading, error };
 };
 
-export default useProductsPaginated;
+export default useProduct;
