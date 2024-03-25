@@ -12,7 +12,6 @@ const ProductGrid = ({ items, fetchMoreData, hasMore, loading }) => {
       hasMore={hasMore}
       loader={<LoadingComponent />}
       className="product-grid"
-      endMessage={<span className="body-semibold">End of product list</span>}
     >
       {items.map((item) => (
         <ProductCard key={item.id} {...item} />
