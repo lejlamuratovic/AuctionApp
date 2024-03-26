@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://localhost:8080/api/v1" });
+import { BASE_URL } from "src/constants";
+
+const API = axios.create({ baseURL: BASE_URL });
 
 const getRequest = (endpoint) => API.get(endpoint).then((res) => res.data);
 

@@ -41,16 +41,3 @@ export const HIDE_BREADCRUMBS_ON_PATHS = [
   ROUTE_PATHS.HOME,
   // will add more routes when needed
 ];
-
-export const CATEGORIES = [
-  "Fashion",
-  "Accessories",
-  "Jewelry",
-  "Shoes",
-  "Sportware",
-  "Home",
-  "Electronics",
-  "Mobile",
-  "Computer",
-  "All Categories",
-];

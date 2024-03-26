@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
 
 import static java.util.stream.Collectors.toList;
@@ -112,5 +113,17 @@ public class ProductService {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "endDate"));
         Page<Product> productPage = productRepository.findAll(pageable);
         return productPage.map(ProductDTO::new);
+    }
+
+    public ProductDTO getRandomProduct() {
+        List<UUID> productIds = productRepository.findProductIds();
+
+        if (productIds.isEmpty()) {
+            throw new ResourceNotFoundException("No products available");
+        }
+
+        Random random = new Random();
+        UUID randomProductId = productIds.get(random.nextInt(productIds.size()));
+        return getProductById(randomProductId);
     }
 }

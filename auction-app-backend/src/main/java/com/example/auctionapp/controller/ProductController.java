@@ -73,4 +73,9 @@ public class ProductController {
             @RequestParam(value = "size", defaultValue = "8") int size) {
         return productService.getLastChance(page, size);
     }
+
+    @GetMapping("/random")
+    public ProductDTO getRandomProduct() {
+        return productService.getRandomProduct();
+    }
 }

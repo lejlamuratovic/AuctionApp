@@ -4,10 +4,7 @@
   margin: 40px auto 0 auto;
 
   .home-upper {
-    @include flex-row;
-    justify-content: space-between;
-    align-items: flex-start;
-    align-content: flex-start;
+    @include flex-container(row, space-between, flex-start);
 
     .categories {
       flex: 0 0 262px;
@@ -27,21 +24,13 @@
       li {
         margin-bottom: 10px;
         cursor: pointer;
-
-        &:after {
-          content: "";
-          display: block;
-          height: 1px;
-          width: 100%;
-          background-color: $neutral09;
-          margin-top: 10px;
-        }
+        border-bottom: 1px solid $neutral09;
+        padding-bottom: 10px;
       }
     }
 
     .highlighted-product {
-      @include flex-row;
-      align-items: flex-start;
+      @include flex-container(row, flex-start, flex-start);
       width: 739px;
       height: 420px;
       flex: 1;
@@ -57,19 +46,17 @@
       }
 
       .product-container {
-        @include flex-row;
-        justify-content: center;
+        @include flex-container(row, center, flex-start);
         gap: 36px;
         height: 420px;
         flex: 1;
 
         .product-info {
-          @include flex-column;
+          @include flex-container(column, flex-start, flex-start);
           width: 346px;
           gap: 16px;
 
-          p {
-            margin: 0;
+          .body-regular {
             color: $neutral05;
           }
 
@@ -95,20 +82,9 @@
     }
 
     .tabs {
-      @include flex-row;
+      @include flex-container(row, flex-start, center);
       position: relative;
-      align-items: center;
       gap: 64px;
-
-      &:after {
-        content: "";
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 30px;
-        height: 1px;
-        background-color: $neutral09;
-      }
 
       h5,
       h6 {

@@ -10,7 +10,7 @@ import {
 import {
   useCategoriesTopLevel,
   useProductsPaginated,
-  useProduct,
+  useProductRandom,
 } from "src/hooks";
 
 import { go } from "src/assets/icons";
@@ -27,7 +27,7 @@ const Home = () => {
     product,
     loading: productLoading,
     error: productError,
-  } = useProduct("d0f84e5a-f1b1-4e82-b650-7c3c43cce664"); // hardcoded id for now
+  } = useProductRandom();
   const {
     categories,
     loading: categoriesLoading,
@@ -72,6 +72,18 @@ const Home = () => {
   if (errorMessages.length > 0)
     return <ErrorComponent message={errorMessages.join(", ")} />;
 
+  const setNewArrivals = () => {
+    setActiveTab("newArrivals");
+    setPage(0);
+    setItems([]);
+  };
+
+  const setLastChance = () => {
+    setActiveTab("lastChance");
+    setPage(0);
+    setItems([]);
+  };
+
   return (
     <>
       <div className="home-container">
@@ -91,7 +103,7 @@ const Home = () => {
               <div className="product-info body-semibold">
                 <span className="product-name">{product.name}</span>
                 <span className="price">Start From ${product.startPrice}</span>
-                <p className="body-regular">{product.description}</p>
+                <span className="body-regular">{product.description}</span>
                 <Button label="Bid now" iconSrc={go} />
               </div>
             </div>
@@ -103,24 +115,8 @@ const Home = () => {
 
         <div className="products">
           <div className="tabs">
-            <h5
-              onClick={() => {
-                setActiveTab("newArrivals");
-                setPage(0);
-                setItems([]);
-              }}
-            >
-              New Arrivals
-            </h5>
-            <h5
-              onClick={() => {
-                setActiveTab("lastChance");
-                setPage(0);
-                setItems([]);
-              }}
-            >
-              Last Chance
-            </h5>
+            <h5 onClick={setNewArrivals}>New Arrivals</h5>
+            <h5 onClick={setLastChance}>Last Chance</h5>
           </div>
           <ProductGrid
             items={items}
