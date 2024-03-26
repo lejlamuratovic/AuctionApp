@@ -4,8 +4,6 @@ import com.example.auctionapp.dto.request.CategoryRequestDTO;
 import com.example.auctionapp.dto.response.CategoryDTO;
 import com.example.auctionapp.service.CategoryService;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,37 +27,39 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CategoryDTO>> getCategories() {
-        return ResponseEntity.ok(categoryService.getCategories());
+    public List<CategoryDTO> getCategories() {
+        return categoryService.getCategories();
+    }
+
+    @GetMapping("/topLevel")
+    public List<CategoryDTO> getTopLevelCategories() {
+        return categoryService.getTopLevelCategories();
     }
 
     @PostMapping
-    public ResponseEntity<CategoryDTO> addCategory(@RequestBody CategoryRequestDTO category) {
-        CategoryDTO createdCategory = categoryService.addCategory(category);
-        return new ResponseEntity<>(createdCategory, HttpStatus.CREATED);
+    public CategoryDTO addCategory(@RequestBody CategoryRequestDTO category) {
+        return categoryService.addCategory(category);
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable Long id) {
-        return ResponseEntity.ok(categoryService.getCategoryById(id));
+    public CategoryDTO getCategoryById(@PathVariable Long id) {
+        return categoryService.getCategoryById(id);
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long id, @RequestBody CategoryRequestDTO category) {
-        return ResponseEntity.ok(categoryService.updateCategory(id, category));
+    public CategoryDTO updateCategory(@PathVariable Long id, @RequestBody CategoryRequestDTO category) {
+        return categoryService.updateCategory(id, category);
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<CategoryDTO> deleteCategory(@PathVariable Long id) {
+    public void deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/paginated")
-    public ResponseEntity<Page<CategoryDTO>> getCategoriesPaginated(
+    public Page<CategoryDTO> getCategoriesPaginated(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "9") int size) {
-        Page<CategoryDTO> categoryPage = categoryService.getCategoriesPaginated(page, size);
-        return ResponseEntity.ok(categoryPage);
+        return categoryService.getCategoriesPaginated(page, size);
     }
 }

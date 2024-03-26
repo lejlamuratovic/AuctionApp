@@ -5,8 +5,6 @@ import com.example.auctionapp.dto.response.CategoryDTO;
 import com.example.auctionapp.dto.response.ProductDTO;
 import com.example.auctionapp.service.ProductService;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,53 +28,48 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductDTO>> getProducts() {
-        return ResponseEntity.ok(productService.getProducts());
+    public List<ProductDTO> getProducts() {
+        return productService.getProducts();
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> addProduct(@RequestBody ProductRequestDTO product) {
-        ProductDTO createdProduct = productService.addProduct(product);
-        return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
+    public ProductDTO addProduct(@RequestBody ProductRequestDTO product) {
+        return productService.addProduct(product);
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
-        return ResponseEntity.ok(productService.getProductById(id));
+    public ProductDTO getProductById(@PathVariable Long id) {
+        return productService.getProductById(id);
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody ProductRequestDTO product) {
-        return ResponseEntity.ok(productService.updateProduct(id, product));
+    public ProductDTO updateProduct(@PathVariable Long id, @RequestBody ProductRequestDTO product) {
+        return productService.updateProduct(id, product);
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<ProductDTO> deleteProduct(@PathVariable Long id) {
+    public void deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/paginated")
-    public ResponseEntity<Page<ProductDTO>> getCategoriesPaginated(
+    public Page<ProductDTO> getProductsPaginated(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "8") int size) {
-        Page<ProductDTO> productPage = productService.getProductsPaginated(page, size);
-        return ResponseEntity.ok(productPage);
+        return productService.getProductsPaginated(page, size);
     }
 
     @GetMapping("/newArrivals")
-    public ResponseEntity<Page<ProductDTO>> getNewArrivals(
+    public Page<ProductDTO> getNewArrivals(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "8") int size) {
-        Page<ProductDTO> productPage = productService.getNewArrivals(page, size);
-        return ResponseEntity.ok(productPage);
+        return productService.getNewArrivals(page, size);
     }
 
     @GetMapping("/lastChance")
-    public ResponseEntity<Page<ProductDTO>> getLastChance(
+    public Page<ProductDTO> getLastChance(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "8") int size) {
-        Page<ProductDTO> productPage = productService.getLastChance(page, size);
-        return ResponseEntity.ok(productPage);
+        return productService.getLastChance(page, size);
     }
 }

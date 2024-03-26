@@ -43,9 +43,17 @@ public class CategoryService {
         return new CategoryDTO(category.get());
     }
 
-    public CategoryDTO addCategory(CategoryRequestDTO payload) {
-        Category category = categoryRepository.save(payload.toEntity());
-        return new CategoryDTO(category);
+    public CategoryDTO addCategory(CategoryRequestDTO categoryRequestDTO) {
+        Category category = categoryRequestDTO.toEntity();
+
+        if (categoryRequestDTO.getParentCategoryId() != null) {
+            Category parentCategory = categoryRepository.findById(categoryRequestDTO.getParentCategoryId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Parent category not found"));
+            category.setParentCategory(parentCategory);
+        }
+
+        Category newCategory = categoryRepository.save(category);
+        return new CategoryDTO(newCategory);
     }
 
     public CategoryDTO updateCategory(Long id, CategoryRequestDTO payload) {
@@ -72,5 +80,14 @@ public class CategoryService {
         Page<Category> categoryPage = categoryRepository.findAll(pageable);
 
         return categoryPage.map(CategoryDTO::new);
+    }
+
+    public List<CategoryDTO> getTopLevelCategories() {
+        List<Category> topCategories = categoryRepository.findByParentCategoryIsNull();
+
+        return topCategories
+                .stream()
+                .map(CategoryDTO::new)
+                .collect(toList());
     }
 }

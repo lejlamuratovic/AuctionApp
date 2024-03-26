@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 
-import { getCategoriesPaginated } from "src/services/categoryService";
+import { getTopLevelCategories } from "src/services/categoryService";
 
-const useCategoriesPaginated = (page, size) => {
+const useCategoriesTopLevel = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -11,8 +11,8 @@ const useCategoriesPaginated = (page, size) => {
     const fetchCategories = async () => {
       setLoading(true);
       try {
-        const data = await getCategoriesPaginated(page, size);
-        setCategories(data.content);
+        const data = await getTopLevelCategories();
+        setCategories(data);
       } catch (err) {
         setError(err);
       } finally {
@@ -21,9 +21,9 @@ const useCategoriesPaginated = (page, size) => {
     };
 
     fetchCategories();
-  }, [page, size]);
+  }, []);
 
   return { categories, loading, error };
 };
 
-export default useCategoriesPaginated;
+export default useCategoriesTopLevel;

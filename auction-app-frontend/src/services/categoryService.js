@@ -1,7 +1,7 @@
 import { getRequest } from "src/utils/httpUtils";
 
-const getCategoriesPaginated = (page, size) => {
-  return getRequest(`/categories/paginated?page=${page}&size=${size}`);
+const getTopLevelCategories = () => {
+  return getRequest(`/categories/topLevel`);
 };
 
-export { getCategoriesPaginated };
+export { getTopLevelCategories };

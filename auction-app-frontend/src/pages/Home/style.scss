@@ -1,14 +1,13 @@
 @import "src/scss/index.scss";
 
 .home-container {
-  margin: 80px auto 0 auto;
+  margin: 40px auto 0 auto;
 
   .home-upper {
     @include flex-row;
     justify-content: space-between;
-    align-items: center;
-    align-content: center;
-    height: 420px;
+    align-items: flex-start;
+    align-content: flex-start;
 
     .categories {
       flex: 0 0 262px;

@@ -8,7 +8,7 @@ import {
 } from "src/components";
 
 import {
-  useCategoriesPaginated,
+  useCategoriesTopLevel,
   useProductsPaginated,
   useProduct,
 } from "src/hooks";
@@ -32,7 +32,7 @@ const Home = () => {
     categories,
     loading: categoriesLoading,
     error: categoriesError,
-  } = useCategoriesPaginated(0, 9);
+  } = useCategoriesTopLevel();
 
   // determine fetching function based on activeTab
   const endpoint = activeTab === "newArrivals" ? "newArrivals" : "lastChance";
