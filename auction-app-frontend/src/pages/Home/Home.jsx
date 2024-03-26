@@ -43,22 +43,23 @@ const Home = () => {
   } = useProductsPaginated(endpoint, page, 8);
 
   useEffect(() => {
-    // map from existing items for deduplication
-    const newItemsMap = new Map(items.map((item) => [item.id, item]));
+    const updatedItems = [
+      ...items,
+      ...products.filter(
+        (product) => !items.some((item) => item.id === product.id)
+      ),
+    ];
 
-    // append new products and ignore duplicates
-    products.forEach((product) => {
-      newItemsMap.set(product.id, product);
-    });
-
-    // map back to an array
-    const uniqueItems = Array.from(newItemsMap.values());
-
-    setItems(uniqueItems);
+    setItems(updatedItems);
     setHasMore(products.length > 0);
   }, [products]);
 
   const fetchMoreData = () => {
+    console.log("fetchMoreData");
+    console.log("page", page);
+    console.log("items", items);
+    console.log("products", products);
+    console.log("size", products.length);
     setPage((prevPage) => prevPage + 1);
   };
 
@@ -73,15 +74,19 @@ const Home = () => {
     return <ErrorComponent message={errorMessages.join(", ")} />;
 
   const setNewArrivals = () => {
-    setActiveTab("newArrivals");
-    setPage(0);
-    setItems([]);
+    if (activeTab !== "newArrivals") {
+      setActiveTab("newArrivals");
+      setPage(0);
+      setItems([]);
+    }
   };
 
   const setLastChance = () => {
-    setActiveTab("lastChance");
-    setPage(0);
-    setItems([]);
+    if (activeTab !== "lastChance") {
+      setActiveTab("lastChance");
+      setPage(0);
+      setItems([]);
+    }
   };
 
   return (
@@ -115,14 +120,20 @@ const Home = () => {
 
         <div className="products">
           <div className="tabs">
-            <h5 onClick={setNewArrivals}>New Arrivals</h5>
-            <h5 onClick={setLastChance}>Last Chance</h5>
+            <h5 onClick={setNewArrivals} id="newArrivals">
+              New Arrivals
+            </h5>
+            <h5 onClick={setLastChance} id="lastChance">
+              Last Chance
+            </h5>
           </div>
           <ProductGrid
+            key={activeTab}
             items={items}
             fetchMoreData={fetchMoreData}
             hasMore={hasMore}
             loading={productsLoading}
+            activeTab={activeTab}
           />
         </div>
       </div>
