@@ -7,11 +7,8 @@ import {
   Button,
 } from "src/components";
 
-import {
-  useCategoriesTopLevel,
-  useProductsPaginated,
-  useProductRandom,
-} from "src/hooks";
+import ProductService from "src/services/productService";
+import CategoryService from "src/services/categoryService";
 
 import { go } from "src/assets/icons";
 
@@ -27,12 +24,12 @@ const Home = () => {
     product,
     loading: productLoading,
     error: productError,
-  } = useProductRandom();
+  } = ProductService.useProductRandom();
   const {
     categories,
     loading: categoriesLoading,
     error: categoriesError,
-  } = useCategoriesTopLevel();
+  } = CategoryService.useCategoriesTopLevel();
 
   // determine fetching function based on activeTab
   const endpoint = activeTab === "newArrivals" ? "newArrivals" : "lastChance";
@@ -40,7 +37,7 @@ const Home = () => {
     data: products,
     loading: productsLoading,
     error: productsError,
-  } = useProductsPaginated(endpoint, page, 8);
+  } = ProductService.useProductsPaginated(endpoint, page, 8);
 
   useEffect(() => {
     const updatedItems = [
@@ -55,11 +52,6 @@ const Home = () => {
   }, [products]);
 
   const fetchMoreData = () => {
-    console.log("fetchMoreData");
-    console.log("page", page);
-    console.log("items", items);
-    console.log("products", products);
-    console.log("size", products.length);
     setPage((prevPage) => prevPage + 1);
   };
 
