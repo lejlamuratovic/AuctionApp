@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/categories")
@@ -42,17 +43,17 @@ public class CategoryController {
     }
 
     @GetMapping(path = "/{id}")
-    public CategoryDTO getCategoryById(@PathVariable Long id) {
+    public CategoryDTO getCategoryById(@PathVariable UUID id) {
         return categoryService.getCategoryById(id);
     }
 
     @PutMapping(path = "/{id}")
-    public CategoryDTO updateCategory(@PathVariable Long id, @RequestBody CategoryRequestDTO category) {
+    public CategoryDTO updateCategory(@PathVariable UUID id, @RequestBody CategoryRequestDTO category) {
         return categoryService.updateCategory(id, category);
     }
 
     @DeleteMapping(path = "/{id}")
-    public void deleteCategory(@PathVariable Long id) {
+    public void deleteCategory(@PathVariable UUID id) {
         categoryService.deleteCategory(id);
     }
 

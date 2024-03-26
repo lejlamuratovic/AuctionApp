@@ -2,15 +2,17 @@ package com.example.auctionapp.dto.request;
 
 import com.example.auctionapp.entity.Category;
 
+import java.util.UUID;
+
 public class CategoryRequestDTO {
 
     private String name;
-    private Long parentCategoryId;
+    private UUID parentCategoryId;
 
     public CategoryRequestDTO() {
     }
 
-    public CategoryRequestDTO(Category category, Long parentCategory) {
+    public CategoryRequestDTO(Category category, UUID parentCategory) {
         this.name = category.getName();
     }
 
@@ -29,11 +31,11 @@ public class CategoryRequestDTO {
         this.name = name;
     }
 
-    public Long getParentCategoryId() {
+    public UUID getParentCategoryId() {
         return parentCategoryId;
     }
 
-    public void setParentCategoryId(Long parentCategoryId) {
+    public void setParentCategoryId(UUID parentCategoryId) {
         this.parentCategoryId = parentCategoryId;
     }
 }

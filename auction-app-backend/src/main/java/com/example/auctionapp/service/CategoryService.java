@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static java.util.stream.Collectors.toList;
 
@@ -33,7 +34,7 @@ public class CategoryService {
                 .collect(toList());
     }
 
-    public CategoryDTO getCategoryById(Long id) {
+    public CategoryDTO getCategoryById(UUID id) {
         Optional<Category> category = categoryRepository.findById(id);
 
         if (category.isEmpty()) {
@@ -43,11 +44,11 @@ public class CategoryService {
         return new CategoryDTO(category.get());
     }
 
-    public CategoryDTO addCategory(CategoryRequestDTO categoryRequestDTO) {
-        Category category = categoryRequestDTO.toEntity();
+    public CategoryDTO addCategory(CategoryRequestDTO categoryRequest) {
+        Category category = categoryRequest.toEntity();
 
-        if (categoryRequestDTO.getParentCategoryId() != null) {
-            Category parentCategory = categoryRepository.findById(categoryRequestDTO.getParentCategoryId())
+        if (categoryRequest.getParentCategoryId() != null) {
+            Category parentCategory = categoryRepository.findById(categoryRequest.getParentCategoryId())
                     .orElseThrow(() -> new ResourceNotFoundException("Parent category not found"));
             category.setParentCategory(parentCategory);
         }
@@ -56,20 +57,20 @@ public class CategoryService {
         return new CategoryDTO(newCategory);
     }
 
-    public CategoryDTO updateCategory(Long id, CategoryRequestDTO payload) {
+    public CategoryDTO updateCategory(UUID id, CategoryRequestDTO categoryRequest) {
         Optional<Category> category = categoryRepository.findById(id);
 
         if (category.isEmpty()) {
             throw new RuntimeException("Category with the given ID does not exist");
         }
 
-        Category updatedCategory = payload.toEntity();
+        Category updatedCategory = categoryRequest.toEntity();
         updatedCategory.setCategoryId(category.get().getCategoryId());
         updatedCategory = categoryRepository.save(updatedCategory);
         return new CategoryDTO(updatedCategory);
     }
 
-    public void deleteCategory(Long id) {
+    public void deleteCategory(UUID id) {
         Optional<Category> category = categoryRepository.findById(id);
         category.ifPresent(categoryRepository::delete);
     }

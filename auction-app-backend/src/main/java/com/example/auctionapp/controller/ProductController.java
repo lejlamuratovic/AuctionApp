@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -38,17 +39,17 @@ public class ProductController {
     }
 
     @GetMapping(path = "/{id}")
-    public ProductDTO getProductById(@PathVariable Long id) {
+    public ProductDTO getProductById(@PathVariable UUID id) {
         return productService.getProductById(id);
     }
 
     @PutMapping(path = "/{id}")
-    public ProductDTO updateProduct(@PathVariable Long id, @RequestBody ProductRequestDTO product) {
+    public ProductDTO updateProduct(@PathVariable UUID id, @RequestBody ProductRequestDTO product) {
         return productService.updateProduct(id, product);
     }
 
     @DeleteMapping(path = "/{id}")
-    public void deleteProduct(@PathVariable Long id) {
+    public void deleteProduct(@PathVariable UUID id) {
         productService.deleteProduct(id);
     }
 

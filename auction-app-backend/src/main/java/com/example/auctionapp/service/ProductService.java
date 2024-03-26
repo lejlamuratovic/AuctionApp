@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static java.util.stream.Collectors.toList;
 
@@ -38,7 +39,7 @@ public class ProductService {
                 .collect(toList());
     }
 
-    public ProductDTO getProductById(Long id) {
+    public ProductDTO getProductById(UUID id) {
         Optional<Product> product = productRepository.findById(id);
 
         if (product.isEmpty()) {
@@ -48,45 +49,45 @@ public class ProductService {
         return new ProductDTO(product.get());
     }
 
-    public ProductDTO addProduct(ProductRequestDTO payload) {
-        Category category = categoryRepository.findById(payload.getCategoryId())
+    public ProductDTO addProduct(ProductRequestDTO productRequest) {
+        Category category = categoryRepository.findById(productRequest.getCategoryId())
                 .orElseThrow(() -> new ResourceNotFoundException("Category with the given ID does not exist"));
 
         Product product = new Product();
-        product.setName(payload.getName());
-        product.setDescription(payload.getDescription());
-        product.setStartPrice(payload.getStartPrice());
-        product.setStartDate(payload.getStartDate());
-        product.setEndDate(payload.getEndDate());
-        product.setImageUrl(payload.getImageUrl());
-        product.setStatus(payload.getStatus());
+        product.setName(productRequest.getName());
+        product.setDescription(productRequest.getDescription());
+        product.setStartPrice(productRequest.getStartPrice());
+        product.setStartDate(productRequest.getStartDate());
+        product.setEndDate(productRequest.getEndDate());
+        product.setImageUrl(productRequest.getImageUrl());
+        product.setStatus(productRequest.getStatus());
         product.setCategory(category);
 
         product = productRepository.save(product);
         return new ProductDTO(product);
     }
 
-    public ProductDTO updateProduct(Long id, ProductRequestDTO payload) {
+    public ProductDTO updateProduct(UUID id, ProductRequestDTO productRequest) {
         Product existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product with the given ID does not exist"));
 
-        Category category = categoryRepository.findById(payload.getCategoryId())
+        Category category = categoryRepository.findById(productRequest.getCategoryId())
                 .orElseThrow(() -> new ResourceNotFoundException("Category with the given ID does not exist"));
 
-        existingProduct.setName(payload.getName());
-        existingProduct.setDescription(payload.getDescription());
-        existingProduct.setStartPrice(payload.getStartPrice());
-        existingProduct.setStartDate(payload.getStartDate());
-        existingProduct.setEndDate(payload.getEndDate());
-        existingProduct.setImageUrl(payload.getImageUrl());
-        existingProduct.setStatus(payload.getStatus());
+        existingProduct.setName(productRequest.getName());
+        existingProduct.setDescription(productRequest.getDescription());
+        existingProduct.setStartPrice(productRequest.getStartPrice());
+        existingProduct.setStartDate(productRequest.getStartDate());
+        existingProduct.setEndDate(productRequest.getEndDate());
+        existingProduct.setImageUrl(productRequest.getImageUrl());
+        existingProduct.setStatus(productRequest.getStatus());
         existingProduct.setCategory(category);
 
         existingProduct = productRepository.save(existingProduct);
         return new ProductDTO(existingProduct);
     }
 
-    public void deleteProduct(Long id) {
+    public void deleteProduct(UUID id) {
         Optional<Product> product = productRepository.findById(id);
         product.ifPresent(productRepository::delete);
     }
@@ -96,12 +97,6 @@ public class ProductService {
         Pageable pageable = PageRequest.of(page, size);
         Page<Product> productPage = productRepository.findAll(pageable);
 
-        return productPage.map(ProductDTO::new);
-    }
-
-    public Page<ProductDTO> getProductsPaginatedAndSorted(int page, int size, Sort sort) {
-        Pageable pageable = PageRequest.of(page, size, sort);
-        Page<Product> productPage = productRepository.findAll(pageable);
         return productPage.map(ProductDTO::new);
     }
 

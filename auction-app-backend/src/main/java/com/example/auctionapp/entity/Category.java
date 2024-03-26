@@ -9,15 +9,19 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
+
+import java.util.UUID;
 
 @Entity
-@Table(name = "category")
+@Table(name = "category", schema="auction_app")
 public class Category {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "category_id")
-    private Long categoryId;
+    private UUID categoryId;
 
     @Column(name = "name")
     private String name;
@@ -29,17 +33,17 @@ public class Category {
     public Category() {
     }
 
-    public Category(Long categoryId, String name, Category parentCategory) {
+    public Category(final UUID categoryId, final String name, final Category parentCategory) {
         this.categoryId = categoryId;
         this.name = name;
         this.parentCategory = parentCategory;
     }
 
-    public Long getCategoryId() {
+    public UUID getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(Long categoryId) {
+    public void setCategoryId(UUID categoryId) {
         this.categoryId = categoryId;
     }
 

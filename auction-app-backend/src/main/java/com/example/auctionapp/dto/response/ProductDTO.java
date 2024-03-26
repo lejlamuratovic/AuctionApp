@@ -3,19 +3,20 @@ package com.example.auctionapp.dto.response;
 import com.example.auctionapp.entity.Product;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class ProductDTO {
 
-    private Long id;
+    private UUID id;
     private String name;
     private String description;
     private BigDecimal startPrice;
-    private Date startDate;
-    private Date endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private String imageUrl;
     private String status;
-    private Long categoryId;
+    private UUID categoryId;
 
     public ProductDTO(Product product) {
         this.id = product.getProductId();
@@ -26,7 +27,7 @@ public class ProductDTO {
         this.endDate = product.getEndDate();
         this.imageUrl = product.getImageUrl();
         this.status = product.getStatus();
-        this.categoryId = product.getCategory() != null ? product.getCategory().getCategoryId() : null;
+        this.categoryId = product.getCategory().getCategoryId();
     }
 
     public String getName() {
@@ -53,19 +54,19 @@ public class ProductDTO {
         this.startPrice = startPrice;
     }
 
-    public Date getStartDate() {
+    public LocalDateTime getStartLocalDateTime() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDateTime getEndLocalDateTime() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
@@ -85,19 +86,19 @@ public class ProductDTO {
         this.status = status;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public Long getCategoryId() {
+    public UUID getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(Long categoryId) {
+    public void setCategoryId(UUID categoryId) {
         this.categoryId = categoryId;
     }
 }

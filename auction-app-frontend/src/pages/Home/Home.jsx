@@ -27,7 +27,7 @@ const Home = () => {
     product,
     loading: productLoading,
     error: productError,
-  } = useProduct(31); // hardcoded id for now
+  } = useProduct("d0f84e5a-f1b1-4e82-b650-7c3c43cce664"); // hardcoded id for now
   const {
     categories,
     loading: categoriesLoading,
@@ -62,8 +62,7 @@ const Home = () => {
     setPage((prevPage) => prevPage + 1);
   };
 
-  if (categoriesLoading || productsLoading || productLoading)
-    return <LoadingComponent />;
+  if (categoriesLoading || productLoading) return <LoadingComponent />;
 
   const errorMessages = [];
   if (categoriesError) errorMessages.push("Categories Loading Error");

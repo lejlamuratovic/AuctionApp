@@ -2,9 +2,11 @@ package com.example.auctionapp.dto.response;
 
 import com.example.auctionapp.entity.Category;
 
+import java.util.UUID;
+
 public class CategoryDTO {
 
-    private Long id;
+    private UUID id;
     private String name;
     private CategoryDTO parentCategory;
 
@@ -24,11 +26,11 @@ public class CategoryDTO {
         this.name = name;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

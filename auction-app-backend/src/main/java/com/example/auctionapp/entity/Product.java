@@ -4,25 +4,27 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
-@Table(name = "product")
+@Table(name = "product", schema="auction_app")
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "product_id")
-    private Long productId;
+    private UUID productId;
 
     @Column(name = "name")
     private String name;
@@ -35,11 +37,11 @@ public class Product {
 
     @Column(name = "start_date")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date startDate;
+    private LocalDateTime startDate;
 
     @Column(name = "end_date")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date endDate;
+    private LocalDateTime endDate;
 
     @Column(name = "image_url")
     private String imageUrl;
@@ -54,7 +56,15 @@ public class Product {
     public Product() {
     }
 
-    public Product(Long productId, String name, String description, BigDecimal startPrice, Date startDate, Date endDate, String imageUrl, String status, Category category) {
+    public Product(final UUID productId,
+                   final String name,
+                   final String description,
+                   final BigDecimal startPrice,
+                   final LocalDateTime startDate,
+                   final LocalDateTime endDate,
+                   final String imageUrl,
+                   final String status,
+                   final Category category) {
         this.productId = productId;
         this.name = name;
         this.description = description;
@@ -66,11 +76,11 @@ public class Product {
         this.category = category;
     }
 
-    public Long getProductId() {
+    public UUID getProductId() {
         return productId;
     }
 
-    public void setProductId(Long productId) {
+    public void setProductId(UUID productId) {
         this.productId = productId;
     }
 
@@ -98,19 +108,19 @@ public class Product {
         this.startPrice = startPrice;
     }
 
-    public Date getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
