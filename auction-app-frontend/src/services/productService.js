@@ -1,89 +1,22 @@
-import { useState, useEffect } from "react";
-
-import { getRequest } from "src/utils/httpUtils";
+import useFetch from "./customHooks";
 
 const ProductService = {
-  // fetch functions
-  fetchProducts: (endpoint, page, size) =>
-    getRequest(`/products/${endpoint}?page=${page}&size=${size}`),
-  getProduct: (id) => getRequest(`/products/${id}`),
-  getRandomProduct: () => getRequest("/products/random"),
-
-  // hooks
   useProductsPaginated: (endpoint, page, size) => {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-      const fetchData = async () => {
-        setLoading(true);
-        try {
-          const result = await ProductService.fetchProducts(
-            endpoint,
-            page,
-            size
-          );
-          setData(result.content);
-        } catch (err) {
-          setError(err);
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      fetchData();
-    }, [endpoint, page, size]);
-
-    return { data, loading, error };
+    const { data, loading, error } = useFetch(
+      `/products/${endpoint}?page=${page}&size=${size}`,
+      [page, size] // dependencies
+    );
+    return { data: data ? data.content : [], loading, error };
   },
 
   useProduct: (id) => {
-    const [product, setProduct] = useState({});
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-      const fetchData = async () => {
-        setLoading(true);
-        try {
-          const result = await ProductService.getProduct(id);
-          setProduct(result);
-        } catch (err) {
-          setError(err);
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      fetchData();
-    }, [id]);
-
-    return { product, loading, error };
+    const { data, loading, error } = useFetch(`/products/${id}`);
+    return { product: data, loading, error };
   },
 
   useProductRandom: () => {
-    const [product, setProduct] = useState({});
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-      const fetchData = async () => {
-        setLoading(true);
-        try {
-          const result = await ProductService.getRandomProduct();
-          setProduct(result);
-        } catch (err) {
-          setError(err);
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      fetchData();
-    }, []);
-
-    return { product, loading, error };
+    const { data, loading, error } = useFetch("/products/random");
+    return { product: data, loading, error };
   },
 };
 
