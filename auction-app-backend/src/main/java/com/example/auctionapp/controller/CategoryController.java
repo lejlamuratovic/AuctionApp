@@ -56,11 +56,4 @@ public class CategoryController {
     public void deleteCategory(@PathVariable UUID id) {
         this.categoryService.deleteCategory(id);
     }
-
-    @GetMapping("/paginated")
-    public Page<Category> getCategoriesPaginated(
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "9") int size) {
-        return this.categoryService.getCategoriesPaginated(page, size);
-    }
 }

@@ -71,13 +71,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Page<Category> getCategoriesPaginated(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return this.categoryRepository.findAll(pageable)
-                .map(Category::toDomainModel);
-    }
-
-    @Override
     public List<Category> getTopLevelCategories() {
         return this.categoryRepository.findByParentCategoryIsNull()
                 .stream()

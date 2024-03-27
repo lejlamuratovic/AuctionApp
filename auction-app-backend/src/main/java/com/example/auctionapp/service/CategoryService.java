@@ -12,6 +12,5 @@ public interface CategoryService {
     Category addCategory(CategoryAddRequest categoryRequest);
     Category updateCategory(UUID id, CategoryAddRequest categoryRequest);
     void deleteCategory(UUID id);
-    Page<Category> getCategoriesPaginated(int page, int size);
     List<Category> getTopLevelCategories();
 }
