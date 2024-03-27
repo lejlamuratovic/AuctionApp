@@ -1,12 +1,13 @@
-package com.example.auctionapp.dto.response;
+package com.example.auctionapp.model;
 
-import com.example.auctionapp.entity.Product;
+import com.example.auctionapp.entity.CategoryEntity;
+import com.example.auctionapp.entity.ProductEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class ProductDTO {
+public class Product {
 
     private UUID id;
     private String name;
@@ -18,16 +19,29 @@ public class ProductDTO {
     private String status;
     private UUID categoryId;
 
-    public ProductDTO(Product product) {
-        this.id = product.getProductId();
-        this.name = product.getName();
-        this.description = product.getDescription();
-        this.startPrice = product.getStartPrice();
-        this.startDate = product.getStartDate();
-        this.endDate = product.getEndDate();
-        this.imageUrl = product.getImageUrl();
-        this.status = product.getStatus();
-        this.categoryId = product.getCategory().getCategoryId();
+    public Product() {
+    }
+
+    public static Product toDomainModel(ProductEntity productEntity) {
+        Product product = new Product();
+        product.setId(productEntity.getProductId());
+        product.setName(productEntity.getName());
+        product.setDescription(productEntity.getDescription());
+        product.setStartPrice(productEntity.getStartPrice());
+        product.setStartDate(productEntity.getStartDate());
+        product.setEndDate(productEntity.getEndDate());
+        product.setImageUrl(productEntity.getImageUrl());
+        product.setStatus(productEntity.getStatus());
+        product.categoryId = productEntity.getCategory().getCategoryId();
+        return product;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -54,7 +68,7 @@ public class ProductDTO {
         this.startPrice = startPrice;
     }
 
-    public LocalDateTime getStartLocalDateTime() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
@@ -62,7 +76,7 @@ public class ProductDTO {
         this.startDate = startDate;
     }
 
-    public LocalDateTime getEndLocalDateTime() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
@@ -84,14 +98,6 @@ public class ProductDTO {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public UUID getCategoryId() {

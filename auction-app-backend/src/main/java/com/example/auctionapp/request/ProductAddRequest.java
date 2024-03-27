@@ -1,12 +1,11 @@
-package com.example.auctionapp.dto.request;
+package com.example.auctionapp.request;
 
-import com.example.auctionapp.entity.Product;
-
+import com.example.auctionapp.entity.ProductEntity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class ProductRequestDTO {
+public class ProductAddRequest {
 
     private String name;
     private String description;
@@ -17,31 +16,20 @@ public class ProductRequestDTO {
     private String status;
     private UUID categoryId;
 
-    public ProductRequestDTO() {
+    public ProductAddRequest() {
     }
 
-    public ProductRequestDTO(Product product) {
-        this.name = product.getName();
-        this.description = product.getDescription();
-        this.startPrice = product.getStartPrice();
-        this.startDate = product.getStartDate();
-        this.endDate = product.getEndDate();
-        this.imageUrl = product.getImageUrl();
-        this.status = product.getStatus();
-    }
-
-    public Product toEntity() {
-        Product product = new Product();
-
-        product.setName(name);
-        product.setDescription(description);
-        product.setStartPrice(startPrice);
-        product.setStartDate(startDate);
-        product.setEndDate(endDate);
-        product.setImageUrl(imageUrl);
-        product.setStatus(status);
-
-        return product;
+    public ProductEntity toEntity() {
+        ProductEntity productEntity = new ProductEntity();
+        productEntity.setName(this.name);
+        productEntity.setDescription(this.description);
+        productEntity.setStartPrice(this.startPrice);
+        productEntity.setStartDate(this.startDate);
+        productEntity.setEndDate(this.endDate);
+        productEntity.setImageUrl(this.imageUrl);
+        productEntity.setStatus(this.status);
+        // category id is set in services
+        return productEntity;
     }
 
     public String getName() {

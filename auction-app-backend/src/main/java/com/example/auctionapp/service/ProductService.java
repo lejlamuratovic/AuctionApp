@@ -1,9 +1,8 @@
 package com.example.auctionapp.service;
 
-import com.example.auctionapp.dto.request.ProductRequestDTO;
-import com.example.auctionapp.dto.response.ProductDTO;
-import com.example.auctionapp.entity.Category;
-import com.example.auctionapp.entity.Product;
+import com.example.auctionapp.request.ProductAddRequest;
+import com.example.auctionapp.entity.ProductEntity;
+import com.example.auctionapp.model.Product;
 import com.example.auctionapp.exceptions.repository.ResourceNotFoundException;
 import com.example.auctionapp.repository.CategoryRepository;
 import com.example.auctionapp.repository.ProductRepository;
@@ -31,97 +30,76 @@ public class ProductService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<ProductDTO> getProducts() {
-        List<Product> products = productRepository.findAll();
-
-        return products
+    public List<Product> getProducts() {
+        return productRepository.findAll()
                 .stream()
-                .map(ProductDTO::new)
+                .map(Product::toDomainModel)
                 .collect(toList());
     }
 
-    public ProductDTO getProductById(UUID id) {
-        Optional<Product> product = productRepository.findById(id);
-
-        if (product.isEmpty()) {
-            throw new ResourceNotFoundException("Product with the given ID does not exist");
-        }
-
-        return new ProductDTO(product.get());
-    }
-
-    public ProductDTO addProduct(ProductRequestDTO productRequest) {
-        Category category = categoryRepository.findById(productRequest.getCategoryId())
-                .orElseThrow(() -> new ResourceNotFoundException("Category with the given ID does not exist"));
-
-        Product product = new Product();
-        product.setName(productRequest.getName());
-        product.setDescription(productRequest.getDescription());
-        product.setStartPrice(productRequest.getStartPrice());
-        product.setStartDate(productRequest.getStartDate());
-        product.setEndDate(productRequest.getEndDate());
-        product.setImageUrl(productRequest.getImageUrl());
-        product.setStatus(productRequest.getStatus());
-        product.setCategory(category);
-
-        product = productRepository.save(product);
-        return new ProductDTO(product);
-    }
-
-    public ProductDTO updateProduct(UUID id, ProductRequestDTO productRequest) {
-        Product existingProduct = productRepository.findById(id)
+    public Product getProductById(UUID id) {
+        ProductEntity productEntity = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product with the given ID does not exist"));
+        return Product.toDomainModel(productEntity);
+    }
 
-        Category category = categoryRepository.findById(productRequest.getCategoryId())
-                .orElseThrow(() -> new ResourceNotFoundException("Category with the given ID does not exist"));
+    public Product addProduct(ProductAddRequest productRequest) {
+        ProductEntity productEntity = productRequest.toEntity();
+        if (productRequest.getCategoryId() != null) {
+            productEntity.setCategory(categoryRepository.findById(productRequest.getCategoryId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Category with the given ID does not exist")));
+        }
+        ProductEntity savedProductEntity = productRepository.save(productEntity);
+        return Product.toDomainModel(savedProductEntity);
+    }
 
-        existingProduct.setName(productRequest.getName());
-        existingProduct.setDescription(productRequest.getDescription());
-        existingProduct.setStartPrice(productRequest.getStartPrice());
-        existingProduct.setStartDate(productRequest.getStartDate());
-        existingProduct.setEndDate(productRequest.getEndDate());
-        existingProduct.setImageUrl(productRequest.getImageUrl());
-        existingProduct.setStatus(productRequest.getStatus());
-        existingProduct.setCategory(category);
-
-        existingProduct = productRepository.save(existingProduct);
-        return new ProductDTO(existingProduct);
+    public Product updateProduct(UUID id, ProductAddRequest productRequest) {
+        ProductEntity productEntity = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product with the given ID does not exist"));
+        productEntity.setName(productRequest.getName());
+        productEntity.setDescription(productRequest.getDescription());
+        productEntity.setStartPrice(productRequest.getStartPrice());
+        productEntity.setStartDate(productRequest.getStartDate());
+        productEntity.setEndDate(productRequest.getEndDate());
+        productEntity.setImageUrl(productRequest.getImageUrl());
+        productEntity.setStatus(productRequest.getStatus());
+        if (productRequest.getCategoryId() != null) {
+            productEntity.setCategory(categoryRepository.findById(productRequest.getCategoryId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Category not found")));
+        }
+        ProductEntity updatedProductEntity = productRepository.save(productEntity);
+        return Product.toDomainModel(updatedProductEntity);
     }
 
     public void deleteProduct(UUID id) {
-        Optional<Product> product = productRepository.findById(id);
-        product.ifPresent(productRepository::delete);
+        ProductEntity productEntity = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+        productRepository.delete(productEntity);
     }
 
-    // get products paginated
-    public Page<ProductDTO> getProductsPaginated(int page, int size) {
+    public Page<Product> getProductsPaginated(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Product> productPage = productRepository.findAll(pageable);
-
-        return productPage.map(ProductDTO::new);
+        Page<ProductEntity> productPage = productRepository.findAll(pageable);
+        return productPage.map(Product::toDomainModel);
     }
 
-    // for new arrivals (startDate descending)
-    public Page<ProductDTO> getNewArrivals(int page, int size) {
+    public Page<Product> getNewArrivals(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "startDate"));
-        Page<Product> productPage = productRepository.findAll(pageable);
-        return productPage.map(ProductDTO::new);
+        Page<ProductEntity> productPage = productRepository.findAll(pageable);
+        return productPage.map(Product::toDomainModel);
     }
 
-    // for last chance (endDate ascending)
-    public Page<ProductDTO> getLastChance(int page, int size) {
+    public Page<Product> getLastChance(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "endDate"));
-        Page<Product> productPage = productRepository.findAll(pageable);
-        return productPage.map(ProductDTO::new);
+        Page<ProductEntity> productPage = productRepository.findAll(pageable);
+        return productPage.map(Product::toDomainModel);
     }
 
-    public ProductDTO getRandomProduct() {
+    public Product getRandomProduct() {
         List<UUID> productIds = productRepository.findProductIds();
-
         if (productIds.isEmpty()) {
             throw new ResourceNotFoundException("No products available");
         }
-
         Random random = new Random();
         UUID randomProductId = productIds.get(random.nextInt(productIds.size()));
         return getProductById(randomProductId);

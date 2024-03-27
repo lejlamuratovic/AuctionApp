@@ -1,8 +1,8 @@
 package com.example.auctionapp.service;
 
-import com.example.auctionapp.dto.request.CategoryRequestDTO;
-import com.example.auctionapp.dto.response.CategoryDTO;
-import com.example.auctionapp.entity.Category;
+import com.example.auctionapp.request.CategoryAddRequest;
+import com.example.auctionapp.entity.CategoryEntity;
+import com.example.auctionapp.model.Category;
 import com.example.auctionapp.exceptions.repository.ResourceNotFoundException;
 import com.example.auctionapp.repository.CategoryRepository;
 import org.springframework.data.domain.Page;
@@ -11,9 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
-
 import static java.util.stream.Collectors.toList;
 
 @Service
@@ -25,70 +23,57 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<CategoryDTO> getCategories() {
-        List<Category> categories = categoryRepository.findAll();
-
-        return categories
+    public List<Category> getCategories() {
+        return categoryRepository.findAll()
                 .stream()
-                .map(CategoryDTO::new)
+                .map(Category::toDomainModel)
                 .collect(toList());
     }
 
-    public CategoryDTO getCategoryById(UUID id) {
-        Optional<Category> category = categoryRepository.findById(id);
-
-        if (category.isEmpty()) {
-            throw new ResourceNotFoundException("Category with the given ID does not exist");
-        }
-
-        return new CategoryDTO(category.get());
+    public Category getCategoryById(UUID id) {
+        CategoryEntity categoryEntity = categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category with the given ID does not exist"));
+        return Category.toDomainModel(categoryEntity);
     }
 
-    public CategoryDTO addCategory(CategoryRequestDTO categoryRequest) {
-        Category category = categoryRequest.toEntity();
+    public Category addCategory(CategoryAddRequest categoryRequest) {
+        CategoryEntity categoryEntity = categoryRequest.toEntity();
 
         if (categoryRequest.getParentCategoryId() != null) {
-            Category parentCategory = categoryRepository.findById(categoryRequest.getParentCategoryId())
+            CategoryEntity parentCategoryEntity = categoryRepository.findById(categoryRequest.getParentCategoryId())
                     .orElseThrow(() -> new ResourceNotFoundException("Parent category not found"));
-            category.setParentCategory(parentCategory);
+            categoryEntity.setParentCategory(parentCategoryEntity);
         }
 
-        Category newCategory = categoryRepository.save(category);
-        return new CategoryDTO(newCategory);
+        CategoryEntity newCategoryEntity = categoryRepository.save(categoryEntity);
+        return Category.toDomainModel(newCategoryEntity);
     }
 
-    public CategoryDTO updateCategory(UUID id, CategoryRequestDTO categoryRequest) {
-        Optional<Category> category = categoryRepository.findById(id);
+    public Category updateCategory(UUID id, CategoryAddRequest categoryRequest) {
+        CategoryEntity existingCategoryEntity = categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category with the given ID does not exist"));
 
-        if (category.isEmpty()) {
-            throw new RuntimeException("Category with the given ID does not exist");
-        }
-
-        Category updatedCategory = categoryRequest.toEntity();
-        updatedCategory.setCategoryId(category.get().getCategoryId());
-        updatedCategory = categoryRepository.save(updatedCategory);
-        return new CategoryDTO(updatedCategory);
+        existingCategoryEntity.setName(categoryRequest.getName());
+        CategoryEntity updatedCategoryEntity = categoryRepository.save(existingCategoryEntity);
+        return Category.toDomainModel(updatedCategoryEntity);
     }
 
     public void deleteCategory(UUID id) {
-        Optional<Category> category = categoryRepository.findById(id);
-        category.ifPresent(categoryRepository::delete);
+        CategoryEntity categoryEntity = categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+        categoryRepository.delete(categoryEntity);
     }
 
-    // get exercises paginated
-    public Page<CategoryDTO> getCategoriesPaginated(int page, int size) {
+    public Page<Category> getCategoriesPaginated(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Category> categoryPage = categoryRepository.findAll(pageable);
-
-        return categoryPage.map(CategoryDTO::new);
+        return categoryRepository.findAll(pageable)
+                .map(Category::toDomainModel);
     }
 
-    public List<CategoryDTO> getTopLevelCategories() {
-        List<Category> topCategories = categoryRepository.findByParentCategoryIsNull();
-
-        return topCategories
+    public List<Category> getTopLevelCategories() {
+        return categoryRepository.findByParentCategoryIsNull()
                 .stream()
-                .map(CategoryDTO::new)
+                .map(Category::toDomainModel)
                 .collect(toList());
     }
 }

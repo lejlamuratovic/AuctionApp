@@ -1,8 +1,8 @@
 package com.example.auctionapp.controller;
 
-import com.example.auctionapp.dto.request.CategoryRequestDTO;
-import com.example.auctionapp.dto.response.CategoryDTO;
+import com.example.auctionapp.model.Category;
 import com.example.auctionapp.service.CategoryService;
+import com.example.auctionapp.request.CategoryAddRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,27 +28,27 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<CategoryDTO> getCategories() {
+    public List<Category> getCategories() {
         return categoryService.getCategories();
     }
 
     @GetMapping("/topLevel")
-    public List<CategoryDTO> getTopLevelCategories() {
+    public List<Category> getTopLevelCategories() {
         return categoryService.getTopLevelCategories();
     }
 
     @PostMapping
-    public CategoryDTO addCategory(@RequestBody CategoryRequestDTO category) {
+    public Category addCategory(@RequestBody CategoryAddRequest category) {
         return categoryService.addCategory(category);
     }
 
     @GetMapping(path = "/{id}")
-    public CategoryDTO getCategoryById(@PathVariable UUID id) {
+    public Category getCategoryById(@PathVariable UUID id) {
         return categoryService.getCategoryById(id);
     }
 
     @PutMapping(path = "/{id}")
-    public CategoryDTO updateCategory(@PathVariable UUID id, @RequestBody CategoryRequestDTO category) {
+    public Category updateCategory(@PathVariable UUID id, @RequestBody CategoryAddRequest category) {
         return categoryService.updateCategory(id, category);
     }
 
@@ -58,7 +58,7 @@ public class CategoryController {
     }
 
     @GetMapping("/paginated")
-    public Page<CategoryDTO> getCategoriesPaginated(
+    public Page<Category> getCategoriesPaginated(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "9") int size) {
         return categoryService.getCategoriesPaginated(page, size);

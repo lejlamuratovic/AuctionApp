@@ -18,7 +18,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "product", schema="auction_app")
-public class Product {
+public class ProductEntity {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -51,20 +51,20 @@ public class Product {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
-    private Category category;
+    private CategoryEntity categoryEntity;
 
-    public Product() {
+    public ProductEntity() {
     }
 
-    public Product(final UUID productId,
-                   final String name,
-                   final String description,
-                   final BigDecimal startPrice,
-                   final LocalDateTime startDate,
-                   final LocalDateTime endDate,
-                   final String imageUrl,
-                   final String status,
-                   final Category category) {
+    public ProductEntity(final UUID productId,
+                         final String name,
+                         final String description,
+                         final BigDecimal startPrice,
+                         final LocalDateTime startDate,
+                         final LocalDateTime endDate,
+                         final String imageUrl,
+                         final String status,
+                         final CategoryEntity categoryEntity) {
         this.productId = productId;
         this.name = name;
         this.description = description;
@@ -73,7 +73,7 @@ public class Product {
         this.endDate = endDate;
         this.imageUrl = imageUrl;
         this.status = status;
-        this.category = category;
+        this.categoryEntity = categoryEntity;
     }
 
     public UUID getProductId() {
@@ -140,11 +140,11 @@ public class Product {
         this.status = status;
     }
 
-    public Category getCategory() {
-        return category;
+    public CategoryEntity getCategory() {
+        return categoryEntity;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategory(CategoryEntity categoryEntity) {
+        this.categoryEntity = categoryEntity;
     }
 }

@@ -1,9 +1,8 @@
 package com.example.auctionapp.controller;
 
-import com.example.auctionapp.dto.request.ProductRequestDTO;
-import com.example.auctionapp.dto.response.CategoryDTO;
-import com.example.auctionapp.dto.response.ProductDTO;
+import com.example.auctionapp.model.Product;
 import com.example.auctionapp.service.ProductService;
+import com.example.auctionapp.request.ProductAddRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,22 +28,22 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<ProductDTO> getProducts() {
+    public List<Product> getProducts() {
         return productService.getProducts();
     }
 
     @PostMapping
-    public ProductDTO addProduct(@RequestBody ProductRequestDTO product) {
+    public Product addProduct(@RequestBody ProductAddRequest product) {
         return productService.addProduct(product);
     }
 
     @GetMapping(path = "/{id}")
-    public ProductDTO getProductById(@PathVariable UUID id) {
+    public Product getProductById(@PathVariable UUID id) {
         return productService.getProductById(id);
     }
 
     @PutMapping(path = "/{id}")
-    public ProductDTO updateProduct(@PathVariable UUID id, @RequestBody ProductRequestDTO product) {
+    public Product updateProduct(@PathVariable UUID id, @RequestBody ProductAddRequest product) {
         return productService.updateProduct(id, product);
     }
 
@@ -54,28 +53,28 @@ public class ProductController {
     }
 
     @GetMapping("/paginated")
-    public Page<ProductDTO> getProductsPaginated(
+    public Page<Product> getProductsPaginated(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "8") int size) {
         return productService.getProductsPaginated(page, size);
     }
 
     @GetMapping("/newArrivals")
-    public Page<ProductDTO> getNewArrivals(
+    public Page<Product> getNewArrivals(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "8") int size) {
         return productService.getNewArrivals(page, size);
     }
 
     @GetMapping("/lastChance")
-    public Page<ProductDTO> getLastChance(
+    public Page<Product> getLastChance(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "8") int size) {
         return productService.getLastChance(page, size);
     }
 
     @GetMapping("/random")
-    public ProductDTO getRandomProduct() {
+    public Product getRandomProduct() {
         return productService.getRandomProduct();
     }
 }

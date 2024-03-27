@@ -4,7 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -15,7 +14,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "category", schema="auction_app")
-public class Category {
+public class CategoryEntity {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -28,12 +27,12 @@ public class Category {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_category_id")
-    private Category parentCategory;
+    private CategoryEntity parentCategory;
 
-    public Category() {
+    public CategoryEntity() {
     }
 
-    public Category(final UUID categoryId, final String name, final Category parentCategory) {
+    public CategoryEntity(final UUID categoryId, final String name, final CategoryEntity parentCategory) {
         this.categoryId = categoryId;
         this.name = name;
         this.parentCategory = parentCategory;
@@ -55,11 +54,11 @@ public class Category {
         this.name = name;
     }
 
-    public Category getParentCategory() {
+    public CategoryEntity getParentCategory() {
         return parentCategory;
     }
 
-    public void setParentCategory(Category parentCategory) {
+    public void setParentCategory(CategoryEntity parentCategory) {
         this.parentCategory = parentCategory;
     }
 }
