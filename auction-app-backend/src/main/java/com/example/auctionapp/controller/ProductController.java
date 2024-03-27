@@ -29,52 +29,52 @@ public class ProductController {
 
     @GetMapping
     public List<Product> getProducts() {
-        return productService.getProducts();
+        return this.productService.getProducts();
     }
 
     @PostMapping
     public Product addProduct(@RequestBody ProductAddRequest product) {
-        return productService.addProduct(product);
+        return this.productService.addProduct(product);
     }
 
     @GetMapping(path = "/{id}")
     public Product getProductById(@PathVariable UUID id) {
-        return productService.getProductById(id);
+        return this.productService.getProductById(id);
     }
 
     @PutMapping(path = "/{id}")
     public Product updateProduct(@PathVariable UUID id, @RequestBody ProductAddRequest product) {
-        return productService.updateProduct(id, product);
+        return this.productService.updateProduct(id, product);
     }
 
     @DeleteMapping(path = "/{id}")
     public void deleteProduct(@PathVariable UUID id) {
-        productService.deleteProduct(id);
+        this.productService.deleteProduct(id);
     }
 
     @GetMapping("/paginated")
     public Page<Product> getProductsPaginated(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "8") int size) {
-        return productService.getProductsPaginated(page, size);
+        return this.productService.getProductsPaginated(page, size);
     }
 
     @GetMapping("/newArrivals")
     public Page<Product> getNewArrivals(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "8") int size) {
-        return productService.getNewArrivals(page, size);
+        return this.productService.getNewArrivals(page, size);
     }
 
     @GetMapping("/lastChance")
     public Page<Product> getLastChance(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "8") int size) {
-        return productService.getLastChance(page, size);
+        return this.productService.getLastChance(page, size);
     }
 
     @GetMapping("/random")
     public Product getRandomProduct() {
-        return productService.getRandomProduct();
+        return this.productService.getRandomProduct();
     }
 }

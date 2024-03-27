@@ -29,38 +29,38 @@ public class CategoryController {
 
     @GetMapping
     public List<Category> getCategories() {
-        return categoryService.getCategories();
+        return this.categoryService.getCategories();
     }
 
     @GetMapping("/topLevel")
     public List<Category> getTopLevelCategories() {
-        return categoryService.getTopLevelCategories();
+        return this.categoryService.getTopLevelCategories();
     }
 
     @PostMapping
     public Category addCategory(@RequestBody CategoryAddRequest category) {
-        return categoryService.addCategory(category);
+        return this.categoryService.addCategory(category);
     }
 
     @GetMapping(path = "/{id}")
     public Category getCategoryById(@PathVariable UUID id) {
-        return categoryService.getCategoryById(id);
+        return this.categoryService.getCategoryById(id);
     }
 
     @PutMapping(path = "/{id}")
     public Category updateCategory(@PathVariable UUID id, @RequestBody CategoryAddRequest category) {
-        return categoryService.updateCategory(id, category);
+        return this.categoryService.updateCategory(id, category);
     }
 
     @DeleteMapping(path = "/{id}")
     public void deleteCategory(@PathVariable UUID id) {
-        categoryService.deleteCategory(id);
+        this.categoryService.deleteCategory(id);
     }
 
     @GetMapping("/paginated")
     public Page<Category> getCategoriesPaginated(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "9") int size) {
-        return categoryService.getCategoriesPaginated(page, size);
+        return this.categoryService.getCategoriesPaginated(page, size);
     }
 }
