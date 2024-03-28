@@ -28,8 +28,10 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getProducts() {
-        return this.productService.getProducts();
+    public Page<Product> getProductsPaginated(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "8") int size) {
+        return this.productService.getProducts(page, size);
     }
 
     @PostMapping
@@ -50,13 +52,6 @@ public class ProductController {
     @DeleteMapping(path = "/{id}")
     public void deleteProduct(@PathVariable UUID id) {
         this.productService.deleteProduct(id);
-    }
-
-    @GetMapping("/paginated")
-    public Page<Product> getProductsPaginated(
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "8") int size) {
-        return this.productService.getProductsPaginated(page, size);
     }
 
     @GetMapping("/newArrivals")

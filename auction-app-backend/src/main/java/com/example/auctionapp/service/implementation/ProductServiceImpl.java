@@ -32,11 +32,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getProducts() {
-        return this.productRepository.findAll()
-                .stream()
-                .map(Product::toDomainModel)
-                .collect(toList());
+    public Page<Product> getProducts(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProductEntity> productPage = this.productRepository.findAll(pageable);
+        return productPage.map(Product::toDomainModel);
     }
 
     @Override
@@ -81,13 +80,6 @@ public class ProductServiceImpl implements ProductService {
         ProductEntity productEntity = this.productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
         this.productRepository.delete(productEntity);
-    }
-
-    @Override
-    public Page<Product> getProductsPaginated(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<ProductEntity> productPage = this.productRepository.findAll(pageable);
-        return productPage.map(Product::toDomainModel);
     }
 
     @Override

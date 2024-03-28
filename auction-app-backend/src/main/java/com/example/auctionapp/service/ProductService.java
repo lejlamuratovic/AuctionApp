@@ -7,12 +7,11 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ProductService {
-    List<Product> getProducts();
+    Page<Product> getProducts(int page, int size);
     Product getProductById(UUID id);
     Product addProduct(ProductAddRequest productRequest);
     Product updateProduct(UUID id, ProductAddRequest productRequest);
     void deleteProduct(UUID id);
-    Page<Product> getProductsPaginated(int page, int size);
     Page<Product> getNewArrivals(int page, int size);
     Page<Product> getLastChance(int page, int size);
     Product getRandomProduct();

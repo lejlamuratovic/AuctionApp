@@ -46,7 +46,7 @@ public class ProductControllerTest {
 
         Page<Product> pageOfProducts = new PageImpl<>(List.of(product), PageRequest.of(0, 8), 1);
 
-        Mockito.when(productService.getProductsPaginated(0, 8)).thenReturn(pageOfProducts);
+        Mockito.when(productService.getProducts(0, 8)).thenReturn(pageOfProducts);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/products/paginated?page=0&size=8")
                         .contentType(MediaType.APPLICATION_JSON))
