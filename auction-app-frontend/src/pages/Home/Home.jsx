@@ -7,8 +7,8 @@ import {
   Button,
 } from "src/components";
 
-import ProductService from "src/services/productService";
-import CategoryService from "src/services/categoryService";
+import ProductService from "src/services/ProductService";
+import CategoryService from "src/services/CategoryService";
 
 import { go } from "src/assets/icons";
 
@@ -24,12 +24,12 @@ const Home = () => {
     product,
     loading: productLoading,
     error: productError,
-  } = ProductService.useProductRandom();
+  } = ProductService.getProductRandom();
   const {
     categories,
     loading: categoriesLoading,
     error: categoriesError,
-  } = CategoryService.useCategoriesTopLevel();
+  } = CategoryService.getTopLevelCategories();
 
   // determine fetching function based on activeTab
   const endpoint = activeTab === "newArrivals" ? "newArrivals" : "lastChance";
@@ -37,7 +37,7 @@ const Home = () => {
     data: products,
     loading: productsLoading,
     error: productsError,
-  } = ProductService.useProductsPaginated(endpoint, page, 8);
+  } = ProductService.getProductsPaginated(endpoint, page, 8);
 
   useEffect(() => {
     const updatedItems = [

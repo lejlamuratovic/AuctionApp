@@ -50,8 +50,8 @@ public class ProductControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/products/paginated?page=0&size=8")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].name").value("Test Product"))
-                .andExpect(jsonPath("$.content[0].description").value("Test Description"));
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.content[0].name").value("Test Product"))
+                        .andExpect(jsonPath("$.content[0].description").value("Test Description"));
     }
 }

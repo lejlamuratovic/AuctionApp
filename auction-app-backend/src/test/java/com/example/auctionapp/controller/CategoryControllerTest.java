@@ -41,7 +41,7 @@ public class CategoryControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/categories/topLevel")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name").value("Electronics"));
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$[0].name").value("Electronics"));
     }
 }
