@@ -22,20 +22,6 @@ public class Product {
     public Product() {
     }
 
-    public static Product toDomainModel(ProductEntity productEntity) {
-        Product product = new Product();
-        product.setId(productEntity.getProductId());
-        product.setName(productEntity.getName());
-        product.setDescription(productEntity.getDescription());
-        product.setStartPrice(productEntity.getStartPrice());
-        product.setStartDate(productEntity.getStartDate());
-        product.setEndDate(productEntity.getEndDate());
-        product.setImageUrl(productEntity.getImageUrl());
-        product.setStatus(productEntity.getStatus());
-        product.categoryId = productEntity.getCategory().getCategoryId();
-        return product;
-    }
-
     public UUID getId() {
         return id;
     }

@@ -13,16 +13,6 @@ public class Category {
     public Category() {
     }
 
-    public static Category toDomainModel(CategoryEntity categoryEntity) {
-        Category category = new Category();
-        category.setId(categoryEntity.getCategoryId());
-        category.setName(categoryEntity.getName());
-        if (categoryEntity.getParentCategory() != null) {
-            category.setParentCategory(toDomainModel(categoryEntity.getParentCategory()));
-        }
-        return category;
-    }
-
     public UUID getId() {
         return id;
     }

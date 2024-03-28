@@ -1,5 +1,6 @@
 package com.example.auctionapp.entity;
 
+import com.example.auctionapp.model.Product;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -74,6 +75,22 @@ public class ProductEntity {
         this.imageUrl = imageUrl;
         this.status = status;
         this.categoryEntity = categoryEntity;
+    }
+
+    public Product toDomainModel() {
+        Product product = new Product();
+
+        product.setId(this.productId);
+        product.setName(this.name);
+        product.setDescription(this.description);
+        product.setStartPrice(this.startPrice);
+        product.setStartDate(this.startDate);
+        product.setEndDate(this.endDate);
+        product.setImageUrl(this.imageUrl);
+        product.setStatus(this.status);
+        product.setCategoryId(this.categoryEntity.getCategoryId());
+
+        return product;
     }
 
     public UUID getProductId() {

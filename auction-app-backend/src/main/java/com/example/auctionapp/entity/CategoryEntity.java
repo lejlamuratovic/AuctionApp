@@ -1,5 +1,6 @@
 package com.example.auctionapp.entity;
 
+import com.example.auctionapp.model.Category;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -36,6 +37,19 @@ public class CategoryEntity {
         this.categoryId = categoryId;
         this.name = name;
         this.parentCategory = parentCategory;
+    }
+
+    public Category toDomainModel() {
+        Category category = new Category();
+
+        category.setId(this.categoryId);
+        category.setName(this.name);
+
+        if (this.parentCategory != null) {
+            category.setParentCategory(this.parentCategory.toDomainModel());
+        }
+
+        return category;
     }
 
     public UUID getCategoryId() {

@@ -28,7 +28,7 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> getCategories() {
         return this.categoryRepository.findAll()
                 .stream()
-                .map(Category::toDomainModel)
+                .map(CategoryEntity::toDomainModel)
                 .collect(toList());
     }
 
@@ -36,7 +36,8 @@ public class CategoryServiceImpl implements CategoryService {
     public Category getCategoryById(UUID id) {
         CategoryEntity categoryEntity = this.categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category with the given ID does not exist"));
-        return Category.toDomainModel(categoryEntity);
+        
+        return categoryEntity.toDomainModel();
     }
 
     @Override
@@ -49,8 +50,7 @@ public class CategoryServiceImpl implements CategoryService {
             categoryEntity.setParentCategory(parentCategoryEntity);
         }
 
-        CategoryEntity newCategoryEntity = this.categoryRepository.save(categoryEntity);
-        return Category.toDomainModel(newCategoryEntity);
+        return this.categoryRepository.save(categoryEntity).toDomainModel();
     }
 
     @Override
@@ -59,14 +59,15 @@ public class CategoryServiceImpl implements CategoryService {
                 .orElseThrow(() -> new ResourceNotFoundException("Category with the given ID does not exist"));
 
         existingCategoryEntity.setName(categoryRequest.getName());
-        CategoryEntity updatedCategoryEntity = this.categoryRepository.save(existingCategoryEntity);
-        return Category.toDomainModel(updatedCategoryEntity);
+
+        return this.categoryRepository.save(existingCategoryEntity).toDomainModel();
     }
 
     @Override
     public void deleteCategory(UUID id) {
         CategoryEntity categoryEntity = this.categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+
         this.categoryRepository.delete(categoryEntity);
     }
 
@@ -74,7 +75,7 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> getTopLevelCategories() {
         return this.categoryRepository.findByParentCategoryIsNull()
                 .stream()
-                .map(Category::toDomainModel)
+                .map(CategoryEntity::toDomainModel)
                 .collect(toList());
     }
 }
