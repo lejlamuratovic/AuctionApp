@@ -6,9 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<ProductEntity, UUID> {
 
-    @Query("SELECT p.productId FROM ProductEntity p")
-    List<UUID> findProductIds();
+    @Query(value = "SELECT p FROM ProductEntity p ORDER BY RANDOM() LIMIT 1")
+    Optional<ProductEntity> findRandomProduct();
 }

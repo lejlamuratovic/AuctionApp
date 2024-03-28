@@ -98,13 +98,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getRandomProduct() {
-        List<UUID> productIds = this.productRepository.findProductIds();
-        if (productIds.isEmpty()) {
+        Optional<ProductEntity> randomProductEntity = productRepository.findRandomProduct();
+
+        if (randomProductEntity.isEmpty()) {
             throw new ResourceNotFoundException("No products available");
         }
-        Random random = new Random();
-        UUID randomProductId = productIds.get(random.nextInt(productIds.size()));
-        return getProductById(randomProductId);
+
+        return Product.toDomainModel(randomProductEntity.get());
     }
 }
 
