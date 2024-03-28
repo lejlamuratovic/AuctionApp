@@ -55,18 +55,20 @@ public class ProductController {
         this.productService.deleteProduct(id);
     }
 
-    @GetMapping("/new-arrivals")
-    public Page<Product> getNewArrivals(
+    @GetMapping("/sorted")
+    public Page<Product> getProducts(
             @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "8") int size) {
-        return this.productService.getProductsSorted(page, size, Sort.Direction.DESC, "startDate");
-    }
+            @RequestParam(value = "size", defaultValue = "8") int size,
+            @RequestParam(value = "type", defaultValue = "newArrivals") String type) {
+        Sort.Direction direction = Sort.Direction.DESC;
+        String sortBy = "startDate";
 
-    @GetMapping("/last-chance")
-    public Page<Product> getLastChance(
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "8") int size) {
-        return this.productService.getProductsSorted(page, size, Sort.Direction.ASC, "endDate");
+        if ("lastChance".equals(type)) {
+            direction = Sort.Direction.ASC;
+            sortBy = "endDate";
+        }
+
+        return this.productService.getProductsSorted(page, size, direction, sortBy);
     }
 
     @GetMapping("/random")

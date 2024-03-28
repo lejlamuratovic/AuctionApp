@@ -1,10 +1,10 @@
 import useFetch from "./customHooks";
 
 const ProductService = {
-  getProductsPaginated: (endpoint, page, size) => {
+  getProductsPaginated: (type, page, size) => {
     const { data, loading, error } = useFetch(
-      `/products/${endpoint}?page=${page}&size=${size}`,
-      [page, size] // dependencies
+      `/products/sorted?page=${page}&size=${size}&type=${type}`,
+      [type, page] // dependencies
     );
     return { data: data ? data.content : [], loading, error };
   },

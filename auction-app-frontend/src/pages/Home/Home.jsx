@@ -30,15 +30,11 @@ const Home = () => {
     loading: categoriesLoading,
     error: categoriesError,
   } = CategoryService.getTopLevelCategories();
-
-  // determine fetching function based on activeTab
-  const endpoint = activeTab === "newArrivals" ? "new-arrivals" : "last-chance";
-
   const {
     data: products,
     loading: productsLoading,
     error: productsError,
-  } = ProductService.getProductsPaginated(endpoint, page, 8);
+  } = ProductService.getProductsPaginated(activeTab, page, 8);
 
   useEffect(() => {
     const updatedItems = [

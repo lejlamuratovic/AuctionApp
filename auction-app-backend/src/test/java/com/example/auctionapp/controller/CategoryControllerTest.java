@@ -32,6 +32,7 @@ public class CategoryControllerTest {
     @Test
     public void whenGetTopLevelCategories_thenReturnTopLevelCategoriesList() throws Exception {
         Category category = new Category();
+
         category.setId(UUID.randomUUID());
         category.setName("Electronics");
 

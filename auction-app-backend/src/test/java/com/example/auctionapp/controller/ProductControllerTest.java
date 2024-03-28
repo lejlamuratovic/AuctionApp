@@ -35,6 +35,7 @@ public class ProductControllerTest {
     @Test
     public void whenGetProductsPaginated_thenReturnPaginatedProducts() throws Exception {
         Product product = new Product();
+
         product.setId(UUID.randomUUID());
         product.setName("Test Product");
         product.setDescription("Test Description");

@@ -38,10 +38,12 @@ public class ProductServiceTest {
     public void whenGetLastChance_thenReturnProductsSortedByEndDateAsc() {
         // creating a category for the product
         CategoryEntity categoryEntity = new CategoryEntity();
+
         categoryEntity.setCategoryId(UUID.randomUUID());
         categoryEntity.setName("Sneakers");
 
         ProductEntity productEntity = new ProductEntity();
+
         productEntity.setProductId(UUID.randomUUID());
         productEntity.setName("Limited Edition Sneakers");
         productEntity.setDescription("Limited time offer");
