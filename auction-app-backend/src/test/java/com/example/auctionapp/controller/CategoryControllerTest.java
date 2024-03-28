@@ -39,7 +39,7 @@ public class CategoryControllerTest {
 
         Mockito.when(categoryService.getTopLevelCategories()).thenReturn(topLevelCategories);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/categories/topLevel")
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/categories/top-level")
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$[0].name").value("Electronics"));

@@ -60,7 +60,7 @@ public class ProductServiceTest {
             return pageOfProductEntities;
         });
 
-        Page<Product> resultPage = productService.getLastChance(0, 1);
+        Page<Product> resultPage = productService.getProductsSorted(0, 1, Sort.Direction.ASC, "endDate");
 
         assertThat(resultPage.getContent()).hasSize(1);
         Product resultProduct = resultPage.getContent().get(0);

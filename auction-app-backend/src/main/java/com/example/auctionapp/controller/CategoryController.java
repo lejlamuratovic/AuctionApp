@@ -32,7 +32,7 @@ public class CategoryController {
         return this.categoryService.getCategories();
     }
 
-    @GetMapping("/topLevel")
+    @GetMapping("/top-level")
     public List<Category> getTopLevelCategories() {
         return this.categoryService.getTopLevelCategories();
     }

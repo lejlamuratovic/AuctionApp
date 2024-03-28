@@ -3,6 +3,8 @@ package com.example.auctionapp.service;
 import com.example.auctionapp.model.Product;
 import com.example.auctionapp.request.ProductAddRequest;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -12,7 +14,6 @@ public interface ProductService {
     Product addProduct(ProductAddRequest productRequest);
     Product updateProduct(UUID id, ProductAddRequest productRequest);
     void deleteProduct(UUID id);
-    Page<Product> getNewArrivals(int page, int size);
-    Page<Product> getLastChance(int page, int size);
+    Page<Product> getProductsSorted(int page, int size, Sort.Direction direction, String sortBy);
     Product getRandomProduct();
 }

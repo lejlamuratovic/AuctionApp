@@ -36,7 +36,7 @@ public class CategoryServiceImpl implements CategoryService {
     public Category getCategoryById(UUID id) {
         CategoryEntity categoryEntity = this.categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category with the given ID does not exist"));
-        
+
         return categoryEntity.toDomainModel();
     }
 

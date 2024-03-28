@@ -35,9 +35,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<Product> getProducts(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<ProductEntity> productPage = this.productRepository.findAll(pageable);
-
-        return productPage.map(ProductEntity::toDomainModel);
+        return this.productRepository.findAll(pageable).map(ProductEntity::toDomainModel);
     }
 
     @Override
@@ -90,18 +88,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> getNewArrivals(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "startDate"));
+    public Page<Product> getProductsSorted(int page, int size, Sort.Direction direction, String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
         Page<ProductEntity> productPage = this.productRepository.findAll(pageable);
-
-        return productPage.map(ProductEntity::toDomainModel);
-    }
-
-    @Override
-    public Page<Product> getLastChance(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "endDate"));
-        Page<ProductEntity> productPage = this.productRepository.findAll(pageable);
-
         return productPage.map(ProductEntity::toDomainModel);
     }
 

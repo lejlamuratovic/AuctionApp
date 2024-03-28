@@ -2,7 +2,7 @@ import useFetch from "./customHooks";
 
 const CategoryService = {
   getTopLevelCategories: () => {
-    const { data, loading, error } = useFetch(`/categories/topLevel`);
+    const { data, loading, error } = useFetch(`/categories/top-level`);
     return { categories: data, loading, error };
   },
 };

@@ -48,7 +48,7 @@ public class ProductControllerTest {
 
         Mockito.when(productService.getProducts(0, 8)).thenReturn(pageOfProducts);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/products/paginated?page=0&size=8")
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/products?page=0&size=8")
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.content[0].name").value("Test Product"))

@@ -32,7 +32,8 @@ const Home = () => {
   } = CategoryService.getTopLevelCategories();
 
   // determine fetching function based on activeTab
-  const endpoint = activeTab === "newArrivals" ? "newArrivals" : "lastChance";
+  const endpoint = activeTab === "newArrivals" ? "new-arrivals" : "last-chance";
+
   const {
     data: products,
     loading: productsLoading,

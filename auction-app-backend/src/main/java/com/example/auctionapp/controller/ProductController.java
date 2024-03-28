@@ -4,6 +4,7 @@ import com.example.auctionapp.model.Product;
 import com.example.auctionapp.service.ProductService;
 import com.example.auctionapp.request.ProductAddRequest;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,18 +55,18 @@ public class ProductController {
         this.productService.deleteProduct(id);
     }
 
-    @GetMapping("/newArrivals")
+    @GetMapping("/new-arrivals")
     public Page<Product> getNewArrivals(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "8") int size) {
-        return this.productService.getNewArrivals(page, size);
+        return this.productService.getProductsSorted(page, size, Sort.Direction.DESC, "startDate");
     }
 
-    @GetMapping("/lastChance")
+    @GetMapping("/last-chance")
     public Page<Product> getLastChance(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "8") int size) {
-        return this.productService.getLastChance(page, size);
+        return this.productService.getProductsSorted(page, size, Sort.Direction.ASC, "endDate");
     }
 
     @GetMapping("/random")
