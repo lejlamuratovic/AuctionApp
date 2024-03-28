@@ -19,17 +19,6 @@ public class ProductAddRequest {
     public ProductAddRequest() {
     }
 
-    public ProductAddRequest(ProductEntity productEntity) {
-        this.name = productEntity.getName();
-        this.description = productEntity.getDescription();
-        this.startPrice = productEntity.getStartPrice();
-        this.startDate = productEntity.getStartDate();
-        this.endDate = productEntity.getEndDate();
-        this.imageUrl = productEntity.getImageUrl();
-        this.status = productEntity.getStatus();
-        this.categoryId = productEntity.getCategory().getCategoryId();
-    }
-
     public ProductEntity toEntity() {
         ProductEntity productEntity = new ProductEntity();
         productEntity.setName(this.name);
