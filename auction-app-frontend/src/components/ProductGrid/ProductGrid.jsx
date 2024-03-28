@@ -1,6 +1,7 @@
 import useInfiniteScroll from "react-infinite-scroll-hook";
 
 import { ProductCard, LoadingComponent } from "src/components";
+
 import "./style.scss";
 
 const ProductGrid = ({ items, fetchMoreData, hasMore, loading }) => {

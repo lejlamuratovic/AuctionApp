@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
+
 import axios from "axios";
+
 import { BASE_URL } from "src/constants";
 
 // custom hook to fectch data

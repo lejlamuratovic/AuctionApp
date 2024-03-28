@@ -19,6 +19,11 @@ const Home = () => {
   const [page, setPage] = useState(0);
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(true);
+  const [paginationInfo, setPaginationInfo] = useState({
+    page: 0,
+    totalPages: 0,
+    last: false,
+  });
 
   const {
     product,
@@ -37,21 +42,26 @@ const Home = () => {
   } = ProductService.getProductsPaginated(activeTab, page, 8);
 
   useEffect(() => {
-    const updatedItems = [
-      ...items,
-      ...products.filter(
-        (product) => !items.some((item) => item.id === product.id)
-      ),
-    ];
+    const newItems = products.content.filter(
+      (product) => !items.some((item) => item.id === product.id)
+    );
 
-    setItems(updatedItems);
-    setHasMore(products.length > 0);
+    if (newItems.length > 0) {
+      setItems((currentItems) => [...currentItems, ...newItems]);
+      setHasMore(!products.last);
+      setPaginationInfo({
+        page: products.number,
+        totalPages: products.totalPages,
+        last: products.last,
+      });
+    }
   }, [products]);
 
   const fetchMoreData = () => {
-    setPage((prevPage) => prevPage + 1);
+    if (!paginationInfo.last) {
+      setPage((prevPage) => prevPage + 1);
+    }
   };
-
   if (categoriesLoading || productLoading) return <LoadingComponent />;
 
   const errorMessages = [];

@@ -6,7 +6,12 @@ const ProductService = {
       `/products/sorted?page=${page}&size=${size}&type=${type}`,
       [type, page] // dependencies
     );
-    return { data: data ? data.content : [], loading, error };
+
+    return {
+      data: data ? data : { content: [], last: true, totalPages: 0, number: 0 },
+      loading,
+      error,
+    };
   },
 
   getProduct: (id) => {
