@@ -84,11 +84,14 @@
       @include flex-container(row, flex-start, center);
       position: relative;
       gap: 64px;
+      margin-bottom: 30px;
+      border-bottom: 1px solid $neutral09;
 
       h5,
       h6 {
         color: $neutral00;
         cursor: pointer;
+        margin: 50px 0 10px 0;
       }
     }
   }
