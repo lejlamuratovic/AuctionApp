@@ -35,6 +35,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<Product> getProducts(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
+
         return this.productRepository.findAll(pageable).map(ProductEntity::toDomainModel);
     }
 

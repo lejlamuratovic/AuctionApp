@@ -7,10 +7,14 @@ import {
   Button,
 } from "src/components";
 
-import * as productService from "src/services/ProductService";
-import * as categoryService from "src/services/CategoryService";
+import {
+  getProductsPaginated,
+  getProductRandom,
+  getTopLevelCategories,
+} from "src/services";
 
 import { go } from "src/assets/icons";
+
 import { TAB_NEW_ARRIVALS, TAB_LAST_CHANCE } from "src/constants";
 
 import "./style.scss";
@@ -26,43 +30,34 @@ const Home = () => {
   const [error, setError] = useState(null);
 
   // method to fetch initial data
-  const fetchInitialData = async () => {
-    try {
-      setLoading(true);
+  const fetchInitialData = () => {
+    setLoading(true);
 
-      const randomProduct = await productService.getProductRandom();
-      const topLevelCategories = await categoryService.getTopLevelCategories();
-
-      setProduct(randomProduct);
-      setCategories(topLevelCategories);
-    } catch (err) {
-      setError("Failed to fetch initial data", err);
-    } finally {
-      setLoading(false);
-    }
+    Promise.all([getProductRandom(), getTopLevelCategories()])
+      .then(([randomProduct, topLevelCategories]) => {
+        setProduct(randomProduct);
+        setCategories(topLevelCategories);
+      })
+      .catch((err) => {
+        setError("Failed to fetch initial data: " + err.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   // method to get products based on activeTab and page
-  const fetchProducts = async () => {
-    try {
-      const paginatedProducts = await productService.getProductsPaginated(
-        activeTab,
-        page,
-        8
-      );
-
-      setItems((currentItems) => {
-        const newProducts = paginatedProducts.content.filter(
-          (newProduct) =>
-            !currentItems.some((item) => item.id === newProduct.id)
+  const fetchProducts = () => {
+    getProductsPaginated(activeTab, page, 8)
+      .then((res) => {
+        setItems((prevItems) =>
+          page === 0 ? [...res.content] : [...prevItems, ...res.content]
         );
-        return [...currentItems, ...newProducts];
+        setHasMore(res.content.length > 0);
+      })
+      .catch((err) => {
+        setError(err.message);
       });
-
-      setHasMore(!paginatedProducts.last);
-    } catch (err) {
-      setError("Failed to fetch products", err);
-    }
   };
 
   // to fetch initial data on component mount
@@ -70,20 +65,20 @@ const Home = () => {
     fetchInitialData();
   }, []);
 
-  // to fetch products based on activeTab and page
+  // to fetch products when activeTab or page changes
   useEffect(() => {
-    if (page > 0 || items.length === 0) fetchProducts();
+    fetchProducts();
   }, [activeTab, page]);
 
-  const fetchMoreData = () => {
-    if (!hasMore) return;
-    setPage((prevPage) => prevPage + 1);
-  };
-
   const setActiveTabHandler = (tabName) => {
+    setActiveTab(tabName);
     setPage(0);
     setItems([]);
-    setActiveTab(tabName);
+    setHasMore(true);
+  };
+
+  const fetchNextPage = () => {
+    setPage((prevPage) => prevPage + 1);
   };
 
   if (loading) return <LoadingComponent />;
@@ -102,12 +97,13 @@ const Home = () => {
               <li>All Categories</li>
             </ul>
           </div>
-
           <div className="highlighted-product">
             <div className="product-container">
               <div className="product-info body-semibold">
                 <span className="product-name">{product.name}</span>
-                <span className="price">Start From ${product.startPrice}</span>
+                <span className="product-price">
+                  Start From ${product.startPrice}
+                </span>
                 <span className="body-regular">{product.description}</span>
                 <Button label="Bid now" iconSrc={go} />
               </div>
@@ -117,26 +113,31 @@ const Home = () => {
             </div>
           </div>
         </div>
-
         <div className="products">
           <div className="tabs">
-            <h5
+            <span
               onClick={() => setActiveTabHandler(TAB_NEW_ARRIVALS)}
               id={TAB_NEW_ARRIVALS}
+              className={`tab ${
+                activeTab === TAB_NEW_ARRIVALS ? "active" : "inactive"
+              }`}
             >
               New Arrivals
-            </h5>
-            <h5
+            </span>
+            <span
               onClick={() => setActiveTabHandler(TAB_LAST_CHANCE)}
               id={TAB_LAST_CHANCE}
+              className={`tab ${
+                activeTab === TAB_LAST_CHANCE ? "active" : "inactive"
+              }`}
             >
               Last Chance
-            </h5>
+            </span>
           </div>
           <ProductGrid
             key={activeTab}
             items={items}
-            fetchMoreData={fetchMoreData}
+            fetchMoreData={fetchNextPage}
             hasMore={hasMore}
             loading={loading}
             activeTab={activeTab}

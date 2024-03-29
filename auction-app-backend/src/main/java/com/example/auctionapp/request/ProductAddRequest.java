@@ -21,6 +21,7 @@ public class ProductAddRequest {
 
     public ProductEntity toEntity() {
         ProductEntity productEntity = new ProductEntity();
+
         productEntity.setName(this.name);
         productEntity.setDescription(this.description);
         productEntity.setStartPrice(this.startPrice);
@@ -28,6 +29,7 @@ public class ProductAddRequest {
         productEntity.setEndDate(this.endDate);
         productEntity.setImageUrl(this.imageUrl);
         productEntity.setStatus(this.status);
+
         // category id is set in services
         return productEntity;
     }

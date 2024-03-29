@@ -11,7 +11,6 @@ const ProductGrid = ({ items, fetchMoreData, hasMore, loading }) => {
     onLoadMore: fetchMoreData,
     rootMargin: "0px 0px 400px 0px",
   });
-
   return (
     <div className="product-grid">
       {items.map((item) => (
@@ -25,5 +24,4 @@ const ProductGrid = ({ items, fetchMoreData, hasMore, loading }) => {
     </div>
   );
 };
-
 export default ProductGrid;
