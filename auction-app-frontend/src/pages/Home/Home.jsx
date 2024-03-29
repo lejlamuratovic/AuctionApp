@@ -25,50 +25,53 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // method to fetch initial data
+  const fetchInitialData = async () => {
+    try {
+      setLoading(true);
+
+      const randomProduct = await productService.getProductRandom();
+      const topLevelCategories = await categoryService.getTopLevelCategories();
+
+      setProduct(randomProduct);
+      setCategories(topLevelCategories);
+    } catch (err) {
+      setError("Failed to fetch initial data", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // method to get products based on activeTab and page
+  const fetchProducts = async () => {
+    try {
+      const paginatedProducts = await productService.getProductsPaginated(
+        activeTab,
+        page,
+        8
+      );
+
+      setItems((currentItems) => {
+        const newProducts = paginatedProducts.content.filter(
+          (newProduct) =>
+            !currentItems.some((item) => item.id === newProduct.id)
+        );
+        return [...currentItems, ...newProducts];
+      });
+
+      setHasMore(!paginatedProducts.last);
+    } catch (err) {
+      setError("Failed to fetch products", err);
+    }
+  };
+
+  // to fetch initial data on component mount
   useEffect(() => {
-    const fetchInitialData = async () => {
-      try {
-        setLoading(true);
-
-        const randomProduct = await productService.getProductRandom();
-        const topLevelCategories =
-          await categoryService.getTopLevelCategories();
-
-        setProduct(randomProduct);
-        setCategories(topLevelCategories);
-      } catch (err) {
-        setError("Failed to fetch initial data", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchInitialData();
   }, []);
 
+  // to fetch products based on activeTab and page
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const paginatedProducts = await productService.getProductsPaginated(
-          activeTab,
-          page,
-          8
-        );
-
-        setItems((currentItems) => {
-          const newProducts = paginatedProducts.content.filter(
-            (newProduct) =>
-              !currentItems.some((item) => item.id === newProduct.id)
-          );
-          return [...currentItems, ...newProducts];
-        });
-
-        setHasMore(!paginatedProducts.last);
-      } catch (err) {
-        setError("Failed to fetch products", err);
-      }
-    };
-
     if (page > 0 || items.length === 0) fetchProducts();
   }, [activeTab, page]);
 
