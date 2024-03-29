@@ -1,9 +1,9 @@
 import useFetch from "./customHooks";
 
-const ProductService = {
+const productService = {
   getProductsPaginated: (type, page, size) => {
     const { data, loading, error } = useFetch(
-      `/products/sorted?page=${page}&size=${size}&type=${type}`,
+      `/products/criteria?page=${page}&size=${size}&type=${type}`,
       [type, page] // dependencies
     );
 
@@ -25,4 +25,4 @@ const ProductService = {
   },
 };
 
-export default ProductService;
+export default productService;

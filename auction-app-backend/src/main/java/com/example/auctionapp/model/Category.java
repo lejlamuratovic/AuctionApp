@@ -17,7 +17,7 @@ public class Category {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(final UUID id) {
         this.id = id;
     }
 
@@ -25,7 +25,7 @@ public class Category {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -33,7 +33,7 @@ public class Category {
         return parentCategory;
     }
 
-    public void setParentCategory(Category parentCategory) {
+    public void setParentCategory(final Category parentCategory) {
         this.parentCategory = parentCategory;
     }
 }

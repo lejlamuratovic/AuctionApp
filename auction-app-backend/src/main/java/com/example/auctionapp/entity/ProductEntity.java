@@ -97,7 +97,7 @@ public class ProductEntity {
         return productId;
     }
 
-    public void setProductId(UUID productId) {
+    public void setProductId(final UUID productId) {
         this.productId = productId;
     }
 
@@ -105,7 +105,7 @@ public class ProductEntity {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -113,7 +113,7 @@ public class ProductEntity {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
@@ -121,7 +121,7 @@ public class ProductEntity {
         return startPrice;
     }
 
-    public void setStartPrice(BigDecimal startPrice) {
+    public void setStartPrice(final BigDecimal startPrice) {
         this.startPrice = startPrice;
     }
 
@@ -129,7 +129,7 @@ public class ProductEntity {
         return startDate;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
+    public void setStartDate(final LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
@@ -137,7 +137,7 @@ public class ProductEntity {
         return endDate;
     }
 
-    public void setEndDate(LocalDateTime endDate) {
+    public void setEndDate(final LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
@@ -145,7 +145,7 @@ public class ProductEntity {
         return imageUrl;
     }
 
-    public void setImageUrl(String imageUrl) {
+    public void setImageUrl(final String imageUrl) {
         this.imageUrl = imageUrl;
     }
 
@@ -153,7 +153,7 @@ public class ProductEntity {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(final String status) {
         this.status = status;
     }
 
@@ -161,7 +161,7 @@ public class ProductEntity {
         return categoryEntity;
     }
 
-    public void setCategory(CategoryEntity categoryEntity) {
+    public void setCategory(final CategoryEntity categoryEntity) {
         this.categoryEntity = categoryEntity;
     }
 }

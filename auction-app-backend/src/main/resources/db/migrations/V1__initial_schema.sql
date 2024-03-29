@@ -3,8 +3,8 @@ CREATE TABLE category (
     name VARCHAR(255) NOT NULL,
     parent_category_id UUID,
     FOREIGN KEY (parent_category_id) REFERENCES category(category_id)
-    ON UPDATE CASCADE
-    ON DELETE CASCADE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 );
 
 CREATE TABLE product (
@@ -18,6 +18,6 @@ CREATE TABLE product (
     status VARCHAR(50) NOT NULL,
     category_id UUID NOT NULL,
     FOREIGN KEY (category_id) REFERENCES category(category_id)
-    ON UPDATE CASCADE
-    ON DELETE CASCADE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
 );

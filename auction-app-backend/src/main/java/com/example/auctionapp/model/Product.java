@@ -26,7 +26,7 @@ public class Product {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(final UUID id) {
         this.id = id;
     }
 
@@ -34,7 +34,7 @@ public class Product {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -42,7 +42,7 @@ public class Product {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 
@@ -50,7 +50,7 @@ public class Product {
         return startPrice;
     }
 
-    public void setStartPrice(BigDecimal startPrice) {
+    public void setStartPrice(final BigDecimal startPrice) {
         this.startPrice = startPrice;
     }
 
@@ -58,7 +58,7 @@ public class Product {
         return startDate;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
+    public void setStartDate(final LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
@@ -66,7 +66,7 @@ public class Product {
         return endDate;
     }
 
-    public void setEndDate(LocalDateTime endDate) {
+    public void setEndDate(final LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
@@ -74,7 +74,7 @@ public class Product {
         return imageUrl;
     }
 
-    public void setImageUrl(String imageUrl) {
+    public void setImageUrl(final String imageUrl) {
         this.imageUrl = imageUrl;
     }
 
@@ -82,7 +82,7 @@ public class Product {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(final String status) {
         this.status = status;
     }
 
@@ -90,7 +90,7 @@ public class Product {
         return categoryId;
     }
 
-    public void setCategoryId(UUID categoryId) {
+    public void setCategoryId(final UUID categoryId) {
         this.categoryId = categoryId;
     }
 }

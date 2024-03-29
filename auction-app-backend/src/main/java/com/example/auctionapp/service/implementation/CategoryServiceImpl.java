@@ -47,6 +47,7 @@ public class CategoryServiceImpl implements CategoryService {
         if (categoryRequest.getParentCategoryId() != null) {
             CategoryEntity parentCategoryEntity = this.categoryRepository.findById(categoryRequest.getParentCategoryId())
                     .orElseThrow(() -> new ResourceNotFoundException("Parent category not found"));
+
             categoryEntity.setParentCategory(parentCategoryEntity);
         }
 

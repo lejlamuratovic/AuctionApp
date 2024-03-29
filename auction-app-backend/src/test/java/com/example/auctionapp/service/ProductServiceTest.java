@@ -58,14 +58,18 @@ public class ProductServiceTest {
 
         when(productRepository.findAll(any(Pageable.class))).thenAnswer(invocation -> {
             Pageable pageable = invocation.getArgument(0);
+
             assertThat(pageable.getSort()).isEqualTo(Sort.by(Sort.Direction.ASC, "endDate"));
+
             return pageOfProductEntities;
         });
 
-        Page<Product> resultPage = productService.getProductsSorted(0, 1, Sort.Direction.ASC, "endDate");
+        Page<Product> resultPage = productService.getProductsByCriteria(0, 1, Sort.Direction.ASC, "endDate");
 
         assertThat(resultPage.getContent()).hasSize(1);
+
         Product resultProduct = resultPage.getContent().get(0);
+
         assertThat(resultProduct.getName()).isEqualTo(productEntity.getName());
         assertThat(resultProduct.getDescription()).isEqualTo(productEntity.getDescription());
     }

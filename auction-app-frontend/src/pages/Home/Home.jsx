@@ -7,8 +7,8 @@ import {
   Button,
 } from "src/components";
 
-import ProductService from "src/services/ProductService";
-import CategoryService from "src/services/CategoryService";
+import productService from "src/services/ProductService";
+import categoryService from "src/services/CategoryService";
 
 import { go } from "src/assets/icons";
 
@@ -29,17 +29,17 @@ const Home = () => {
     product,
     loading: productLoading,
     error: productError,
-  } = ProductService.getProductRandom();
+  } = productService.getProductRandom();
   const {
     categories,
     loading: categoriesLoading,
     error: categoriesError,
-  } = CategoryService.getTopLevelCategories();
+  } = categoryService.getTopLevelCategories();
   const {
     data: products,
     loading: productsLoading,
     error: productsError,
-  } = ProductService.getProductsPaginated(activeTab, page, 8);
+  } = productService.getProductsPaginated(activeTab, page, 8);
 
   useEffect(() => {
     const newItems = products.content.filter(
@@ -62,6 +62,7 @@ const Home = () => {
       setPage((prevPage) => prevPage + 1);
     }
   };
+
   if (categoriesLoading || productLoading) return <LoadingComponent />;
 
   const errorMessages = [];

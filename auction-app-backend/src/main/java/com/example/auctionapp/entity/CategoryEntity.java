@@ -56,7 +56,7 @@ public class CategoryEntity {
         return categoryId;
     }
 
-    public void setCategoryId(UUID categoryId) {
+    public void setCategoryId(final UUID categoryId) {
         this.categoryId = categoryId;
     }
 
@@ -64,7 +64,7 @@ public class CategoryEntity {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -72,7 +72,7 @@ public class CategoryEntity {
         return parentCategory;
     }
 
-    public void setParentCategory(CategoryEntity parentCategory) {
+    public void setParentCategory(final CategoryEntity parentCategory) {
         this.parentCategory = parentCategory;
     }
 }

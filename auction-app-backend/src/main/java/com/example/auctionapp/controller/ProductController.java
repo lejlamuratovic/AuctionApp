@@ -29,7 +29,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public Page<Product> getProductsPaginated(
+    public Page<Product> getProducts(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "8") int size) {
         return this.productService.getProducts(page, size);
@@ -55,8 +55,8 @@ public class ProductController {
         this.productService.deleteProduct(id);
     }
 
-    @GetMapping("/sorted")
-    public Page<Product> getProducts(
+    @GetMapping("/criteria")
+    public Page<Product> getProductsByCriteria(
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "8") int size,
             @RequestParam(value = "type", defaultValue = "newArrivals") String type) {
@@ -68,7 +68,7 @@ public class ProductController {
             sortBy = "endDate";
         }
 
-        return this.productService.getProductsSorted(page, size, direction, sortBy);
+        return this.productService.getProductsByCriteria(page, size, direction, sortBy);
     }
 
     @GetMapping("/random")
