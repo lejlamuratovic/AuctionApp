@@ -88,9 +88,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> getProductsByCriteria(int page, int size, Sort.Direction direction, String sortBy) {
+    public Page<Product> getProductsByCriteria(int page, int size, String type) {
+        Sort.Direction direction = Sort.Direction.DESC;
+        String sortBy = "startDate";
+
+        if ("lastChance".equals(type)) {
+            direction = Sort.Direction.ASC;
+            sortBy = "endDate";
+        }
+
         Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
-        Page<ProductEntity> productPage = this.productRepository.findAll(pageable);
+        Page<ProductEntity> productPage = productRepository.findAll(pageable);
 
         return productPage.map(ProductEntity::toDomainModel);
     }

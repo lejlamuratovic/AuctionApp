@@ -11,11 +11,12 @@ import * as productService from "src/services/ProductService";
 import * as categoryService from "src/services/CategoryService";
 
 import { go } from "src/assets/icons";
+import { TAB_NEW_ARRIVALS, TAB_LAST_CHANCE } from "src/constants";
 
 import "./style.scss";
 
 const Home = () => {
-  const [activeTab, setActiveTab] = useState("newArrivals");
+  const [activeTab, setActiveTab] = useState(TAB_NEW_ARRIVALS);
   const [page, setPage] = useState(0);
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(true);
@@ -76,6 +77,12 @@ const Home = () => {
     setPage((prevPage) => prevPage + 1);
   };
 
+  const setActiveTabHandler = (tabName) => {
+    setPage(0);
+    setItems([]);
+    setActiveTab(tabName);
+  };
+
   if (loading) return <LoadingComponent />;
   if (error) return <ErrorComponent message={error} />;
 
@@ -110,10 +117,16 @@ const Home = () => {
 
         <div className="products">
           <div className="tabs">
-            <h5 onClick={() => setActiveTab("newArrivals")} id="newArrivals">
+            <h5
+              onClick={() => setActiveTabHandler(TAB_NEW_ARRIVALS)}
+              id={TAB_NEW_ARRIVALS}
+            >
               New Arrivals
             </h5>
-            <h5 onClick={() => setActiveTab("lastChance")} id="lastChance">
+            <h5
+              onClick={() => setActiveTabHandler(TAB_LAST_CHANCE)}
+              id={TAB_LAST_CHANCE}
+            >
               Last Chance
             </h5>
           </div>

@@ -14,6 +14,6 @@ public interface ProductService {
     Product addProduct(ProductAddRequest productRequest);
     Product updateProduct(UUID id, ProductAddRequest productRequest);
     void deleteProduct(UUID id);
-    Page<Product> getProductsByCriteria(int page, int size, Sort.Direction direction, String sortBy);
+    Page<Product> getProductsByCriteria(int page, int size, String type);
     Product getRandomProduct();
 }

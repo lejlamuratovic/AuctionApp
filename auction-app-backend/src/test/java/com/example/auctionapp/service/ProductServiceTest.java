@@ -64,7 +64,7 @@ public class ProductServiceTest {
             return pageOfProductEntities;
         });
 
-        Page<Product> resultPage = productService.getProductsByCriteria(0, 1, Sort.Direction.ASC, "endDate");
+        Page<Product> resultPage = productService.getProductsByCriteria(0, 1, "endDate");
 
         assertThat(resultPage.getContent()).hasSize(1);
 

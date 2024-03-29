@@ -60,15 +60,7 @@ public class ProductController {
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "8") int size,
             @RequestParam(value = "type", defaultValue = "newArrivals") String type) {
-        Sort.Direction direction = Sort.Direction.DESC;
-        String sortBy = "startDate";
-
-        if ("lastChance".equals(type)) {
-            direction = Sort.Direction.ASC;
-            sortBy = "endDate";
-        }
-
-        return this.productService.getProductsByCriteria(page, size, direction, sortBy);
+        return productService.getProductsByCriteria(page, size, type);
     }
 
     @GetMapping("/random")
