@@ -7,8 +7,8 @@ import {
   Button,
 } from "src/components";
 
-import productService from "src/services/ProductService";
-import categoryService from "src/services/CategoryService";
+import * as productService from "src/services/ProductService";
+import * as categoryService from "src/services/CategoryService";
 
 import { go } from "src/assets/icons";
 
@@ -19,75 +19,65 @@ const Home = () => {
   const [page, setPage] = useState(0);
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(true);
-  const [paginationInfo, setPaginationInfo] = useState({
-    page: 0,
-    totalPages: 0,
-    last: false,
-  });
-
-  const {
-    product,
-    loading: productLoading,
-    error: productError,
-  } = productService.getProductRandom();
-  const {
-    categories,
-    loading: categoriesLoading,
-    error: categoriesError,
-  } = categoryService.getTopLevelCategories();
-  const {
-    data: products,
-    loading: productsLoading,
-    error: productsError,
-  } = productService.getProductsPaginated(activeTab, page, 8);
+  const [product, setProduct] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const newItems = products.content.filter(
-      (product) => !items.some((item) => item.id === product.id)
-    );
+    const fetchInitialData = async () => {
+      try {
+        setLoading(true);
 
-    if (newItems.length > 0) {
-      setItems((currentItems) => [...currentItems, ...newItems]);
-      setHasMore(!products.last);
-      setPaginationInfo({
-        page: products.number,
-        totalPages: products.totalPages,
-        last: products.last,
-      });
-    }
-  }, [products]);
+        const randomProduct = await productService.getProductRandom();
+        const topLevelCategories =
+          await categoryService.getTopLevelCategories();
+
+        setProduct(randomProduct);
+        setCategories(topLevelCategories);
+      } catch (err) {
+        setError("Failed to fetch initial data", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchInitialData();
+  }, []);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const paginatedProducts = await productService.getProductsPaginated(
+          activeTab,
+          page,
+          8
+        );
+
+        setItems((currentItems) => {
+          const newProducts = paginatedProducts.content.filter(
+            (newProduct) =>
+              !currentItems.some((item) => item.id === newProduct.id)
+          );
+          return [...currentItems, ...newProducts];
+        });
+
+        setHasMore(!paginatedProducts.last);
+      } catch (err) {
+        setError("Failed to fetch products", err);
+      }
+    };
+
+    if (page > 0 || items.length === 0) fetchProducts();
+  }, [activeTab, page]);
 
   const fetchMoreData = () => {
-    if (!paginationInfo.last) {
-      setPage((prevPage) => prevPage + 1);
-    }
+    if (!hasMore) return;
+    setPage((prevPage) => prevPage + 1);
   };
 
-  if (categoriesLoading || productLoading) return <LoadingComponent />;
-
-  const errorMessages = [];
-  if (categoriesError) errorMessages.push("Categories Loading Error");
-  if (productsError) errorMessages.push("Products Loading Error");
-  if (productError) errorMessages.push("Product Loading Error");
-
-  if (errorMessages.length > 0)
-    return <ErrorComponent message={errorMessages.join(", ")} />;
-
-  const setNewArrivals = () => {
-    if (activeTab !== "newArrivals") {
-      setActiveTab("newArrivals");
-      setPage(0);
-      setItems([]);
-    }
-  };
-
-  const setLastChance = () => {
-    if (activeTab !== "lastChance") {
-      setActiveTab("lastChance");
-      setPage(0);
-      setItems([]);
-    }
-  };
+  if (loading) return <LoadingComponent />;
+  if (error) return <ErrorComponent message={error} />;
 
   return (
     <>
@@ -120,10 +110,10 @@ const Home = () => {
 
         <div className="products">
           <div className="tabs">
-            <h5 onClick={setNewArrivals} id="newArrivals">
+            <h5 onClick={() => setActiveTab("newArrivals")} id="newArrivals">
               New Arrivals
             </h5>
-            <h5 onClick={setLastChance} id="lastChance">
+            <h5 onClick={() => setActiveTab("lastChance")} id="lastChance">
               Last Chance
             </h5>
           </div>
@@ -132,7 +122,7 @@ const Home = () => {
             items={items}
             fetchMoreData={fetchMoreData}
             hasMore={hasMore}
-            loading={productsLoading}
+            loading={loading}
             activeTab={activeTab}
           />
         </div>

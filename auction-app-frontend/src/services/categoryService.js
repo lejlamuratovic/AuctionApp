@@ -1,10 +1,7 @@
-import useFetch from "./customHooks";
+import { getRequest } from "src/utils/httpUtils";
 
-const categoryService = {
-  getTopLevelCategories: () => {
-    const { data, loading, error } = useFetch(`/categories/top-level`);
-    return { categories: data, loading, error };
-  },
+const getTopLevelCategories = async () => {
+  return await getRequest("/categories/top-level");
 };
 
-export default categoryService;
+export { getTopLevelCategories };
