@@ -42,5 +42,5 @@ export const HIDE_BREADCRUMBS_ON_PATHS = [
   // will add more routes when needed
 ];
 
-export const TAB_NEW_ARRIVALS = "newArrivals";
-export const TAB_LAST_CHANCE = "lastChance";
+export const NEW_ARRIVALS = "newArrivals";
+export const LAST_CHANCE = "lastChance";

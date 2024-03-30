@@ -15,12 +15,12 @@ import {
 
 import { go } from "src/assets/icons";
 
-import { TAB_NEW_ARRIVALS, TAB_LAST_CHANCE } from "src/constants";
+import { NEW_ARRIVALS, LAST_CHANCE } from "src/constants";
 
 import "./style.scss";
 
 const Home = () => {
-  const [activeTab, setActiveTab] = useState(TAB_NEW_ARRIVALS);
+  const [activeTab, setActiveTab] = useState(NEW_ARRIVALS);
   const [page, setPage] = useState(0);
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(true);
@@ -116,19 +116,19 @@ const Home = () => {
         <div className="products">
           <div className="tabs">
             <span
-              onClick={() => setActiveTabHandler(TAB_NEW_ARRIVALS)}
-              id={TAB_NEW_ARRIVALS}
+              onClick={() => setActiveTabHandler(NEW_ARRIVALS)}
+              id={NEW_ARRIVALS}
               className={`tab ${
-                activeTab === TAB_NEW_ARRIVALS ? "active" : "inactive"
+                activeTab === NEW_ARRIVALS ? "active" : "inactive"
               }`}
             >
               New Arrivals
             </span>
             <span
-              onClick={() => setActiveTabHandler(TAB_LAST_CHANCE)}
-              id={TAB_LAST_CHANCE}
+              onClick={() => setActiveTabHandler(LAST_CHANCE)}
+              id={LAST_CHANCE}
               className={`tab ${
-                activeTab === TAB_LAST_CHANCE ? "active" : "inactive"
+                activeTab === LAST_CHANCE ? "active" : "inactive"
               }`}
             >
               Last Chance
