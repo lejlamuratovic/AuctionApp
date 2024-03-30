@@ -5,6 +5,7 @@ import {
   ErrorComponent,
   LoadingComponent,
   Button,
+  Tabs,
 } from "src/components";
 
 import {
@@ -28,6 +29,10 @@ const Home = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const tabs = [
+    { id: NEW_ARRIVALS, label: "New Arrivals" },
+    { id: LAST_CHANCE, label: "Last Chance" },
+  ];
 
   // method to fetch initial data
   const fetchInitialData = () => {
@@ -114,26 +119,11 @@ const Home = () => {
           </div>
         </div>
         <div className="products">
-          <div className="tabs">
-            <span
-              onClick={() => setActiveTabHandler(NEW_ARRIVALS)}
-              id={NEW_ARRIVALS}
-              className={`tab ${
-                activeTab === NEW_ARRIVALS ? "active" : "inactive"
-              }`}
-            >
-              New Arrivals
-            </span>
-            <span
-              onClick={() => setActiveTabHandler(LAST_CHANCE)}
-              id={LAST_CHANCE}
-              className={`tab ${
-                activeTab === LAST_CHANCE ? "active" : "inactive"
-              }`}
-            >
-              Last Chance
-            </span>
-          </div>
+          <Tabs
+            tabs={tabs}
+            activeTab={activeTab}
+            onTabClick={setActiveTabHandler}
+          />
           <ProductGrid
             key={activeTab}
             items={items}
