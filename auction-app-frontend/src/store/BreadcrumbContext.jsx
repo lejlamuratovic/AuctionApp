@@ -24,6 +24,7 @@ export const BreadcrumbProvider = ({ children }) => {
 
     // determine the label for the current page
     const label = isProductDetailPage ? "Single Product" : ROUTES_MAP[pathname];
+
     // update the title for non-product detail pages
     if (!isProductDetailPage || !title) {
       setTitle(label);

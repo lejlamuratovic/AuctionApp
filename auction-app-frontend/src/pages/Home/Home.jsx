@@ -16,12 +16,12 @@ import {
 
 import { go } from "src/assets/icons";
 
-import { NEW_ARRIVALS, LAST_CHANCE } from "src/constants";
+import { HOME_TABS } from "src/constants";
 
 import "./style.scss";
 
 const Home = () => {
-  const [activeTab, setActiveTab] = useState(NEW_ARRIVALS);
+  const [activeTab, setActiveTab] = useState(HOME_TABS[0].id);
   const [page, setPage] = useState(0);
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(true);
@@ -29,10 +29,6 @@ const Home = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const tabs = [
-    { id: NEW_ARRIVALS, label: "New Arrivals" },
-    { id: LAST_CHANCE, label: "Last Chance" },
-  ];
 
   // method to fetch initial data
   const fetchInitialData = () => {
@@ -120,7 +116,7 @@ const Home = () => {
         </div>
         <div className="products">
           <Tabs
-            tabs={tabs}
+            tabs={HOME_TABS}
             activeTab={activeTab}
             onTabClick={setActiveTabHandler}
           />

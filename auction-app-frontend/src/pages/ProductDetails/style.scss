@@ -1,0 +1,58 @@
+@import "src/scss/index.scss";
+
+.product-details-container {
+  @include flex-container(row, space-between, center);
+  margin-top: 30px;
+  gap: 117px;
+
+  .product-details {
+    width: 548px;
+
+    .product-name {
+      @include flex-container(column, flex-start, flex-start);
+      gap: 16px;
+      color: $neutral00;
+
+      .price {
+        color: $primary;
+        font-weight: 600;
+      }
+
+      .body-regular {
+        color: $neutral05;
+      }
+    }
+
+    .product-bid-details {
+      width: 547px;
+      height: 252px;
+    }
+
+    .product-description {
+      font-family: $font-family-lato;
+      font-size: 16px;
+      font-style: italic;
+      font-weight: 400;
+      line-height: 24px;
+      text-align: left;
+      color: $neutral05;
+    }
+
+    .product-information {
+      .tab {
+        line-height: 24px;
+
+        &.active {
+          font-size: 16px;
+          font-weight: 700;
+          color: $primary;
+        }
+
+        &.inactive {
+          font-size: 14px;
+          color: $neutral00;
+        }
+      }
+    }
+  }
+}
