@@ -2,15 +2,20 @@ import { useState } from "react";
 
 import { Tabs } from "src/components";
 
-import { PRODUCT_DETAILS_TABS } from "src/constants";
+import { PRODUCT_DETAILS_TABS, PRODUCT_DETAILS_IMAGES } from "src/constants";
 
 import "./style.scss";
 
 const ProductDetails = () => {
   const [activeTab, setActiveTab] = useState(PRODUCT_DETAILS_TABS[0].id);
+  const [mainImage, setMainImage] = useState(PRODUCT_DETAILS_IMAGES[0]);
 
   const setActiveTabHandler = (tabId) => {
     setActiveTab(tabId);
+  };
+
+  const handleImageClick = (image) => {
+    setMainImage(image);
   };
 
   const productDescription = `
@@ -27,7 +32,24 @@ const ProductDetails = () => {
   return (
     <>
       <div className="product-details-container">
-        <div className="product-detail-images"></div>
+        <div className="product-details-images">
+          <div className="main-image-container">
+            <img src={mainImage} alt="Product" />
+            <div className="other-images-container">
+              {PRODUCT_DETAILS_IMAGES.slice(1).map((image, index) => (
+                <div key={index} className="image-container">
+                  <img
+                    src={image}
+                    alt={`Product ${index + 1}`}
+                    onClick={() => {
+                      handleImageClick(image);
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
         <div className="product-details">
           <div className="product-name">
             <span className="body-semibold">
