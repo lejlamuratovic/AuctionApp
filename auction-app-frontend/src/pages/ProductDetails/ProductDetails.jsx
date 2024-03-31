@@ -1,6 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
-import { Tabs } from "src/components";
+import { Tabs, LoadingComponent, ErrorComponent } from "src/components";
+import { useBreadcrumb } from "src/store/BreadcrumbContext";
+
+import { getProduct } from "src/services";
 
 import { PRODUCT_DETAILS_TABS, PRODUCT_DETAILS_IMAGES } from "src/constants";
 
@@ -8,7 +12,28 @@ import "./style.scss";
 
 const ProductDetails = () => {
   const [activeTab, setActiveTab] = useState(PRODUCT_DETAILS_TABS[0].id);
-  const [mainImage, setMainImage] = useState(PRODUCT_DETAILS_IMAGES[0]);
+  const [product, setProduct] = useState(null);
+  const [mainImage, setMainImage] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { id } = useParams();
+  const { setTitle } = useBreadcrumb();
+
+  const fetchProductDetails = () => {
+    setLoading(true);
+
+    getProduct(id)
+      .then((productDetail) => {
+        setProduct(productDetail);
+        setMainImage(productDetail.imageUrl);
+      })
+      .catch((err) => {
+        setError("Failed to fetch product details: " + err.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
   const setActiveTabHandler = (tabId) => {
     setActiveTab(tabId);
@@ -18,16 +43,18 @@ const ProductDetails = () => {
     setMainImage(image);
   };
 
-  const productDescription = `
-  The Jackets is US standard size, Please choose size as your usual wear 
-  Material: 100% Polyester 
-  Detachable Liner Fabric: Warm Fleece. Detachable 
-  Functional Liner: Skin Friendly, Lightweigt and Warm.
-  Stand Collar Liner jacket, keep you warm in cold weather. 
-  Zippered Pockets: 2 Zippered Hand Pockets, 2 Zippered Pockets on Chest (enough to keep cards or keys)and 1 Hidden Pocket Inside.
-  Zippered Hand Pockets and Hidden Pocket keep your things secure. 
-  Humanized Design: Adjustable and Detachable Hood and Adjustable cuff to prevent the wind and water,for a comfortable fit.
-  3 in 1 Detachable Design provide more convenience, you can separate the coat and inner as needed, or wear it together. It is suitable for different season and help you adapt to different climates.`;
+  useEffect(() => {
+    fetchProductDetails();
+  }, []);
+
+  useEffect(() => {
+    if (product) {
+      setTitle(`${product.name}`);
+    }
+  }, [product, setTitle]);
+
+  if (loading) return <LoadingComponent />;
+  if (error) return <ErrorComponent message={error} />;
 
   return (
     <>
@@ -41,9 +68,7 @@ const ProductDetails = () => {
                   <img
                     src={image}
                     alt={`Product ${index + 1}`}
-                    onClick={() => {
-                      handleImageClick(image);
-                    }}
+                    onClick={() => handleImageClick(image)}
                   />
                 </div>
               ))}
@@ -52,11 +77,9 @@ const ProductDetails = () => {
         </div>
         <div className="product-details">
           <div className="product-name">
-            <span className="body-semibold">
-              BIYLACLESEN Womens 3-in-1 Snowboard Jacket Winter Coats
-            </span>
+            <span className="body-semibold">{product.name}</span>
             <span className="body-regular">
-              Starts from <span className="price">$50</span>
+              Starts from <span className="price">{product.startPrice}</span>
             </span>
           </div>
           <div className="product-bid-details"></div>
@@ -68,7 +91,7 @@ const ProductDetails = () => {
             />
             {activeTab === "details" && (
               <div className="product-description">
-                <p>{productDescription}</p>
+                <p>{product.description}</p>
               </div>
             )}
           </div>

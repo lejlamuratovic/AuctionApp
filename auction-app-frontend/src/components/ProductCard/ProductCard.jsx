@@ -1,8 +1,10 @@
+import { Link } from "react-router-dom";
+
 import "./style.scss";
 
-const ProductCard = ({ imageUrl, name, startPrice }) => {
+const ProductCard = ({ id, imageUrl, name, startPrice }) => {
   return (
-    <div className="product-card">
+    <Link to={`/shop/${id}`} className="product-card">
       <div className="img-container">
         <img src={imageUrl} alt={name} />
       </div>
@@ -12,7 +14,7 @@ const ProductCard = ({ imageUrl, name, startPrice }) => {
           Start From <span className="body-bold">${startPrice}</span>
         </span>
       </div>
-    </div>
+    </Link>
   );
 };
 
