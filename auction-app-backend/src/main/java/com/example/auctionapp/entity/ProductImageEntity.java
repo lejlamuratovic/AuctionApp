@@ -40,7 +40,7 @@ public class ProductImageEntity {
 
     public ProductImage toDomainModel() {
         ProductImage productImage = new ProductImage();
-        
+
         productImage.setImageUrl(this.imageUrl);
         productImage.setProductId(this.productEntity.getProductId());
 

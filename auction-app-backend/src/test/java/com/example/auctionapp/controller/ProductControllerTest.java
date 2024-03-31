@@ -55,4 +55,30 @@ public class ProductControllerTest {
                         .andExpect(jsonPath("$.content[0].name").value("Test Product"))
                         .andExpect(jsonPath("$.content[0].description").value("Test Description"));
     }
+
+    @Test
+    public void whenGetProductById_thenReturnProduct() throws Exception {
+        UUID productId = UUID.randomUUID();
+        Product product = new Product();
+
+        product.setId(productId);
+        product.setName("Test Product");
+        product.setDescription("Test Description");
+        product.setStartPrice(BigDecimal.valueOf(200));
+        product.setStartDate(LocalDateTime.now());
+        product.setEndDate(LocalDateTime.now().plusDays(1));
+        product.setImageUrl("http://example.com/product.jpg");
+        product.setStatus("ACTIVE");
+
+        Mockito.when(productService.getProductById(productId)).thenReturn(product);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/products/" + productId.toString())
+                        .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.name").value("Test Product"))
+                        .andExpect(jsonPath("$.description").value("Test Description"))
+                        .andExpect(jsonPath("$.startPrice").value(200))
+                        .andExpect(jsonPath("$.imageUrl").value("http://example.com/product.jpg"))
+                        .andExpect(jsonPath("$.status").value("ACTIVE"));
+    }
 }
