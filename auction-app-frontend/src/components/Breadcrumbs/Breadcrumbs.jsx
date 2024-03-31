@@ -12,11 +12,11 @@ const Breadcrumbs = () => {
   if (hideBreadcrumbs) return null;
 
   return (
-    <div className="breadcrumbs body-regular">
-      <div className="breadcrumbs-left">{title}</div>
+    <div className="breadcrumbs">
+      <div className="breadcrumbs-left body-bold">{title}</div>
       <div className="breadcrumbs-right">
         {breadcrumbs.map((crumb, index) => (
-          <span key={index}>
+          <span key={index} className="body-regular">
             {index > 0 && <img src={next} alt="Next Page" />}
             {index < breadcrumbs.length - 1 ? (
               <Link to={crumb.path}>{crumb.label}</Link>

@@ -4,54 +4,56 @@ import { useParams } from "react-router-dom";
 import { Tabs, LoadingComponent, ErrorComponent } from "src/components";
 import { useBreadcrumb } from "src/store/BreadcrumbContext";
 
-import { getProduct } from "src/services";
+import { getProduct, getProductImages } from "src/services";
 
-import { PRODUCT_DETAILS_TABS, PRODUCT_DETAILS_IMAGES } from "src/constants";
+import { PRODUCT_DETAILS_TABS } from "src/constants";
 
 import "./style.scss";
 
 const ProductDetails = () => {
   const [activeTab, setActiveTab] = useState(PRODUCT_DETAILS_TABS[0].id);
   const [product, setProduct] = useState(null);
+  const [productImages, setProductImages] = useState([]);
   const [mainImage, setMainImage] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { id } = useParams();
   const { setTitle } = useBreadcrumb();
 
-  const fetchProductDetails = () => {
+  const fetchInitialData = () => {
     setLoading(true);
 
-    getProduct(id)
-      .then((productDetail) => {
+    Promise.all([getProduct(id), getProductImages(id)])
+      .then(([productDetail, images]) => {
         setProduct(productDetail);
         setMainImage(productDetail.imageUrl);
+        setProductImages([...images, productDetail]);
       })
       .catch((err) => {
-        setError("Failed to fetch product details: " + err.message);
+        setError("Failed to fetch initial data", err.message);
       })
       .finally(() => {
         setLoading(false);
       });
   };
 
-  const setActiveTabHandler = (tabId) => {
-    setActiveTab(tabId);
-  };
-
-  const handleImageClick = (image) => {
-    setMainImage(image);
-  };
-
   useEffect(() => {
-    fetchProductDetails();
-  }, []);
+    fetchInitialData();
+  }, [id]);
 
   useEffect(() => {
     if (product) {
       setTitle(`${product.name}`);
     }
   }, [product, setTitle]);
+
+  const setActiveTabHandler = (tabId) => {
+    setActiveTab(tabId);
+  };
+
+  const handleImageClick = (image) => {
+    setMainImage(image.imageUrl);
+  };
 
   if (loading) return <LoadingComponent />;
   if (error) return <ErrorComponent message={error} />;
@@ -63,10 +65,10 @@ const ProductDetails = () => {
           <div className="main-image-container">
             <img src={mainImage} alt="Product" />
             <div className="other-images-container">
-              {PRODUCT_DETAILS_IMAGES.slice(1).map((image, index) => (
+              {productImages.map((image, index) => (
                 <div key={index} className="image-container">
                   <img
-                    src={image}
+                    src={image.imageUrl}
                     alt={`Product ${index + 1}`}
                     onClick={() => handleImageClick(image)}
                   />
