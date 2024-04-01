@@ -4,6 +4,7 @@ import com.example.auctionapp.entity.ProductEntity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import java.util.List;
 
 public class ProductAddRequest {
 
@@ -12,9 +13,9 @@ public class ProductAddRequest {
     private BigDecimal startPrice;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private String imageUrl;
     private String status;
     private UUID categoryId;
+    private List<String> imageUrls;
 
     public ProductAddRequest() {
     }
@@ -30,6 +31,8 @@ public class ProductAddRequest {
         productEntity.setStatus(this.status);
 
         // category id is set in services
+        // same as the logic for image associated with the products
+
         return productEntity;
     }
 
@@ -87,5 +90,13 @@ public class ProductAddRequest {
 
     public void setCategoryId(final UUID categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public List<String> getImageUrls() {
+        return imageUrls;
+    }
+
+    public void setImageUrls(final List<String> imageUrls) {
+        this.imageUrls = imageUrls;
     }
 }

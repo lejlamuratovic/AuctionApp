@@ -95,7 +95,7 @@ public class ProductServiceImpl implements ProductService {
             direction = Sort.Direction.ASC;
             sortBy = "endDate";
         }
-        
+
         Sort sort = Sort.by(direction, sortBy).and(Sort.by(Sort.Direction.ASC, "productId"));
         Pageable pageable = PageRequest.of(page, size, sort);
         Page<ProductEntity> productPage = productRepository.findAll(pageable);
