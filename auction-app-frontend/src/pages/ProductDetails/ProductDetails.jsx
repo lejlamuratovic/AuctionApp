@@ -68,7 +68,10 @@ const ProductDetails = () => {
             <img src={mainImage} alt="Product" />
             <div className="other-images-container">
               {productImages.map((image, index) => (
-                <div key={index} className="image-container">
+                <div
+                  key={`${image.imageUrl}-${index}`}
+                  className="image-container"
+                >
                   <img
                     src={image.imageUrl}
                     alt={`Product ${index + 1}`}
