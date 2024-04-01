@@ -50,7 +50,6 @@ public class ProductServiceTest {
         productEntity.setStartPrice(BigDecimal.valueOf(200));
         productEntity.setStartDate(LocalDateTime.now());
         productEntity.setEndDate(LocalDateTime.now().plusDays(1));
-        productEntity.setImageUrl("http://example.com/product.jpg");
         productEntity.setStatus("ACTIVE");
         productEntity.setCategory(categoryEntity);
 

@@ -42,7 +42,6 @@ public class ProductControllerTest {
         product.setStartPrice(BigDecimal.valueOf(200));
         product.setStartDate(LocalDateTime.now());
         product.setEndDate(LocalDateTime.now().plusDays(1));
-        product.setImageUrl("http://example.com/product.jpg");
         product.setStatus("ACTIVE");
 
         Page<Product> pageOfProducts = new PageImpl<>(List.of(product), PageRequest.of(0, 8), 1);
@@ -67,7 +66,6 @@ public class ProductControllerTest {
         product.setStartPrice(BigDecimal.valueOf(200));
         product.setStartDate(LocalDateTime.now());
         product.setEndDate(LocalDateTime.now().plusDays(1));
-        product.setImageUrl("http://example.com/product.jpg");
         product.setStatus("ACTIVE");
 
         Mockito.when(productService.getProductById(productId)).thenReturn(product);
@@ -78,7 +76,6 @@ public class ProductControllerTest {
                         .andExpect(jsonPath("$.name").value("Test Product"))
                         .andExpect(jsonPath("$.description").value("Test Description"))
                         .andExpect(jsonPath("$.startPrice").value(200))
-                        .andExpect(jsonPath("$.imageUrl").value("http://example.com/product.jpg"))
                         .andExpect(jsonPath("$.status").value("ACTIVE"));
     }
 }

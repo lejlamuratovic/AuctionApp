@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { Tabs, LoadingComponent, ErrorComponent } from "src/components";
-import { useBreadcrumb } from "src/store/BreadcrumbContext";
 
-import { getProduct, getProductImages } from "src/services";
+import { useBreadcrumb } from "src/store/BreadcrumbContext";
+import { getProduct } from "src/services";
 
 import { PRODUCT_DETAILS_TABS } from "src/constants";
 
@@ -17,17 +17,19 @@ const ProductDetails = () => {
   const [mainImage, setMainImage] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
   const { id } = useParams();
+
   const { setTitle } = useBreadcrumb();
 
   const fetchInitialData = () => {
     setLoading(true);
 
-    Promise.all([getProduct(id), getProductImages(id)])
-      .then(([productDetail, images]) => {
+    getProduct(id)
+      .then((productDetail) => {
         setProduct(productDetail);
-        setMainImage(productDetail.imageUrl);
-        setProductImages([...images, productDetail]);
+        setMainImage(productDetail.productImages[0].imageUrl);
+        setProductImages(productDetail.productImages);
       })
       .catch((err) => {
         setError("Failed to fetch initial data", err.message);

@@ -110,7 +110,7 @@ const Home = () => {
               </div>
             </div>
             <div className="product-image">
-              <img src={product.imageUrl} alt={product.name} />
+              <img src={product.productImages[0].imageUrl} alt={product.name} />
             </div>
           </div>
         </div>

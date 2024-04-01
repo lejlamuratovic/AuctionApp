@@ -16,6 +16,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "product_image", schema="auction_app")
 public class ProductImageEntity {
+
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
@@ -32,7 +33,7 @@ public class ProductImageEntity {
     public ProductImageEntity() {
     }
 
-    public ProductImageEntity(UUID imageId, String imageUrl, ProductEntity productEntity) {
+    public ProductImageEntity(final UUID imageId, final String imageUrl, final ProductEntity productEntity) {
         this.imageId = imageId;
         this.imageUrl = imageUrl;
         this.productEntity = productEntity;

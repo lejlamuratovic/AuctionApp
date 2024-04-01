@@ -1,12 +1,14 @@
 import { Link } from "react-router-dom";
 
+import { ROUTE_PATHS } from "src/constants";
+
 import "./style.scss";
 
-const ProductCard = ({ id, imageUrl, name, startPrice }) => {
+const ProductCard = ({ id, productImages, name, startPrice }) => {
   return (
-    <Link to={`/shop/${id}`} className="product-card">
+    <Link to={`${ROUTE_PATHS.PRODUCT_DETAILS}/${id}`} className="product-card">
       <div className="img-container">
-        <img src={imageUrl} alt={name} />
+        <img src={productImages[0].imageUrl} alt={name} />
       </div>
       <div className="product-info">
         <h5>{name}</h5>
