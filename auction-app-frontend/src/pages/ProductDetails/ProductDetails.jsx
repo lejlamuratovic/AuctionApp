@@ -29,7 +29,8 @@ const ProductDetails = () => {
       .then((productDetail) => {
         setProduct(productDetail);
         setMainImage(productDetail.productImages[0].imageUrl);
-        setProductImages(productDetail.productImages);
+        // initially remove the first image as it is set as main image
+        setProductImages(productDetail.productImages.slice(1));
       })
       .catch((err) => {
         setError("Failed to fetch initial data", err.message);
@@ -53,8 +54,20 @@ const ProductDetails = () => {
     setActiveTab(tabId);
   };
 
-  const handleImageClick = (image) => {
-    setMainImage(image.imageUrl);
+  const handleImageClick = (clickedImage) => {
+    // find current main image in the product's image list
+    const previousMainImage = product.productImages.find(
+      (img) => img.imageUrl === mainImage
+    );
+
+    // set the clicked image as the new one
+    setMainImage(clickedImage.imageUrl);
+
+    const updatedImagesList = productImages
+      .filter((img) => img.imageUrl !== clickedImage.imageUrl) // remove the clicked image
+      .concat(previousMainImage); // add the previous main image back
+
+    setProductImages(updatedImagesList);
   };
 
   if (loading) return <LoadingComponent />;
