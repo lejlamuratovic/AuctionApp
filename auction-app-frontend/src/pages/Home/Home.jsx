@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import {
   ProductGrid,
@@ -16,7 +17,7 @@ import {
 
 import { go } from "src/assets/icons";
 
-import { HOME_TABS } from "src/constants";
+import { HOME_TABS, ROUTE_PATHS } from "src/constants";
 
 import "./style.scss";
 
@@ -98,21 +99,26 @@ const Home = () => {
               <li>All Categories</li>
             </ul>
           </div>
-          <div className="highlighted-product">
-            <div className="product-container">
-              <div className="product-info body-semibold">
-                <span className="product-name">{product.name}</span>
-                <span className="product-price">
-                  Start From ${product.startPrice}
-                </span>
-                <span className="body-regular">{product.description}</span>
-                <Button label="Bid now" iconSrc={go} />
+          <Link to={`${ROUTE_PATHS.PRODUCT_DETAILS}/${product.id}`}>
+            <div className="highlighted-product">
+              <div className="product-container">
+                <div className="product-info body-semibold">
+                  <span className="product-name">{product.name}</span>
+                  <span className="product-price">
+                    Start From ${product.startPrice}
+                  </span>
+                  <span className="body-regular">{product.description}</span>
+                  <Button label="Bid now" iconSrc={go} />
+                </div>
+              </div>
+              <div className="product-image">
+                <img
+                  src={product.productImages[0].imageUrl}
+                  alt={product.name}
+                />
               </div>
             </div>
-            <div className="product-image">
-              <img src={product.productImages[0].imageUrl} alt={product.name} />
-            </div>
-          </div>
+          </Link>
         </div>
         <div className="products">
           <Tabs
