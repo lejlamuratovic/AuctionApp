@@ -12,7 +12,7 @@ const Header = () => {
       <SocialMediaIcons />
       <div className="user-status body-small-semibold">
         {isLoggedIn ? (
-          <span>Hi, {userName}</span>
+          <span>Hi, { userName }</span>
         ) : (
           <div className="user-status-links">
             <a href="/login">Login</a>

@@ -5,11 +5,11 @@ const Tabs = ({ tabs, activeTab, onTabClick }) => {
     <div className="tabs">
       {tabs.map((tab) => (
         <span
-          key={tab.id}
+          key={ tab.id }
           onClick={() => onTabClick(tab.id)}
           className={`tab ${activeTab === tab.id ? "active" : "inactive"}`}
         >
-          {tab.label}
+          { tab.label }
         </span>
       ))}
     </div>

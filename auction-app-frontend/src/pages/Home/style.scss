@@ -34,7 +34,6 @@
       width: 739px;
       height: 420px;
       flex: 1;
-      cursor: pointer;
 
       .product-image {
         height: 100%;
@@ -43,6 +42,7 @@
           max-height: 100%;
           width: 357px;
           object-fit: cover;
+          cursor: pointer;
         }
       }
 

@@ -10,19 +10,19 @@ const Navbar = () => {
     <div className="navbar">
       <div className="app-logo">
         <Link to="/">
-          <img src={logo} alt="Auction App Logo" />
+          <img src={ logo } alt="Auction App Logo" />
         </Link>
       </div>
       <div className="navbar-items body-regular">
         {NAV_ITEMS.map((item) => (
           <NavLink
-            to={item.link}
+            to={ item.link }
             className={({ isActive }) =>
               isActive ? "navbar-item active" : "navbar-item"
             }
-            key={item.key}
+            key={ item.key }
           >
-            {item.label}
+            { item.label }
           </NavLink>
         ))}
       </div>

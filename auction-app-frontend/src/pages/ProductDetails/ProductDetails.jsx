@@ -46,7 +46,7 @@ const ProductDetails = () => {
 
   useEffect(() => {
     if (product) {
-      setTitle(`${product.name}`);
+      setTitle(`${ product.name }`);
     }
   }, [product, setTitle]);
 
@@ -71,23 +71,23 @@ const ProductDetails = () => {
   };
 
   if (loading) return <LoadingComponent />;
-  if (error) return <ErrorComponent message={error} />;
+  if (error) return <ErrorComponent message={ error } />;
 
   return (
     <>
       <div className="product-details-container">
         <div className="product-details-images">
           <div className="main-image-container">
-            <img src={mainImage} alt="Product" />
+            <img src={ mainImage } alt="Product" />
             <div className="other-images-container">
               {productImages.map((image, index) => (
                 <div
-                  key={`${image.imageUrl}-${index}`}
+                  key={ `${image.imageUrl}-${index}` }
                   className="image-container"
                 >
                   <img
-                    src={image.imageUrl}
-                    alt={`Product ${index + 1}`}
+                    src={ image.imageUrl }
+                    alt={ `Product ${index + 1}` }
                     onClick={() => handleImageClick(image)}
                   />
                 </div>
@@ -97,21 +97,21 @@ const ProductDetails = () => {
         </div>
         <div className="product-details">
           <div className="product-name">
-            <span className="body-semibold">{product.name}</span>
+            <span className="body-semibold">{ product.name }</span>
             <span className="body-regular">
-              Starts from <span className="price">${product.startPrice}</span>
+              Starts from <span className="price">${ product.startPrice }</span>
             </span>
           </div>
           <div className="product-bid-details"></div>
           <div className="product-information">
             <Tabs
-              tabs={PRODUCT_DETAILS_TABS}
-              activeTab={activeTab}
-              onTabClick={setActiveTabHandler}
+              tabs={ PRODUCT_DETAILS_TABS }
+              activeTab={ activeTab }
+              onTabClick={ setActiveTabHandler }
             />
             {activeTab === "details" && (
               <div className="product-description">
-                <p>{product.description}</p>
+                <p>{ product.description }</p>
               </div>
             )}
           </div>

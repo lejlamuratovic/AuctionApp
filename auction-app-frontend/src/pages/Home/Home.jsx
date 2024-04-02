@@ -84,7 +84,7 @@ const Home = () => {
   };
 
   if (loading) return <LoadingComponent />;
-  if (error) return <ErrorComponent message={error} />;
+  if (error) return <ErrorComponent message={ error } />;
 
   return (
     <>
@@ -94,45 +94,47 @@ const Home = () => {
             <div className="categories-heading">Categories</div>
             <ul>
               {categories.map((category) => (
-                <li key={category.id}>{category.name}</li>
+                <li key={ category.id }>{ category.name }</li>
               ))}
               <li>All Categories</li>
             </ul>
           </div>
-          <Link to={`${ROUTE_PATHS.PRODUCT_DETAILS}/${product.id}`}>
-            <div className="highlighted-product">
-              <div className="product-container">
-                <div className="product-info body-semibold">
-                  <span className="product-name">{product.name}</span>
-                  <span className="product-price">
-                    Start From ${product.startPrice}
-                  </span>
-                  <span className="body-regular">{product.description}</span>
+          <div className="highlighted-product">
+            <div className="product-container">
+              <div className="product-info body-semibold">
+                <span className="product-name">{ product.name }</span>
+                <span className="product-price">
+                  Start From ${ product.startPrice }
+                </span>
+                <span className="body-regular">{ product.description }</span>
+                <Link to={ `${ROUTE_PATHS.SHOP}/${product.id}` }>
                   <Button label="BID NOW" iconSrc={go} />
-                </div>
-              </div>
-              <div className="product-image">
-                <img
-                  src={product.productImages[0].imageUrl}
-                  alt={product.name}
-                />
+                </Link>
               </div>
             </div>
-          </Link>
+            <Link to={ `${ROUTE_PATHS.SHOP}/${product.id}` }>
+              <div className="product-image">
+                <img
+                  src={ product.productImages[0].imageUrl }
+                  alt={ product.name }
+                />
+              </div>
+            </Link>
+          </div>
         </div>
         <div className="products">
           <Tabs
-            tabs={HOME_TABS}
-            activeTab={activeTab}
-            onTabClick={setActiveTabHandler}
+            tabs={ HOME_TABS }
+            activeTab={ activeTab }
+            onTabClick={ setActiveTabHandler }
           />
           <ProductGrid
-            key={activeTab}
-            items={items}
-            fetchMoreData={fetchNextPage}
-            hasMore={hasMore}
-            loading={loading}
-            activeTab={activeTab}
+            key={ activeTab }
+            items={ items }
+            fetchMoreData={ fetchNextPage }
+            hasMore={ hasMore }
+            loading={ loading }
+            activeTab={ activeTab }
           />
         </div>
       </div>

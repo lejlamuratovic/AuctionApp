@@ -6,9 +6,9 @@ const Button = ({ label, iconSrc, disabled = false, variant = "border" }) => {
   }`;
 
   return (
-    <button className={buttonClasses} disabled={disabled}>
-      {label}
-      {iconSrc && <img src={iconSrc} alt="icon" className="btn-icon" />}
+    <button className={ buttonClasses } disabled={ disabled }>
+      { label }
+      {iconSrc && <img src={ iconSrc } alt="icon" className="btn-icon" />}
     </button>
   );
 };

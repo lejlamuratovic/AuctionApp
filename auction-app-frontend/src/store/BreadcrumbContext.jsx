@@ -53,7 +53,7 @@ export const BreadcrumbProvider = ({ children }) => {
     <BreadcrumbContext.Provider
       value={{ title, setTitle, breadcrumbs, setBreadcrumbs, hideBreadcrumbs }}
     >
-      {children}
+      { children }
     </BreadcrumbContext.Provider>
   );
 };

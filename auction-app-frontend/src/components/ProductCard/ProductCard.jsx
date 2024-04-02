@@ -6,14 +6,14 @@ import "./style.scss";
 
 const ProductCard = ({ id, productImages, name, startPrice }) => {
   return (
-    <Link to={`${ROUTE_PATHS.PRODUCT_DETAILS}/${id}`} className="product-card">
+    <Link to={ `${ROUTE_PATHS.SHOP}/${id}` } className="product-card">
       <div className="img-container">
-        <img src={productImages[0].imageUrl} alt={name} />
+        <img src={ productImages[0].imageUrl } alt={ name } />
       </div>
       <div className="product-info">
-        <h5>{name}</h5>
+        <h5>{ name }</h5>
         <span className="body-medium">
-          Start From <span className="body-bold">${startPrice}</span>
+          Start From <span className="body-bold">${ startPrice }</span>
         </span>
       </div>
     </Link>
