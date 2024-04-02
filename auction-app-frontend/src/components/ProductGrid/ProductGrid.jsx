@@ -16,12 +16,12 @@ const ProductGrid = ({ items, fetchMoreData, hasMore, loading }) => {
     <div className="product-grid">
       { items.map((item) => (
         <ProductCard key={ item.id } { ...item } />
-      ))}
+      )) }
       { (loading || hasMore) && (
         <div ref={ sentryRef }>
           <LoadingComponent />
         </div>
-      )}
+      ) }
     </div>
   );
 };

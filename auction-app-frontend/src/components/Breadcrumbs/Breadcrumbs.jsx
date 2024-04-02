@@ -18,13 +18,13 @@ const Breadcrumbs = () => {
         { breadcrumbs.map((crumb, index) => (
           <span key={ index } className="body-regular">
             { index > 0 && <img src={ next } alt="Next Page" />}
-             { index < breadcrumbs.length - 1 ? (
+            { index < breadcrumbs.length - 1 ? (
               <Link to={ crumb.path }>{ crumb.label }</Link>
             ) : (
               <span className="current body-bold">{ crumb.label }</span>
-            )}
+            ) }
           </span>
-        ))}
+        )) }
       </div>
     </div>
   );

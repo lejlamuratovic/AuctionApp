@@ -11,7 +11,7 @@ const Tabs = ({ tabs, activeTab, onTabClick }) => {
         >
           { tab.label }
         </span>
-      ))}
+      )) }
     </div>
   );
 };

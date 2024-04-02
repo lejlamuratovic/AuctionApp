@@ -91,7 +91,7 @@ const ProductDetails = () => {
                     onClick={ () => handleImageClick(image) }
                   />
                 </div>
-              ))}
+              )) }
             </div>
           </div>
         </div>
@@ -113,7 +113,7 @@ const ProductDetails = () => {
               <div className="product-description">
                 <p>{ product.description }</p>
               </div>
-            )}
+            ) }
           </div>
         </div>
       </div>
