@@ -11,7 +11,7 @@ const Header = () => {
     <div className="header">
       <SocialMediaIcons />
       <div className="user-status body-small-semibold">
-        {isLoggedIn ? (
+        { isLoggedIn ? (
           <span>Hi, { userName }</span>
         ) : (
           <div className="user-status-links">

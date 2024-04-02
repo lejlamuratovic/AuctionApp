@@ -14,10 +14,10 @@ const Navbar = () => {
         </Link>
       </div>
       <div className="navbar-items body-regular">
-        {NAV_ITEMS.map((item) => (
+        { NAV_ITEMS.map((item) => (
           <NavLink
             to={ item.link }
-            className={({ isActive }) =>
+            className={ ({ isActive }) =>
               isActive ? "navbar-item active" : "navbar-item"
             }
             key={ item.key }

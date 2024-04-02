@@ -80,7 +80,7 @@ const ProductDetails = () => {
           <div className="main-image-container">
             <img src={ mainImage } alt="Product" />
             <div className="other-images-container">
-              {productImages.map((image, index) => (
+              { productImages.map((image, index) => (
                 <div
                   key={ `${image.imageUrl}-${index}` }
                   className="image-container"
@@ -88,7 +88,7 @@ const ProductDetails = () => {
                   <img
                     src={ image.imageUrl }
                     alt={ `Product ${index + 1}` }
-                    onClick={() => handleImageClick(image)}
+                    onClick={ () => handleImageClick(image) }
                   />
                 </div>
               ))}
@@ -109,7 +109,7 @@ const ProductDetails = () => {
               activeTab={ activeTab }
               onTabClick={ setActiveTabHandler }
             />
-            {activeTab === "details" && (
+            { activeTab === "details" && (
               <div className="product-description">
                 <p>{ product.description }</p>
               </div>

@@ -14,10 +14,10 @@ const ProductGrid = ({ items, fetchMoreData, hasMore, loading }) => {
 
   return (
     <div className="product-grid">
-      {items.map((item) => (
+      { items.map((item) => (
         <ProductCard key={ item.id } { ...item } />
       ))}
-      {(loading || hasMore) && (
+      { (loading || hasMore) && (
         <div ref={ sentryRef }>
           <LoadingComponent />
         </div>

@@ -93,7 +93,7 @@ const Home = () => {
           <div className="categories body-regular">
             <div className="categories-heading">Categories</div>
             <ul>
-              {categories.map((category) => (
+              { categories.map((category) => (
                 <li key={ category.id }>{ category.name }</li>
               ))}
               <li>All Categories</li>
@@ -108,7 +108,7 @@ const Home = () => {
                 </span>
                 <span className="body-regular">{ product.description }</span>
                 <Link to={ `${ROUTE_PATHS.SHOP}/${product.id}` }>
-                  <Button label="BID NOW" iconSrc={go} />
+                  <Button label="BID NOW" iconSrc={ go } />
                 </Link>
               </div>
             </div>
