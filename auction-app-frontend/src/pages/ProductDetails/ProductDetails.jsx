@@ -99,7 +99,7 @@ const ProductDetails = () => {
           <div className="product-name">
             <span className="body-semibold">{product.name}</span>
             <span className="body-regular">
-              Starts from <span className="price">{product.startPrice}</span>
+              Starts from <span className="price">${product.startPrice}</span>
             </span>
           </div>
           <div className="product-bid-details"></div>

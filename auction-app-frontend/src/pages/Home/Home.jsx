@@ -108,7 +108,7 @@ const Home = () => {
                     Start From ${product.startPrice}
                   </span>
                   <span className="body-regular">{product.description}</span>
-                  <Button label="Bid now" iconSrc={go} />
+                  <Button label="BID NOW" iconSrc={go} />
                 </div>
               </div>
               <div className="product-image">
