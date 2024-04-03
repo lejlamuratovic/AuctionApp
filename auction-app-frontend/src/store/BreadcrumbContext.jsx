@@ -19,7 +19,7 @@ export const BreadcrumbProvider = ({ children }) => {
     const { pathname } = location;
 
     // regex to match product detail pages
-    const productDetailRegex = /^\/shop\/[\w-]+(\/)?$/;
+    const productDetailRegex = /^\/shop\/product\/[\w-]+(\/)?$/;
     const isProductDetailPage = productDetailRegex.test(pathname);
 
     // determine the label for the current page

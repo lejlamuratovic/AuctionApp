@@ -98,13 +98,15 @@ const Home = () => {
     <>
       <div className="home-container">
         <div className="home-upper">
-          <div className="categories body-regular">
-            <div className="categories-heading">Categories</div>
+        <div className="categories body-regular">
+          <div className="categories-heading">Categories</div>
             <ul>
               { categories.map((category) => (
-                <li key={ category.id }>{ category.name }</li>
+                <li key={ category.id }>
+                  <Link to={ `${ROUTE_PATHS.SHOP}/${category.id}`}>{ category.name }</Link>
+                </li>
               )) }
-              <li>All Categories</li>
+              <li><Link to={ ROUTE_PATHS.SHOP }>All Categories</Link></li>
             </ul>
           </div>
           <div className="highlighted-product">
@@ -115,12 +117,12 @@ const Home = () => {
                   Start From ${ product.startPrice }
                 </span>
                 <span className="body-regular">{ product.description }</span>
-                <Link to={ `${ROUTE_PATHS.SHOP}/${product.id}` }>
+                <Link to={ `${ROUTE_PATHS.SHOP}/product/${product.id}` }>
                   <Button label="BID NOW" iconSrc={ go } />
                 </Link>
               </div>
             </div>
-            <Link to={ `${ROUTE_PATHS.SHOP}/${product.id}` }>
+            <Link to={ `${ROUTE_PATHS.SHOP}/product/${product.id}` }>
               <div className="product-image">
                 <img
                   src={ product.productImages[0].imageUrl }

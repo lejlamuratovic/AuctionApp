@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 import { Button, Checkbox, ProductGrid } from "src/components";
 
@@ -17,6 +18,8 @@ const Shop = () => {
   const [hasMore, setHasMore] = useState(true);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const { id } = useParams(); 
 
   const fetchProducts = () => {
     setLoading(true);
@@ -39,7 +42,9 @@ const Shop = () => {
     getCategoriesWithSubcategories()
       .then((res) => {
         setCategories(res);
-        console.log(res);
+        const activeCat = res.find(cat => cat.id === id);
+
+        if (activeCat) setActiveCategory(activeCat.name);
       })
       .catch((err) => {
         setError(err.message);
@@ -55,7 +60,7 @@ const Shop = () => {
 
   useEffect(() => {
     fetchCategories();
-  }, []);
+  }, [id]);
 
   const fetchNextPage = () => {
     setPage((prevPage) => prevPage + 1);
