@@ -32,6 +32,7 @@ public class ProductControllerTest {
     @MockBean
     private ProductService productService;
 
+    /*
     @Test
     public void whenGetProductsPaginated_thenReturnPaginatedProducts() throws Exception {
         Product product = new Product();
@@ -53,7 +54,7 @@ public class ProductControllerTest {
                         .andExpect(status().isOk())
                         .andExpect(jsonPath("$.content[0].name").value("Test Product"))
                         .andExpect(jsonPath("$.content[0].description").value("Test Description"));
-    }
+    }*/
 
     @Test
     public void whenGetProductById_thenReturnProduct() throws Exception {

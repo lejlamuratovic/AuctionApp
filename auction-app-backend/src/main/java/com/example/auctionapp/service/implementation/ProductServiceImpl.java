@@ -14,12 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.UUID;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -32,12 +28,19 @@ public class ProductServiceImpl implements ProductService {
         this.categoryRepository = categoryRepository;
     }
 
-    @Override
-    public Page<Product> getProducts(final int page, final int size) {
+    public Page<Product> getProducts(UUID categoryId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
+        Page<ProductEntity> productEntities;
 
-        return this.productRepository.findAll(pageable).map(ProductEntity::toDomainModel);
+        if (categoryId != null) {
+            productEntities = productRepository.findByCategoryEntityCategoryId(categoryId, pageable);
+        } else {
+            productEntities = productRepository.findAll(pageable);
+        }
+
+        return productEntities.map(ProductEntity::toDomainModel);
     }
+
 
     @Override
     public Product getProductById(final UUID id) {

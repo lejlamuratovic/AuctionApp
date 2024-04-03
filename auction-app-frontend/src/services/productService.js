@@ -14,8 +14,12 @@ const getProductRandom = () => {
   return getRequest("/products/random");
 };
 
-const getProductsPaginated = (page, size) => {
-  return getRequest(`/products?page=${page}&size=${size}`);
+const getProductsPaginated = (categoryId, page, size) => {
+  // if categoryId is provided, add it to the query string
+  const categoryParam = categoryId ? `&category_id=${categoryId}` : '';
+  
+  return getRequest(`/products?page=${page}&size=${size}${categoryParam}`);
 };
+
 
 export { getProductsPaginated, getProduct, getProductRandom, getProductsPaginatedSorted };

@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
-import { Button, Checkbox, ProductGrid } from "src/components";
+import { 
+  Button, 
+  Checkbox, 
+  ProductGrid,
+  ErrorComponent,
+  LoadingComponent 
+} from "src/components";
 
 import {
   getProductsPaginated,
@@ -21,14 +27,16 @@ const Shop = () => {
 
   const { id } = useParams(); 
 
+  const navigate = useNavigate();
+
   const fetchProducts = () => {
     setLoading(true);
-    getProductsPaginated(page, 9)
+    getProductsPaginated(id, page, 9)
       .then((res) => {
         setItems((prevItems) =>
           page === 0 ? [...res.content] : [...prevItems, ...res.content]
         );
-        setHasMore(res.content.length > 0);
+        setHasMore(!res.last);
       })
       .catch((err) => {
         setError(err.message);
@@ -56,7 +64,7 @@ const Shop = () => {
   // fetch products on page load
   useEffect(() => {
     fetchProducts();
-  }, [page]);
+  }, [page, id]);
 
   useEffect(() => {
     fetchCategories();
@@ -65,6 +73,14 @@ const Shop = () => {
   const fetchNextPage = () => {
     setPage((prevPage) => prevPage + 1);
   };
+
+  const handleCategoryChange = (categoryId) => {
+    // update the URL with selected category
+    navigate(`/shop/${categoryId}`);
+  };
+
+  // if (loading) return <LoadingComponent />;
+  if (error) return <ErrorComponent message={ error } />;
 
   return (
     <div className="shop-container">
@@ -75,11 +91,11 @@ const Shop = () => {
             <div key={ category.id } className="category-item body-regular">
               <button
                 className={ `category-name ${activeCategory === category.name ? "active" : ""}` }
-                onClick={ () => setActiveCategory(category.name) }
+                onClick={ () => handleCategoryChange(category.id) }
               >
                 { category.name }
               </button>
-               {activeCategory === category.name && category.subCategories && (
+               { activeCategory === category.name && category.subCategories && (
                 <div className="subcategory-list">
                   { category.subCategories.map((subcategory) => (
                     <Checkbox
