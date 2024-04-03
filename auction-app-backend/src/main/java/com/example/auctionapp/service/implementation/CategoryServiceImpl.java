@@ -69,6 +69,14 @@ public class CategoryServiceImpl implements CategoryService {
         this.categoryRepository.delete(categoryEntity);
     }
 
+    public List<Category> getCategoriesWithSubcategories() {
+        List<CategoryEntity> topLevelCategories = categoryRepository.findByParentCategoryIsNull();
+
+        return topLevelCategories.stream()
+                .map(CategoryEntity::toDomainModel)
+                .collect(toList());
+    }
+
     @Override
     public List<Category> getTopLevelCategories() {
         return this.categoryRepository.findByParentCategoryIsNull()

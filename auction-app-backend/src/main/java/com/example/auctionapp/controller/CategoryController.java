@@ -37,6 +37,11 @@ public class CategoryController {
         return this.categoryService.getTopLevelCategories();
     }
 
+    @GetMapping("/with-subcategories")
+    public List<Category> getCategoriesWithSubcategories() {
+        return this.categoryService.getCategoriesWithSubcategories();
+    }
+
     @PostMapping
     public Category addCategory(@RequestBody final CategoryAddRequest category) {
         return this.categoryService.addCategory(category);
