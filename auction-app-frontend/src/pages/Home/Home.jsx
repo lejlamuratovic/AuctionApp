@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import useInfiniteScroll from "react-infinite-scroll-hook";
 
 import {
   ProductGrid,
@@ -10,7 +11,7 @@ import {
 } from "src/components";
 
 import {
-  getProductsPaginated,
+  getProductsPaginatedSorted,
   getProductRandom,
   getTopLevelCategories,
 } from "src/services";
@@ -50,7 +51,7 @@ const Home = () => {
 
   // method to get products based on activeTab and page
   const fetchProducts = () => {
-    getProductsPaginated(activeTab, page, 8)
+    getProductsPaginatedSorted(activeTab, page, 8)
       .then((res) => {
         setItems((prevItems) =>
           page === 0 ? [...res.content] : [...prevItems, ...res.content]
@@ -82,6 +83,13 @@ const Home = () => {
   const fetchNextPage = () => {
     setPage((prevPage) => prevPage + 1);
   };
+
+  const [sentryRef] = useInfiniteScroll({
+    loading,
+    hasNextPage: hasMore,
+    onLoadMore: fetchNextPage,
+    rootMargin: '0px 0px 200px 0px',
+  });
 
   if (loading) return <LoadingComponent />;
   if (error) return <ErrorComponent message={ error } />;
@@ -129,13 +137,13 @@ const Home = () => {
             onTabClick={ setActiveTabHandler }
           />
           <ProductGrid
-            key={ activeTab }
             items={ items }
-            fetchMoreData={ fetchNextPage }
-            hasMore={ hasMore }
-            loading={ loading }
-            activeTab={ activeTab }
           />
+          { (loading || hasMore) && (
+            <div ref={ sentryRef }>
+              <LoadingComponent />
+            </div>
+          ) }
         </div>
       </div>
     </>

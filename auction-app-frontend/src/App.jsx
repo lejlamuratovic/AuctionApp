@@ -43,6 +43,10 @@ const App = () => {
                 path={ `${ROUTE_PATHS.SHOP}/:id` }
                 element={ <ProductDetails /> }
               />
+              <Route
+                path={ ROUTE_PATHS.SHOP }
+                element={ <Shop /> }
+              />
             </Routes>
           </div>
           <Footer />

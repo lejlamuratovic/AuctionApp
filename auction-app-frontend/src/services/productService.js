@@ -1,6 +1,6 @@
 import { getRequest } from "src/utils/httpUtils";
 
-const getProductsPaginated = (type, page, size) => {
+const getProductsPaginatedSorted = (type, page, size) => {
   return getRequest(
     `/products/criteria?page=${page}&size=${size}&type=${type}`
   );
@@ -14,4 +14,8 @@ const getProductRandom = () => {
   return getRequest("/products/random");
 };
 
-export { getProductsPaginated, getProduct, getProductRandom };
+const getProductsPaginated = (page, size) => {
+  return getRequest(`/products?page=${page}&size=${size}`);
+};
+
+export { getProductsPaginated, getProduct, getProductRandom, getProductsPaginatedSorted };
