@@ -35,7 +35,7 @@ const Shop = () => {
   const navigate = useNavigate();
 
   const query = useQuery();
-  const searchQuery = query.get('search');
+  const searchQuery = query.get("search");
 
   const fetchProducts = () => {
     setLoading(true);
