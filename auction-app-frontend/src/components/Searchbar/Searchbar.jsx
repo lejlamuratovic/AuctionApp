@@ -10,11 +10,15 @@ const Searchbar = () => {
 
   const navigate = useNavigate();
 
-  const handleSearch = (event) => {
+  const handleSearch = () => {
     const url = new URL(window.location.href);
     url.searchParams.set("search", query);
 
-    navigate(url.pathname + url.search);
+    if (location.pathname === '/shop/') {
+      navigate(url.pathname + url.search);
+    } else {
+      navigate(`/shop/?search=${query}`);
+    }
   };
 
   return (

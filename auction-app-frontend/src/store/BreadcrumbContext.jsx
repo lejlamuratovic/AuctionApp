@@ -1,5 +1,5 @@
 import { createContext, useState, useContext, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 
 import { ROUTES_MAP, HIDE_BREADCRUMBS_ON_PATHS } from "src/constants";
 
@@ -16,7 +16,7 @@ export const BreadcrumbProvider = ({ children }) => {
   const hideBreadcrumbs = HIDE_BREADCRUMBS_ON_PATHS.includes(location.pathname); // Hide breadcrumbs on certain paths
 
   const updateBreadcrumb = (location, title) => {
-    const { pathname } = location;
+    const { pathname, search } = location;
 
     // regex to match product detail pages
     const productDetailRegex = /^\/shop\/product\/[\w-]+(\/)?$/;
@@ -26,11 +26,19 @@ export const BreadcrumbProvider = ({ children }) => {
     const shopPageRegex = /^\/shop\/[\w-]+(\/)?$/;
     const isShopPage = shopPageRegex.test(pathname);
 
+    // get the search term from the URL if it exists
+    const searchParams = new URLSearchParams(search);
+    const searchTerm = searchParams.get("search");
+
+    const isSearchPage = searchTerm !== null;
+
     // determine the label for the current page
     var label; 
 
     if(isProductDetailPage) {
       label = "Single Product";
+    } else if(isSearchPage) {
+      label = `Search results for "${searchTerm}"`;
     } else if(isShopPage) {
       label = "Shop";
     } else {
