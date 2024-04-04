@@ -20,7 +20,6 @@ import java.util.UUID;
 
 @Service
 public class ProductServiceImpl implements ProductService {
-
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
 
@@ -30,12 +29,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> getProducts(final UUID categoryId, final String searchQuery, final int page, final int size) {
+    public Page<Product> getProducts(final UUID categoryId, final String searchProduct, final int page, final int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Specification<ProductEntity> specification = ProductSpecification.withDynamicQuery(categoryId, searchQuery);
-        Page<ProductEntity> productEntities = productRepository.findAll(specification, pageable);
+        Specification<ProductEntity> specification = ProductSpecification.withDynamicQuery(categoryId, searchProduct);
 
-        return productEntities.map(ProductEntity::toDomainModel);
+        return productRepository.findAll(specification, pageable).map(ProductEntity::toDomainModel);
     }
 
     @Override
@@ -97,9 +95,8 @@ public class ProductServiceImpl implements ProductService {
 
         Sort sort = Sort.by(direction, sortBy).and(Sort.by(Sort.Direction.ASC, "productId"));
         Pageable pageable = PageRequest.of(page, size, sort);
-        Page<ProductEntity> productPage = productRepository.findAll(pageable);
 
-        return productPage.map(ProductEntity::toDomainModel);
+        return productRepository.findAll(pageable).map(ProductEntity::toDomainModel);
     }
 
     @Override

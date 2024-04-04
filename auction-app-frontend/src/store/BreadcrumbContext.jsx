@@ -30,7 +30,7 @@ export const BreadcrumbProvider = ({ children }) => {
 
     // get the search term from the URL if it exists
     const searchParams = new URLSearchParams(search);
-    const searchTerm = searchParams.get("search");
+    const searchTerm = searchParams.get("search_product");
 
     const isSearchPage = searchTerm !== null;
 

@@ -14,7 +14,6 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
-
     private final CategoryRepository categoryRepository;
 
     public CategoryServiceImpl(final CategoryRepository categoryRepository) {

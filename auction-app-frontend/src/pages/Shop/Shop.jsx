@@ -37,11 +37,12 @@ const Shop = () => {
   const query = useQuery();
 
   const categoryId = query.get("category");
-  const searchQuery = query.get("search");
+  const searchProduct = query.get("search_product");
 
   const fetchProducts = () => {
     setProductsLoading(true);
-    getProductsPaginated(page, 9, categoryId, searchQuery)
+    
+    getProductsPaginated(page, 9, categoryId, searchProduct)
       .then((res) => {
         setItems((prevItems) =>
           page === 0 ? [...res.content] : [...prevItems, ...res.content]
@@ -57,12 +58,13 @@ const Shop = () => {
 
   const fetchCategories = () => {
     setCategoriesLoading(true);
+    
     getCategoriesWithSubcategories()
       .then((res) => {
         setCategories(res);
         const activeCat = res.find(cat => cat.id === categoryId);
 
-        if (activeCat) setActiveCategory(activeCat.name);
+        !!activeCat && setActiveCategory(activeCat.name)
       })
       .catch((err) => {
         setCategoriesError(err.message);
@@ -74,7 +76,7 @@ const Shop = () => {
   // fetch products on page load
   useEffect(() => {
     fetchProducts();
-  }, [page, categoryId, searchQuery]);
+  }, [page, categoryId, searchProduct]);
 
   useEffect(() => {
     fetchCategories();
@@ -92,8 +94,8 @@ const Shop = () => {
     let url = "/shop";
     const queryParams = new URLSearchParams();
 
-    if (searchQuery) {
-      queryParams.set("search", searchQuery);
+    if (searchProduct) {
+      queryParams.set("search_product", searchProduct);
     }
 
     queryParams.set("category", categoryId);

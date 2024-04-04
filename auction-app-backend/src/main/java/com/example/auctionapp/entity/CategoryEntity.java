@@ -21,7 +21,6 @@ import static java.util.stream.Collectors.toList;
 @Entity
 @Table(name = "category", schema="auction_app")
 public class CategoryEntity {
-
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")

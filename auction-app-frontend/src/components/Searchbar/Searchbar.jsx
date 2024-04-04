@@ -21,7 +21,7 @@ const Searchbar = () => {
     }
 
     const searchParams = new URLSearchParams();
-    searchParams.set("search", productName);
+    searchParams.set("search_product", productName);
   
     if (categoryId) {
       baseUrl += "&" + searchParams.toString();

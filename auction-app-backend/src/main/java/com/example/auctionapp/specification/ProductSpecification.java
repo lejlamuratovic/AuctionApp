@@ -6,11 +6,11 @@ import jakarta.persistence.criteria.Predicate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class ProductSpecification {
-
-    public static Specification<ProductEntity> withDynamicQuery(final UUID categoryId, final String searchQuery) {
+    public static Specification<ProductEntity> withDynamicQuery(final UUID categoryId, final String searchProduct) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -18,8 +18,8 @@ public class ProductSpecification {
                 predicates.add(criteriaBuilder.equal(root.join("categoryEntity").get("categoryId"), categoryId));
             }
 
-            if (searchQuery != null && !searchQuery.isEmpty()) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + searchQuery.toLowerCase() + "%"));
+            if (searchProduct != null && !searchProduct.isEmpty()) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + searchProduct.toLowerCase() + "%"));
             }
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
