@@ -32,30 +32,6 @@ public class ProductControllerTest {
     @MockBean
     private ProductService productService;
 
-    /*
-    @Test
-    public void whenGetProductsPaginated_thenReturnPaginatedProducts() throws Exception {
-        Product product = new Product();
-
-        product.setId(UUID.randomUUID());
-        product.setName("Test Product");
-        product.setDescription("Test Description");
-        product.setStartPrice(BigDecimal.valueOf(200));
-        product.setStartDate(LocalDateTime.now());
-        product.setEndDate(LocalDateTime.now().plusDays(1));
-        product.setStatus("ACTIVE");
-
-        Page<Product> pageOfProducts = new PageImpl<>(List.of(product), PageRequest.of(0, 8), 1);
-
-        Mockito.when(productService.getProducts(0, 8)).thenReturn(pageOfProducts);
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/products?page=0&size=8")
-                        .contentType(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.content[0].name").value("Test Product"))
-                        .andExpect(jsonPath("$.content[0].description").value("Test Description"));
-    }*/
-
     @Test
     public void whenGetProductById_thenReturnProduct() throws Exception {
         UUID productId = UUID.randomUUID();
