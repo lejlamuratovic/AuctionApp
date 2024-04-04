@@ -1,5 +1,5 @@
 import { createContext, useState, useContext, useEffect } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import { ROUTES_MAP, HIDE_BREADCRUMBS_ON_PATHS } from "src/constants";
 
@@ -13,7 +13,13 @@ export const BreadcrumbProvider = ({ children }) => {
 
   const location = useLocation();
 
-  const hideBreadcrumbs = HIDE_BREADCRUMBS_ON_PATHS.includes(location.pathname); // Hide breadcrumbs on certain paths
+  // regex to match shop page with categories ids
+  const shopPageRegex = /^\/shop\/[\w-]+(\/)?$/;
+  const isShopPage = shopPageRegex.test(location.pathname);
+
+  // also hide breadcrumbs from the list
+  const hideBreadcrumbs =
+    HIDE_BREADCRUMBS_ON_PATHS.includes(location.pathname) || isShopPage;
 
   const updateBreadcrumb = (location, title) => {
     const { pathname, search } = location;
@@ -21,10 +27,6 @@ export const BreadcrumbProvider = ({ children }) => {
     // regex to match product detail pages
     const productDetailRegex = /^\/shop\/product\/[\w-]+(\/)?$/;
     const isProductDetailPage = productDetailRegex.test(pathname);
-
-    // regex to match shop page
-    const shopPageRegex = /^\/shop\/[\w-]+(\/)?$/;
-    const isShopPage = shopPageRegex.test(pathname);
 
     // get the search term from the URL if it exists
     const searchParams = new URLSearchParams(search);

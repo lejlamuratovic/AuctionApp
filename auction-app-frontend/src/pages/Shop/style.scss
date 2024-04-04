@@ -2,7 +2,7 @@
 
 .shop-container {
   @include flex-container(row, space-between, flex-start);
-  margin-bottom: 50px;
+  margin: 50px 0;
 
   .categories {
     width: 262px;

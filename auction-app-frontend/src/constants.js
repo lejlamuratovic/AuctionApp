@@ -40,7 +40,7 @@ export const ROUTE_PATHS = {
 
 export const HIDE_BREADCRUMBS_ON_PATHS = [
   ROUTE_PATHS.HOME,
-  // will add more routes when needed
+  ROUTE_PATHS.SHOP,
 ];
 
 export const HOME_TABS = [
