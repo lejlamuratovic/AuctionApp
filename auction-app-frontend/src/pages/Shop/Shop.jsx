@@ -100,7 +100,7 @@ const Shop = () => {
                   { category.subCategories.map((subcategory) => (
                     <Checkbox
                       key={ subcategory.id }
-                      label={ subcategory.name }
+                      label={ `${subcategory.name} (${subcategory.productCount})` }
                       onChange={ (isChecked) =>
                         console.log(subcategory.name, isChecked)
                       }
