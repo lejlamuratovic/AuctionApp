@@ -117,12 +117,12 @@ const Home = () => {
                   Start From ${ product.startPrice }
                 </span>
                 <span className="body-regular">{ product.description }</span>
-                <Link to={ `${ROUTE_PATHS.SHOP}/product/${product.id}` }>
+                <Link to={ `${ROUTE_PATHS.PRODUCT}/${product.id}` }>
                   <Button label="BID NOW" iconSrc={ go } />
                 </Link>
               </div>
             </div>
-            <Link to={ `${ROUTE_PATHS.SHOP}/product/${product.id}` }>
+            <Link to={ `${ROUTE_PATHS.PRODUCT}/${product.id}` }>
               <div className="product-image">
                 <img
                   src={ product.productImages[0].imageUrl }

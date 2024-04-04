@@ -25,7 +25,7 @@ export const BreadcrumbProvider = ({ children }) => {
     const { pathname, search } = location;
 
     // regex to match product detail pages
-    const productDetailRegex = /^\/shop\/product\/[\w-]+(\/)?$/;
+    const productDetailRegex = /^\/product\/[\w-]+(\/)?$/;
     const isProductDetailPage = productDetailRegex.test(pathname);
 
     // get the search term from the URL if it exists
