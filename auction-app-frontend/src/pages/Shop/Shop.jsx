@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { 
   Button, 
@@ -31,8 +31,7 @@ const Shop = () => {
   const [productsLoading, setProductsLoading] = useState(true);
   const [categoriesError, setCategoriesError] = useState(null);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
-
-  const { id } = useParams(); 
+  const [checked, setChecked] = useState({});
 
   const navigate = useNavigate();
   const query = useQuery();
@@ -85,6 +84,10 @@ const Shop = () => {
     setPage((prevPage) => prevPage + 1);
   };
 
+  const handleCheckboxChange = (id, checked) => {
+    setChecked(prev => ({ ...prev, [id]: checked }));
+  };
+
   const handleCategoryChange = (categoryId) => {
     let url = "/shop";
     const queryParams = new URLSearchParams();
@@ -126,6 +129,7 @@ const Shop = () => {
                     <Checkbox
                       key={ subcategory.id }
                       label={ `${subcategory.name} (${subcategory.productCount})` }
+                      onChange={ (checked) => handleCheckboxChange(subcategory.id, checked) }
                     />
                   )) }
                 </div>

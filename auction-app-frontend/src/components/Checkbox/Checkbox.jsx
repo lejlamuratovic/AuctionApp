@@ -2,11 +2,8 @@ import { useState } from "react";
 
 import "./style.scss";
 
-const Checkbox = ({ label, onChange }) => {
-  const [checked, setChecked] = useState(false);
-
+const Checkbox = ({ label, onChange, checked }) => {
   const handleCheckboxChange = () => {
-    setChecked(!checked);
     onChange(!checked);
   };
 
