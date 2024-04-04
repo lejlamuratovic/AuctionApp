@@ -15,4 +15,6 @@ public interface ProductRepository extends JpaRepository<ProductEntity, UUID> {
     Optional<ProductEntity> findRandomProduct();
 
     Page<ProductEntity> findByCategoryEntityCategoryId(UUID categoryId, Pageable pageable);
+    Page<ProductEntity> findByNameContainingIgnoreCaseAndCategoryEntityCategoryId(String searchQuery, UUID categoryId, Pageable page);
+    Page<ProductEntity> findByNameContainingIgnoreCase(String searchQuery, Pageable page);
 }

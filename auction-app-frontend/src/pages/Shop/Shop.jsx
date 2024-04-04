@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 import { 
   Button, 
@@ -17,6 +17,10 @@ import { collapse, expand } from "src/assets/icons";
 
 import "./style.scss";
 
+const useQuery = () => {
+  return new URLSearchParams(useLocation().search);
+};
+
 const Shop = () => {
   const [activeCategory, setActiveCategory] = useState();
   const [items, setItems] = useState([]);
@@ -30,9 +34,12 @@ const Shop = () => {
 
   const navigate = useNavigate();
 
+  const query = useQuery();
+  const searchQuery = query.get('search');
+
   const fetchProducts = () => {
     setLoading(true);
-    getProductsPaginated(id, page, 9)
+    getProductsPaginated(page, 9, id, searchQuery)
       .then((res) => {
         setItems((prevItems) =>
           page === 0 ? [...res.content] : [...prevItems, ...res.content]
@@ -65,7 +72,7 @@ const Shop = () => {
   // fetch products on page load
   useEffect(() => {
     fetchProducts();
-  }, [page, id]);
+  }, [page, id, searchQuery]);
 
   useEffect(() => {
     fetchCategories();
@@ -111,9 +118,6 @@ const Shop = () => {
                     <Checkbox
                       key={ subcategory.id }
                       label={ `${subcategory.name} (${subcategory.productCount})` }
-                      onChange={ (isChecked) =>
-                        console.log(subcategory.name, isChecked)
-                      }
                     />
                   )) }
                 </div>

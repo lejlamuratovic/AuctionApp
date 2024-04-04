@@ -8,7 +8,6 @@ import com.example.auctionapp.repository.CategoryRepository;
 import com.example.auctionapp.repository.ProductRepository;
 import com.example.auctionapp.service.ProductService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,6 +27,7 @@ public class ProductServiceImpl implements ProductService {
         this.categoryRepository = categoryRepository;
     }
 
+    @Override
     public Page<Product> getProducts(UUID categoryId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<ProductEntity> productEntities;
@@ -41,6 +41,19 @@ public class ProductServiceImpl implements ProductService {
         return productEntities.map(ProductEntity::toDomainModel);
     }
 
+    @Override
+    public Page<Product> findProducts(final String searchQuery, final UUID categoryId, final int page, final int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ProductEntity> productEntities;
+
+        if (categoryId != null) {
+            productEntities = productRepository.findByNameContainingIgnoreCaseAndCategoryEntityCategoryId(searchQuery, categoryId, pageable);
+        } else {
+            productEntities = productRepository.findByNameContainingIgnoreCase(searchQuery, pageable);
+        }
+
+        return productEntities.map(ProductEntity::toDomainModel);
+    }
 
     @Override
     public Product getProductById(final UUID id) {

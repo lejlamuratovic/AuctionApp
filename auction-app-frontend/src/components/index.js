@@ -10,3 +10,4 @@ export { default as ErrorComponent } from "./ErrorComponent/ErrorComponent";
 export { default as Button } from "./Button/Button";
 export { default as Tabs } from "./Tabs/Tabs";
 export { default as Checkbox } from "./Checkbox/Checkbox";
+export { default as Searchbar } from "./Searchbar/Searchbar";
