@@ -22,8 +22,20 @@ export const BreadcrumbProvider = ({ children }) => {
     const productDetailRegex = /^\/shop\/product\/[\w-]+(\/)?$/;
     const isProductDetailPage = productDetailRegex.test(pathname);
 
+    // regex to match shop page
+    const shopPageRegex = /^\/shop\/[\w-]+(\/)?$/;
+    const isShopPage = shopPageRegex.test(pathname);
+
     // determine the label for the current page
-    const label = isProductDetailPage ? "Single Product" : ROUTES_MAP[pathname];
+    var label; 
+
+    if(isProductDetailPage) {
+      label = "Single Product";
+    } else if(isShopPage) {
+      label = "Shop";
+    } else {
+      label = ROUTES_MAP[pathname];
+    }
 
     // update the title for non-product detail pages
     if (!isProductDetailPage || !title) {
