@@ -6,34 +6,30 @@ import { search } from "src/assets/icons";
 import "./style.scss";
 
 const Searchbar = () => {
-  const [query, setQuery] = useState("");
+  const [productName, setProductName] = useState("");
 
   const navigate = useNavigate();
 
   const handleSearch = () => {
     const url = new URL(window.location.href);
-    url.searchParams.set("search", query);
+    url.searchParams.set("search", productName);
 
-    if (location.pathname.includes('/shop/')) {
-      navigate(url.pathname + url.search);
-    } else {
-      navigate(`/shop/?search=${query}`);
-    }
+    location.pathname.includes("/shop/") ? navigate(url.pathname + url.search) : navigate(`/shop/?search=${productName}`);
   };
 
   return (
     <div className="search-bar">
         <input
-        type="text"
-        className="search-input"
-        placeholder="Try enter: Shoes"
-        value={ query }
-        onChange={ (event) => setQuery(event.target.value) }
-        onKeyDown={ (event) => {
-            if (event.key === "Enter") {
-                handleSearch();
-            }
-        } }
+          type="text"
+          className="search-input"
+          placeholder="Try enter: Shoes"
+          value={ productName }
+          onChange={ (event) => setProductName(event.target.value) }
+          onKeyDown={ (event) => {
+              if (event.key === "Enter") {
+                  handleSearch();
+              }
+          } }
         />
         <button className="search-button">
             <img src={ search } alt="Search Button" />
@@ -42,4 +38,4 @@ const Searchbar = () => {
   )
 }
 
-export default Searchbar
+export default Searchbar;

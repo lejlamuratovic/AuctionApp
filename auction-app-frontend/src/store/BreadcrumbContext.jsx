@@ -1,7 +1,7 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-import { ROUTES_MAP, HIDE_BREADCRUMBS_ON_PATHS } from "src/constants";
+import { ROUTES_MAP, HIDE_BREADCRUMBS_ON_PATHS, SEARCH_RESULTS } from "src/constants";
 
 const BreadcrumbContext = createContext();
 
@@ -40,7 +40,8 @@ export const BreadcrumbProvider = ({ children }) => {
     if(isProductDetailPage) {
       label = "Single Product";
     } else if(isSearchPage) {
-      label = `Search results for "${searchTerm}"`;
+      label = `${SEARCH_RESULTS} ${searchTerm}`
+      // label = `Search results for "${searchTerm}"`;
     } else if(isShopPage) {
       label = "Shop";
     } else {

@@ -41,8 +41,7 @@
       }
 
       .subcategory-list {
-        display: flex;
-        flex-direction: column;
+        @include flex-container(column, center, flex-start);
         gap: 24px;
         margin-top: 24px;
 

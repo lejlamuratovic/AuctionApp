@@ -27,8 +27,10 @@ const Shop = () => {
   const [page, setPage] = useState(0);
   const [categories, setCategories] = useState([]);
   const [hasMore, setHasMore] = useState(true);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [productsError, setProductsError] = useState(null);
+  const [productsLoading, setProductsLoading] = useState(true);
+  const [categoriesError, setCategoriesError] = useState(null);
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
 
   const { id } = useParams(); 
 
@@ -38,7 +40,7 @@ const Shop = () => {
   const searchQuery = query.get("search");
 
   const fetchProducts = () => {
-    setLoading(true);
+    setProductsLoading(true);
     getProductsPaginated(page, 9, id, searchQuery)
       .then((res) => {
         setItems((prevItems) =>
@@ -47,14 +49,14 @@ const Shop = () => {
         setHasMore(!res.last);
       })
       .catch((err) => {
-        setError(err.message);
+        setProductsError(err.message);
       }).finally(() => {
-        setLoading(false);
+        setProductsLoading(false);
       });
   };
 
   const fetchCategories = () => {
-    setLoading(true);
+    setCategoriesLoading(true);
     getCategoriesWithSubcategories()
       .then((res) => {
         setCategories(res);
@@ -63,9 +65,9 @@ const Shop = () => {
         if (activeCat) setActiveCategory(activeCat.name);
       })
       .catch((err) => {
-        setError(err.message);
+        setCategoriesError(err.message);
       }).finally(() => {
-        setLoading(false);
+        setCategoriesLoading(false);
       });
   };
 
@@ -91,8 +93,8 @@ const Shop = () => {
     navigate(`/shop/${categoryId}`);
   };
 
-  // if (loading) return <LoadingComponent />;
-  if (error) return <ErrorComponent message={ error } />;
+  if(productsLoading || categoriesLoading) return <LoadingComponent />;
+  if(productsError || categoriesError) return <ErrorComponent error={ productsError || categoriesError } />;
 
   return (
     <div className="shop-container">

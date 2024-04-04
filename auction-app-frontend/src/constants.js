@@ -49,3 +49,5 @@ export const HOME_TABS = [
 ];
 
 export const PRODUCT_DETAILS_TABS = [{ id: "details", label: "Details" }];
+
+export const SEARCH_RESULTS = "Search results for"

@@ -1,12 +1,11 @@
 @import "src/scss/index.scss";
 
 .search-bar {
+    @include flex-container(row, center, center);
     width: 548px;
     height: 58px;
     padding: 12px 20px;
     border: 1px solid $neutral09;
-    display: flex;
-    align-items: center;
     
     .search-input {
       width: 100%;
