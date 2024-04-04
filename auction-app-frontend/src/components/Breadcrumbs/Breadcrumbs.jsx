@@ -11,9 +11,15 @@ const Breadcrumbs = () => {
 
   if (hideBreadcrumbs) return null;
 
+  const isSearchPage = breadcrumbs.some(crumb => crumb.label.startsWith("Search results for"));
+
   return (
     <div className="breadcrumbs">
-      <div className="breadcrumbs-left body-bold">{ title }</div>
+      { !isSearchPage && (
+        <div className="breadcrumbs-left body-bold">
+            <div className="breadcrumbs-left body-bold">{ title }</div>
+        </div>
+      ) }
       <div className="breadcrumbs-right">
         { breadcrumbs.map((crumb, index) => (
           <span key={ index } className="body-regular">

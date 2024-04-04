@@ -14,7 +14,7 @@ const Searchbar = () => {
     const url = new URL(window.location.href);
     url.searchParams.set("search", query);
 
-    if (location.pathname === '/shop/') {
+    if (location.pathname.includes('/shop/')) {
       navigate(url.pathname + url.search);
     } else {
       navigate(`/shop/?search=${query}`);
