@@ -17,6 +17,16 @@ const Searchbar = () => {
     location.pathname.includes("/shop/") ? navigate(url.pathname + url.search) : navigate(`/shop/?search=${productName}`);
   };
 
+  const handleChange = (event) => {
+    setProductName(event.target.value);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   return (
     <div className="search-bar">
         <input
@@ -24,12 +34,8 @@ const Searchbar = () => {
           className="search-input"
           placeholder="Try enter: Shoes"
           value={ productName }
-          onChange={ (event) => setProductName(event.target.value) }
-          onKeyDown={ (event) => {
-              if (event.key === "Enter") {
-                  handleSearch();
-              }
-          } }
+          onChange={ handleChange } 
+          onKeyDown={ handleKeyDown }
         />
         <button className="search-button">
             <img src={ search } alt="Search Button" />

@@ -13,7 +13,6 @@ public interface ProductRepository extends JpaRepository<ProductEntity, UUID> {
 
     @Query(value = "SELECT p FROM ProductEntity p ORDER BY RANDOM() LIMIT 1")
     Optional<ProductEntity> findRandomProduct();
-
     Page<ProductEntity> findByCategoryEntityCategoryId(UUID categoryId, Pageable pageable);
     Page<ProductEntity> findByNameContainingIgnoreCaseAndCategoryEntityCategoryId(String searchQuery, UUID categoryId, Pageable page);
     Page<ProductEntity> findByNameContainingIgnoreCase(String searchQuery, Pageable page);
