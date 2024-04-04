@@ -13,6 +13,7 @@ import {
   getProductsPaginated,
   getCategoriesWithSubcategories
 } from "src/services";
+import { collapse, expand } from "src/assets/icons";
 
 import "./style.scss";
 
@@ -75,6 +76,10 @@ const Shop = () => {
   };
 
   const handleCategoryChange = (categoryId) => {
+    // if category already active then collapse it
+    const categoryName = categories.find(cat => cat.id === categoryId)?.name;
+    setActiveCategory(prevActive => prevActive === categoryName ? null : categoryName);
+
     // update the URL with selected category
     navigate(`/shop/${categoryId}`);
   };
@@ -94,6 +99,11 @@ const Shop = () => {
                 onClick={ () => handleCategoryChange(category.id) }
               >
                 { category.name }
+                { activeCategory === category.name ? (
+                  <img src={ collapse } alt="Collapse" />
+                ) : (
+                  <img src={ expand } alt="Expand" />
+                ) }
               </button>
                { activeCategory === category.name && category.subCategories && (
                 <div className="subcategory-list">

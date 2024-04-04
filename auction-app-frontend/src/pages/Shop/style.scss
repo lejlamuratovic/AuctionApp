@@ -21,7 +21,10 @@
     }
 
     .category-item {
+      width: 100%;
+
       .category-name {
+        @include flex-container(row, space-between, flex-start);
         background: none;
         border: none;
         cursor: pointer;
@@ -30,6 +33,11 @@
         width: 100%;
         color: neutral00;
         padding: 0;
+
+        img {
+          height: 16px;
+          width: 16px;
+        }
       }
 
       .subcategory-list {
