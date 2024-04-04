@@ -103,7 +103,7 @@ const Home = () => {
             <ul>
               { categories.map((category) => (
                 <li key={ category.id }>
-                  <Link to={ `${ROUTE_PATHS.SHOP}/${category.id}`}>{ category.name }</Link>
+                  <Link to={{ pathname: ROUTE_PATHS.SHOP, search: `?category=${category.id}` }}>{ category.name }</Link>
                 </li>
               )) }
               <li><Link to={ ROUTE_PATHS.SHOP }>All Categories</Link></li>

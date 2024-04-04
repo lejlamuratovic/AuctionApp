@@ -43,9 +43,9 @@ const App = () => {
                 path={ `${ROUTE_PATHS.SHOP}/product/:id` }
                 element={ <ProductDetails /> }
               />
-              <Route
-                path={ `${ROUTE_PATHS.SHOP}/:id` }
-                element={ <Shop /> }
+              <Route 
+                path={ ROUTE_PATHS.SHOP } 
+                element={ <Shop /> } 
               />
             </Routes>
           </div>

@@ -41,7 +41,6 @@ export const BreadcrumbProvider = ({ children }) => {
       label = "Single Product";
     } else if(isSearchPage) {
       label = `${SEARCH_RESULTS} ${searchTerm}`
-      // label = `Search results for "${searchTerm}"`;
     } else if(isShopPage) {
       label = "Shop";
     } else {
@@ -53,19 +52,22 @@ export const BreadcrumbProvider = ({ children }) => {
       setTitle(label);
     }
 
-    // if the pathname has changed, update breadcrumbs
-    setBreadcrumbs((prev) => {
-      // check if the previous page is the same as the current one to avoid duplication
-      if (prev.length && prev[prev.length - 1].path === pathname) {
-        // if already on the current page, don't add to breadcrumbs
-        return prev;
-      } else {
-        const newBreadcrumbs = prev.length
-          ? [prev[prev.length - 1], { path: pathname, label: label }]
-          : [{ path: pathname, label: label }];
-        return newBreadcrumbs;
+    if (isSearchPage) {
+      setBreadcrumbs([{ path: "/", label: "Home" }, { path: pathname, label: label }]);
+    } else {
+      setBreadcrumbs((prev) => {
+        // check if the previous page is the same as the current one to avoid duplication
+        if (prev.length && prev[prev.length - 1].path === pathname) {
+          // if already on the current page, don't add to breadcrumbs
+          return prev;
+        } else {
+          const newBreadcrumbs = prev.length
+            ? [prev[prev.length - 1], { path: pathname, label: label }]
+            : [{ path: pathname, label: label }];
+          return newBreadcrumbs;
+          }
+        });
       }
-    });
   };
 
   useEffect(() => {

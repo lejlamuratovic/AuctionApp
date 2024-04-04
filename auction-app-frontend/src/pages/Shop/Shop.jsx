@@ -35,13 +35,14 @@ const Shop = () => {
   const { id } = useParams(); 
 
   const navigate = useNavigate();
-
   const query = useQuery();
+
+  const categoryId = query.get("category");
   const searchQuery = query.get("search");
 
   const fetchProducts = () => {
     setProductsLoading(true);
-    getProductsPaginated(page, 9, id, searchQuery)
+    getProductsPaginated(page, 9, categoryId, searchQuery)
       .then((res) => {
         setItems((prevItems) =>
           page === 0 ? [...res.content] : [...prevItems, ...res.content]
@@ -60,7 +61,7 @@ const Shop = () => {
     getCategoriesWithSubcategories()
       .then((res) => {
         setCategories(res);
-        const activeCat = res.find(cat => cat.id === id);
+        const activeCat = res.find(cat => cat.id === categoryId);
 
         if (activeCat) setActiveCategory(activeCat.name);
       })
@@ -74,23 +75,28 @@ const Shop = () => {
   // fetch products on page load
   useEffect(() => {
     fetchProducts();
-  }, [page, id, searchQuery]);
+  }, [page, categoryId, searchQuery]);
 
   useEffect(() => {
     fetchCategories();
-  }, [id]);
+  }, [categoryId]);
 
   const fetchNextPage = () => {
     setPage((prevPage) => prevPage + 1);
   };
 
   const handleCategoryChange = (categoryId) => {
-    // if category already active then collapse it
-    const categoryName = categories.find(cat => cat.id === categoryId)?.name;
-    setActiveCategory(prevActive => prevActive === categoryName ? null : categoryName);
+    let url = "/shop";
+    const queryParams = new URLSearchParams();
 
-    // update the URL with selected category
-    navigate(`/shop/${categoryId}`);
+    if (searchQuery) {
+      queryParams.set("search", searchQuery);
+    }
+
+    queryParams.set("category", categoryId);
+    url += `?${queryParams.toString()}`;
+  
+    navigate(url);
   };
 
   if(productsLoading || categoriesLoading) return <LoadingComponent />;

@@ -12,11 +12,26 @@ const Searchbar = () => {
 
   const handleSearch = () => {
     const url = new URL(window.location.href);
-    url.searchParams.set("search", productName);
+    let baseUrl = "/shop/";
+  
+    const categoryId = url.searchParams.get("category");
+  
+    if (categoryId) {
+      baseUrl += `?category=${categoryId}`;
+    }
 
-    location.pathname.includes("/shop/") ? navigate(url.pathname + url.search) : navigate(`/shop/?search=${productName}`);
+    const searchParams = new URLSearchParams();
+    searchParams.set("search", productName);
+  
+    if (categoryId) {
+      baseUrl += "&" + searchParams.toString();
+    } else {
+      baseUrl += "?" + searchParams.toString();
+    }
+  
+    navigate(baseUrl);
   };
-
+  
   const handleChange = (event) => {
     setProductName(event.target.value);
   };
