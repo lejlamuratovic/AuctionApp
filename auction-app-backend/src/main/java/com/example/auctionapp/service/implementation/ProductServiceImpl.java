@@ -7,10 +7,12 @@ import com.example.auctionapp.exceptions.repository.ResourceNotFoundException;
 import com.example.auctionapp.repository.CategoryRepository;
 import com.example.auctionapp.repository.ProductRepository;
 import com.example.auctionapp.service.ProductService;
+import com.example.auctionapp.specification.ProductSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -28,29 +30,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> getProducts(UUID categoryId, int page, int size) {
+    public Page<Product> getProducts(final UUID categoryId, final String searchQuery, final int page, final int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<ProductEntity> productEntities;
-
-        if (categoryId != null) {
-            productEntities = productRepository.findByCategoryEntityCategoryId(categoryId, pageable);
-        } else {
-            productEntities = productRepository.findAll(pageable);
-        }
-
-        return productEntities.map(ProductEntity::toDomainModel);
-    }
-
-    @Override
-    public Page<Product> findProducts(final String searchQuery, final UUID categoryId, final int page, final int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<ProductEntity> productEntities;
-
-        if (categoryId != null) {
-            productEntities = productRepository.findByNameContainingIgnoreCaseAndCategoryEntityCategoryId(searchQuery, categoryId, pageable);
-        } else {
-            productEntities = productRepository.findByNameContainingIgnoreCase(searchQuery, pageable);
-        }
+        Specification<ProductEntity> specification = ProductSpecification.withDynamicQuery(categoryId, searchQuery);
+        Page<ProductEntity> productEntities = productRepository.findAll(specification, pageable);
 
         return productEntities.map(ProductEntity::toDomainModel);
     }

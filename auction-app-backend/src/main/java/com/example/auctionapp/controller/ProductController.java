@@ -31,17 +31,10 @@ public class ProductController {
     public Page<Product> getProducts(
             @RequestParam(value = "page", defaultValue = "0") final int page,
             @RequestParam(value = "size", defaultValue = "8") final int size,
-            @RequestParam(value = "category_id", required = false) final Optional<UUID> categoryId) {
-        return productService.getProducts(categoryId.orElse(null), page, size);
-    }
-
-    @GetMapping("/search")
-    public Page<Product> findProducts(
-            @RequestParam(value = "page", defaultValue = "0") final int page,
-            @RequestParam(value = "size", defaultValue = "8") final int size,
             @RequestParam(value = "category_id", required = false) final Optional<UUID> categoryId,
-            @RequestParam(value = "search") final String searchQuery) {
-        return productService.findProducts(searchQuery, categoryId.orElse(null), page, size);
+            @RequestParam(value = "search", required = false) final String searchQuery
+            ) {
+        return productService.getProducts(categoryId.orElse(null), searchQuery, page, size);
     }
 
     @PostMapping

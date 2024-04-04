@@ -19,10 +19,7 @@ const getProductsPaginated = (page, size, categoryId, searchQuery) => {
   const categoryParam = categoryId ? `&category_id=${categoryId}` : '';
   const searchParam = searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : '';
   
-  // find correct endpoint based on the presence of search query
-  const endpoint = searchQuery ? `/products/search` : `/products`;
-
-  return getRequest(`${endpoint}?page=${page}&size=${size}${categoryParam}${searchParam}`);
+  return getRequest(`/products?page=${page}&size=${size}${categoryParam}${searchParam}`);
 };
 
 export { getProductsPaginated, getProduct, getProductRandom, getProductsPaginatedSorted };
