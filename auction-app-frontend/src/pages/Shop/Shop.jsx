@@ -95,13 +95,20 @@ const Shop = () => {
     let url = "/shop";
     const queryParams = new URLSearchParams();
 
+    if (activeCategory === categories.find(cat => cat.id === categoryId).name) {
+      queryParams.delete("category");
+      setActiveCategory(null);
+    } else {
+      queryParams.set("category", categoryId);
+      setActiveCategory(categories.find(cat => cat.id === categoryId).name);
+    }
+
     if (searchProduct) {
       queryParams.set("search_product", searchProduct);
     }
 
-    queryParams.set("category", categoryId);
-    url += `?${queryParams.toString()}`;
-  
+    url += queryParams.toString() ? `?${queryParams.toString()}` : "";
+
     navigate(url);
   };
 
