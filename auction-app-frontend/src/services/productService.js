@@ -1,6 +1,6 @@
 import { getRequest } from "src/utils/httpUtils";
 
-const getProductsPaginatedSorted = (type, page, size) => {
+const getProductsByCriteria = (type, page, size) => {
   return getRequest(
     `/products/criteria?page=${page}&size=${size}&type=${type}`
   );
@@ -14,7 +14,7 @@ const getProductRandom = () => {
   return getRequest("/products/random");
 };
 
-const getProductsPaginated = (page, size, categoryId, searchQuery) => {
+const getProducts = (page, size, categoryId, searchQuery) => {
   // construct query string based on the presence of categoryId or search query
   const categoryParam = categoryId ? `&category_id=${categoryId}` : '';
   const searchParam = searchQuery ? `&search_product=${encodeURIComponent(searchQuery)}` : '';
@@ -22,4 +22,4 @@ const getProductsPaginated = (page, size, categoryId, searchQuery) => {
   return getRequest(`/products?page=${page}&size=${size}${categoryParam}${searchParam}`);
 };
 
-export { getProductsPaginated, getProduct, getProductRandom, getProductsPaginatedSorted };
+export { getProducts, getProduct, getProductRandom, getProductsByCriteria };

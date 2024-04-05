@@ -52,3 +52,7 @@ export const HOME_TABS = [
 export const PRODUCT_DETAILS_TABS = [{ id: "details", label: "Details" }];
 
 export const SEARCH_RESULTS = "Search results for"
+
+export const SHOP_DEFAULT_PAGE_NUMBER = 9;
+
+export const HOME_DEFAULT_PAGE_NUMBER = 8;

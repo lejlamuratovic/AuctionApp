@@ -11,14 +11,14 @@ import {
 } from "src/components";
 
 import {
-  getProductsPaginatedSorted,
+  getProductsByCriteria,
   getProductRandom,
   getTopLevelCategories,
 } from "src/services";
 
 import { go } from "src/assets/icons";
 
-import { HOME_TABS, ROUTE_PATHS } from "src/constants";
+import { HOME_TABS, ROUTE_PATHS, HOME_DEFAULT_PAGE_NUMBER } from "src/constants";
 
 import "./style.scss";
 
@@ -41,8 +41,8 @@ const Home = () => {
         setProduct(randomProduct);
         setCategories(topLevelCategories);
       })
-      .catch((err) => {
-        setError("Failed to fetch initial data: " + err.message);
+      .catch((error) => {
+        setError("Failed to fetch initial data: " + error.message);
       })
       .finally(() => {
         setLoading(false);
@@ -51,15 +51,15 @@ const Home = () => {
 
   // method to get products based on activeTab and page
   const fetchProducts = () => {
-    getProductsPaginatedSorted(activeTab, page, 8)
-      .then((res) => {
+    getProductsByCriteria(activeTab, page, HOME_DEFAULT_PAGE_NUMBER)
+      .then((products) => {
         setItems((prevItems) =>
-          page === 0 ? [...res.content] : [...prevItems, ...res.content]
+          page === 0 ? [...products.content] : [...prevItems, ...products.content]
         );
-        setHasMore(res.content.length > 0);
+        setHasMore(products.content.length > 0);
       })
-      .catch((err) => {
-        setError(err.message);
+      .catch((error) => {
+        setError(error.message);
       });
   };
 

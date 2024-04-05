@@ -10,10 +10,11 @@ import {
 } from "src/components";
 
 import {
-  getProductsPaginated,
+  getProducts,
   getCategoriesWithSubcategories
 } from "src/services";
 import { collapse, expand } from "src/assets/icons";
+import { SHOP_DEFAULT_PAGE_NUMBER } from "src/constants";
 
 import "./style.scss";
 
@@ -42,15 +43,15 @@ const Shop = () => {
   const fetchProducts = () => {
     setProductsLoading(true);
     
-    getProductsPaginated(page, 9, categoryId, searchProduct)
-      .then((res) => {
+    getProducts(page, SHOP_DEFAULT_PAGE_NUMBER, categoryId, searchProduct)
+      .then((products) => {
         setItems((prevItems) =>
-          page === 0 ? [...res.content] : [...prevItems, ...res.content]
+          page === 0 ? [...products.content] : [...prevItems, ...products.content]
         );
-        setHasMore(!res.last);
+        setHasMore(!products.last);
       })
-      .catch((err) => {
-        setProductsError(err.message);
+      .catch((error) => {
+        setProductsError(error.message);
       }).finally(() => {
         setProductsLoading(false);
       });
@@ -60,9 +61,9 @@ const Shop = () => {
     setCategoriesLoading(true);
     
     getCategoriesWithSubcategories()
-      .then((res) => {
-        setCategories(res);
-        const activeCat = res.find(cat => cat.id === categoryId);
+      .then((categories) => {
+        setCategories(categories);
+        const activeCat = categories.find(cat => cat.id === categoryId);
 
         !!activeCat && setActiveCategory(activeCat.name)
       })
@@ -137,7 +138,7 @@ const Shop = () => {
                 </div>
               ) }
             </div>
-          ))}
+          )) }
         </div>
       </div>
       <div className="product-list">
@@ -147,7 +148,7 @@ const Shop = () => {
           <Button
             label="Explore More"
             variant="filled"
-            onClickBehaviour={ fetchNextPage }
+            onButtonClick={ fetchNextPage }
           />
         </div>
         ) }

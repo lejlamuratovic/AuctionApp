@@ -35,7 +35,7 @@ export const BreadcrumbProvider = ({ children }) => {
     const isSearchPage = searchTerm !== null;
 
     // determine the label for the current page
-    var label; 
+    let label; 
 
     if(isProductDetailPage) {
       label = "Single Product";
