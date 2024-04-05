@@ -153,7 +153,9 @@ const Shop = () => {
         </>
       ) }
       <div className="product-list">
-        <ProductGrid items={ items } />
+        { productsLoading ? ( <LoadingComponent /> ) : (
+          <ProductGrid items={ items } />
+        ) }
         { hasMore && (
         <div className="explore-btn">
           <Button
