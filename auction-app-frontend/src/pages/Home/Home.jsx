@@ -29,12 +29,14 @@ const Home = () => {
   const [hasMore, setHasMore] = useState(true);
   const [product, setProduct] = useState(null);
   const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [initialDataLoading, setInitialDataLoading] = useState(true);
+  const [initialDataError, setInitialDataError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   // method to fetch initial data
   const fetchInitialData = () => {
-    setLoading(true);
+    setInitialDataLoading(true);
 
     Promise.all([getProductRandom(), getTopLevelCategories()])
       .then(([randomProduct, topLevelCategories]) => {
@@ -42,15 +44,17 @@ const Home = () => {
         setCategories(topLevelCategories);
       })
       .catch((error) => {
-        setError("Failed to fetch initial data: " + error.message);
+        setInitialDataError("Failed to fetch initial data: " + error.message);
       })
       .finally(() => {
-        setLoading(false);
+        setInitialDataLoading(false);
       });
   };
 
   // method to get products based on activeTab and page
   const fetchProducts = () => {
+    setLoading(true);
+
     getProductsByCriteria(activeTab, page, HOME_DEFAULT_PAGE_NUMBER)
       .then((products) => {
         setItems((prevItems) =>
@@ -60,6 +64,8 @@ const Home = () => {
       })
       .catch((error) => {
         setError(error.message);
+      }).finally(() => {
+        setLoading(false);
       });
   };
 
@@ -91,47 +97,48 @@ const Home = () => {
     rootMargin: '0px 0px 200px 0px',
   });
 
-  if (loading) return <LoadingComponent />;
-  if (error) return <ErrorComponent message={ error } />;
+  if (initialDataError || error) return <ErrorComponent message={ initialDataError || error } />;
 
   return (
     <>
       <div className="home-container">
-        <div className="home-upper">
-        <div className="categories body-regular">
-          <div className="categories-heading">Categories</div>
-            <ul>
-              { categories.map((category) => (
-                <li key={ category.id }>
-                  <Link to={{ pathname: ROUTE_PATHS.SHOP, search: `?category=${category.id}` }}>{ category.name }</Link>
-                </li>
-              )) }
-              <li><Link to={ ROUTE_PATHS.SHOP }>All Categories</Link></li>
-            </ul>
-          </div>
-          <div className="highlighted-product">
-            <div className="product-container">
-              <div className="product-info body-semibold">
-                <span className="product-name">{ product.name }</span>
-                <span className="product-price">
-                  Start From ${ product.startPrice }
-                </span>
-                <span className="body-regular">{ product.description }</span>
-                <Link to={ `${ROUTE_PATHS.PRODUCT}/${product.id}` }>
-                  <Button label="BID NOW" iconSrc={ go } />
-                </Link>
-              </div>
+        { initialDataLoading ? ( <LoadingComponent /> ) : (
+          <div className="home-upper">
+          <div className="categories body-regular">
+            <div className="categories-heading">Categories</div>
+              <ul>
+                { categories.map((category) => (
+                  <li key={ category.id }>
+                    <Link to={{ pathname: ROUTE_PATHS.SHOP, search: `?category=${category.id}` }}>{ category.name }</Link>
+                  </li>
+                )) }
+                <li><Link to={ ROUTE_PATHS.SHOP }>All Categories</Link></li>
+              </ul>
             </div>
-            <Link to={ `${ROUTE_PATHS.PRODUCT}/${product.id}` }>
-              <div className="product-image">
-                <img
-                  src={ product.productImages[0].imageUrl }
-                  alt={ product.name }
-                />
+            <div className="highlighted-product">
+              <div className="product-container">
+                <div className="product-info body-semibold">
+                  <span className="product-name">{ product.name }</span>
+                  <span className="product-price">
+                    Start From ${ product.startPrice }
+                  </span>
+                  <span className="body-regular">{ product.description }</span>
+                  <Link to={ `${ROUTE_PATHS.PRODUCT}/${product.id}` }>
+                    <Button label="BID NOW" iconSrc={ go } />
+                  </Link>
+                </div>
               </div>
-            </Link>
+              <Link to={ `${ROUTE_PATHS.PRODUCT}/${product.id}` }>
+                <div className="product-image">
+                  <img
+                    src={ product.productImages[0].imageUrl }
+                    alt={ product.name }
+                  />
+                </div>
+              </Link>
+            </div>
           </div>
-        </div>
+        ) }
         <div className="products">
           <Tabs
             tabs={ HOME_TABS }

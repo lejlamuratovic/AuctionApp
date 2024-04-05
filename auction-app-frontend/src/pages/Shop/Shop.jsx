@@ -117,37 +117,41 @@ const Shop = () => {
 
   return (
     <div className="shop-container">
-      <div className="categories">
-        <span className="body-regular">PRODUCT CATEGORIES</span>
-        <div className="category-list body-regular">
-          { categories.map((category) => (
-            <div key={ category.id } className="category-item body-regular">
-              <button
-                className={ `category-name ${activeCategory === category.name ? "active" : ""}` }
-                onClick={ () => handleCategoryChange(category.id) }
-              >
-                { category.name }
-                { activeCategory === category.name ? (
-                  <img src={ collapse } alt="Collapse" />
-                ) : (
-                  <img src={ expand } alt="Expand" />
-                ) }
-              </button>
-               { activeCategory === category.name && category.subCategories && (
-                <div className="subcategory-list">
-                  { category.subCategories.map((subcategory) => (
-                    <Checkbox
-                      key={ subcategory.id }
-                      label={ `${subcategory.name} (${subcategory.productCount})` }
-                      onChange={ (checked) => handleCheckboxChange(subcategory.id, checked) }
-                    />
-                  )) }
+      { categoriesLoading ? ( <LoadingComponent /> ) : (
+        <>
+          <div className="categories">
+            <span className="body-regular">PRODUCT CATEGORIES</span>
+            <div className="category-list body-regular">
+              { categories.map((category) => (
+                <div key={ category.id } className="category-item body-regular">
+                  <button
+                    className={ `category-name ${activeCategory === category.name ? "active" : ""}` }
+                    onClick={ () => handleCategoryChange(category.id) }
+                  >
+                    { category.name }
+                    { activeCategory === category.name ? (
+                      <img src={ collapse } alt="Collapse" />
+                    ) : (
+                      <img src={ expand } alt="Expand" />
+                    ) }
+                  </button>
+                  { activeCategory === category.name && category.subCategories && (
+                    <div className="subcategory-list">
+                      { category.subCategories.map((subcategory) => (
+                        <Checkbox
+                          key={ subcategory.id }
+                          label={ `${subcategory.name} (${subcategory.productCount})` }
+                          onChange={ (checked) => handleCheckboxChange(subcategory.id, checked) }
+                        />
+                      )) }
+                    </div>
+                  ) }
                 </div>
-              ) }
+              )) }
             </div>
-          )) }
-        </div>
-      </div>
+          </div>
+        </>
+      ) }
       <div className="product-list">
         <ProductGrid items={ items } />
         { hasMore && (
