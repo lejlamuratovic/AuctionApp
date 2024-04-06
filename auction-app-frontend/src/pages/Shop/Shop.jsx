@@ -112,7 +112,6 @@ const Shop = () => {
     navigate(url);
   };
 
-  if(productsLoading || categoriesLoading) return <LoadingComponent />;
   if(productsError || categoriesError) return <ErrorComponent error={ productsError || categoriesError } />;
 
   return (
@@ -153,9 +152,7 @@ const Shop = () => {
         </>
       ) }
       <div className="product-list">
-        { productsLoading ? ( <LoadingComponent /> ) : (
-          <ProductGrid items={ items } />
-        ) }
+        <ProductGrid items={ items } />
         { hasMore && (
         <div className="explore-btn">
           <Button

@@ -102,7 +102,7 @@ const Home = () => {
   return (
     <>
       <div className="home-container">
-        { initialDataLoading ? ( <LoadingComponent /> ) : (
+        { initialDataLoading ? (<LoadingComponent />) : (
           <div className="home-upper">
           <div className="categories body-regular">
             <div className="categories-heading">Categories</div>
