@@ -10,6 +10,7 @@ import {
 } from "src/components";
 
 import { getProducts, getCategoriesWithSubcategories } from "src/services";
+import { useSuggestion } from "src/store/SuggestionContext";
 import { collapse, expand } from "src/assets/icons";
 import { SHOP_DEFAULT_PAGE_NUMBER } from "src/constants";
 
@@ -30,7 +31,8 @@ const Shop = () => {
   const [categoriesError, setCategoriesError] = useState(null);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
   const [checked, setChecked] = useState({});
-  const [suggestion, setSuggestion] = useState(null);
+
+  const { setSuggestion } = useSuggestion();
 
   const navigate = useNavigate();
   const query = useQuery();
@@ -124,28 +126,11 @@ const Shop = () => {
     navigate(url);
   };
 
-  const handleSuggestionClick = () => {
-    let url = "/shop";
-    const queryParams = new URLSearchParams();
-
-    queryParams.set("search_product", suggestion);
-    navigate(url + `?${queryParams.toString()}`);
-  };
-
   if (productsError || categoriesError)
     return <ErrorComponent error={ productsError || categoriesError } />;
 
   return (
     <>
-      { suggestion && (
-        <div className='suggestion-box'>
-          <span>Did you mean: </span>
-          <button className='link-button' onClick={ handleSuggestionClick }>
-            { suggestion }
-          </button>
-          ?
-        </div>
-      )}
       <div className='shop-container'>
         { categoriesLoading ? (
           <LoadingComponent />

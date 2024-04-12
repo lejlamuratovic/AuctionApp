@@ -1,6 +1,13 @@
 import { Routes, Route } from "react-router-dom";
 
-import { Navbar, Header, Footer, Breadcrumbs } from "src/components";
+import { 
+  Navbar, 
+  Header, 
+  Footer, 
+  Breadcrumbs, 
+  SuggestionBox 
+} from "src/components";
+
 import {
   AboutUs,
   PrivacyPolicy,
@@ -12,6 +19,7 @@ import {
 } from "src/pages";
 
 import { BreadcrumbProvider } from "src/store/BreadcrumbContext";
+import { SuggestionProvider } from "src/store/SuggestionContext";
 
 import { ROUTE_PATHS } from "src/constants";
 
@@ -21,10 +29,12 @@ const App = () => {
   return (
     <>
       <BreadcrumbProvider>
+      <SuggestionProvider>
         <Header />
         <Navbar />
         <div className="main-content">
           <div className="container">
+            <SuggestionBox />
             <Breadcrumbs />
             <Routes>
               <Route path={ ROUTE_PATHS.HOME } element={ <Home /> } />
@@ -51,6 +61,7 @@ const App = () => {
           </div>
           <Footer />
         </div>
+      </SuggestionProvider>
       </BreadcrumbProvider>
     </>
   );
