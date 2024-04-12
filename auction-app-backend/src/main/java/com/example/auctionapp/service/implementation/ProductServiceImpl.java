@@ -8,6 +8,7 @@ import com.example.auctionapp.repository.CategoryRepository;
 import com.example.auctionapp.repository.ProductRepository;
 import com.example.auctionapp.service.ProductService;
 import com.example.auctionapp.specification.ProductSpecification;
+import com.example.auctionapp.util.LevenshteinDistance;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,11 +34,65 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> getProducts(final UUID categoryId, final String searchProduct, final int page, final int size) {
+    public Map<String, Object> getProducts(UUID categoryId, String searchProduct, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Specification<ProductEntity> specification = ProductSpecification.withDynamicQuery(categoryId, searchProduct);
 
-        return productRepository.findAll(specification, pageable).map(ProductEntity::toDomainModel);
+        Page<Product> products = productRepository.findAll(specification, pageable).map(ProductEntity::toDomainModel);
+        Map<String, Object> response = new HashMap<>();
+
+        response.put("products", products);
+
+        if (products.getTotalElements() < 1 && searchProduct != null && !searchProduct.isBlank()) {
+            String suggestedQuery = suggestCorrection(searchProduct);
+
+            // suggestion only if it is meaningfully different from the search query
+            if (suggestedQuery != null && !suggestedQuery.equalsIgnoreCase(searchProduct)) {
+                response.put("suggestion", suggestedQuery);
+            }
+        }
+
+        return response;
+    }
+
+    private String suggestCorrection(String query) {
+        List<String> productNames = this.productRepository.findAllProductNames();
+        final int DISTANCE_THRESHOLD = 2;
+        Map<String, Integer> combinationFrequency = new HashMap<>();
+
+        // user query into words
+        String[] queryWords = query.toLowerCase().split("\\W+");
+
+        for (String productName : productNames) {
+            String[] productWords = productName.toLowerCase().split("\\W+");
+
+            // to generate all possible combinations of product words that match length of query words
+            for (int i = 0; i <= productWords.length - queryWords.length; i++) {
+                StringBuilder sb = new StringBuilder();
+                boolean isCloseMatch = true;
+
+                for (int j = 0; j < queryWords.length; j++) {
+                    int distance = LevenshteinDistance.computeLevenshteinDistance(queryWords[j], productWords[i + j]);
+                    if (distance > DISTANCE_THRESHOLD) {
+                        isCloseMatch = false;
+                        break;
+                    }
+                    sb.append(productWords[i + j]).append(" ");
+                }
+
+                if (isCloseMatch) {
+                    String matchedPhrase = sb.toString().trim();
+                    combinationFrequency.put(matchedPhrase, combinationFrequency.getOrDefault(matchedPhrase, 0) + 1);
+                }
+            }
+        }
+
+        if (combinationFrequency.isEmpty()) {
+            return null;
+        }
+
+        // return combination with highest frequency
+        return Collections.max(combinationFrequency.entrySet(), Map.Entry.comparingByValue()).getKey();
     }
 
     @Override
