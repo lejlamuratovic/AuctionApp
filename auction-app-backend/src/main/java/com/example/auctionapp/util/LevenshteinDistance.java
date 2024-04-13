@@ -13,7 +13,6 @@ public class LevenshteinDistance {
         for (int i = 0; i < len0; i++) cost[i] = i;
 
         // dynamically computing the array of distances
-
         // transformation cost for each letter in s1
         for (int j = 1; j < len1; j++) {
             // initial cost of skipping prefix in String s1
@@ -34,7 +33,9 @@ public class LevenshteinDistance {
             }
 
             // swap cost/newcost arrays
-            int[] swap = cost; cost = newcost; newcost = swap;
+            int[] swap = cost;
+            cost = newcost;
+            newcost = swap;
         }
 
         // the distance is the cost for transforming all letters in both strings

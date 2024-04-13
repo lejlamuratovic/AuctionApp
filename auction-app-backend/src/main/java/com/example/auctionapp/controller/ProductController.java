@@ -28,12 +28,12 @@ public class ProductController {
 
     @GetMapping
     public Map<String, Object> getProducts(
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "8") int size,
-            @RequestParam(value = "category_id", required = false) UUID categoryId,
-            @RequestParam(value = "search_product", required = false) String searchProduct
+            @RequestParam(value = "page", defaultValue = "0") final int page,
+            @RequestParam(value = "size", defaultValue = "8") final int size,
+            @RequestParam(value = "category_id", required = false) final UUID categoryId,
+            @RequestParam(value = "search_product", required = false) final String searchProduct
     ) {
-        return productService.getProducts(categoryId, searchProduct, page, size);
+        return this.productService.getProducts(categoryId, searchProduct, page, size);
     }
 
     @PostMapping

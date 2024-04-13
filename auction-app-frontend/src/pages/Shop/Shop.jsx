@@ -160,7 +160,7 @@ const Shop = () => {
                           { category.subCategories.map((subcategory) => (
                             <Checkbox
                               key={ subcategory.id }
-                              label={`${subcategory.name} (${subcategory.productCount})`}
+                              label={ `${subcategory.name} (${subcategory.productCount})` }
                               onChange={ (checked) =>
                                 handleCheckboxChange(subcategory.id, checked)
                               }
@@ -173,7 +173,7 @@ const Shop = () => {
               </div>
             </div>
           </>
-        )}
+        ) }
         <div className='product-list'>
           <ProductGrid items={ items } />
           { hasMore && (
