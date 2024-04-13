@@ -1,6 +1,7 @@
 package com.example.auctionapp.controller;
 
 import com.example.auctionapp.model.Product;
+import com.example.auctionapp.response.ProductSearchResponse;
 import com.example.auctionapp.service.ProductService;
 import com.example.auctionapp.request.ProductAddRequest;
 import org.springframework.data.domain.Page;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -27,7 +27,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public Map<String, Object> getProducts(
+    public ProductSearchResponse getProducts(
             @RequestParam(value = "page", defaultValue = "0") final int page,
             @RequestParam(value = "size", defaultValue = "8") final int size,
             @RequestParam(value = "category_id", required = false) final UUID categoryId,

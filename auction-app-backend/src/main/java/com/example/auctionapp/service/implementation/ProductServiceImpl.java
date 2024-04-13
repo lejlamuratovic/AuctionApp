@@ -6,6 +6,7 @@ import com.example.auctionapp.model.Product;
 import com.example.auctionapp.exceptions.repository.ResourceNotFoundException;
 import com.example.auctionapp.repository.CategoryRepository;
 import com.example.auctionapp.repository.ProductRepository;
+import com.example.auctionapp.response.ProductSearchResponse;
 import com.example.auctionapp.service.ProductService;
 import com.example.auctionapp.specification.ProductSpecification;
 import com.example.auctionapp.util.LevenshteinDistance;
@@ -34,25 +35,23 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Map<String, Object> getProducts(UUID categoryId, String searchProduct, int page, int size) {
+    public ProductSearchResponse getProducts(UUID categoryId, String searchProduct, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         Specification<ProductEntity> specification = ProductSpecification.withDynamicQuery(categoryId, searchProduct);
 
         Page<Product> products = productRepository.findAll(specification, pageable).map(ProductEntity::toDomainModel);
-        Map<String, Object> response = new HashMap<>();
+        String suggestedQuery = null;
 
-        response.put("products", products);
-
-        if (products.getTotalElements() < 1 && searchProduct != null && !searchProduct.isBlank()) {
-            String suggestedQuery = suggestCorrection(searchProduct);
-
-            // suggestion only if it is meaningfully different from the search query
+        if (products.getTotalElements() < size && searchProduct != null && !searchProduct.isBlank()) {
+            suggestedQuery = suggestCorrection(searchProduct);
             if (suggestedQuery != null && !suggestedQuery.equalsIgnoreCase(searchProduct)) {
-                response.put("suggestion", suggestedQuery);
+                suggestedQuery = suggestedQuery;
+            } else {
+                suggestedQuery = null;
             }
         }
 
-        return response;
+        return new ProductSearchResponse(products, suggestedQuery);
     }
 
     private String suggestCorrection(String query) {
