@@ -4,8 +4,7 @@ import {
   Navbar, 
   Header, 
   Footer, 
-  Breadcrumbs, 
-  SuggestionBox 
+  Breadcrumbs 
 } from "src/components";
 
 import {
@@ -34,7 +33,6 @@ const App = () => {
         <Navbar />
         <div className="main-content">
           <div className="container">
-            <SuggestionBox />
             <Breadcrumbs />
             <Routes>
               <Route path={ ROUTE_PATHS.HOME } element={ <Home /> } />
