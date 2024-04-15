@@ -36,12 +36,13 @@ public class ProductServiceImpl implements ProductService {
         Pageable pageable = PageRequest.of(page, size);
         Specification<ProductEntity> specification = ProductSpecification.withDynamicQuery(categoryId, searchProduct);
 
-        Page<Product> products = productRepository.findAll(specification, pageable).map(ProductEntity::toDomainModel);
+        final Page<Product> products = productRepository.findAll(specification, pageable).map(ProductEntity::toDomainModel);
         String suggestedQuery = null;
 
         if (products.getTotalElements() < size && searchProduct != null && !searchProduct.isBlank()) {
-            List<String> productNames = this.productRepository.findAllProductNames();
+            final List<String> productNames = this.productRepository.findAllProductNames();
             suggestedQuery = ComputeSuggestion.suggestCorrection(productNames, searchProduct);
+
             if (suggestedQuery != null && !suggestedQuery.equalsIgnoreCase(searchProduct)) {
                 suggestedQuery = suggestedQuery;
             } else {
