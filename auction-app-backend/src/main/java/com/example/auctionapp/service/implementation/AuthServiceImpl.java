@@ -11,6 +11,8 @@ import com.example.auctionapp.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +31,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public User signUp(UserRequest userRequest) {
+    public User signUp(final UserRequest userRequest) {
         UserEntity userEntity = new UserEntity();
 
         userEntity.setFirstName(userRequest.getFirstName());
@@ -42,13 +44,15 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public LoginResponse signIn(LoginRequest loginRequest) {
-        authenticationManager.authenticate(
+    public LoginResponse signIn(final LoginRequest loginRequest) {
+        Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
         );
-        final UserEntity user = userRepository.findUserEntityByEmail(loginRequest.getEmail())
-                .orElseThrow(() -> new ResourceNotFoundException("This user does not exist."));
+        UserEntity user = userRepository.findUserEntityByEmail(loginRequest.getEmail())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        return new LoginResponse(jwtService.generateToken(user));
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        return new LoginResponse(jwtService.generateToken(userDetails));
     }
 }

@@ -6,6 +6,6 @@ import com.example.auctionapp.request.UserRequest;
 import com.example.auctionapp.response.LoginResponse;
 
 public interface AuthService {
-    User signUp(UserRequest userRequest);
-    LoginResponse signIn(LoginRequest loginRequest);
+    User signUp(final UserRequest userRequest);
+    LoginResponse signIn(final LoginRequest loginRequest);
 }
