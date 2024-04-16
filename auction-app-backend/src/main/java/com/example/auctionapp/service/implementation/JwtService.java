@@ -1,4 +1,4 @@
-package com.example.auctionapp.service;
+package com.example.auctionapp.service.implementation;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -57,22 +57,19 @@ public class JwtService {
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-    public String GenerateToken(String username){
-        Map<String, Object> claims = new HashMap<>();
-
-        return createToken(claims, username);
+    public String generateToken(UserDetails userDetails) {
+        return generateToken(new HashMap<>(), userDetails);
     }
 
-    private String createToken(Map<String, Object> claims, String username) {
+    private String generateToken(Map<String, Object> claims, UserDetails userDetails) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + cookieExpiry*1000L);
 
-        return Jwts
-                .builder()
-                .setClaims(claims)
-                .setSubject(username)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(expiryDate)
+        return Jwts.builder()
+                .claims(claims)
+                .subject(userDetails.getUsername())
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(expiryDate)
                 .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
     }
 

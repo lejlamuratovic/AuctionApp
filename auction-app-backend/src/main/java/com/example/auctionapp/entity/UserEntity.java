@@ -1,6 +1,7 @@
 package com.example.auctionapp.entity;
 
 import com.example.auctionapp.entity.enums.UserRoles;
+import com.example.auctionapp.model.User;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -38,13 +39,32 @@ public class UserEntity implements UserDetails {
 
     public UserEntity() {}
 
-    public UserEntity(UUID userId, String firstName, String lastName, String password, String email, UserRoles role) {
+    public UserEntity(
+            UUID userId,
+            String firstName,
+            String lastName,
+            String password,
+            String email,
+            UserRoles role
+    ) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
         this.email = email;
         this.role = role;
+    }
+
+    public User toDomainModel() {
+        User user = new User();
+
+        user.setUserId(this.userId);
+        user.setFirstName(this.firstName);
+        user.setLastName(this.lastName);
+        user.setEmail(this.email);
+        user.setRole(this.role);
+
+        return user;
     }
 
     public UUID getUserId() {

@@ -1,6 +1,6 @@
 package com.example.auctionapp.security;
 
-import com.example.auctionapp.service.JwtService;
+import com.example.auctionapp.service.implementation.JwtService;
 import com.example.auctionapp.service.implementation.CustomUserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -51,7 +51,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if(username != null){
             UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(username);
-            
+
             if(jwtService.validateToken(token, userDetails)){
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
