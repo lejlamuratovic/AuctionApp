@@ -11,7 +11,6 @@ import com.example.auctionapp.service.RefreshTokenService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,27 +27,27 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     @Override
     public RefreshToken createRefreshToken(final String username) {
         final Optional<UserEntity> user = userRepository.findUserEntityByEmail(username);
-
         if (user.isEmpty()) {
             throw new ResourceNotFoundException("User does not exist.");
         }
 
-        // retrieve existing refresh tokens for the user
-        List<RefreshTokenEntity> existingTokens = refreshTokenRepository.findByUserEntity(user.get());
+        // check existing token that hasn't expired
+        Optional<RefreshTokenEntity> existingToken = refreshTokenRepository.findByUserEntityAndExpiryDateGreaterThan(
+                user.get(), LocalDateTime.now());
 
-        // delete existing tokens to ensure only new one is existing
-        if (!existingTokens.isEmpty()) {
-            refreshTokenRepository.deleteAll(existingTokens);
+        if (existingToken.isPresent()) {
+            return existingToken.get().toDomainModel();
         }
 
-        // generate a new token
+        // if valid token found create a new one
         RefreshTokenEntity refreshToken = new RefreshTokenEntity();
         refreshToken.setUserEntity(user.get());
         refreshToken.setToken(UUID.randomUUID().toString());
-        refreshToken.setExpiryDate(LocalDateTime.now().plusMinutes(10)); // 10 minutes expiry time
+        refreshToken.setExpiryDate(LocalDateTime.now().plusHours(24));
 
         return refreshTokenRepository.save(refreshToken).toDomainModel();
     }
+
 
     @Override
     public Optional<RefreshToken> findByToken(final String token) {
