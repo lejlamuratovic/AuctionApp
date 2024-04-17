@@ -2,12 +2,14 @@ package com.example.auctionapp.controller;
 
 import com.example.auctionapp.model.User;
 import com.example.auctionapp.request.LoginRequest;
+import com.example.auctionapp.request.RefreshTokenRequest;
 import com.example.auctionapp.request.UserRequest;
-import com.example.auctionapp.response.LoginResponse;
+import com.example.auctionapp.response.JwtResponse;
 import com.example.auctionapp.service.AuthService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -20,12 +22,17 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public User register(@RequestBody UserRequest user) {
+    public User register(@RequestBody final UserRequest user) {
         return authService.signUp(user);
     }
 
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginRequest loginRequest) {
+    public JwtResponse login(@RequestBody final LoginRequest loginRequest) {
         return authService.signIn(loginRequest);
+    }
+
+    @PostMapping("/refresh-token")
+    public String refreshToken(@RequestParam final RefreshTokenRequest refreshToken) {
+        return authService.refreshAccessToken(refreshToken);
     }
 }

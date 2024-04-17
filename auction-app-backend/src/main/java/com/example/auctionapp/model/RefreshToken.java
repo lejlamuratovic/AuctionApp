@@ -1,22 +1,34 @@
 package com.example.auctionapp.model;
 
+import com.example.auctionapp.entity.RefreshTokenEntity;
 import com.example.auctionapp.entity.UserEntity;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class RefreshToken {
-    private UUID token_id;
+    private UUID tokenId;
     private String token;
     private LocalDateTime expiryDate;
     private UserEntity userEntity;
 
-    public UUID getTokenId() {
-        return token_id;
+    public RefreshTokenEntity toEntity() {
+        RefreshTokenEntity entity = new RefreshTokenEntity();
+
+        entity.setTokenId(this.tokenId);
+        entity.setToken(this.token);
+        entity.setExpiryDate(this.expiryDate);
+        entity.setUserEntity(this.userEntity);
+
+        return entity;
     }
 
-    public void setTokenId(final UUID token_id) {
-        this.token_id = token_id;
+    public UUID getTokenId() {
+        return this.tokenId;
+    }
+
+    public void setTokenId(final UUID tokenId) {
+        this.tokenId = tokenId;
     }
 
     public String getToken() {
