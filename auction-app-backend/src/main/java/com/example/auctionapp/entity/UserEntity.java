@@ -2,11 +2,17 @@ package com.example.auctionapp.entity;
 
 import com.example.auctionapp.entity.enums.UserRoles;
 import com.example.auctionapp.model.User;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import jakarta.persistence.*;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -39,13 +45,12 @@ public class UserEntity implements UserDetails {
 
     public UserEntity() {}
 
-    public UserEntity(
-            UUID userId,
-            String firstName,
-            String lastName,
-            String password,
-            String email,
-            UserRoles role
+    public UserEntity(UUID userId,
+                      String firstName,
+                      String lastName,
+                      String password,
+                      String email,
+                      UserRoles role
     ) {
         this.userId = userId;
         this.firstName = firstName;
@@ -68,26 +73,26 @@ public class UserEntity implements UserDetails {
     }
 
     public UUID getUserId() {
-        return userId;
+        return this.userId;
     }
 
-    public void setUserId(UUID userId) {
+    public void setUserId(final UUID userId) {
         this.userId = userId;
     }
 
     public String getFirstName() {
-        return firstName;
+        return this.firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public void setFirstName(final String firstName) {
         this.firstName = firstName;
     }
 
     public String getLastName() {
-        return lastName;
+        return this.lastName;
     }
 
-    public void setLastName(String lastName) {
+    public void setLastName(final String lastName) {
         this.lastName = lastName;
     }
 
@@ -125,7 +130,7 @@ public class UserEntity implements UserDetails {
         return true;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this.password = password;
     }
 
@@ -133,15 +138,15 @@ public class UserEntity implements UserDetails {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(final String email) {
         this.email = email;
     }
 
     public UserRoles getRole() {
-        return role;
+        return this.role;
     }
 
-    public void setRole(UserRoles role) {
+    public void setRole(final UserRoles role) {
         this.role = role;
     }
 }

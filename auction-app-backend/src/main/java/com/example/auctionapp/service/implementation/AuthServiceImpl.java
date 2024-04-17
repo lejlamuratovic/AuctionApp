@@ -56,7 +56,7 @@ public class AuthServiceImpl implements AuthService {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
         );
-        UserEntity user = userRepository.findUserEntityByEmail(loginRequest.getEmail())
+        final UserEntity user = userRepository.findUserEntityByEmail(loginRequest.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         // generate access and refresh tokens
@@ -72,7 +72,7 @@ public class AuthServiceImpl implements AuthService {
                 .map(RefreshToken::toEntity)
                 .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
 
-        UserEntity user = userRepository.findUserEntityByEmail(refreshTokenEntity.getUserEntity().getEmail())
+        final UserEntity user = userRepository.findUserEntityByEmail(refreshTokenEntity.getUserEntity().getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         refreshTokenService.verifyExpiration(refreshTokenEntity);

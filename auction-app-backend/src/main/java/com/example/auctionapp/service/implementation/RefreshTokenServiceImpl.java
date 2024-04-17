@@ -19,7 +19,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final UserRepository userRepository;
 
-    public RefreshTokenServiceImpl(RefreshTokenRepository refreshTokenRepository, UserRepository userRepository) {
+    public RefreshTokenServiceImpl(final RefreshTokenRepository refreshTokenRepository, final UserRepository userRepository) {
         this.refreshTokenRepository = refreshTokenRepository;
         this.userRepository = userRepository;
     }
@@ -39,7 +39,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
             return existingToken.get().toDomainModel();
         }
 
-        // if valid token found create a new one
+        // if no valid token found create a new one
         RefreshTokenEntity refreshToken = new RefreshTokenEntity();
         refreshToken.setUserEntity(user.get());
         refreshToken.setToken(UUID.randomUUID().toString());
@@ -51,7 +51,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     @Override
     public Optional<RefreshToken> findByToken(final String token) {
-        Optional<RefreshTokenEntity> refreshTokenEntity = refreshTokenRepository.findRefreshTokenEntityByToken(token);
+        final Optional<RefreshTokenEntity> refreshTokenEntity = refreshTokenRepository.findRefreshTokenEntityByToken(token);
 
         return refreshTokenEntity.map(RefreshTokenEntity::toDomainModel);
     }
