@@ -7,7 +7,6 @@ import com.example.auctionapp.model.RefreshToken;
 import com.example.auctionapp.model.User;
 import com.example.auctionapp.repository.UserRepository;
 import com.example.auctionapp.request.LoginRequest;
-import com.example.auctionapp.request.RefreshTokenRequest;
 import com.example.auctionapp.request.UserRequest;
 import com.example.auctionapp.response.JwtResponse;
 import com.example.auctionapp.service.AuthService;
@@ -67,8 +66,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String refreshAccessToken(final RefreshTokenRequest token) {
-        final RefreshTokenEntity refreshTokenEntity = refreshTokenService.findByToken(token.getToken())
+    public String refreshAccessToken(final String token) {
+        final RefreshTokenEntity refreshTokenEntity = refreshTokenService.findByToken(token)
                 .map(RefreshToken::toEntity)
                 .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
 
@@ -78,5 +77,10 @@ public class AuthServiceImpl implements AuthService {
         refreshTokenService.verifyExpiration(refreshTokenEntity);
 
         return jwtService.generateToken(user);
+    }
+
+    @Override
+    public void deleteRefreshToken(final String token) {
+        refreshTokenService.deleteRefreshToken(token);
     }
 }

@@ -48,7 +48,6 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         return refreshTokenRepository.save(refreshToken).toDomainModel();
     }
 
-
     @Override
     public Optional<RefreshToken> findByToken(final String token) {
         final Optional<RefreshTokenEntity> refreshTokenEntity = refreshTokenRepository.findRefreshTokenEntityByToken(token);
@@ -66,5 +65,11 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         }
 
         return token;
+    }
+
+    @Override
+    public void deleteRefreshToken(final String token) {
+        refreshTokenRepository.findRefreshTokenEntityByToken(token)
+                .ifPresent(refreshTokenRepository::delete);
     }
 }
