@@ -1,10 +1,11 @@
 package com.example.auctionapp.configuration;
 
 import com.example.auctionapp.security.JwtAuthenticationFilter;
-import com.example.auctionapp.service.implementation.CustomUserDetailsServiceImpl;
+import com.example.auctionapp.service.implementation.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -26,12 +27,17 @@ public class SecurityConfiguration {
     @Autowired
     JwtAuthenticationFilter jwtAuthenticationFilter;
     @Autowired
-    CustomUserDetailsServiceImpl userDetailsService;
+    UserDetailsServiceImpl userDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return  http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
+                        .requestMatchers(HttpMethod.GET, "/api/v1/products/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/v1/products/**").authenticated()
+                        .requestMatchers("/api/v1/categories/**").authenticated()
                         .anyRequest().permitAll())
                 .sessionManagement(manager -> manager
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -48,10 +54,11 @@ public class SecurityConfiguration {
     @Bean
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+
         authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder());
-        return authenticationProvider;
 
+        return authenticationProvider;
     }
 
     @Bean

@@ -6,6 +6,8 @@ import com.example.auctionapp.request.RefreshTokenRequest;
 import com.example.auctionapp.request.UserRequest;
 import com.example.auctionapp.response.JwtResponse;
 import com.example.auctionapp.service.AuthService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,9 +18,13 @@ import org.springframework.http.ResponseCookie;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("api/v1/auth")
+@RequestMapping("/api/v1/auth")
+@SecurityRequirement(name = "JWT Security")
 public class AuthController {
     private final AuthService authService;
+
+    @Value("${JWT_SECURE}")
+    private boolean jwtSecure;
 
     public AuthController(final AuthService authService) {
         this.authService = authService;
@@ -52,7 +58,7 @@ public class AuthController {
         // set a new cookie or update the existing one
         ResponseCookie jwtCookie = ResponseCookie.from("accessToken", newAccessToken)
                 .httpOnly(true)
-                .secure(false) // true for production with HTTPS
+                .secure(jwtSecure) // true for production with HTTPS
                 .path("/")
                 .maxAge(7 * 24 * 60 * 60) // valid for 1 week
                 .build();
@@ -67,7 +73,7 @@ public class AuthController {
         // expire the accessToken cookie
         ResponseCookie accessTokenCookie = ResponseCookie.from("accessToken", null)
                 .httpOnly(true)
-                .secure(false)
+                .secure(jwtSecure)
                 .path("/")
                 .maxAge(0) // invalidate
                 .build();

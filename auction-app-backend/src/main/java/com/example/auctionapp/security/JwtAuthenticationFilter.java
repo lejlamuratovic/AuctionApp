@@ -1,7 +1,7 @@
 package com.example.auctionapp.security;
 
 import com.example.auctionapp.service.implementation.JwtService;
-import com.example.auctionapp.service.implementation.CustomUserDetailsServiceImpl;
+import com.example.auctionapp.service.implementation.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -23,7 +23,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private JwtService jwtService;
 
     @Autowired
-    CustomUserDetailsServiceImpl userDetailsServiceImpl;
+    UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Override
     protected void doFilterInternal(
