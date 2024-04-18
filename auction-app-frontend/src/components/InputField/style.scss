@@ -7,9 +7,8 @@
     input {
         width: 548px;
         height: 56px;
-        border: 1px 0px 0px 0px;
+        border: 1px solid $neutral09;
         padding: 10px;
-        border-color: $neutral09;
 
         &::placeholder {
             color: $neutral05;
