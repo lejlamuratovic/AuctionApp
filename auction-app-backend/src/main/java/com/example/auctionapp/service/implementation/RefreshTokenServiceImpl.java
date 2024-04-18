@@ -8,6 +8,7 @@ import com.example.auctionapp.model.RefreshToken;
 import com.example.auctionapp.repository.RefreshTokenRepository;
 import com.example.auctionapp.repository.UserRepository;
 import com.example.auctionapp.service.RefreshTokenService;
+import com.example.auctionapp.util.HashRefreshToken;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -31,26 +32,33 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
             throw new ResourceNotFoundException("User does not exist.");
         }
 
-        // check existing token that hasn't expired
-        Optional<RefreshTokenEntity> existingToken = refreshTokenRepository.findByUserEntityAndExpiryDateGreaterThan(
-                user.get(), LocalDateTime.now());
-
-        if (existingToken.isPresent()) {
-            return existingToken.get().toDomainModel();
-        }
-
-        // if no valid token found create a new one
+        // if no valid token found create a new one and save to db
         RefreshTokenEntity refreshToken = new RefreshTokenEntity();
         refreshToken.setUserEntity(user.get());
-        refreshToken.setToken(UUID.randomUUID().toString());
-        refreshToken.setExpiryDate(LocalDateTime.now().plusHours(24));
 
-        return refreshTokenRepository.save(refreshToken).toDomainModel();
+        final String rawToken = UUID.randomUUID().toString();
+        final String hashedToken = HashRefreshToken.hashToken(rawToken);
+
+        refreshToken.setToken(hashedToken);
+        refreshToken.setExpiryDate(LocalDateTime.now().plusDays(7));
+
+        refreshTokenRepository.save(refreshToken);
+
+        // domain model with raw token
+        RefreshToken refreshTokenModel = new RefreshToken();
+
+        refreshTokenModel.setToken(rawToken);
+        refreshTokenModel.setTokenId(refreshToken.getTokenId());
+        refreshTokenModel.setExpiryDate(refreshToken.getExpiryDate());
+        refreshTokenModel.setUserEntity(refreshToken.getUserEntity());
+
+        return refreshTokenModel;
     }
 
     @Override
     public Optional<RefreshToken> findByToken(final String token) {
-        final Optional<RefreshTokenEntity> refreshTokenEntity = refreshTokenRepository.findRefreshTokenEntityByToken(token);
+        final String hashedToken = HashRefreshToken.hashToken(token);
+        final Optional<RefreshTokenEntity> refreshTokenEntity = refreshTokenRepository.findRefreshTokenEntityByToken(hashedToken);
 
         return refreshTokenEntity.map(RefreshTokenEntity::toDomainModel);
     }
@@ -69,7 +77,8 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     @Override
     public void deleteRefreshToken(final String token) {
-        refreshTokenRepository.findRefreshTokenEntityByToken(token)
+        final String hashedToken = HashRefreshToken.hashToken(token);
+        refreshTokenRepository.findRefreshTokenEntityByToken(hashedToken)
                 .ifPresent(refreshTokenRepository::delete);
     }
 }
