@@ -12,3 +12,5 @@ export { default as Tabs } from "./Tabs/Tabs";
 export { default as Checkbox } from "./Checkbox/Checkbox";
 export { default as Searchbar } from "./Searchbar/Searchbar";
 export { default as SuggestionBox } from "./SuggestionBox/SuggestionBox";
+export { default as InputField } from "./InputField/InputField";
+export { default as LoginForm } from "./LoginForm/LoginForm";

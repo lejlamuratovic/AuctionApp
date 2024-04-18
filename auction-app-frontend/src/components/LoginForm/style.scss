@@ -1,0 +1,29 @@
+@import "src/scss/index.scss";
+
+.form-container {
+    width: 738px;
+    height: 756px;
+    padding: 0px 0px 64px 0px;
+    gap: 48px;
+    opacity: 0px;
+
+    form {
+        @include flex-container(column, center, center);
+        gap: 64px;
+        width: 548px;
+        height: 490px;
+
+        .form-inputs {
+            @include flex-container(column, center, center);
+            gap: 32px;
+        }
+
+        button {
+            width: 100%;
+        }
+
+        .forgot-password {
+            color: $primary;
+        }
+    }
+}
