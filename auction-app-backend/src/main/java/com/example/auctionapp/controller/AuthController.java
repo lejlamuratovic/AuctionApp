@@ -28,6 +28,12 @@ public class AuthController {
     @Value("${JWT_SECURE}")
     private boolean jwtSecure;
 
+    @Value("${cookie.accessExpiry}")
+    private int accessExpiry;
+
+    @Value("${cookie.refreshExpiry}")
+    private int refreshExpiry;
+
     public AuthController(final AuthService authService) {
         this.authService = authService;
     }
@@ -46,7 +52,7 @@ public class AuthController {
                 .httpOnly(true)
                 .secure(jwtSecure)
                 .path("/")
-                .maxAge(24 * 60 * 60) // 2 minutes
+                .maxAge(accessExpiry)
                 .build();
 
         // cookie for the refresh token
@@ -54,7 +60,7 @@ public class AuthController {
                 .httpOnly(true)
                 .secure(jwtSecure)
                 .path("/")
-                .maxAge(7 * 24 * 60 * 60) // 7 days
+                .maxAge(refreshExpiry)
                 .build();
 
         response.addHeader(HttpHeaders.SET_COOKIE, jwtCookie.toString());
@@ -88,7 +94,7 @@ public class AuthController {
                 .httpOnly(true)
                 .secure(jwtSecure) // true for production with HTTPS
                 .path("/")
-                .maxAge(7 * 24 * 60 * 60) // valid for 1 week
+                .maxAge(refreshExpiry)
                 .build();
 
         response.setHeader(HttpHeaders.SET_COOKIE, jwtCookie.toString());

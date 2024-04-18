@@ -21,7 +21,7 @@ public class JwtService {
     @Value("${security.jwt.secret}")
     public String SECRET;
 
-    @Value("${security.jwt.cookieExpiry}")
+    @Value("${cookie.accessExpiry}")
     private int cookieExpiry;
 
     public String extractUsername(String token) {
@@ -63,7 +63,7 @@ public class JwtService {
 
     private String generateToken(Map<String, Object> claims, UserDetails userDetails) {
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + cookieExpiry*1000L);
+        Date expiryDate = new Date(now.getTime() + cookieExpiry);
 
         return Jwts.builder()
                 .claims(claims)
