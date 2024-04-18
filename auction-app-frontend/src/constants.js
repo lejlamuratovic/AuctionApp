@@ -56,11 +56,3 @@ export const SEARCH_RESULTS = "Search results for"
 export const SHOP_DEFAULT_PAGE_NUMBER = 9;
 
 export const HOME_DEFAULT_PAGE_NUMBER = 8;
-
-export const FORM_DATA = {
-  label: "Email",
-  type: "text",
-  placeholder: "Enter your email address",
-  id: "email",
-  isError: false
-};

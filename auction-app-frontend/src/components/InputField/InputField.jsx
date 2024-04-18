@@ -1,16 +1,14 @@
-import { FORM_DATA } from "src/constants"
-
 import "./style.scss"
 
-const InputField = () => {
+const InputField = ({ ...props }) => {
     return (
         <div className="input-field">
-            <label htmlFor={ FORM_DATA.id } className="body-semibold">{ FORM_DATA.label }</label>
+            <label htmlFor={ props.id } className="body-semibold">{ props.label }</label>
             <input 
-                type={ FORM_DATA.type } 
-                placeholder={ FORM_DATA.placeholder } 
-                id={ FORM_DATA.id }
-                className={ FORM_DATA.isError ? 'error' : '' } 
+                type={ props.type } 
+                placeholder={ props.placeholder } 
+                id={ props.id }
+                className={ props.isError ? 'error' : '' } 
             />
         </div>
     )
