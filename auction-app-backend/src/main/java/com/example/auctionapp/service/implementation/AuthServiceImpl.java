@@ -55,15 +55,15 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public JwtResponse signIn(final LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(
+        authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
         );
         final UserEntity user = userRepository.findUserEntityByEmail(loginRequest.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         // generate access and refresh tokens
-        String accessToken = jwtService.generateToken(user);
-        String refreshToken = refreshTokenService.createRefreshToken(user.getEmail()).getToken();
+        final String accessToken = jwtService.generateToken(user);
+        final String refreshToken = refreshTokenService.createRefreshToken(user.getEmail()).getToken();
 
         return new JwtResponse(accessToken, refreshToken);
     }

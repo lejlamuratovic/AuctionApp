@@ -76,6 +76,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     @Override
     public void deleteRefreshToken(final String token) {
         final String hashedToken = HashRefreshToken.hashToken(token);
+
         refreshTokenRepository.findRefreshTokenEntityByToken(hashedToken)
                 .ifPresent(refreshTokenRepository::delete);
     }

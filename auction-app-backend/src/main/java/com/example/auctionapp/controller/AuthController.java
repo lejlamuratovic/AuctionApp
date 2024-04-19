@@ -43,7 +43,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public JwtResponse login(@RequestBody final LoginRequest loginRequest, HttpServletResponse response) {
-        JwtResponse jwtResponse = authService.signIn(loginRequest);
+        final JwtResponse jwtResponse = authService.signIn(loginRequest);
 
         CookieUtility.addCookie(response, CookieUtility.accessToken, jwtResponse.getAccessToken(), jwtSecure, accessExpiry);
         CookieUtility.addCookie(response, CookieUtility.refreshToken, jwtResponse.getRefreshToken(), jwtSecure, refreshExpiry);
@@ -53,7 +53,7 @@ public class AuthController {
 
     @PostMapping("/refresh-token")
     public String refreshToken(HttpServletRequest request, HttpServletResponse response) {
-        String refreshToken = CookieUtility.extractCookieValue(request, CookieUtility.refreshToken);
+        final String refreshToken = CookieUtility.extractCookieValue(request, CookieUtility.refreshToken);
 
         if(refreshToken == null) {
             throw new RefreshTokenNotFoundException("No refresh token found in request");
@@ -68,7 +68,7 @@ public class AuthController {
 
     @GetMapping("/logout")
     public void logout(HttpServletResponse response, HttpServletRequest request) {
-        String refreshToken = CookieUtility.extractCookieValue(request, CookieUtility.refreshToken);
+        final String refreshToken = CookieUtility.extractCookieValue(request, CookieUtility.refreshToken);
         
         if (refreshToken == null) {
             throw new RefreshTokenNotFoundException("No refresh token found on logout");
