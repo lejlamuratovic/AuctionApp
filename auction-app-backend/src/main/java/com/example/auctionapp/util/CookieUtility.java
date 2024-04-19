@@ -7,6 +7,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 
 public class CookieUtility {
+    public static final String accessToken = "accessToken";
+    public static final String refreshToken = "refreshToken";
+
     public static void addCookie(HttpServletResponse response, String name, String value, boolean secure, int maxAge) {
         ResponseCookie cookie = ResponseCookie.from(name, value)
                 .httpOnly(true)

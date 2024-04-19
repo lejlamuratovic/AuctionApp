@@ -32,7 +32,10 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    public AuthServiceImpl(final UserRepository userRepository, final RefreshTokenService refreshTokenService, final UserDetailsServiceImpl userDetailsService) {
+    public AuthServiceImpl(final UserRepository userRepository,
+                           final RefreshTokenService refreshTokenService,
+                           final UserDetailsServiceImpl userDetailsService
+    ) {
         this.userRepository = userRepository;
         this.refreshTokenService = refreshTokenService;
     }

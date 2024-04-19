@@ -27,14 +27,12 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     @Override
     public RefreshToken createRefreshToken(final String username) {
-        final Optional<UserEntity> user = userRepository.findUserEntityByEmail(username);
-        if (user.isEmpty()) {
-            throw new ResourceNotFoundException("User does not exist.");
-        }
+        final UserEntity userEntity = userRepository.findUserEntityByEmail(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User does not exist."));
 
         // if no valid token found create a new one and save to db
-        RefreshTokenEntity refreshToken = new RefreshTokenEntity();
-        refreshToken.setUserEntity(user.get());
+        final RefreshTokenEntity refreshToken = new RefreshTokenEntity();
+        refreshToken.setUserEntity(userEntity);
 
         final String rawToken = UUID.randomUUID().toString();
         final String hashedToken = HashRefreshToken.hashToken(rawToken);
@@ -45,12 +43,12 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         refreshTokenRepository.save(refreshToken);
 
         // domain model with raw token
-        RefreshToken refreshTokenModel = new RefreshToken();
+        final RefreshToken refreshTokenModel = new RefreshToken();
 
         refreshTokenModel.setToken(rawToken);
         refreshTokenModel.setTokenId(refreshToken.getTokenId());
         refreshTokenModel.setExpiryDate(refreshToken.getExpiryDate());
-        refreshTokenModel.setUserEntity(refreshToken.getUserEntity());
+        refreshTokenModel.setUserEntity(userEntity);
 
         return refreshTokenModel;
     }
@@ -65,7 +63,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     @Override
     public RefreshTokenEntity verifyExpiration(final RefreshTokenEntity token) {
-        LocalDateTime now = LocalDateTime.now();
+        final LocalDateTime now = LocalDateTime.now();
 
         if(token.getExpiryDate().isBefore(now)){
             refreshTokenRepository.delete(token);

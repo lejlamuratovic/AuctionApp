@@ -1,5 +1,6 @@
 package com.example.auctionapp.configuration;
 
+import com.example.auctionapp.util.CookieUtility;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
@@ -29,7 +30,7 @@ import org.springframework.context.annotation.Configuration;
         name = "JWT Security",
         type = SecuritySchemeType.APIKEY,
         in = SecuritySchemeIn.COOKIE,
-        paramName = "accessToken"
+        paramName = CookieUtility.accessToken
 )
 public class SwaggerConfiguration {
     // Nothing to do here

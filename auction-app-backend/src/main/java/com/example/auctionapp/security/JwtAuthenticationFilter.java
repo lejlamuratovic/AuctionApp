@@ -2,6 +2,7 @@ package com.example.auctionapp.security;
 
 import com.example.auctionapp.service.implementation.JwtService;
 import com.example.auctionapp.service.implementation.UserDetailsServiceImpl;
+import com.example.auctionapp.util.CookieUtility;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -36,7 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if(request.getCookies() != null){
             for(Cookie cookie: request.getCookies()){
-                if(cookie.getName().equals("accessToken")){
+                if(cookie.getName().equals(CookieUtility.accessToken)){
                     token = cookie.getValue();
                 }
             }

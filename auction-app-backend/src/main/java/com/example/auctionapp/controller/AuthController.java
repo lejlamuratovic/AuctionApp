@@ -45,15 +45,15 @@ public class AuthController {
     public JwtResponse login(@RequestBody final LoginRequest loginRequest, HttpServletResponse response) {
         JwtResponse jwtResponse = authService.signIn(loginRequest);
 
-        CookieUtility.addCookie(response, "accessToken", jwtResponse.getAccessToken(), jwtSecure, accessExpiry);
-        CookieUtility.addCookie(response, "refreshToken", jwtResponse.getRefreshToken(), jwtSecure, refreshExpiry);
+        CookieUtility.addCookie(response, CookieUtility.accessToken, jwtResponse.getAccessToken(), jwtSecure, accessExpiry);
+        CookieUtility.addCookie(response, CookieUtility.refreshToken, jwtResponse.getRefreshToken(), jwtSecure, refreshExpiry);
 
         return jwtResponse;
     }
 
     @PostMapping("/refresh-token")
     public String refreshToken(HttpServletRequest request, HttpServletResponse response) {
-        String refreshToken = CookieUtility.extractCookieValue(request, "refreshToken");
+        String refreshToken = CookieUtility.extractCookieValue(request, CookieUtility.refreshToken);
 
         if(refreshToken == null) {
             throw new RefreshTokenNotFoundException("No refresh token found in request");
@@ -61,21 +61,22 @@ public class AuthController {
 
         final String newAccessToken = authService.refreshAccessToken(refreshToken);
 
-        CookieUtility.addCookie(response, "accessToken", newAccessToken, jwtSecure, accessExpiry);
+        CookieUtility.addCookie(response, CookieUtility.accessToken, newAccessToken, jwtSecure, accessExpiry);
 
         return newAccessToken;
     }
 
     @GetMapping("/logout")
     public void logout(HttpServletResponse response, HttpServletRequest request) {
-        String refreshToken = CookieUtility.extractCookieValue(request, "refreshToken");
+        String refreshToken = CookieUtility.extractCookieValue(request, CookieUtility.refreshToken);
+        
         if (refreshToken == null) {
             throw new RefreshTokenNotFoundException("No refresh token found on logout");
         }
 
         authService.deleteRefreshToken(refreshToken);
 
-        CookieUtility.deleteCookie(response, "accessToken", jwtSecure);
-        CookieUtility.deleteCookie(response, "refreshToken", jwtSecure);
+        CookieUtility.deleteCookie(response, CookieUtility.accessToken, jwtSecure);
+        CookieUtility.deleteCookie(response, CookieUtility.refreshToken, jwtSecure);
     }
 }
