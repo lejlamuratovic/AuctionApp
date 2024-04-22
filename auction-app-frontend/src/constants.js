@@ -37,11 +37,19 @@ export const ROUTE_PATHS = {
   TERMS_AND_CONDITIONS: "/terms-and-conditions",
   SHOP: "/shop",
   PRODUCT: "/product",
+  LOGIN: "/login",
+  REGISTER: "/register",
 };
 
 export const HIDE_BREADCRUMBS_ON_PATHS = [
   ROUTE_PATHS.HOME,
   ROUTE_PATHS.SHOP,
+  ROUTE_PATHS.LOGIN,
+];
+
+export const HIDE_NAV_OPTIONS_ON_PATHS = [
+  ROUTE_PATHS.LOGIN,
+  ROUTE_PATHS.REGISTER,
 ];
 
 export const HOME_TABS = [

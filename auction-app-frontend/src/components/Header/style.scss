@@ -17,11 +17,12 @@
       gap: 24px;
 
       span {
-        color: $neutral05;
+        cursor: pointer;
       }
 
-      a {
-        cursor: pointer;
+      .span-connect {
+        color: $neutral05;
+        cursor: default;
       }
     }
   }
