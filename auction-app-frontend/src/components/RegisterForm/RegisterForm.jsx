@@ -1,10 +1,14 @@
+import { Link } from "react-router-dom";
+
 import { InputField, Button } from "src/components";
+
+import { ROUTE_PATHS } from "src/constants";
 
 import "./style.scss";
 
 const RegisterForm = () => {
   return (
-    <div className="form-container">
+    <div className="register-form-container">
       <form action="" className="form-options">
         <h5 className="form-title">REGISTER</h5>
           <div className="form-inputs">
@@ -16,7 +20,9 @@ const RegisterForm = () => {
           <Button label="Register" variant="filled" />
           <div className="form-link body-bold">
             <span>Already have an account? </span>
-            <span className="login">Login</span>
+            <Link to={ ROUTE_PATHS.LOGIN }>
+              <span className="login">Login</span>
+            </Link>
             </div>
       </form>
     </div>

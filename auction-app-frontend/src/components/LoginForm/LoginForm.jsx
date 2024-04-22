@@ -4,7 +4,7 @@ import "./style.scss";
 
 const LoginForm = () => {
   return (
-    <div className="form-container">
+    <div className="login-form-container">
       <form action="" className="form-options">
         <h5 className="form-title">LOGIN</h5>
           <div className="form-inputs">

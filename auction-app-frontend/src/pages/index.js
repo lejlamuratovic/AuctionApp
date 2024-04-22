@@ -6,3 +6,4 @@ export { default as Shop } from "./Shop/Shop";
 export { default as MyAccount } from "./MyAccount/MyAccount";
 export { default as ProductDetails } from "./ProductDetails/ProductDetails";
 export { default as LoginPage } from "./LoginPage/LoginPage";
+export { default as RegisterPage } from "./RegisterPage/RegisterPage";

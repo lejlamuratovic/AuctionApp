@@ -1,11 +1,11 @@
 @import "src/scss/index.scss";
 
-.form-container {
+.login-form-container {
     @include flex-container(column, center, center);
     width: 738px;
     height: 756px;
     padding: 0px 0px 64px 0px;
-    opacity: 0px;
+    border: 1px solid $neutral09;
 
     .form-options {
         @include flex-container(column, center, center);

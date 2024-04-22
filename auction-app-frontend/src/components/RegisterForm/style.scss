@@ -1,22 +1,20 @@
 @import "src/scss/index.scss";
 
-.form-container {
+.register-form-container {
     @include flex-container(column, center, center);
     width: 738px;
-    height: 756px;
+    height: 967px;
     padding: 0px 0px 64px 0px;
-    gap: 48px;
     border: 1px solid $neutral09;
 
-    form {
+    .form-options {
         @include flex-container(column, center, center);
         gap: 64px;
         width: 548px;
         height: 490px;
 
         h5 {
-            color: $neutral05;
-            margin: 0;
+            color: $neutral00;
         }
 
         .form-inputs {
@@ -33,6 +31,7 @@
 
             .login {
                 color: $primary;
+                cursor: pointer;
             }
         }
     }

@@ -37,7 +37,7 @@ const Navbar = () => {
                   { item.label }
                 </NavLink>
               )) }
-            </div>
+            </div>s
           </>
         ) }
       </div>
