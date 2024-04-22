@@ -15,7 +15,8 @@ import {
   Shop,
   MyAccount,
   ProductDetails,
-  LoginPage
+  LoginPage,
+  RegisterPage
 } from "src/pages";
 
 import { BreadcrumbProvider } from "src/store/BreadcrumbContext";
@@ -59,6 +60,10 @@ const App = () => {
               <Route 
                 path={ ROUTE_PATHS.LOGIN } 
                 element={ <LoginPage /> } 
+              />
+              <Route
+                path={ ROUTE_PATHS.REGISTER }
+                element={ <RegisterPage /> }
               />
             </Routes>
           </div>

@@ -18,11 +18,11 @@ const Header = () => {
           <span>Hi, { userName }</span>
         ) : (
           <div className="user-status-links">
-            <Link to={ `${ROUTE_PATHS.LOGIN}` }>
+            <Link to={ ROUTE_PATHS.LOGIN }>
               <span>Login</span>
             </Link>
             <span className="span-connect"> or </span>
-            <Link to="/register">
+            <Link to={ ROUTE_PATHS.REGISTER }>
               <span>Create an account</span>
             </Link>
           </div>
