@@ -1,3 +1,6 @@
+import { Link } from "react-router-dom";
+
+import { ROUTE_PATHS } from "src/constants";
 import { SocialMediaIcons } from "src/components";
 
 import "./style.scss";
@@ -15,9 +18,13 @@ const Header = () => {
           <span>Hi, { userName }</span>
         ) : (
           <div className="user-status-links">
-            <a href="/login">Login</a>
-            <span> or </span>
-            <a href="/create-account">Create an account</a>
+            <Link to={ `${ROUTE_PATHS.LOGIN}` }>
+              <span>Login</span>
+            </Link>
+            <span className="span-connect"> or </span>
+            <Link to="/register">
+              <span>Create an account</span>
+            </Link>
           </div>
         ) }
       </div>
