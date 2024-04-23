@@ -13,7 +13,6 @@ import "./style.scss";
 const RegisterForm = () => {
   const [error, setError] = useState(null);
 
-
   const methods = useForm({
     mode: "onBlur"
   });
