@@ -9,7 +9,9 @@ import com.example.auctionapp.service.AuthService;
 import com.example.auctionapp.util.CookieUtility;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import jakarta.servlet.http.HttpServletResponse;
 
+@Validated
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
@@ -36,12 +39,12 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public User register(@RequestBody final UserRequest user) {
+    public User register(@Valid @RequestBody final UserRequest user) {
         return authService.signUp(user);
     }
 
     @PostMapping("/login")
-    public JwtResponse login(@RequestBody final LoginRequest loginRequest, HttpServletResponse response) {
+    public JwtResponse login(@Valid @RequestBody final LoginRequest loginRequest, HttpServletResponse response) {
         final JwtResponse jwtResponse = authService.signIn(loginRequest);
 
         CookieUtility.addCookie(response, CookieUtility.accessToken, jwtResponse.getAccessToken(), jwtSecure, accessExpiry);
