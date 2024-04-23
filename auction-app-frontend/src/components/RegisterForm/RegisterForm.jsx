@@ -1,25 +1,41 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import { FormContainer } from "src/components";
 
+import { registerUser  } from "src/services";
 import { ROUTE_PATHS } from "src/constants";
 import { registerFormFields } from "src/components/forms/fields";
 
 import "./style.scss";
 
 const RegisterForm = () => {
+  const [error, setError] = useState(null);
+
+
   const methods = useForm({
     mode: "onBlur"
   });
 
   const onSubmit = (data) => {
-    console.log(data);
+    data = { ...data, role: "USER" };
+
+    registerUser(data)
+      .then(() => {
+        setError(null);
+        // redirect to login page
+        window.location.href = ROUTE_PATHS.LOGIN;
+      })
+      .catch((error) => {
+        setError(error.message);
+    });
   }
 
   return (
     <div className="register-form-container">
       <h5 className="form-title">REGISTER</h5>
+      { error && <div className="error-message">{ error }</div> }
       <div className="register-form">
         <FormContainer 
           formFields={ registerFormFields } 

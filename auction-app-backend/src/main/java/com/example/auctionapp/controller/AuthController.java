@@ -19,7 +19,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-@SecurityRequirement(name = "JWT Security")
 public class AuthController {
     private final AuthService authService;
 
