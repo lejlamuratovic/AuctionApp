@@ -35,4 +35,9 @@
             }
         }
     }
+
+    .error-message { 
+        color: $error;
+        padding-bottom: 10px;
+    }
 }

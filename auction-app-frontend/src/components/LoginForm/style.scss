@@ -3,15 +3,12 @@
 .login-form-container {
     @include flex-container(column, center, center);
     width: 738px;
-    height: 756px;
     padding: 0px 0px 64px 0px;
     border: 1px solid $neutral09;
 
-    .form-options {
+    .login-form {
         @include flex-container(column, center, center);
-        gap: 64px;
-        width: 548px;
-        height: 490px;
+        gap: 32px;
 
         .form-inputs {
             @include flex-container(column, center, center);
@@ -26,9 +23,13 @@
         .forgot-password {
             color: $primary;
         }
-    }
 
-    .form-title {
-        color: $neutral00;
+        .form-title {
+            color: $neutral00;
+        }
+
+        .input-field {
+            margin-bottom: 32px;
+        }
     }
 }
