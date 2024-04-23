@@ -1,17 +1,23 @@
+import { useFormContext } from 'react-hook-form';
+
 import "./style.scss"
 
-const InputField = ({ ...props }) => {
+const InputField = ({ name, label, type, rules }) => {
+    const { register, formState: { errors } } = useFormContext(); 
+
     return (
         <div className="input-field">
-            <label htmlFor={ props.id } className="body-semibold">{ props.label }</label>
-            <input 
-                type={ props.type } 
-                placeholder={ props.placeholder } 
-                id={ props.id }
-                className={ props.isError ? 'error' : '' } 
+            <label htmlFor={ name } className="body-semibold">{ label }</label>
+            <input
+                id={ name }
+                type={ type }
+                { ...register(name, { ...rules }) }
+                className={ errors[name] ? 'error' : '' }
             />
+            { errors[name] && <span className="error-message body-small-regular">{ errors[name].message }</span> }
         </div>
-    )
+    );
 }
 
-export default InputField
+
+export default InputField;
