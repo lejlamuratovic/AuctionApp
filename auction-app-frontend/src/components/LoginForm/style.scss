@@ -31,5 +31,10 @@
         .input-field {
             margin-bottom: 32px;
         }
+
+        .error-message {
+            color: $error;
+            font-size: 14px;
+        }
     }
 }

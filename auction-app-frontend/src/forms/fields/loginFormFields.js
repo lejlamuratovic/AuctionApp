@@ -1,4 +1,4 @@
-import { validationRules } from 'src/components/forms/rules/validationRules';
+import { validationRules } from 'src/forms/rules/validationRules';
 
 export const loginFormFields = [
     {

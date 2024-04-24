@@ -2,7 +2,7 @@ import {
     requiredRule,
     minLengthRule,
     validationRules
-} from "src/components/forms/rules/validationRules";
+} from "src/forms/rules/validationRules";
 
 export const registerFormFields = [
   {

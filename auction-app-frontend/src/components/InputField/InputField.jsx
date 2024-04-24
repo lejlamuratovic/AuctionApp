@@ -19,5 +19,4 @@ const InputField = ({ name, label, type, rules }) => {
     );
 }
 
-
 export default InputField;

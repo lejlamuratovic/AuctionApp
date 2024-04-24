@@ -5,8 +5,8 @@ import { useForm } from "react-hook-form";
 import { FormContainer } from "src/components";
 
 import { registerUser  } from "src/services";
-import { ROUTE_PATHS } from "src/constants";
-import { registerFormFields } from "src/components/forms/fields";
+import { ROUTE_PATHS, BUTTON_LABELS } from "src/constants";
+import { registerFormFields } from "src/forms/fields";
 
 import "./style.scss";
 
@@ -35,11 +35,15 @@ const RegisterForm = () => {
     <div className="register-form-container">
       <h5 className="form-title">REGISTER</h5>
       <div className="register-form">
-        { error && <div className="error-message body-bold">{ error }</div> }
+        { error && 
+          <span className="error-message body-bold">
+            { error }
+          </span> 
+        }
         <FormContainer 
           formFields={ registerFormFields } 
           onSubmit={ methods.handleSubmit(onSubmit) }
-          buttonLabel="REGISTER"
+          buttonLabel={ BUTTON_LABELS.REGISTER }
           methods={ methods }
         />
         <div className="form-link body-bold">
