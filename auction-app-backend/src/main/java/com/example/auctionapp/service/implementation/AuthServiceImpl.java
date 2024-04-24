@@ -2,6 +2,7 @@ package com.example.auctionapp.service.implementation;
 
 import com.example.auctionapp.entity.RefreshTokenEntity;
 import com.example.auctionapp.entity.UserEntity;
+import com.example.auctionapp.entity.enums.UserRoles;
 import com.example.auctionapp.exceptions.authentication.EmailAlreadyInUseException;
 import com.example.auctionapp.exceptions.repository.ResourceNotFoundException;
 import com.example.auctionapp.model.RefreshToken;
@@ -55,7 +56,7 @@ public class AuthServiceImpl implements AuthService {
         userEntity.setFirstName(userRequest.getFirstName());
         userEntity.setLastName(userRequest.getLastName());
         userEntity.setEmail(userRequest.getEmail());
-        userEntity.setRole(userRequest.getRole());
+        userEntity.setRole(UserRoles.USER);
         userEntity.setPassword(passwordEncoder.encode(userRequest.getPassword()));
 
         return userRepository.save(userEntity).toDomainModel();

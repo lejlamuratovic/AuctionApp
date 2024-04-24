@@ -1,9 +1,7 @@
 package com.example.auctionapp.request;
 
-import com.example.auctionapp.entity.enums.UserRoles;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 public class UserRequest {
@@ -25,20 +23,15 @@ public class UserRequest {
                     """)
     private String password;
 
-    @NotNull(message = "Role is required")
-    private UserRoles role;
-
     public UserRequest(final String firstName,
                        final String lastName,
                        final String email,
-                       final String password,
-                       final UserRoles role
+                       final String password
     ) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.role = role;
     }
 
     public String getEmail() {
@@ -71,13 +64,5 @@ public class UserRequest {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public UserRoles getRole() {
-        return this.role;
-    }
-
-    public void setRole(final UserRoles role) {
-        this.role = role;
     }
 }
