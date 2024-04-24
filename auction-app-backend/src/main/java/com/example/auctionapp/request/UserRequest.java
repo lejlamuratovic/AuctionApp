@@ -18,7 +18,11 @@ public class UserRequest {
     private String email;
 
     @NotEmpty(message = "Password is required")
-    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$", message = "Password must contain at least one uppercase letter, one lowercase letter, one digit, and be at least 8 characters long.")
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$",
+            message = """
+                    Password must contain at least one uppercase letter,
+                    one lowercase letter, one digit, and be at least 8 characters long.
+                    """)
     private String password;
 
     @NotNull(message = "Role is required")

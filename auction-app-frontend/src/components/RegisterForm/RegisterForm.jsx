@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import { FormContainer } from "src/components";
@@ -11,6 +11,8 @@ import { registerFormFields } from "src/forms/fields";
 import "./style.scss";
 
 const RegisterForm = () => {
+  const navigate = useNavigate();
+
   const [error, setError] = useState(null);
 
   const methods = useForm({
@@ -18,13 +20,14 @@ const RegisterForm = () => {
   });
 
   const onSubmit = (data) => {
+    // add role from services, by default user
     data = { ...data, role: "USER" };
 
     registerUser(data)
       .then(() => {
         setError(null);
         // redirect to login page
-        window.location.href = ROUTE_PATHS.LOGIN;
+        navigate(ROUTE_PATHS.LOGIN);
       })
       .catch((error) => {
         setError(error.response.data.message);

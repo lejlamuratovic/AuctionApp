@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import { FormContainer } from "src/components";
@@ -10,6 +11,8 @@ import { ROUTE_PATHS, BUTTON_LABELS } from "src/constants";
 import "./style.scss";
 
 const LoginForm = () => {
+  const navigate = useNavigate();
+
   const [error, setError] = useState(null);
 
   const methods = useForm({
@@ -20,7 +23,7 @@ const LoginForm = () => {
     loginUser(data)
       .then(() => {
         // home page
-        window.location.href = ROUTE_PATHS.HOME;
+        navigate(ROUTE_PATHS.HOME);
       }).catch((error) => {
         setError(error.response.data.message);
       });
@@ -32,7 +35,7 @@ const LoginForm = () => {
         <div className="login-form">
           { error && 
             <span className="error-message body-semibold">
-              {`${error}. Please enter your credentials again.`}
+              { `${error}. Please enter your credentials again.` }
             </span> 
           }
           <FormContainer 

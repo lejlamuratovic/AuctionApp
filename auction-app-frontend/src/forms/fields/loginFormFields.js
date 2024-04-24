@@ -1,16 +1,16 @@
-import { validationRules } from 'src/forms/rules/validationRules';
+import { rules } from 'src/forms/rules';
 
 export const loginFormFields = [
     {
         label: "Email",
         type: "email",
         name: "email",
-        rules: { ...validationRules.email }
+        rules: rules.email()
     },
     {
         label: "Password",
         type: "password",
         name: "password",
-        rules: { ...validationRules.password }
+        rules: rules.password()
     }
 ];

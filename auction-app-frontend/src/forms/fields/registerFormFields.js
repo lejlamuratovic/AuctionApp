@@ -1,8 +1,4 @@
-import {
-    requiredRule,
-    minLengthRule,
-    validationRules
-} from "src/forms/rules/validationRules";
+import { rules } from "src/forms/rules";
 
 export const registerFormFields = [
   {
@@ -10,8 +6,8 @@ export const registerFormFields = [
     type: "text",
     name: "firstName",
     rules: {
-        ...requiredRule("First name"),
-        ...minLengthRule(2, "First name")
+        ...rules.required("First name"),
+        ...rules.minLength(2, "First name")
     }
   },
   {
@@ -19,20 +15,20 @@ export const registerFormFields = [
     type: "text",
     name: "lastName",
     rules: {
-      ...requiredRule("Last name"),
-      ...minLengthRule(2, "Last name")
+      ...rules.required("Last name"),
+      ...rules.minLength(2, "Last name")
     }
   },
   {
     label: "Email",
     type: "email",
     name: "email",
-    rules: { ...validationRules.email }
+    rules: rules.email()
   },
   {
     label: "Password",
     type: "password",
     name: "password",
-    rules: { ...validationRules.password }
+    rules: rules.password()
   }
 ];
