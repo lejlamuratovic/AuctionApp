@@ -29,22 +29,20 @@ const LoginForm = () => {
       });
   }
 
+  const errorMessage = error ? `${error}. Please enter your credentials again.` : null;
+
   return (
     <div className="login-form-container">
         <h5 className="form-title">LOGIN</h5>
         <div className="login-form">
-          { error && 
-            <span className="error-message body-semibold">
-              { `${error}. Please enter your credentials again.` }
-            </span> 
-          }
           <FormContainer 
             formFields={ loginFormFields } 
             onSubmit={ methods.handleSubmit(onSubmit) } 
             buttonLabel={ BUTTON_LABELS.LOGIN }
             methods={ methods }
+            error={ errorMessage }
           />
-        <span className="forgot-password body-bold">Forgot password?</span>
+          <span className="forgot-password body-bold">Forgot password?</span>
         </div>
     </div>
   )

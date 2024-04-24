@@ -8,6 +8,7 @@
 
     .register-form {
         @include flex-container(column, center, center);
+        max-width: 548px;
         gap: 32px;
 
         h5 {
@@ -36,9 +37,10 @@
             margin-bottom: 32px;
         }
 
-        .error-message {
+        .error-message-body {
             color: $error;
             font-size: 14px;
+            margin-bottom: 32px;
         }
     }
 }

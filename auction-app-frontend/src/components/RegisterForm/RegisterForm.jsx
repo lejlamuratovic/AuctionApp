@@ -38,16 +38,12 @@ const RegisterForm = () => {
     <div className="register-form-container">
       <h5 className="form-title">REGISTER</h5>
       <div className="register-form">
-        { error && 
-          <span className="error-message body-bold">
-            { error }
-          </span> 
-        }
         <FormContainer 
           formFields={ registerFormFields } 
           onSubmit={ methods.handleSubmit(onSubmit) }
           buttonLabel={ BUTTON_LABELS.REGISTER }
           methods={ methods }
+          error= { error }
         />
         <div className="form-link body-bold">
           <span>Already have an account? </span>

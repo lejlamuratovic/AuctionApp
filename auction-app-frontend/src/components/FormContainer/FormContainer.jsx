@@ -2,7 +2,7 @@ import { FormProvider } from 'react-hook-form';
 
 import { InputField, Button } from 'src/components';
 
-const FormContainer = ({ formFields, onSubmit, buttonLabel, methods }) => {
+const FormContainer = ({ formFields, onSubmit, buttonLabel, methods, error }) => {
   return (
     <FormProvider { ...methods }>
       <form onSubmit={ methods.handleSubmit(onSubmit) }>
@@ -15,6 +15,11 @@ const FormContainer = ({ formFields, onSubmit, buttonLabel, methods }) => {
                 rules={ field.rules }
             />
         )) }
+        { error && 
+          <div className="error-message-body body-semibold">
+            { error }
+          </div> 
+        }
         <Button type="submit" variant="filled" label={ buttonLabel } />
       </form>
     </FormProvider>
