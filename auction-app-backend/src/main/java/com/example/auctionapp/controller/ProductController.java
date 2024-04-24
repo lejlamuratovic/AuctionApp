@@ -44,7 +44,7 @@ public class ProductController {
     public Product addProduct(@RequestBody final ProductAddRequest product) {
         return this.productService.addProduct(product);
     }
-    
+
     @GetMapping(path = "/{id}")
     public Product getProductById(@PathVariable final UUID id) {
         return this.productService.getProductById(id);

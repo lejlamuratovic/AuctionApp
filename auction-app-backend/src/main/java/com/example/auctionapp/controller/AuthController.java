@@ -44,13 +44,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public JwtResponse login(@Valid @RequestBody final LoginRequest loginRequest, HttpServletResponse response) {
+    public String login(@Valid @RequestBody final LoginRequest loginRequest, HttpServletResponse response) {
         final JwtResponse jwtResponse = authService.signIn(loginRequest);
 
         CookieUtility.addCookie(response, CookieUtility.accessToken, jwtResponse.getAccessToken(), jwtSecure, accessExpiry);
         CookieUtility.addCookie(response, CookieUtility.refreshToken, jwtResponse.getRefreshToken(), jwtSecure, refreshExpiry);
 
-        return jwtResponse;
+        return jwtResponse.getName();
     }
 
     @PostMapping("/refresh-token")
