@@ -2,6 +2,7 @@ package com.example.auctionapp.service.implementation;
 
 import com.example.auctionapp.entity.RefreshTokenEntity;
 import com.example.auctionapp.entity.UserEntity;
+import com.example.auctionapp.exceptions.authentication.EmailAlreadyInUseException;
 import com.example.auctionapp.exceptions.repository.ResourceNotFoundException;
 import com.example.auctionapp.model.RefreshToken;
 import com.example.auctionapp.model.User;
@@ -16,6 +17,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -41,6 +44,12 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public User signUp(final UserRequest userRequest) {
+        final Optional<UserEntity> user = userRepository.findUserEntityByEmail(userRequest.getEmail());
+
+        if(user.isPresent()) {
+            throw new EmailAlreadyInUseException("This email is already in use");
+        }
+
         UserEntity userEntity = new UserEntity();
 
         userEntity.setFirstName(userRequest.getFirstName());

@@ -27,15 +27,15 @@ const RegisterForm = () => {
         window.location.href = ROUTE_PATHS.LOGIN;
       })
       .catch((error) => {
-        setError(error.message);
+        setError(error.response.data.message);
     });
   }
 
   return (
     <div className="register-form-container">
       <h5 className="form-title">REGISTER</h5>
-      { error && <div className="error-message">{ error }</div> }
       <div className="register-form">
+        { error && <div className="error-message body-bold">{ error }</div> }
         <FormContainer 
           formFields={ registerFormFields } 
           onSubmit={ methods.handleSubmit(onSubmit) }
