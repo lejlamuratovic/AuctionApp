@@ -20,8 +20,7 @@ const RegisterForm = () => {
   });
 
   const onSubmit = (data) => {
-    // add role from services, by default user
-    data = { ...data, role: "USER" };
+    data = { ...data };
 
     registerUser(data)
       .then(() => {
