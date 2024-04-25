@@ -4,6 +4,7 @@ import com.example.auctionapp.model.Product;
 import com.example.auctionapp.response.ProductSearchResponse;
 import com.example.auctionapp.service.ProductService;
 import com.example.auctionapp.request.ProductAddRequest;
+import com.example.auctionapp.util.SecurityRoles;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -39,7 +40,7 @@ public class ProductController {
         return this.productService.getProducts(categoryId, searchProduct, page, size);
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @PreAuthorize(SecurityRoles.ANY_ADMIN_OR_USER)
     @PostMapping
     public Product addProduct(@RequestBody final ProductAddRequest product) {
         return this.productService.addProduct(product);
@@ -50,13 +51,13 @@ public class ProductController {
         return this.productService.getProductById(id);
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @PreAuthorize(SecurityRoles.ANY_ADMIN_OR_USER)
     @PutMapping(path = "/{id}")
     public Product updateProduct(@PathVariable final UUID id, @RequestBody final ProductAddRequest product) {
         return this.productService.updateProduct(id, product);
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @PreAuthorize(SecurityRoles.ANY_ADMIN_OR_USER)
     @DeleteMapping(path = "/{id}")
     public void deleteProduct(@PathVariable final UUID id) {
         this.productService.deleteProduct(id);

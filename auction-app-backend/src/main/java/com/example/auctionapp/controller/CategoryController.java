@@ -3,6 +3,7 @@ package com.example.auctionapp.controller;
 import com.example.auctionapp.model.Category;
 import com.example.auctionapp.service.CategoryService;
 import com.example.auctionapp.request.CategoryAddRequest;
+import com.example.auctionapp.util.SecurityRoles;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,7 +43,7 @@ public class CategoryController {
         return this.categoryService.getCategoriesWithSubcategories();
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize(SecurityRoles.ADMIN)
     @PostMapping
     public Category addCategory(@RequestBody final CategoryAddRequest category) {
         return this.categoryService.addCategory(category);
@@ -53,13 +54,13 @@ public class CategoryController {
         return this.categoryService.getCategoryById(id);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize(SecurityRoles.ADMIN)
     @PutMapping(path = "/{id}")
     public Category updateCategory(@PathVariable final UUID id, @RequestBody final CategoryAddRequest category) {
         return this.categoryService.updateCategory(id, category);
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize(SecurityRoles.ADMIN)
     @DeleteMapping(path = "/{id}")
     public void deleteCategory(@PathVariable final UUID id) {
         this.categoryService.deleteCategory(id);

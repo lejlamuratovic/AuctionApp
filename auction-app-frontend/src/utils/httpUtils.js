@@ -22,7 +22,7 @@ const refreshToken = async () => {
     const newAccessToken = response.data;
 
     localStorage.setItem("accessToken", newAccessToken); // to local storage
-    return `Bearer ${newAccessToken}`; // to headers 
+    return newAccessToken; // to headers 
   } catch (error) {
     return null;
   }
@@ -30,13 +30,17 @@ const refreshToken = async () => {
 
 // axios request interceptor
 API.interceptors.request.use(async (config) => {
-  const accessToken = localStorage.getItem("accessToken");
+  let accessToken = localStorage.getItem("accessToken");
 
   if (accessToken && isTokenExpired(accessToken)) {
     const newAccessToken = await refreshToken();
-    config.headers["Authorization"] = newAccessToken || accessToken; // use old if failed to refresh
-  } else {
+    accessToken = newAccessToken || accessToken;
+  }
+
+  if (accessToken) {
     config.headers["Authorization"] = `Bearer ${accessToken}`;
+  } else {
+    delete config.headers["Authorization"]; // remove invalid token
   }
 
   return config;
