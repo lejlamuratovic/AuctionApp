@@ -1,0 +1,54 @@
+package com.example.auctionapp.model;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+public class Notification {
+    private UUID notificationId;
+    private String messageContent;
+    private Boolean readStatus;
+    private LocalDateTime notificationTime;
+    private UUID userId;
+
+    public Notification() { }
+
+    public UUID getNotificationId() {
+        return this.notificationId;
+    }
+
+    public void setNotificationId(final UUID notificationId) {
+        this.notificationId = notificationId;
+    }
+
+    public String getMessageContent() {
+        return this.messageContent;
+    }
+
+    public void setMessageContent(final String messageContent) {
+        this.messageContent = messageContent;
+    }
+
+    public Boolean getReadStatus() {
+        return this.readStatus;
+    }
+
+    public void setReadStatus(final Boolean readStatus) {
+        this.readStatus = readStatus;
+    }
+
+    public LocalDateTime getNotificationTime() {
+        return this.notificationTime;
+    }
+
+    public void setNotificationTime(final LocalDateTime notificationTime) {
+        this.notificationTime = notificationTime;
+    }
+
+    public UUID getUserId() {
+        return this.userId;
+    }
+
+    public void setUserId(final UUID userId) {
+        this.userId = userId;
+    }
+}
