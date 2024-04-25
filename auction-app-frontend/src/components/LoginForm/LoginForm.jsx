@@ -45,7 +45,6 @@ const LoginForm = () => {
             methods={ methods }
             error={ errorMessage }
           />
-          <span className="forgot-password body-bold">Forgot password?</span>
         </div>
     </div>
   )
