@@ -14,6 +14,8 @@ const Header = () => {
 
   const onLogout = () => {
     setUserName(null);
+    localStorage.removeItem('userName');
+    localStorage.removeItem('accessToken');
     logoutUser();
     navigate(ROUTE_PATHS.LOGIN);
   }

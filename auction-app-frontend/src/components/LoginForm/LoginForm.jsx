@@ -24,8 +24,8 @@ const LoginForm = () => {
   const onSubmit = (data) => {
     loginUser(data)
       .then((response) => {
-        // home page
-        setUserName(response);
+        setUserName(response.name);
+        localStorage.setItem("accessToken", response.accessToken);
         navigate(ROUTE_PATHS.HOME);
       }).catch((error) => {
         setError(error.response.data.message);

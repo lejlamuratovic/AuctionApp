@@ -21,18 +21,18 @@ import {
 
 import { BreadcrumbProvider } from "src/store/BreadcrumbContext";
 import { SuggestionProvider } from "src/store/SuggestionContext";
+import { UserNameProvider } from "src/store/UserNameContext";
 
 import { ROUTE_PATHS } from "src/constants";
 
 import "src/scss/index.scss";
-import { UserNamePorivder } from "./store/UserNameContext";
 
 const App = () => {
   return (
     <>
       <BreadcrumbProvider>
       <SuggestionProvider>
-      <UserNamePorivder>
+      <UserNameProvider>
         <Header /> 
         <Navbar />
         <div className="main-content">
@@ -71,7 +71,7 @@ const App = () => {
           </div>
           <Footer />
         </div>
-      </UserNamePorivder>
+      </UserNameProvider>
       </SuggestionProvider>
       </BreadcrumbProvider>
     </>

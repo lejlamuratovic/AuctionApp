@@ -74,7 +74,7 @@ public class AuthServiceImpl implements AuthService {
         final String accessToken = jwtService.generateToken(user);
         final String refreshToken = refreshTokenService.createRefreshToken(user.getEmail()).getToken();
 
-        return new JwtResponse(user.getFirstName() + " " + user.getLastName(), accessToken, refreshToken);
+        return new JwtResponse(user.getFirstName().concat(" ").concat(user.getLastName()), accessToken, refreshToken);
     }
 
     @Override

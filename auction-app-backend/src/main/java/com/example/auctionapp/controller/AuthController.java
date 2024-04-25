@@ -7,7 +7,6 @@ import com.example.auctionapp.request.UserRequest;
 import com.example.auctionapp.response.JwtResponse;
 import com.example.auctionapp.service.AuthService;
 import com.example.auctionapp.util.CookieUtility;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,9 +27,6 @@ public class AuthController {
     @Value("${JWT_SECURE}")
     private boolean jwtSecure;
 
-    @Value("${cookie.accessExpiry}")
-    private int accessExpiry;
-
     @Value("${cookie.refreshExpiry}")
     private int refreshExpiry;
 
@@ -44,13 +40,12 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@Valid @RequestBody final LoginRequest loginRequest, HttpServletResponse response) {
+    public JwtResponse login(@Valid @RequestBody final LoginRequest loginRequest, HttpServletResponse response) {
         final JwtResponse jwtResponse = authService.signIn(loginRequest);
 
-        CookieUtility.addCookie(response, CookieUtility.accessToken, jwtResponse.getAccessToken(), jwtSecure, accessExpiry);
         CookieUtility.addCookie(response, CookieUtility.refreshToken, jwtResponse.getRefreshToken(), jwtSecure, refreshExpiry);
 
-        return jwtResponse.getName();
+        return jwtResponse;
     }
 
     @PostMapping("/refresh-token")
@@ -61,11 +56,7 @@ public class AuthController {
             throw new RefreshTokenNotFoundException("No refresh token found in request");
         }
 
-        final String newAccessToken = authService.refreshAccessToken(refreshToken);
-
-        CookieUtility.addCookie(response, CookieUtility.accessToken, newAccessToken, jwtSecure, accessExpiry);
-
-        return newAccessToken;
+        return authService.refreshAccessToken(refreshToken);
     }
 
     @GetMapping("/logout")
@@ -78,7 +69,6 @@ public class AuthController {
 
         authService.deleteRefreshToken(refreshToken);
 
-        CookieUtility.deleteCookie(response, CookieUtility.accessToken, jwtSecure);
         CookieUtility.deleteCookie(response, CookieUtility.refreshToken, jwtSecure);
     }
 }

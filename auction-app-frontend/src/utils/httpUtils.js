@@ -1,10 +1,45 @@
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 import { BASE_URL } from "src/constants";
 
 const API = axios.create({
   baseURL: BASE_URL,
   withCredentials: true
+});
+
+// to check token expiration
+const isTokenExpired = (token) => {
+  const { exp } = jwtDecode(token);
+
+  return Date.now() >= (exp * 1000) - (30 * 1000); // 30 seconds before expiration
+};
+
+// to refresh access token
+const refreshToken = async () => {
+  try {
+    const response = await axios.post(`${BASE_URL}/auth/refresh-token`, {}, { withCredentials: true });
+    const newAccessToken = response.data;
+
+    localStorage.setItem("accessToken", newAccessToken); // to local storage
+    return `Bearer ${newAccessToken}`; // to headers 
+  } catch (error) {
+    return null;
+  }
+};
+
+// axios request interceptor
+API.interceptors.request.use(async (config) => {
+  const accessToken = localStorage.getItem("accessToken");
+
+  if (accessToken && isTokenExpired(accessToken)) {
+    const newAccessToken = await refreshToken();
+    config.headers["Authorization"] = newAccessToken || accessToken; // use old if failed to refresh
+  } else {
+    config.headers["Authorization"] = `Bearer ${accessToken}`;
+  }
+
+  return config;
 });
 
 const getRequest = async (endpoint) => {
