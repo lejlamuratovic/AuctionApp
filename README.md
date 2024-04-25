@@ -13,7 +13,7 @@
 Before you begin, ensure you have the following tools installed:
 - Git
 - Node.js and npm
-- Java JDK 11 or later
+- Java JDK 17
 - Maven
 - PostgreSQL
 
