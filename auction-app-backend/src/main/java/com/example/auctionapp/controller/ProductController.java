@@ -40,7 +40,7 @@ public class ProductController {
         return this.productService.getProducts(categoryId, searchProduct, page, size);
     }
 
-    @PreAuthorize(SecurityRoles.ANY_ADMIN_OR_USER)
+    @PreAuthorize(SecurityRoles.ALL)
     @PostMapping
     public Product addProduct(@RequestBody final ProductAddRequest product) {
         return this.productService.addProduct(product);
@@ -51,13 +51,13 @@ public class ProductController {
         return this.productService.getProductById(id);
     }
 
-    @PreAuthorize(SecurityRoles.ANY_ADMIN_OR_USER)
+    @PreAuthorize(SecurityRoles.ALL)
     @PutMapping(path = "/{id}")
     public Product updateProduct(@PathVariable final UUID id, @RequestBody final ProductAddRequest product) {
         return this.productService.updateProduct(id, product);
     }
 
-    @PreAuthorize(SecurityRoles.ANY_ADMIN_OR_USER)
+    @PreAuthorize(SecurityRoles.ALL)
     @DeleteMapping(path = "/{id}")
     public void deleteProduct(@PathVariable final UUID id) {
         this.productService.deleteProduct(id);
