@@ -25,7 +25,7 @@ const RegisterForm = () => {
     registerUser(data)
       .then(() => {
         setError(null);
-        // redirect to login page
+
         navigate(ROUTE_PATHS.LOGIN);
       })
       .catch((error) => {
