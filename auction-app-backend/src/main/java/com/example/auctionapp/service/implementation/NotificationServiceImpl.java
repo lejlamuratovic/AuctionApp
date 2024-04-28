@@ -13,7 +13,7 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void sendMessage(final String userId, final String message){
+    public void notifyUser(final String userId, final String message){
          mainSocketHandler.sendMessage(userId, message);
     }
 }

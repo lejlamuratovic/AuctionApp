@@ -20,8 +20,8 @@ public class NotificationController {
     }
 
     @PostMapping("/send-to/{userId}")
-    public void sendChatMessage(final @PathVariable String userId,
+    public void notifyUser(final @PathVariable String userId,
                                 final @RequestBody NotificationRequest notification) throws IOException {
-        notificationService.sendMessage(userId, notification.getMessage());
+        notificationService.notifyUser(userId, notification.getMessage());
     }
 }
