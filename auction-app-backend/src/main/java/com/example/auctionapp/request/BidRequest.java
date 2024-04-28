@@ -37,7 +37,7 @@ public class BidRequest {
     }
 
     public BigDecimal getBidAmount() {
-        return bidAmount;
+        return this.bidAmount;
     }
 
     public void setBidAmount(final BigDecimal bidAmount) {

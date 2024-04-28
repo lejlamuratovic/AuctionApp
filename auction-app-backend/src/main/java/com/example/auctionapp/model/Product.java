@@ -85,7 +85,7 @@ public class Product {
     }
 
     public List<ProductImage> getProductImages() {
-        return productImages;
+        return this.productImages;
     }
 
     public void setProductImages(final List<ProductImage> productImages) {
