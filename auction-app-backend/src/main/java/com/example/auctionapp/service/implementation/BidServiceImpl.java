@@ -1,6 +1,7 @@
 package com.example.auctionapp.service.implementation;
 
 import com.example.auctionapp.entity.BidEntity;
+import com.example.auctionapp.entity.ProductEntity;
 import com.example.auctionapp.exceptions.repository.ResourceNotFoundException;
 import com.example.auctionapp.model.Bid;
 import com.example.auctionapp.repository.BidRepository;
@@ -9,6 +10,7 @@ import com.example.auctionapp.repository.UserRepository;
 import com.example.auctionapp.request.BidRequest;
 import com.example.auctionapp.service.BidService;
 import com.example.auctionapp.service.NotificationService;
+import com.example.auctionapp.util.ValidationUtility;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -32,19 +34,23 @@ public class BidServiceImpl implements BidService {
     public Bid placeBid(final BidRequest bidRequest) {
         BidEntity bidEntity = bidRequest.toEntity();
 
+        if (bidRequest.getProductId() != null) {
+            final ProductEntity product = productRepository.findById(bidRequest.getProductId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Product with the given ID does not exist"));
+
+            ValidationUtility.validateBidTime(bidRequest.getBidTime(), product);
+            ValidationUtility.validateBidAmount(bidRequest.getBidAmount(), product);
+
+            bidEntity.setProduct(product);
+        }
+
         if (bidRequest.getUserId() != null) {
             bidEntity.setUser(userRepository.findById(bidRequest.getUserId())
                     .orElseThrow(() -> new ResourceNotFoundException("User with the given ID does not exist")));
         }
 
-        if (bidRequest.getProductId() != null) {
-            bidEntity.setProduct(productRepository.findById(bidRequest.getProductId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Product with the given ID does not exist")));
-        }
-
         // retrieve the current highest bid entity
         final BidEntity highestBidEntity = bidRepository.findHighestBidByProductId(bidRequest.getProductId());
-        // extract the highest amount
         final BigDecimal highestBidAmount = highestBidEntity != null ? highestBidEntity.getBidAmount() : null;
 
         if (highestBidAmount == null || bidRequest.getBidAmount().compareTo(highestBidAmount) > 0) {
