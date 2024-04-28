@@ -1,8 +1,6 @@
 package com.example.auctionapp.entity;
 
 import com.example.auctionapp.model.Product;
-import com.example.auctionapp.entity.CategoryEntity;
-import com.example.auctionapp.entity.ProductImageEntity;
 import com.example.auctionapp.model.ProductImage;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,6 +13,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.math.BigDecimal;
@@ -64,6 +63,12 @@ public class ProductEntity {
     @OneToMany(mappedBy = "productEntity", fetch = FetchType.LAZY)
     private List<ProductImageEntity> productImages;
 
+    @Formula("(SELECT COUNT(*) FROM auction_app.bid b WHERE b.product_id = product_id)")
+    private int bidsCount;
+
+    @Formula("(SELECT MAX(b.bid_amount) FROM auction_app.bid b WHERE b.product_id = product_id)")
+    private BigDecimal highestBid;
+
     public ProductEntity() {
     }
 
@@ -103,6 +108,8 @@ public class ProductEntity {
                 .collect(toList());
         product.setProductImages(productImageList);
         product.setUserId(this.userEntity.getUserId());
+        product.setBidsCount(this.bidsCount);
+        product.setHighestBid(this.highestBid);
 
         return product;
     }
@@ -193,5 +200,21 @@ public class ProductEntity {
 
     public void setUserEntity(final UserEntity userEntity) {
         this.userEntity = userEntity;
+    }
+
+    public int getBidsCount() {
+        return this.bidsCount;
+    }
+
+    public void setBidsCount(final int bidsCount) {
+        this.bidsCount = bidsCount;
+    }
+
+    public BigDecimal getHighestBid() {
+        return this.highestBid;
+    }
+
+    public void setHighestBid(final BigDecimal highestBid) {
+        this.highestBid = highestBid;
     }
 }

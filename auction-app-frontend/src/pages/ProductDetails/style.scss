@@ -38,6 +38,8 @@
   }
 
   .product-details {
+    @include flex-container(column, flex-start, flex-start);
+    gap: 64px;
     width: 548px;
 
     .product-name {
@@ -84,6 +86,29 @@
           font-size: 14px;
           color: $neutral00;
         }
+      }
+    }
+
+    .product-bid-details {
+      @include flex-container(column, center, center);
+      font-family: $font-family-lato;
+      width: 263px;
+      height: 137px;
+      border: 1px solid $neutral09;
+      gap: 16px;
+
+      .item-key {
+        font-size: 16px;
+        font-weight: 300;
+        line-height: 19.2px;
+      }
+
+      .item-value {
+        color: $primary;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 19.2px;
+        text-align: left;
       }
     }
   }
