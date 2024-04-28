@@ -1,5 +1,7 @@
 package com.example.auctionapp.service;
 
+import java.util.UUID;
+
 public interface NotificationService {
-    void notifyUser(final String userId, final String message);
+    public void notifyUser(final UUID userId, final String message);
 }

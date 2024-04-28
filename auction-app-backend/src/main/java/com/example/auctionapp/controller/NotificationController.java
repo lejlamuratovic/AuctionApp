@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/notifications")
@@ -20,7 +21,7 @@ public class NotificationController {
     }
 
     @PostMapping("/send-to/{userId}")
-    public void notifyUser(final @PathVariable String userId,
+    public void notifyUser(final @PathVariable UUID userId,
                                 final @RequestBody NotificationRequest notification) throws IOException {
         notificationService.notifyUser(userId, notification.getMessage());
     }

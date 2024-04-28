@@ -42,17 +42,21 @@ public class BidServiceImpl implements BidService {
                     .orElseThrow(() -> new ResourceNotFoundException("Product with the given ID does not exist")));
         }
 
-        // check if its highest bid
-        final BigDecimal highestBid = bidRepository.findHighestBidByProductId(bidRequest.getProductId());
+        // retrieve the current highest bid entity
+        final BidEntity highestBidEntity = bidRepository.findHighestBidByProductId(bidRequest.getProductId());
+        // extract the highest amount
+        final BigDecimal highestBidAmount = highestBidEntity != null ? highestBidEntity.getBidAmount() : null;
 
-        if (highestBid == null || bidRequest.getBidAmount().compareTo(highestBid) > 0) {
-            bidRepository.save(bidEntity); // bid higher, save it
+        if (highestBidAmount == null || bidRequest.getBidAmount().compareTo(highestBidAmount) > 0) {
+            // update the previous highest bidder
+            if (highestBidEntity != null) {
+                notificationService.notifyUser(highestBidEntity.getUser().getUserId(), LOWER_BID);
+            }
 
-            notificationService.notifyUser(bidRequest.getUserId().toString(),
-                    HIGHEST_BID);
+            bidRepository.save(bidEntity); // save the highest bid
+            notificationService.notifyUser(bidRequest.getUserId(), HIGHEST_BID);
         } else {
-            notificationService.notifyUser(bidRequest.getUserId().toString(),
-                    LOWER_BID);
+            notificationService.notifyUser(bidRequest.getUserId(), LOWER_BID);
         }
 
         return bidEntity.toDomainModel();
