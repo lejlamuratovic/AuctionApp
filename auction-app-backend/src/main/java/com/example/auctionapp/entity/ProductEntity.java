@@ -57,6 +57,10 @@ public class ProductEntity {
     @JoinColumn(name = "category_id")
     private CategoryEntity categoryEntity;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seller_id")
+    private UserEntity userEntity;
+
     @OneToMany(mappedBy = "productEntity", fetch = FetchType.LAZY)
     private List<ProductImageEntity> productImages;
 
@@ -70,7 +74,8 @@ public class ProductEntity {
                          final LocalDateTime startDate,
                          final LocalDateTime endDate,
                          final String status,
-                         final CategoryEntity categoryEntity) {
+                         final CategoryEntity categoryEntity,
+                         final UserEntity userEntity) {
         this.productId = productId;
         this.name = name;
         this.description = description;
@@ -79,6 +84,7 @@ public class ProductEntity {
         this.endDate = endDate;
         this.status = status;
         this.categoryEntity = categoryEntity;
+        this.userEntity = userEntity;
     }
 
     public Product toDomainModel() {
@@ -96,12 +102,13 @@ public class ProductEntity {
                 .map(ProductImageEntity::toDomainModel)
                 .collect(toList());
         product.setProductImages(productImageList);
+        product.setUserId(this.userEntity.getUserId());
 
         return product;
     }
 
     public UUID getProductId() {
-        return productId;
+        return this.productId;
     }
 
     public void setProductId(final UUID productId) {
@@ -109,7 +116,7 @@ public class ProductEntity {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(final String name) {
@@ -117,7 +124,7 @@ public class ProductEntity {
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public void setDescription(final String description) {
@@ -125,7 +132,7 @@ public class ProductEntity {
     }
 
     public BigDecimal getStartPrice() {
-        return startPrice;
+        return this.startPrice;
     }
 
     public void setStartPrice(final BigDecimal startPrice) {
@@ -133,7 +140,7 @@ public class ProductEntity {
     }
 
     public LocalDateTime getStartDate() {
-        return startDate;
+        return this.startDate;
     }
 
     public void setStartDate(final LocalDateTime startDate) {
@@ -141,7 +148,7 @@ public class ProductEntity {
     }
 
     public LocalDateTime getEndDate() {
-        return endDate;
+        return this.endDate;
     }
 
     public void setEndDate(final LocalDateTime endDate) {
@@ -149,7 +156,7 @@ public class ProductEntity {
     }
 
     public String getStatus() {
-        return status;
+        return this.status;
     }
 
     public void setStatus(final String status) {
@@ -157,7 +164,7 @@ public class ProductEntity {
     }
 
     public CategoryEntity getCategory() {
-        return categoryEntity;
+        return this.categoryEntity;
     }
 
     public void setCategory(final CategoryEntity categoryEntity) {
@@ -165,10 +172,26 @@ public class ProductEntity {
     }
 
     public List<ProductImageEntity> getProductImages() {
-        return productImages;
+        return this.productImages;
     }
 
     public void setProductImages(final List<ProductImageEntity> productImages) {
         this.productImages = productImages;
+    }
+
+    public CategoryEntity getCategoryEntity() {
+        return this.categoryEntity;
+    }
+
+    public void setCategoryEntity(final CategoryEntity categoryEntity) {
+        this.categoryEntity = categoryEntity;
+    }
+
+    public UserEntity getUserEntity() {
+        return this.userEntity;
+    }
+
+    public void setUserEntity(final UserEntity userEntity) {
+        this.userEntity = userEntity;
     }
 }

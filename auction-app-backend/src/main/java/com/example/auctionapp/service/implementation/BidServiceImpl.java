@@ -40,6 +40,7 @@ public class BidServiceImpl implements BidService {
 
             ValidationUtility.validateBidTime(bidRequest.getBidTime(), product);
             ValidationUtility.validateBidAmount(bidRequest.getBidAmount(), product);
+            ValidationUtility.productOwner(bidRequest.getUserId(), product.getUserEntity().getUserId());
 
             bidEntity.setProduct(product);
         }

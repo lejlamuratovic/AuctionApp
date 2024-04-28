@@ -30,7 +30,6 @@ public class NotificationServiceImpl implements NotificationService {
 
         notificationEntity.setMessageContent(message);
         notificationEntity.setNotificationTime(LocalDateTime.now());
-        notificationEntity.setReadStatus(true); // remove this part later
 
         final UserEntity userEntity = userRepository.findById(userId).orElseThrow(() ->
                 new ResourceNotFoundException("User with the given ID does not exist"));

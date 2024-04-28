@@ -15,12 +15,13 @@ public class Product {
     private String status;
     private UUID categoryId;
     List<ProductImage> productImages;
+    private UUID userId;
 
     public Product() {
     }
 
     public UUID getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(final UUID id) {
@@ -28,7 +29,7 @@ public class Product {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(final String name) {
@@ -36,7 +37,7 @@ public class Product {
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public void setDescription(final String description) {
@@ -44,7 +45,7 @@ public class Product {
     }
 
     public BigDecimal getStartPrice() {
-        return startPrice;
+        return this.startPrice;
     }
 
     public void setStartPrice(final BigDecimal startPrice) {
@@ -52,7 +53,7 @@ public class Product {
     }
 
     public LocalDateTime getStartDate() {
-        return startDate;
+        return this.startDate;
     }
 
     public void setStartDate(final LocalDateTime startDate) {
@@ -60,7 +61,7 @@ public class Product {
     }
 
     public LocalDateTime getEndDate() {
-        return endDate;
+        return this.endDate;
     }
 
     public void setEndDate(final LocalDateTime endDate) {
@@ -68,7 +69,7 @@ public class Product {
     }
 
     public String getStatus() {
-        return status;
+        return this.status;
     }
 
     public void setStatus(final String status) {
@@ -76,7 +77,7 @@ public class Product {
     }
 
     public UUID getCategoryId() {
-        return categoryId;
+        return this.categoryId;
     }
 
     public void setCategoryId(final UUID categoryId) {
@@ -89,5 +90,13 @@ public class Product {
 
     public void setProductImages(final List<ProductImage> productImages) {
         this.productImages = productImages;
+    }
+
+    public UUID getUserId() {
+        return this.userId;
+    }
+
+    public void setUserId(final UUID userId) {
+        this.userId = userId;
     }
 }

@@ -6,7 +6,6 @@ import java.util.UUID;
 public class Notification {
     private UUID notificationId;
     private String messageContent;
-    private Boolean readStatus;
     private LocalDateTime notificationTime;
     private UUID userId;
 
@@ -26,14 +25,6 @@ public class Notification {
 
     public void setMessageContent(final String messageContent) {
         this.messageContent = messageContent;
-    }
-
-    public Boolean getReadStatus() {
-        return this.readStatus;
-    }
-
-    public void setReadStatus(final Boolean readStatus) {
-        this.readStatus = readStatus;
     }
 
     public LocalDateTime getNotificationTime() {

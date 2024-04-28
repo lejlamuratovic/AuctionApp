@@ -28,9 +28,6 @@ public class NotificationEntity {
     @Column(name = "message_content", columnDefinition = "TEXT")
     private String messageContent;
 
-    @Column(name = "read_status")
-    private Boolean readStatus;
-
     @Column(name = "notification_time")
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime notificationTime;
@@ -44,12 +41,10 @@ public class NotificationEntity {
     public NotificationEntity(
             final UUID notificationId,
             final String messageContent,
-            final Boolean readStatus,
             final LocalDateTime notificationTime,
             final UserEntity userEntity) {
         this.notificationId = notificationId;
         this.messageContent = messageContent;
-        this.readStatus = readStatus;
         this.notificationTime = notificationTime;
         this.userEntity = userEntity;
     }
@@ -60,7 +55,6 @@ public class NotificationEntity {
         notification.setNotificationId(this.notificationId);
         notification.setMessageContent(this.messageContent);
         notification.setNotificationTime(this.notificationTime);
-        notification.setReadStatus(this.readStatus);
         notification.setUserId(this.userEntity.getUserId());
 
         return notification;
@@ -80,14 +74,6 @@ public class NotificationEntity {
 
     public void setMessageContent(final String messageContent) {
         this.messageContent = messageContent;
-    }
-
-    public Boolean getReadStatus() {
-        return this.readStatus;
-    }
-
-    public void setReadStatus(final Boolean readStatus) {
-        this.readStatus = readStatus;
     }
 
     public LocalDateTime getNotificationTime() {
