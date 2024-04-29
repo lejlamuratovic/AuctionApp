@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { Tabs, LoadingComponent, ErrorComponent, FormContainer } from "src/components";
 
 import { useBreadcrumb } from "src/store/BreadcrumbContext";
+import { useUser } from "src/store/UserContext";
 import { getProduct } from "src/services";
 
 import { PRODUCT_DETAILS_TABS, BUTTON_LABELS } from "src/constants";
@@ -22,6 +23,8 @@ const ProductDetails = () => {
   const [error, setError] = useState(null);
   const [timeLeft, setTimeLeft] = useState(0);
 
+  const { userType } = useUser(); 
+
   const { id } = useParams();
 
   const { setTitle } = useBreadcrumb();
@@ -36,7 +39,6 @@ const ProductDetails = () => {
     getProduct(id)
       .then((productDetail) => {
         setProduct(productDetail);
-        console.log(productDetail);
         setMainImage(productDetail.productImages[0].imageUrl);
         // initially remove the first image as it is set as main image
         setProductImages(productDetail.productImages.slice(1));
@@ -156,7 +158,7 @@ const ProductDetails = () => {
               <span className="item-value">{ timeLeft }</span>
             </div>
           </div>
-          { timeLeft !== "Expired" && (
+          { (timeLeft !== "Expired" && userType == "USER") && (
             <div className="place-bid-form">
               <FormContainer 
                 formFields={ placeBidsFormFields } 
