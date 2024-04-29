@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { set } from 'react-hook-form';
 import { getDecodedToken } from 'src/utils/jwtDecode';
 
 const UserContext = createContext(null);
@@ -15,22 +14,14 @@ export const UserProvider = ({ children }) => {
   const [userType, setUserType] = useState("");
   const [userId, setUserId] = useState("");
 
-  const getUserTypeFromToken = () => {
-    const decodedToken = getDecodedToken(token);
-  
-    setUserType(decodedToken?.role);
-  };
-
-  const getUserIdFromToken = () => {
-    const decodedToken = getDecodedToken(token);
-
-    setUserId(decodedToken?.id);
-  }
-
   useEffect(() => {
     if (token) {
-      getUserTypeFromToken();
-      getUserIdFromToken();
+      const decodedToken = getDecodedToken(token);
+      setUserType(decodedToken?.role);
+      setUserId(decodedToken?.id);
+    } else {
+      setUserType("");
+      setUserId("");
     }
   }, [token]);
 

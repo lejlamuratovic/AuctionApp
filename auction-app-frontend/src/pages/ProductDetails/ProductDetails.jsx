@@ -38,19 +38,20 @@ const ProductDetails = () => {
   const fetchInitialData = () => {
     setLoading(true);
 
-    getProduct(id)
-      .then((productDetail) => {
-        setProduct(productDetail);
-        setMainImage(productDetail.productImages[0].imageUrl);
-        // initially remove the first image as it is set as main image
-        setProductImages(productDetail.productImages.slice(1));
-      })
-      .catch((err) => {
-        setError("Failed to fetch initial data", err.message);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    setTimeout(() => {
+      getProduct(id)
+        .then((productDetail) => {
+          setProduct(productDetail);
+          setMainImage(productDetail.productImages[0].imageUrl);
+          setProductImages(productDetail.productImages.slice(1));
+        })
+        .catch((err) => {
+          setError("Failed to fetch initial data", err.message);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }, 500);
   };
 
   useEffect(() => {
@@ -125,6 +126,9 @@ const ProductDetails = () => {
       .catch((error) => {
         setError(error.response.data.message);
       });
+
+    methods.reset();
+    fetchInitialData(); // fetch the updated product details
   };
 
   if (loading) return <LoadingComponent />;
