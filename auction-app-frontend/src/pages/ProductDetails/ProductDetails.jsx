@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 
-import { Tabs, LoadingComponent, ErrorComponent } from "src/components";
+import { Tabs, LoadingComponent, ErrorComponent, FormContainer } from "src/components";
 
 import { useBreadcrumb } from "src/store/BreadcrumbContext";
 import { getProduct } from "src/services";
 
-import { PRODUCT_DETAILS_TABS } from "src/constants";
+import { PRODUCT_DETAILS_TABS, BUTTON_LABELS } from "src/constants";
+import { placeBidsFormFields } from "src/forms/fields";
+import { go } from "src/assets/icons";
 
 import "./style.scss";
 
@@ -22,6 +25,10 @@ const ProductDetails = () => {
   const { id } = useParams();
 
   const { setTitle } = useBreadcrumb();
+
+  const methods = useForm({
+    mode: "onBlur"
+  });
 
   const fetchInitialData = () => {
     setLoading(true);
@@ -53,7 +60,7 @@ const ProductDetails = () => {
       const endDate = new Date(product.endDate);
       const now = new Date();
       const difference = endDate - now;
-      let timeLeft = '';
+      let timeLeft = "";
   
       if (difference > 0) {
         const daysLeft = Math.floor(difference / (1000 * 60 * 60 * 24));
@@ -61,16 +68,16 @@ const ProductDetails = () => {
         const minutesLeft = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
   
         if (daysLeft > 0) {
-          timeLeft += `${daysLeft} day${daysLeft !== 1 ? 's' : ''}`;
+          timeLeft += `${daysLeft} day${daysLeft !== 1 ? "s" : ""}`;
         } else if (hoursLeft > 0) {
-          timeLeft += `${hoursLeft} hour${hoursLeft !== 1 ? 's' : ''}`;
+          timeLeft += `${hoursLeft} hour${hoursLeft !== 1 ? "s" : ""}`;
         } else if (minutesLeft > 0) {
-          timeLeft += `${minutesLeft} minute${minutesLeft !== 1 ? 's' : ''}`;
+          timeLeft += `${minutesLeft} minute${minutesLeft !== 1 ? "s" : ""}`;
         } else {
-          timeLeft += 'Less than a minute';
+          timeLeft += "Less than a minute";
         }
       } else {
-        timeLeft += 'Expired';
+        timeLeft += "Expired";
       }
   
       setTimeLeft(timeLeft);
@@ -82,7 +89,7 @@ const ProductDetails = () => {
   };
 
   const handleImageClick = (clickedImage) => {
-    // find current main image in the product's image list
+    // find current main image in the product"s image list
     const previousMainImage = product.productImages.find(
       (img) => img.imageUrl === mainImage
     );
@@ -95,6 +102,10 @@ const ProductDetails = () => {
       .concat(previousMainImage); // add the previous main image back
 
     setProductImages(updatedImagesList);
+  };
+
+  const onSubmit = (data) => {
+    console.log(data);
   };
 
   if (loading) return <LoadingComponent />;
@@ -145,6 +156,19 @@ const ProductDetails = () => {
               <span className="item-value">{ timeLeft }</span>
             </div>
           </div>
+          { timeLeft !== "Expired" && (
+            <div className="place-bid-form">
+              <FormContainer 
+                formFields={ placeBidsFormFields } 
+                onSubmit={ methods.handleSubmit(onSubmit) }
+                buttonLabel={ BUTTON_LABELS.PLACE_BID }
+                buttonVariant={ "outlined" }
+                buttonIcon={ go }
+                methods={ methods }
+                error= { error }
+              />
+            </div>
+          ) }
           <div className="product-information">
             <Tabs
               tabs={ PRODUCT_DETAILS_TABS }

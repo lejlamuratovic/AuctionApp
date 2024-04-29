@@ -111,5 +111,34 @@
         text-align: left;
       }
     }
+
+    .place-bid-form {
+      width: 100%;
+
+      form {
+        @include flex-container(row, space-around, center);
+        position: relative;
+        
+        .input-field {
+          gap: 0;
+  
+          input {
+            height: 50px;
+            width: 330px;
+          }
+        }
+        
+        button {
+          height: 50px;
+          padding: 0 40px;
+        }
+      }
+
+      .error-message { 
+        position: absolute;
+        top: 55px;
+        padding-bottom: 0;
+      }
+    }
   }
 }
