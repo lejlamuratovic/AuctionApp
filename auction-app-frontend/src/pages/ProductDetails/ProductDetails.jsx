@@ -7,6 +7,7 @@ import { Tabs, LoadingComponent, ErrorComponent, FormContainer } from "src/compo
 import { useBreadcrumb } from "src/store/BreadcrumbContext";
 import { useUser } from "src/store/UserContext";
 import { getProduct } from "src/services";
+import { placeBid } from "src/services/bidService";
 
 import { PRODUCT_DETAILS_TABS, BUTTON_LABELS } from "src/constants";
 import { placeBidsFormFields } from "src/forms/fields";
@@ -22,8 +23,9 @@ const ProductDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [timeLeft, setTimeLeft] = useState(0);
+  const [additionalPlaceBidsFormFields, setAdditionalPlaceBidsFormFields] = useState([]);
 
-  const { userType } = useUser(); 
+  const { userType, userId } = useUser(); 
 
   const { id } = useParams();
 
@@ -57,7 +59,9 @@ const ProductDetails = () => {
 
   useEffect(() => {
     if (product) {
+      console.log(product);
       setTitle(`${product.name}`);
+      setAdditionalPlaceBidsFormFields(placeBidsFormFields(product.startPrice));
   
       const endDate = new Date(product.endDate);
       const now = new Date();
@@ -107,7 +111,20 @@ const ProductDetails = () => {
   };
 
   const onSubmit = (data) => {
-    console.log(data);
+    const bidDetails = {
+      bidAmount: data.bidAmount,
+      bidTime: new Date().toISOString(), // format date to match the backend
+      productId: product.id,
+      userId: userId
+    };
+
+    placeBid(bidDetails)
+      .then(() => {
+        setError(null);
+      })
+      .catch((error) => {
+        setError(error.response.data.message);
+      });
   };
 
   if (loading) return <LoadingComponent />;
@@ -161,7 +178,7 @@ const ProductDetails = () => {
           { (timeLeft !== "Expired" && userType == "USER") && (
             <div className="place-bid-form">
               <FormContainer 
-                formFields={ placeBidsFormFields } 
+                formFields={ additionalPlaceBidsFormFields } 
                 onSubmit={ methods.handleSubmit(onSubmit) }
                 buttonLabel={ BUTTON_LABELS.PLACE_BID }
                 buttonVariant={ "outlined" }

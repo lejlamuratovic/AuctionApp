@@ -13,17 +13,24 @@ export const UserProvider = ({ children }) => {
     return localStorage.getItem("userName");
   });
   const [userType, setUserType] = useState("");
+  const [userId, setUserId] = useState("");
 
   const getUserTypeFromToken = () => {
     const decodedToken = getDecodedToken(token);
   
     setUserType(decodedToken?.role);
-    console.log("User type", decodedToken?.role)
   };
+
+  const getUserIdFromToken = () => {
+    const decodedToken = getDecodedToken(token);
+
+    setUserId(decodedToken?.id);
+  }
 
   useEffect(() => {
     if (token) {
       getUserTypeFromToken();
+      getUserIdFromToken();
     }
   }, [token]);
 
@@ -36,7 +43,7 @@ export const UserProvider = ({ children }) => {
   }, [userName]);
 
   return (
-    <UserContext.Provider value={{ userName, setUserName, userType }}>
+    <UserContext.Provider value={{ userName, setUserName, userType, userId }}>
       {children}
     </UserContext.Provider>
   );
