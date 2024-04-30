@@ -8,6 +8,7 @@ public class Notification {
     private String messageContent;
     private LocalDateTime notificationTime;
     private UUID userId;
+    private UUID productId;
 
     public Notification() { }
 
@@ -41,5 +42,13 @@ public class Notification {
 
     public void setUserId(final UUID userId) {
         this.userId = userId;
+    }
+
+    public UUID getProductId() {
+        return this.productId;
+    }
+
+    public void setProductId(final UUID productId) {
+        this.productId = productId;
     }
 }

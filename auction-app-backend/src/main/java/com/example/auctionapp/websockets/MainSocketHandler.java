@@ -1,11 +1,6 @@
 package com.example.auctionapp.websockets;
 
-import com.example.auctionapp.entity.UserEntity;
 import com.example.auctionapp.exceptions.GeneralException;
-import com.example.auctionapp.model.User;
-import com.example.auctionapp.service.implementation.JwtService;
-import com.example.auctionapp.service.implementation.UserDetailsServiceImpl;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -14,47 +9,47 @@ import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Component
 public class MainSocketHandler implements WebSocketHandler {
-    private final JwtService jwtService;
-    private final UserDetailsServiceImpl userService;
-
     public Map<String, WebSocketSession> sessions = new HashMap<>();
 
-    public MainSocketHandler(JwtService jwtService, UserDetailsServiceImpl userService) {
-        this.jwtService = jwtService;
-        this.userService = userService;
-    }
+    public MainSocketHandler() { }
 
     @Override
     public void afterConnectionEstablished(final WebSocketSession session) throws Exception {
-        final User user = getUser(session);
+        final String userId = extractUserIdFromUrl(session);
 
-        if(user==null){
-            return;
+        if (userId != null) {
+            if (sessions.containsKey(userId)) {
+                System.out.println("A WebSocket session for userId: " + userId + " already exists.");
+
+                session.close();
+            } else {
+                sessions.put(userId, session);
+
+                System.out.println("WebSocket session established for userId: " + userId);
+            }
         }
+    }
 
-        sessions.put(String.valueOf(user.getUserId()), session);
+    @Override
+    public void afterConnectionClosed(final WebSocketSession session, final CloseStatus closeStatus) throws Exception {
+        final String userId = extractUserIdFromUrl(session);
 
-        // debugging
-        System.out.println("Session created for the user" + user.getUserId() + "where the " +
-                "session id is" + session.getId());
+        if (userId != null) {
+            sessions.remove(userId);
+
+            System.out.println("WebSocket session closed for userId: " + userId);
+        }
     }
 
     @Override
     public void handleTransportError(final WebSocketSession session, Throwable exception) throws Exception {
         System.out.println("Error happened" + session.getId() + "with reason###" + exception.getMessage());
-    }
-
-    @Override
-    public void afterConnectionClosed(final WebSocketSession session, final CloseStatus closeStatus)
-            throws Exception {
-        System.out.println("Connection closed for session " + session.getId()
-                + "with status: " + closeStatus.getReason());
     }
 
     @Override
@@ -68,16 +63,6 @@ public class MainSocketHandler implements WebSocketHandler {
         final String messageReceived = (String) message.getPayload();
     }
 
-    public void broadcastMessage(final String message) throws IOException {
-        sessions.forEach((key, session) -> {
-            try {
-                if (session.isOpen()) session.sendMessage(new TextMessage(message));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-    }
-
     public void sendMessage(final String userId, String message) {
         final WebSocketSession session = sessions.get(userId);
 
@@ -89,26 +74,32 @@ public class MainSocketHandler implements WebSocketHandler {
             if (session.isOpen()) {
                 session.sendMessage(new TextMessage(message));
             } else {
-                System.out.println("Cannot send message. Session closed for user ID: " + userId); 
+                System.out.println("Cannot send message. Session closed for user ID: " + userId);
             }
         } catch (IOException e) {
             throw new GeneralException(e);
         }
     }
 
-    private User getUser(final WebSocketSession session) throws IOException{
-        final List<String> headers = session.getHandshakeHeaders().getOrEmpty("Authorization");
+    public String extractUserIdFromUrl(final WebSocketSession session) throws IOException {
+        URI uri = session.getUri();
 
-        if(headers.isEmpty()){
+        if (uri == null) {
+            System.out.println("URI is null in session ID: " + session.getId());
+
             session.close();
             return null;
         }
 
-        final String jwt = headers.get(0).substring(7);
-        final String userEmail= jwtService.extractUsername(jwt);
+        String query = uri.getQuery();
+        String userId = null;
 
-        final UserDetails userDetails = userService.loadUserByUsername(userEmail);
+        if (query != null && query.startsWith("userId=")) {
+            userId = query.substring("userId=".length());
+        }
 
-        return ((UserEntity) userDetails).toDomainModel();
+        System.out.println("user id is:" + userId);
+        
+        return userId;
     }
 }

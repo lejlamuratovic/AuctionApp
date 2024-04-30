@@ -1,5 +1,5 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import { getDecodedToken } from 'src/utils/jwtDecode';
+import { createContext, useContext, useState, useEffect } from "react";
+import { getDecodedToken } from "src/utils/jwtDecode";
 
 const UserContext = createContext(null);
 
@@ -27,9 +27,9 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     if (userName) {
-      localStorage.setItem('userName', userName);
+      localStorage.setItem("userName", userName);
     } else {
-      localStorage.removeItem('userName');
+      localStorage.removeItem("userName");
     }
   }, [userName]);
 

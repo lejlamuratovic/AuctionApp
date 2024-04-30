@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 
-import { Tabs, LoadingComponent, ErrorComponent, FormContainer } from "src/components";
+import { Tabs, LoadingComponent, ErrorComponent, FormContainer, Notifications } from "src/components";
 
 import { useBreadcrumb } from "src/store/BreadcrumbContext";
 import { useUser } from "src/store/UserContext";
@@ -60,7 +60,6 @@ const ProductDetails = () => {
 
   useEffect(() => {
     if (product) {
-      console.log(product);
       setTitle(`${product.name}`);
       setAdditionalPlaceBidsFormFields(placeBidsFormFields(product.startPrice));
   
@@ -136,6 +135,7 @@ const ProductDetails = () => {
 
   return (
     <>
+      <Notifications productId={ id } onMessage={ fetchInitialData }/>
       <div className="product-details-container">
         <div className="product-details-images">
           <div className="main-image-container">

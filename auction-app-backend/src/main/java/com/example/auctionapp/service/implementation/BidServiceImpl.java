@@ -57,13 +57,16 @@ public class BidServiceImpl implements BidService {
         if (highestBidAmount == null || bidRequest.getBidAmount().compareTo(highestBidAmount) > 0) {
             // update the previous highest bidder
             if (highestBidEntity != null) {
-                notificationService.notifyUser(highestBidEntity.getUser().getUserId(), LOWER_BID);
+                notificationService.notifyUser(highestBidEntity.getUser().getUserId(), LOWER_BID,
+                        bidEntity.getProduct().getProductId());
             }
 
             bidRepository.save(bidEntity); // save the highest bid
-            notificationService.notifyUser(bidRequest.getUserId(), HIGHEST_BID);
+            notificationService.notifyUser(bidRequest.getUserId(), HIGHEST_BID,
+                    bidEntity.getProduct().getProductId());
         } else {
-            notificationService.notifyUser(bidRequest.getUserId(), LOWER_BID);
+            notificationService.notifyUser(bidRequest.getUserId(), LOWER_BID,
+                    bidEntity.getProduct().getProductId());
         }
 
         return bidEntity.toDomainModel();

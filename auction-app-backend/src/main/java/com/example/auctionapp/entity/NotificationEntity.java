@@ -36,17 +36,23 @@ public class NotificationEntity {
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private ProductEntity productEntity;
+
     public NotificationEntity() { }
 
     public NotificationEntity(
             final UUID notificationId,
             final String messageContent,
             final LocalDateTime notificationTime,
-            final UserEntity userEntity) {
+            final UserEntity userEntity,
+            final ProductEntity productEntity) {
         this.notificationId = notificationId;
         this.messageContent = messageContent;
         this.notificationTime = notificationTime;
         this.userEntity = userEntity;
+        this.productEntity = productEntity;
     }
 
     public Notification toDomainModel() {
@@ -56,6 +62,7 @@ public class NotificationEntity {
         notification.setMessageContent(this.messageContent);
         notification.setNotificationTime(this.notificationTime);
         notification.setUserId(this.userEntity.getUserId());
+        notification.setProductId(this.productEntity.getProductId());
 
         return notification;
     }
@@ -90,5 +97,21 @@ public class NotificationEntity {
 
     public void setUser(final UserEntity userEntity) {
         this.userEntity = userEntity;
+    }
+
+    public UserEntity getUserEntity() {
+        return userEntity;
+    }
+
+    public void setUserEntity(final UserEntity userEntity) {
+        this.userEntity = userEntity;
+    }
+
+    public ProductEntity getProductEntity() {
+        return this.productEntity;
+    }
+
+    public void setProductEntity(final ProductEntity productEntity) {
+        this.productEntity = productEntity;
     }
 }

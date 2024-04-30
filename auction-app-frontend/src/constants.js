@@ -1,5 +1,7 @@
 export const BASE_URL = "http://localhost:8080/api/v1";
 
+export const WEB_SOCKET_BASE_URL = "ws://localhost:8080/websocket";
+
 export const NAV_ITEMS = [
   {
     label: "HOME",
@@ -70,4 +72,9 @@ export const BUTTON_LABELS = {
   LOGIN: "LOGIN",
   REGISTER: "REGISTER",
   PLACE_BID: "PLACE BID",
+};
+
+export const CONNECTION_STATUSES = {
+  CONNECTED: "connected",
+  DISCONNECTED: "Disconnected",
 };
