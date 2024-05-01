@@ -8,8 +8,14 @@ import { useBreadcrumb } from "src/store/BreadcrumbContext";
 import { useUser } from "src/store/UserContext";
 import { getProduct } from "src/services";
 import { placeBid } from "src/services/bidService";
+import { calculateTimeLeft } from "src/utils/calculateTimeDifference";
 
-import { PRODUCT_DETAILS_TABS, BUTTON_LABELS } from "src/constants";
+import { 
+  PRODUCT_DETAILS_TABS, 
+  BUTTON_LABELS, BUTTON_VARIANTS, 
+  USER_TYPES,
+  AUCTION_STATUS
+} from "src/constants";
 import { placeBidsFormFields } from "src/forms/fields";
 import { go } from "src/assets/icons";
 
@@ -62,31 +68,7 @@ const ProductDetails = () => {
     if (product) {
       setTitle(`${product.name}`);
       setAdditionalPlaceBidsFormFields(placeBidsFormFields(product.startPrice));
-  
-      const endDate = new Date(product.endDate);
-      const now = new Date();
-      const difference = endDate - now;
-      let timeLeft = "";
-  
-      if (difference > 0) {
-        const daysLeft = Math.floor(difference / (1000 * 60 * 60 * 24));
-        const hoursLeft = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutesLeft = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-  
-        if (daysLeft > 0) {
-          timeLeft += `${daysLeft} day${daysLeft !== 1 ? "s" : ""}`;
-        } else if (hoursLeft > 0) {
-          timeLeft += `${hoursLeft} hour${hoursLeft !== 1 ? "s" : ""}`;
-        } else if (minutesLeft > 0) {
-          timeLeft += `${minutesLeft} minute${minutesLeft !== 1 ? "s" : ""}`;
-        } else {
-          timeLeft += "Less than a minute";
-        }
-      } else {
-        timeLeft += "Expired";
-      }
-  
-      setTimeLeft(timeLeft);
+      setTimeLeft(calculateTimeLeft(product.endDate));
     }
   }, [product, setTitle]);
 
@@ -179,13 +161,13 @@ const ProductDetails = () => {
               <span className="item-value">{ timeLeft }</span>
             </div>
           </div>
-          { (timeLeft !== "Expired" && userType == "USER" && userId !== product.userId) && (
+          { (timeLeft !== AUCTION_STATUS.EXPIRED && userType === USER_TYPES.USER && userId !== product.userId) && (
             <div className="place-bid-form">
               <FormContainer 
                 formFields={ additionalPlaceBidsFormFields } 
                 onSubmit={ methods.handleSubmit(onSubmit) }
                 buttonLabel={ BUTTON_LABELS.PLACE_BID }
-                buttonVariant={ "outlined" }
+                buttonVariant={ BUTTON_VARIANTS.OUTLINED }
                 buttonIcon={ go }
                 methods={ methods }
                 error= { error }

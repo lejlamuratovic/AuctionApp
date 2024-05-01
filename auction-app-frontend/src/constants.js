@@ -74,7 +74,21 @@ export const BUTTON_LABELS = {
   PLACE_BID: "PLACE BID",
 };
 
+export const BUTTON_VARIANTS = {
+  OUTLINED: "outlined",
+  FILLED: "filled"
+}
+
 export const CONNECTION_STATUSES = {
   CONNECTED: "connected",
   DISCONNECTED: "Disconnected",
+};
+
+export const USER_TYPES = {
+  ADMIN: "ADMIN",
+  USER: "USER"
+}
+
+export const AUCTION_STATUS = {
+  EXPIRED: "Expired",
 };

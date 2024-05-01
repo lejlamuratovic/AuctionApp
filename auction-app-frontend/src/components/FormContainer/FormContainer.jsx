@@ -1,8 +1,9 @@
-import { FormProvider } from 'react-hook-form';
+import { FormProvider } from "react-hook-form";
 
-import { InputField, Button } from 'src/components';
+import { InputField, Button } from "src/components";
+import { BUTTON_VARIANTS } from "src/constants";
 
-const FormContainer = ({ formFields, onSubmit, buttonLabel, methods, error, buttonVariant = "filled", buttonIcon }) => {
+const FormContainer = ({ formFields, onSubmit, buttonLabel, methods, error, buttonVariant = BUTTON_VARIANTS.FILLED, buttonIcon }) => {
   return (
     <FormProvider { ...methods }>
       <form onSubmit={ methods.handleSubmit(onSubmit) }>
