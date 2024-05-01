@@ -24,7 +24,10 @@ public class BidServiceImpl implements BidService {
     public static final String HIGHEST_BID = "Congratulations! You outbid the competition";
     public static final String LOWER_BID = "There are higher bids than yours. Give it a second try";
 
-    public BidServiceImpl(BidRepository bidRepository, UserRepository userRepository, ProductRepository productRepository, NotificationService notificationService) {
+    public BidServiceImpl(final BidRepository bidRepository,
+                          final UserRepository userRepository,
+                          final ProductRepository productRepository,
+                          final NotificationService notificationService) {
         this.bidRepository = bidRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
@@ -51,7 +54,8 @@ public class BidServiceImpl implements BidService {
         }
 
         // retrieve the current highest bid entity
-        final BidEntity highestBidEntity = bidRepository.findHighestBidByProductId(bidRequest.getProductId());
+        final BidEntity highestBidEntity = bidRepository
+                .findTopBidEntityByProductEntity_ProductIdOrderByBidTimeDesc(bidRequest.getProductId());
         final BigDecimal highestBidAmount = highestBidEntity != null ? highestBidEntity.getBidAmount() : null;
 
         if (highestBidAmount == null || bidRequest.getBidAmount().compareTo(highestBidAmount) > 0) {

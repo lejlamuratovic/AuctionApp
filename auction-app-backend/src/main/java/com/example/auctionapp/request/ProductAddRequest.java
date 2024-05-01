@@ -30,9 +30,6 @@ public class ProductAddRequest {
         productEntity.setEndDate(this.endDate);
         productEntity.setStatus(this.status);
 
-        // category id and user is set in services
-        // same as the logic for image associated with the products
-
         return productEntity;
     }
 

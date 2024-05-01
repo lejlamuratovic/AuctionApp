@@ -1,6 +1,8 @@
 package com.example.auctionapp.websockets;
 
 import com.example.auctionapp.exceptions.GeneralException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -16,6 +18,7 @@ import java.util.Map;
 @Component
 public class MainSocketHandler implements WebSocketHandler {
     public Map<String, WebSocketSession> sessions = new HashMap<>();
+    private static final Logger logger = LoggerFactory.getLogger(MainSocketHandler.class);
 
     public MainSocketHandler() { }
 
@@ -25,13 +28,13 @@ public class MainSocketHandler implements WebSocketHandler {
 
         if (userId != null) {
             if (sessions.containsKey(userId)) {
-                System.out.println("A WebSocket session for userId: " + userId + " already exists.");
+                logger.warn("A WebSocket session for userId: " + userId + " already exists.");
 
                 session.close();
             } else {
                 sessions.put(userId, session);
 
-                System.out.println("WebSocket session established for userId: " + userId);
+                logger.info("WebSocket session established for userId: " + userId);
             }
         }
     }
@@ -43,13 +46,13 @@ public class MainSocketHandler implements WebSocketHandler {
         if (userId != null) {
             sessions.remove(userId);
 
-            System.out.println("WebSocket session closed for userId: " + userId);
+            logger.info("WebSocket session closed for userId: " + userId);
         }
     }
 
     @Override
     public void handleTransportError(final WebSocketSession session, Throwable exception) throws Exception {
-        System.out.println("Error happened" + session.getId() + "with reason###" + exception.getMessage());
+        logger.error("Error happened" + session.getId() + "with reason###" + exception.getMessage());
     }
 
     @Override
@@ -74,31 +77,31 @@ public class MainSocketHandler implements WebSocketHandler {
             if (session.isOpen()) {
                 session.sendMessage(new TextMessage(message));
             } else {
-                System.out.println("Cannot send message. Session closed for user ID: " + userId);
+                logger.warn("Cannot send message. Session closed for user ID: " + userId);
             }
         } catch (IOException e) {
             throw new GeneralException(e);
         }
     }
 
-    public String extractUserIdFromUrl(final WebSocketSession session) throws IOException {
-        URI uri = session.getUri();
+    private String extractUserIdFromUrl(final WebSocketSession session) throws IOException {
+        final URI uri = session.getUri();
 
         if (uri == null) {
-            System.out.println("URI is null in session ID: " + session.getId());
+            logger.error("URI is null in session ID: " + session.getId());
 
             session.close();
             return null;
         }
 
-        String query = uri.getQuery();
+        final String query = uri.getQuery();
         String userId = null;
 
         if (query != null && query.startsWith("userId=")) {
             userId = query.substring("userId=".length());
         }
 
-        System.out.println("user id is:" + userId);
+        logger.info("User ID is:" + userId);
         
         return userId;
     }

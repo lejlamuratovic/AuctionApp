@@ -31,8 +31,6 @@ public class BidRequest {
         bidEntity.setBidAmount(this.bidAmount);
         bidEntity.setBidTime(this.bidTime);
 
-        // user and product id is handled in services
-
         return bidEntity;
     }
 

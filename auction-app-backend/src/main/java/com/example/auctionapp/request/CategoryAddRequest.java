@@ -15,7 +15,6 @@ public class CategoryAddRequest {
 
         categoryEntity.setName(this.name);
 
-        // parent category id is handled in services
         return categoryEntity;
     }
 
