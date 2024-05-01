@@ -14,6 +14,7 @@ const FormContainer = ({ formFields, onSubmit, buttonLabel, methods, error, butt
                 label={ field.label }
                 type={ field.type }
                 rules={ field.rules }
+                step={ field.step }
             />
         )) }
         { error && 
