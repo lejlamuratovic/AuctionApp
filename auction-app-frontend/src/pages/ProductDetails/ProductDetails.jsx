@@ -117,7 +117,7 @@ const ProductDetails = () => {
 
   return (
     <>
-      <Notifications productId={ id } onMessage={ fetchInitialData }/>
+      <Notifications productId={ id } fetchProductOnUpdate={ fetchInitialData }/>
       <div className="product-details-container">
         <div className="product-details-images">
           <div className="main-image-container">

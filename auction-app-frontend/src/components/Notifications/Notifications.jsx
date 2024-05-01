@@ -8,10 +8,10 @@ import { getLatestNotification } from "src/services/notificationService";
 
 import "./style.scss";
 
-const Notifications = ({ productId, onMessage }) => {
+const Notifications = ({ productId, fetchProductOnUpdate }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [message, setMessage] = useState("");
+  const [notification, setNotification] = useState(null);
 
   const { userId } = useUser();
   const { addMessageListener, removeMessageListener } = useWebSocket();
@@ -21,11 +21,11 @@ const Notifications = ({ productId, onMessage }) => {
 
     getLatestNotification(userId, productId)
       .then(notification => {
-          setMessage(notification.messageContent);
+        setNotification(notification);
       })
       .catch(error => {
         if (error.response && error.response.status === 404) {
-          setMessage(null); // if no notification found set message to null
+          setNotification(null); // if no notification found set message to null
         } else { 
           setError(error.message);
         }
@@ -45,15 +45,23 @@ const Notifications = ({ productId, onMessage }) => {
     fetchLatestNotification();
   }, [userId, productId]);
 
+  
+  const getNotificationClass = () => {
+    switch (notification?.notificationType) {
+      case "HIGHEST_BID":
+        return "primary";
+      case "LOWER_BID":
+        return "accent";
+      default:
+        return ""; // no type matched
+    }
+  };
+
   useEffect(() => {
     const handleNewMessage = (rawMessage) => {
-      if (typeof rawMessage === 'string') {
-        setMessage(rawMessage); // websocket returns a string message
-        onMessage(); // refetch product details when a new message is received
-      } else {
-        if (rawMessage && rawMessage.productId === productId && rawMessage.messageContent) {
-          setMessage(rawMessage.messageContent); // if message is for the current product, set message to the message content
-        }
+      if (typeof rawMessage === "string") {
+        setNotification(rawMessage); // websocket returns a string message
+        fetchProductOnUpdate(); // refetch product details when a new message is received
       }
     };
   
@@ -64,16 +72,14 @@ const Notifications = ({ productId, onMessage }) => {
     };
   }, [addMessageListener, removeMessageListener, productId]);
 
-  const notificationClass = message && message.includes("Congratulations!") ? "primary" : "accent";
-
   if (loading) return <LoadingComponent />;
   if (error) return <ErrorComponent message={error} />;  
 
   return (
     <>
-      { message && (
-        <div className={ `notification ${notificationClass} body-bold` }>
-          { message }
+      { notification?.messageContent && (
+        <div className={`notification ${ getNotificationClass() } body-bold`}>
+          { notification.messageContent }
         </div>
       ) }
     </>
