@@ -13,6 +13,7 @@ import com.example.auctionapp.service.BidService;
 import com.example.auctionapp.service.NotificationService;
 import com.example.auctionapp.util.ValidationUtility;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
@@ -33,6 +34,7 @@ public class BidServiceImpl implements BidService {
         this.notificationService = notificationService;
     }
 
+    @Transactional
     public Bid placeBid(final BidRequest bidRequest) {
         BidEntity bidEntity = bidRequest.toEntity();
 
