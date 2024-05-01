@@ -2,6 +2,7 @@ package com.example.auctionapp.service.implementation;
 
 import com.example.auctionapp.entity.BidEntity;
 import com.example.auctionapp.entity.ProductEntity;
+import com.example.auctionapp.entity.enums.NotificationType;
 import com.example.auctionapp.exceptions.repository.ResourceNotFoundException;
 import com.example.auctionapp.model.Bid;
 import com.example.auctionapp.repository.BidRepository;
@@ -21,8 +22,6 @@ public class BidServiceImpl implements BidService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final NotificationService notificationService;
-    public static final String HIGHEST_BID = "Congratulations! You outbid the competition";
-    public static final String LOWER_BID = "There are higher bids than yours. Give it a second try";
 
     public BidServiceImpl(final BidRepository bidRepository,
                           final UserRepository userRepository,
@@ -61,15 +60,15 @@ public class BidServiceImpl implements BidService {
         if (highestBidAmount == null || bidRequest.getBidAmount().compareTo(highestBidAmount) > 0) {
             // update the previous highest bidder
             if (highestBidEntity != null) {
-                notificationService.notifyUser(highestBidEntity.getUser().getUserId(), LOWER_BID,
+                notificationService.notifyUser(highestBidEntity.getUser().getUserId(), NotificationType.LOWER_BID,
                         bidEntity.getProduct().getProductId());
             }
 
             bidRepository.save(bidEntity); // save the highest bid
-            notificationService.notifyUser(bidRequest.getUserId(), HIGHEST_BID,
+            notificationService.notifyUser(bidRequest.getUserId(), NotificationType.HIGHEST_BID,
                     bidEntity.getProduct().getProductId());
         } else {
-            notificationService.notifyUser(bidRequest.getUserId(), LOWER_BID,
+            notificationService.notifyUser(bidRequest.getUserId(), NotificationType.LOWER_BID,
                     bidEntity.getProduct().getProductId());
         }
 

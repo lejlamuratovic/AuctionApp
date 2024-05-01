@@ -1,6 +1,6 @@
 package com.example.auctionapp.controller;
 
-import com.example.auctionapp.model.Notification;
+import com.example.auctionapp.response.NotificationResponse;
 import com.example.auctionapp.service.NotificationService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +19,7 @@ public class NotificationController {
     }
 
     @GetMapping("/latest")
-    public Notification getLatestNotification(
+    public NotificationResponse getLatestNotification(
             @RequestParam(value = "userId") final UUID userId,
             @RequestParam(value = "productId") final UUID productId) {
         return notificationService.getLatestNotificationForUserAndProduct(userId, productId);

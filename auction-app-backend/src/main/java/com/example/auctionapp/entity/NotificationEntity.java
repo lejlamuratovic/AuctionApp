@@ -1,8 +1,11 @@
 package com.example.auctionapp.entity;
 
+import com.example.auctionapp.entity.enums.NotificationType;
 import com.example.auctionapp.model.Notification;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -25,8 +28,9 @@ public class NotificationEntity {
     @Column(name = "notification_id")
     private UUID notificationId;
 
-    @Column(name = "message_content", columnDefinition = "TEXT")
-    private String messageContent;
+    @Column(name = "notification_type")
+    @Enumerated(EnumType.STRING)
+    private NotificationType notificationType;
 
     @Column(name = "notification_time")
     @Temporal(TemporalType.TIMESTAMP)
@@ -44,12 +48,12 @@ public class NotificationEntity {
 
     public NotificationEntity(
             final UUID notificationId,
-            final String messageContent,
+            final NotificationType notificationType,
             final LocalDateTime notificationTime,
             final UserEntity userEntity,
             final ProductEntity productEntity) {
         this.notificationId = notificationId;
-        this.messageContent = messageContent;
+        this.notificationType = notificationType;
         this.notificationTime = notificationTime;
         this.userEntity = userEntity;
         this.productEntity = productEntity;
@@ -59,7 +63,7 @@ public class NotificationEntity {
         Notification notification = new Notification();
 
         notification.setNotificationId(this.notificationId);
-        notification.setMessageContent(this.messageContent);
+        notification.setNotificationType(this.notificationType);
         notification.setNotificationTime(this.notificationTime);
         notification.setUserId(this.userEntity.getUserId());
         notification.setProductId(this.productEntity.getProductId());
@@ -75,12 +79,12 @@ public class NotificationEntity {
         this.notificationId = notificationId;
     }
 
-    public String getMessageContent() {
-        return this.messageContent;
+    public NotificationType getNotificationType() {
+        return this.notificationType;
     }
 
-    public void setMessageContent(final String messageContent) {
-        this.messageContent = messageContent;
+    public void setNotificationType(final NotificationType notificationType) {
+        this.notificationType = notificationType;
     }
 
     public LocalDateTime getNotificationTime() {

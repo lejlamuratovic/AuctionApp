@@ -3,11 +3,12 @@ package com.example.auctionapp.service.implementation;
 import com.example.auctionapp.entity.NotificationEntity;
 import com.example.auctionapp.entity.ProductEntity;
 import com.example.auctionapp.entity.UserEntity;
+import com.example.auctionapp.entity.enums.NotificationType;
 import com.example.auctionapp.exceptions.repository.ResourceNotFoundException;
-import com.example.auctionapp.model.Notification;
 import com.example.auctionapp.repository.NotificationRepository;
 import com.example.auctionapp.repository.ProductRepository;
 import com.example.auctionapp.repository.UserRepository;
+import com.example.auctionapp.response.NotificationResponse;
 import com.example.auctionapp.service.NotificationService;
 import com.example.auctionapp.websockets.MainSocketHandler;
 import org.springframework.stereotype.Service;
@@ -34,10 +35,10 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public void notifyUser(final UUID userId, final String message, final UUID productId) {
+    public void notifyUser(final UUID userId, final NotificationType notificationType, final UUID productId) {
         NotificationEntity notificationEntity = new NotificationEntity();
 
-        notificationEntity.setMessageContent(message);
+        notificationEntity.setNotificationType(notificationType);
         notificationEntity.setNotificationTime(LocalDateTime.now());
 
         final UserEntity userEntity = userRepository.findById(userId).orElseThrow(() ->
@@ -51,13 +52,14 @@ public class NotificationServiceImpl implements NotificationService {
         notificationEntity.setProductEntity(productEntity);
 
         this.notificationRepository.save(notificationEntity);
-        this.mainSocketHandler.sendMessage(String.valueOf(userId), message);
+        this.mainSocketHandler.sendMessage(String.valueOf(userId), notificationType.label);
     }
 
     @Override
-    public Notification getLatestNotificationForUserAndProduct(final UUID userId, final UUID productId) {
-        return notificationRepository.findLatestNotificationByUserIdAndProductId(userId, productId)
-                .orElseThrow(() -> new ResourceNotFoundException("No notifications found for the given user and product IDs"))
-                .toDomainModel();
+    public NotificationResponse getLatestNotificationForUserAndProduct(final UUID userId, final UUID productId) {
+        final NotificationEntity notificationEntity =  notificationRepository.findLatestNotificationByUserIdAndProductId(userId, productId)
+                .orElseThrow(() -> new ResourceNotFoundException("No notifications found for the given user and product IDs"));
+
+        return new NotificationResponse(notificationEntity.getNotificationType());
     }
 }

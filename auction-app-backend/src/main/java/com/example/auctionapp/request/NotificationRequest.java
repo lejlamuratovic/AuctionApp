@@ -1,19 +1,21 @@
 package com.example.auctionapp.request;
 
+import com.example.auctionapp.entity.enums.NotificationType;
+
 public class NotificationRequest {
-    private String message;
+    private NotificationType notificationType;
 
     public NotificationRequest() {}
 
-    public NotificationRequest(final String message) {
-        this.message = message;
+    public NotificationRequest(final NotificationType message) {
+        this.notificationType = message;
     }
 
-    public String getMessage() {
-        return this.message;
+    public NotificationType getNotificationType() {
+        return this.notificationType;
     }
 
-    public void setMessage(final String message) {
-        this.message = message;
+    public void setNotificationType(final NotificationType notificationType) {
+        this.notificationType = notificationType;
     }
 }

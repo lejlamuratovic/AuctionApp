@@ -1,11 +1,13 @@
 package com.example.auctionapp.model;
 
+import com.example.auctionapp.entity.enums.NotificationType;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class Notification {
     private UUID notificationId;
-    private String messageContent;
+    private NotificationType notificationType;
     private LocalDateTime notificationTime;
     private UUID userId;
     private UUID productId;
@@ -20,12 +22,12 @@ public class Notification {
         this.notificationId = notificationId;
     }
 
-    public String getMessageContent() {
-        return this.messageContent;
+    public NotificationType getNotificationType() {
+        return this.notificationType;
     }
 
-    public void setMessageContent(final String messageContent) {
-        this.messageContent = messageContent;
+    public void setNotificationType(final NotificationType notificationType) {
+        this.notificationType = notificationType;
     }
 
     public LocalDateTime getNotificationTime() {
