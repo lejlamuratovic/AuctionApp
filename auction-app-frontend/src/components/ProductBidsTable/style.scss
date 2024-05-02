@@ -1,0 +1,15 @@
+@import "src/scss/index.scss";
+
+.table {
+    width: 100%;
+    border: 1px solid $neutral09;
+
+    .table-header {
+        @include flex-container(row, space-around, center, center);
+        height: 56px;
+    }
+
+    .table-row {
+        @include flex-container(row, space-around, center, center);
+    }
+}

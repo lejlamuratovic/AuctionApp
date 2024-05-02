@@ -114,6 +114,20 @@ export const BUTTON_VARIANTS = {
 export const MY_ACCOUNT_TABS = [
   { id: "profile", label: "Profile", icon: profile, activeIcon: profileActive},
   { id: "seller", label: "Seller", icon: seller, activeIcon: sellerActive},
-  { id: "settings", label: "Settings", icon: settings, activeIcon: settingsActive},
   { id: "bids", label: "Bids", icon: bids, activeIcon: bidsActive},
+  { id: "settings", label: "Settings", icon: settings, activeIcon: settingsActive},
+];
+
+export const HEADERS = [
+  { id: "item", text: "Item"},
+  { id: "name", text: "Name"},
+  { id: "timeLeft", text: "Time Left"},
+  { id: "yourPrice", text: "Your Price"},
+  { id: "noBids", text: "No. Bids"},
+  { id: "highestBid", text: "Highest Bid"}
+];
+
+export const SELLER_TABS = [
+  { id: "active", label: "Active" },
+  { id: "sold", label: "Sold" },
 ];
