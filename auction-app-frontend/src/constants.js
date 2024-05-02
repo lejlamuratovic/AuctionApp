@@ -84,6 +84,7 @@ export const BUTTON_LABELS = {
   ADD_ITEM: "ADD ITEM",
   CHANGE_PHOTO: "Change photo",
   SAVE_INFO: "Save Info",
+  BID: "BID",
 };
 
 export const BUTTON_VARIANTS = {
@@ -99,15 +100,37 @@ export const MY_ACCOUNT_TABS = [
 ];
 
 export const HEADERS = [
-  { id: "item", text: "Item"},
-  { id: "name", text: "Name"},
-  { id: "timeLeft", text: "Time Left"},
-  { id: "yourPrice", text: "Your Price"},
-  { id: "noBids", text: "No. Bids"},
-  { id: "highestBid", text: "Highest Bid"}
+  { id: 'image', text: 'Item' },
+  { id: 'name', text: 'Name' },
+  { id: 'timeLeft', text: 'Time Left' },
+  { id: 'yourPrice', text: 'Your Price' },
+  { id: 'noBids', text: 'No. Bids' },
+  { id: 'highestBid', text: 'Highest Bid' },
+  { id: 'actions', text: '' }
 ];
 
 export const SELLER_TABS = [
   { id: "active", label: "Active" },
   { id: "sold", label: "Sold" },
+];
+
+export const ITEMS = [
+  {
+    id: 1,
+    imgSrc: "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/2eff461f-f3ac-4285-9c6a-2f22173aac42/custom-nike-air-force-1-low-by-you.png",
+    title: "Product 1",
+    timeLeft: "1 day 2 hours",
+    noBids: 5,
+    yourPrice: "100",
+    highestBid: "120"
+  }, 
+  {
+    id: 2,
+    imgSrc: "https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/2eff461f-f3ac-4285-9c6a-2f22173aac42/custom-nike-air-force-1-low-by-you.png",
+    title: "Product 2",
+    timeLeft: "2 days 4 hours",
+    noBids: 3,
+    yourPrice: "150",
+    highestBid: "200"
+  }
 ];
