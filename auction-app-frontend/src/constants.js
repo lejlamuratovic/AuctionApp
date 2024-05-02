@@ -1,3 +1,14 @@
+import { 
+  seller, 
+  profile, 
+  settings, 
+  bids, 
+  sellerActive,
+  profileActive,
+  settingsActive,
+  bidsActive  
+} from "src/assets/icons";
+
 export const BASE_URL = "http://localhost:8080/api/v1";
 
 export const NAV_ITEMS = [
@@ -68,5 +79,20 @@ export const HOME_DEFAULT_PAGE_NUMBER = 8;
 
 export const BUTTON_LABELS = {
   LOGIN: "LOGIN",
-  REGISTER: "REGISTER"
+  REGISTER: "REGISTER",
+  REGISTER: "REGISTER",
+  PLACE_BID: "PLACE BID",
+  ADD_ITEM: "ADD ITEM",
 };
+
+export const BUTTON_VARIANTS = {
+  OUTLINED: "outlined",
+  FILLED: "filled"
+}
+
+export const MY_ACCOUNT_TABS = [
+  { id: "profile", label: "Profile", icon: profile, activeIcon: profileActive},
+  { id: "seller", label: "Seller", icon: seller, activeIcon: sellerActive},
+  { id: "settings", label: "Settings", icon: settings, activeIcon: settingsActive},
+  { id: "bids", label: "Bids", icon: bids, activeIcon: bidsActive},
+];
