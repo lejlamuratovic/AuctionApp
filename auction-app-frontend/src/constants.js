@@ -73,6 +73,7 @@ export const BUTTON_LABELS = {
   REGISTER: "REGISTER",
   PLACE_BID: "PLACE BID",
   ADD_ITEM: "ADD ITEM",
+  CHANGE_PHOTO: "Change photo",
 };
 
 export const BUTTON_VARIANTS = {

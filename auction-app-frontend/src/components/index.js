@@ -13,3 +13,4 @@ export { default as Checkbox } from "./Checkbox/Checkbox";
 export { default as Searchbar } from "./Searchbar/Searchbar";
 export { default as SuggestionBox } from "./SuggestionBox/SuggestionBox";
 export { default as MyAccountOptions } from "./MyAccountOptions/MyAccountOptions";
+export { default as PersonalInformation } from "./PersonalInformation/PersonalInformation";
