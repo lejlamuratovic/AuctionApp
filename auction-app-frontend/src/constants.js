@@ -102,6 +102,7 @@ export const AUCTION_STATUS = {
   ADD_ITEM: "ADD ITEM",
   CHANGE_PHOTO: "Change photo",
   ADD_ITEM: "ADD ITEM",
+  CHANGE_PHOTO: "Change photo",
 };
 
 export const BUTTON_VARIANTS = {

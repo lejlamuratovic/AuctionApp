@@ -20,3 +20,4 @@ export { default as Notifications } from "./Notifications/Notifications";
 export { default as MyAccountOptions } from "./MyAccountOptions/MyAccountOptions";
 export { default as PersonalInformation } from "./PersonalInformation/PersonalInformation";
 export { default as MyAccountOptions } from "./MyAccountOptions/MyAccountOptions";
+export { default as PersonalInformation } from "./PersonalInformation/PersonalInformation";
