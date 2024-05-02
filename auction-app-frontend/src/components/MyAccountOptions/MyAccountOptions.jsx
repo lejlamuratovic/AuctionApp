@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Button, PersonalInformation, SellerInformation } from "src/components";
+import { Button, PersonalInformation, SellerInformation, BidsInformation } from "src/components";
 
 import { MY_ACCOUNT_TABS, BUTTON_LABELS, BUTTON_VARIANTS } from "src/constants";
 
@@ -19,6 +19,8 @@ const MyAccountOptions = () => {
         return <PersonalInformation />;
       case "seller": 
         return <SellerInformation />;
+      case "bids":
+        return <BidsInformation />;
       default:
         return null;
     }

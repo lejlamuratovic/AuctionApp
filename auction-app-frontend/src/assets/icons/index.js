@@ -15,6 +15,7 @@ import profileActive from "./profileActive.svg";
 import sellerActive from "./sellerActive.svg";
 import settingsActive from "./settingsActive.svg";
 import cart from "./cart.svg";
+import gavel from "./gavel.svg";
 
 export { 
     facebook, 
@@ -33,5 +34,6 @@ export {
     profileActive, 
     sellerActive, 
     settingsActive, 
-    cart
+    cart,
+    gavel
 };

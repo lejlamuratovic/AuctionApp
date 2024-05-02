@@ -20,3 +20,4 @@ export { default as MyAccountOptions } from "./MyAccountOptions/MyAccountOptions
 export { default as PersonalInformation } from "./PersonalInformation/PersonalInformation";
 export { default as SellerInformation } from "./SellerInformation/SellerInformation";
 export { default as ProductBidsTable } from "./ProductBidsTable/ProductBidsTable";
+export { default as BidsInformation } from "./BidsInformation/BidsInformation";
