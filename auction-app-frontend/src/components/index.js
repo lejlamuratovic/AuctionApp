@@ -12,3 +12,4 @@ export { default as Tabs } from "./Tabs/Tabs";
 export { default as Checkbox } from "./Checkbox/Checkbox";
 export { default as Searchbar } from "./Searchbar/Searchbar";
 export { default as SuggestionBox } from "./SuggestionBox/SuggestionBox";
+export { default as MyAccountOptions } from "./MyAccountOptions/MyAccountOptions";

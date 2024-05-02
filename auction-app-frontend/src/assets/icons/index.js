@@ -6,5 +6,30 @@ import go from "./go.svg";
 import search from "./search.svg";
 import collapse from "./collapse.svg";
 import expand from "./expand.svg";
+import bids from "./bids.svg";
+import profile from "./profile.svg";
+import seller from "./seller.svg";
+import settings from "./settings.svg";
+import bidsActive from "./bidsActive.svg";
+import profileActive from "./profileActive.svg";
+import sellerActive from "./sellerActive.svg";
+import settingsActive from "./settingsActive.svg";
 
-export { facebook, instagram, twitter, next, go, search, collapse, expand };
+export { 
+    facebook, 
+    instagram, 
+    twitter, 
+    next, 
+    go, 
+    search, 
+    collapse, 
+    expand, 
+    bids, 
+    profile, 
+    seller, 
+    settings, 
+    bidsActive, 
+    profileActive, 
+    sellerActive, 
+    settingsActive
+};

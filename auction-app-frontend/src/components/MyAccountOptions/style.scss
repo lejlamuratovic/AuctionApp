@@ -1,0 +1,31 @@
+@import "src/scss/index.scss"; 
+
+.my-account-tabs {
+    @include flex-container(row, space-between, center);
+    max-width: 1120px;
+
+    .tab-options {
+        @include flex-container(row, flex-start, center);
+        gap: 16px;
+
+        .tab {
+            @include flex-container(row, center, center);
+            color: $neutral00;
+            width: 134px;
+            padding: 16px 24px;
+            gap: 16px;
+            border: 1px solid $neutral09;
+
+            &.active {
+                color: $white;
+                background-color: $primary;
+                border: none;
+            }
+        }
+    }
+
+    button {
+        width: 262px;
+        padding: 16px 32px;
+    }
+}
