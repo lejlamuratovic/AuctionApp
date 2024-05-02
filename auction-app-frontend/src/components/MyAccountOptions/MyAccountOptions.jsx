@@ -1,11 +1,10 @@
 import { useState } from "react";
 
-import { Button } from "src/components";
+import { Button, PersonalInformation } from "src/components";
 
 import { MY_ACCOUNT_TABS, BUTTON_LABELS, BUTTON_VARIANTS } from "src/constants";
 
 import "./style.scss";
-import PersonalInformation from "../PersonalInformation/PersonalInformation";
 
 const MyAccountOptions = () => {
   const [activeTab, setActiveTab] = useState(MY_ACCOUNT_TABS[0].id);
@@ -14,8 +13,17 @@ const MyAccountOptions = () => {
     setActiveTab(tabId);
   };
 
+  const renderActiveTabContent = () => {
+    switch (activeTab) {
+      case "profile":
+        return <PersonalInformation />;
+      default:
+        return null;
+    }
+  };
+
   return (
-    <>
+    <div className="my-account-options-container">
       <div className="my-account-tabs">
         <div className="tab-options">
           { MY_ACCOUNT_TABS.map((tab) => (
@@ -37,7 +45,10 @@ const MyAccountOptions = () => {
             <Button label={ BUTTON_LABELS.ADD_ITEM } variant= { BUTTON_VARIANTS.FILLED }/>
         </div>
       </div>
-    </>
+      <div>
+        { renderActiveTabContent() }
+      </div>
+    </div>
   )
 }
 
