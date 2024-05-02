@@ -24,3 +24,4 @@ export { default as PersonalInformation } from "./PersonalInformation/PersonalIn
 export { default as SellerInformation } from "./SellerInformation/SellerInformation";
 export { default as ProductBidsTable } from "./ProductBidsTable/ProductBidsTable";
 export { default as BidsInformation } from "./BidsInformation/BidsInformation";
+export { default as ProductBidsItem } from "./ProductBidsItem/ProductBidsItem";
