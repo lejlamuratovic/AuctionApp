@@ -3,7 +3,7 @@
 .personal-information-container {
     @include flex-container(column, center, center);
     gap: 64px;
-    max-width: 1120px;
+    width: 100%;
 
     .general-information {
         width: 100%;
