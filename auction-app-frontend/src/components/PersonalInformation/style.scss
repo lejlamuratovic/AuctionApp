@@ -1,0 +1,38 @@
+@import "src/scss/index.scss";
+
+.personal-information-container {
+    @include flex-container(column, center, center);
+    gap: 64px;
+    max-width: 1120px;
+
+    .general-information {
+        width: 100%;
+        border: 1px solid $neutral09;
+
+        .general-information-header {
+            color: $neutral00;
+            border-bottom: 1px solid $neutral09;
+            padding: 16px 0px 16px 32px;
+        }
+
+        .general-information-columns {
+            @include flex-container(row, space-between, center);
+            padding: 32px;
+
+            .general-information-column {
+                @include flex-container(column, center, center);
+                gap: 32px;
+
+                img {
+                    width: 360px;
+                    height: 360px;
+                    border-radius: 50%;
+                }
+    
+                button {
+                    width: 360px;
+                }
+            }
+        }
+    }
+}
