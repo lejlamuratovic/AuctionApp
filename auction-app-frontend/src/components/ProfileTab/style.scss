@@ -1,6 +1,6 @@
 @import "src/scss/index.scss";
 
-.personal-information-container {
+.profile-tab-container {
     @include flex-container(column, center, center);
     gap: 64px;
     width: 100%;

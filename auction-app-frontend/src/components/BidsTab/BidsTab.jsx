@@ -5,7 +5,7 @@ import { BUTTON_LABELS, ITEMS } from "src/constants";
 
 import "./style.scss";
 
-const BidsInformation = () => {
+const BidsTab = () => {
   const noItemsComponent = (
       <div className="no-items-message body-semibold">
         <img src={ gavel } alt="gavel icon" className="no-items-icon" />
@@ -15,10 +15,10 @@ const BidsInformation = () => {
   );
     
   return (
-      <div className="bids-information-container">
+      <div className="bids-tab-container">
           <ProductBidsTable emptyMessageComponent={ noItemsComponent } items = { ITEMS } buttonLabel = { BUTTON_LABELS.BID }/>
       </div>
   )
 }
 
-export default BidsInformation;
+export default BidsTab;
