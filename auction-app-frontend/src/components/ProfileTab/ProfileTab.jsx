@@ -60,7 +60,7 @@ const ProfileTab = () => {
                 {/* collapsible sections */}
                 <div className="general-information">
                     <div className="general-information-header" onClick={ toggleAdditionalInfo1 }>
-                        <img src={showCardInfo ? dropdownActive : dropdownInactive} alt="Toggle Additional Information" />
+                        <img src={ showCardInfo ? dropdownInactive : dropdownActive } alt="Toggle Additional Information" />
                         <span className="body-semibold">Card Information (Optional)</span>
                     </div>
                     { showCardInfo && cardInformationFields.map(field => (
@@ -80,7 +80,7 @@ const ProfileTab = () => {
                 </div>
                 <div className="general-information">
                     <div className="general-information-header" onClick={ toggleAdditionalInfo2 }>
-                        <img src={ showAddressInfo ? dropdownActive : dropdownInactive } alt="Toggle Additional Information" />
+                        <img src={ showAddressInfo ? dropdownInactive : dropdownActive } alt="Toggle Additional Information" />
                         <span className="body-semibold">Shipping Address (Optional)</span>
                     </div>
                     { showAddressInfo && addressInformationFields.map(field => (
