@@ -25,4 +25,12 @@ export const personalInformationFormFields = [
     name: "email",
     rules: rules.email()
   },
+  {
+    label: "Date of Birth",
+    type: "dob", // custom type
+    name: "dob",
+    rules: {
+      ...rules.required("Date of birth"),
+    }
+  }
 ];

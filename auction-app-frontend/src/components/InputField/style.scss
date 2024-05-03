@@ -2,6 +2,7 @@
 
 .input-field {
     @include flex-container(column, start, start);
+    position: relative;
     gap: 10px;
 
     input {

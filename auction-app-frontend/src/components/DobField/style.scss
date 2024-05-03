@@ -1,0 +1,10 @@
+@import "src/scss/index.scss";
+
+.dob-container {
+    @include flex-container(row, space-between, center);
+    width: 100%;
+
+    select {
+        width: 166px;
+    }
+}

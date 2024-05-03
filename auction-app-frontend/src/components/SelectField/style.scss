@@ -1,0 +1,20 @@
+@import "src/scss/index.scss";
+
+.custom-select {
+    overflow: hidden;
+
+    select {
+        overflow: hidden;
+        -moz-appearance: none; /* Firefox */
+        -webkit-appearance: none; /* Safari and Chrome */
+        appearance: none;
+        padding: 12px 24px;
+        border: 1px solid $neutral09;
+        background-image: url("src/assets/icons/drop-down.svg");
+        background-repeat: no-repeat;
+        background-position: right 0.7rem top 50%;
+        background-size: 0.65rem auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+}
