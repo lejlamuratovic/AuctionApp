@@ -5,43 +5,69 @@
     gap: 64px;
     width: 100%;
 
-    .general-information {
+    form {
         width: 100%;
-        border: 1px solid $neutral09;
 
-        .general-information-header {
-            color: $neutral00;
-            border-bottom: 1px solid $neutral09;
-            padding: 16px 0px 16px 32px;
-        }
-
-        .general-information-columns {
-            @include flex-container(row, space-between, center);
-            padding: 32px;
-
-            .general-information-column {
-                @include flex-container(column, center, center);
-                gap: 32px;
+        .general-information {
+            width: 100%;
+            border: 1px solid $neutral09;
+            margin-bottom: 32px;
+            overflow: auto;
+    
+            .general-information-header {
+                color: $neutral00;
+                border-bottom: 1px solid $neutral09;
+                padding: 16px 0px 16px 32px;
 
                 img {
-                    width: 360px;
-                    height: 360px;
-                    border-radius: 50%;
-                }
-    
-                button {
-                    width: 360px;
-                }
-
-                .input-field {
-                    padding-bottom: 32px;
-                }
-
-                select {
-                    width: 166px;
-                    height: 64px;
+                    height: 16px;
+                    width: 16px;
+                    margin-right: 16px;
                 }
             }
+    
+            .general-information-columns {
+                @include flex-container(row, space-between, center);
+                padding: 64px;
+
+                .general-information-column {
+                    @include flex-container(column, center, center);
+                    gap: 32px;
+    
+                    img {
+                        width: 360px;
+                        height: 360px;
+                        border-radius: 50%;
+                    }
+    
+                    .input-field {
+                        width: 100%;
+                    }
+    
+                    select {
+                        width: 166px;
+                        height: 64px;
+                    }
+                }
+            }
+
+            .collapsable-column {
+                padding: 0 64px;
+
+                .collapsable-form {
+                    @include flex-container(column, flex-end, flex-end);
+
+                    .input-field {
+                        margin: 16px 0;
+                    }
+                }
+            }
+
+        }
+
+        button {
+            float: right;
+            padding: 16px 32px;
         }
     }
 }
