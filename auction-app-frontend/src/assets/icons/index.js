@@ -17,6 +17,8 @@ import settingsActive from "./settingsActive.svg";
 import cart from "./cart.svg";
 import gavel from "./gavel.svg";
 import dropdown from "./drop-down.svg";
+import dropdownInactive from "./dropdown-inactive.svg";
+import dropdownActive from "./dropdown-active.svg";
 
 export { 
     facebook, 
@@ -37,5 +39,7 @@ export {
     settingsActive, 
     cart,
     gavel, 
-    dropdown
+    dropdown,
+    dropdownInactive,
+    dropdownActive
 };

@@ -83,7 +83,7 @@ export const BUTTON_LABELS = {
   PLACE_BID: "PLACE BID",
   ADD_ITEM: "ADD ITEM",
   CHANGE_PHOTO: "Change photo",
-  SAVE_INFO: "Save Info",
+  SAVE_INFO: "SAVE INFO",
   BID: "BID",
   DEACTIVATE: "DEACTIVATE",
 };
