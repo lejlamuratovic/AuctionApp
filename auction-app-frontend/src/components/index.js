@@ -23,3 +23,5 @@ export { default as ProductBidsTable } from "./ProductBidsTable/ProductBidsTable
 export { default as BidsTab } from "./BidsTab/BidsTab";
 export { default as ProductBidsItem } from "./ProductBidsItem/ProductBidsItem";
 export { default as SettingsTab } from "./SettingsTab/SettingsTab";
+export { default as DobField } from "./DobField/DobField";
+export { default as SelectField } from "./SelectField/SelectField";
