@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 import { Button, ProfileTab, SellerTab, BidsTab, SettingsTab } from "src/components";
 
@@ -7,13 +8,27 @@ import { MY_ACCOUNT_TABS, BUTTON_LABELS, BUTTON_VARIANTS } from "src/constants";
 import "./style.scss";
 
 const MyAccountOptions = () => {
-  const [activeTab, setActiveTab] = useState(MY_ACCOUNT_TABS[0].id);
-  
-  window.location.hash = window.location.hash || MY_ACCOUNT_TABS[0].id; // set default tab to profile
+  const location = useLocation();
+
+  const initialTab = location.hash ? location.hash.replace('#', '') : MY_ACCOUNT_TABS[0].id;
+
+  const [activeTab, setActiveTab] = useState(initialTab);
+
+  const appendHash = (newActiveTab) => {
+    const hash = location.hash.replace('#', '');
+
+    if (!hash || hash !== newActiveTab) {
+      window.location.hash = newActiveTab;
+    }
+  };
+
+  useEffect(() => {
+    appendHash(activeTab); 
+  }, []);
 
   const changeActiveTab = (tabId) => () => {
     setActiveTab(tabId);
-    window.location.hash = tabId;
+    appendHash(tabId);
   };
 
   const renderActiveTabContent = () => {
