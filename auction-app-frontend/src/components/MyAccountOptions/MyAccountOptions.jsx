@@ -8,9 +8,12 @@ import "./style.scss";
 
 const MyAccountOptions = () => {
   const [activeTab, setActiveTab] = useState(MY_ACCOUNT_TABS[0].id);
+  
+  window.location.hash = window.location.hash || MY_ACCOUNT_TABS[0].id; // set default tab to profile
 
   const changeActiveTab = (tabId) => () => {
     setActiveTab(tabId);
+    window.location.hash = tabId;
   };
 
   const renderActiveTabContent = () => {
