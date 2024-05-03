@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Button, PersonalInformation, SellerInformation, BidsInformation } from "src/components";
+import { Button, ProfileTab, SellerTab, BidsTab, SettingsTab } from "src/components";
 
 import { MY_ACCOUNT_TABS, BUTTON_LABELS, BUTTON_VARIANTS } from "src/constants";
 
@@ -16,11 +16,13 @@ const MyAccountOptions = () => {
   const renderActiveTabContent = () => {
     switch (activeTab) {
       case "profile":
-        return <PersonalInformation />;
+        return <ProfileTab />;
       case "seller": 
-        return <SellerInformation />;
+        return <SellerTab />;
       case "bids":
-        return <BidsInformation />;
+        return <BidsTab />;
+      case "settings":
+        return <SettingsTab />;
       default:
         return null;
     }

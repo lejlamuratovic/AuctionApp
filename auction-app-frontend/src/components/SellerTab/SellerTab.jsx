@@ -7,7 +7,7 @@ import { SELLER_TABS } from "src/constants";
 
 import "./style.scss";
 
-const SellerInformation = () => {
+const SellerTab = () => {
   const [activeTab, setActiveTab] = useState(SELLER_TABS[0].id);
 
   const noItemsComponent = (
@@ -23,7 +23,7 @@ const SellerInformation = () => {
   }  
 
   return (
-    <div className="seller-information-container">
+    <div className="seller-tab-container">
       <div className="seller-tabs">
         { SELLER_TABS.map((tab) => (
           <span 
@@ -40,4 +40,4 @@ const SellerInformation = () => {
   )
 }
 
-export default SellerInformation
+export default SellerTab;

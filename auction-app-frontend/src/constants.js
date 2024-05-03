@@ -85,6 +85,7 @@ export const BUTTON_LABELS = {
   CHANGE_PHOTO: "Change photo",
   SAVE_INFO: "Save Info",
   BID: "BID",
+  DEACTIVATE: "DEACTIVATE",
 };
 
 export const BUTTON_VARIANTS = {
@@ -133,4 +134,10 @@ export const ITEMS = [
     yourPrice: "150",
     highestBid: "200"
   }
+];
+
+export const POLICY_AND_COMMUNITY = [
+  { id: "email", label: "Email" },
+  { id: "pushNotifications", label: "Push Notifications" },
+  { id: "smsNotifications", label: "SMS" },
 ];

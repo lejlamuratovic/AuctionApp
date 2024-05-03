@@ -8,7 +8,7 @@ import { personalInformationFormFields } from "src/forms/fields"
 
 import "./style.scss"
 
-const PersonalInformation = () => {
+const ProfileTab = () => {
     const methods = useForm({
         mode: "onBlur"
     }); 
@@ -18,7 +18,7 @@ const PersonalInformation = () => {
     }
 
     return (
-        <div className="personal-information-container">
+        <div className="profile-tab-container">
             <div className="general-information">
                 <div className="general-information-header">
                     <span className="body-semibold">Personal Information</span>
@@ -43,4 +43,4 @@ const PersonalInformation = () => {
     )
 }
 
-export default PersonalInformation
+export default ProfileTab;

@@ -1,6 +1,8 @@
 @import "src/scss/index.scss";
 
-.seller-information-container {
+@import "src/scss/index.scss";
+
+.bids-tab-container {
     @include flex-container(column, flex-start, flex-start);
     width: 100%;
     gap: 10px;
@@ -13,21 +15,6 @@
         img {
             width: 92px;
             height: 92px;
-        }
-
-    }
-
-    .seller-tabs {
-        .tab {
-            width: 96px;
-            height: 40px;
-            padding: 8px 24px;
-            border: 1px solid $neutral09;
-            
-            &.active {
-                background-color: $primary;
-                color: $white;
-            }
         }
 
     }
