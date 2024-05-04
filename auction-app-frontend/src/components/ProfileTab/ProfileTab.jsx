@@ -51,7 +51,6 @@ const ProfileTab = () => {
                                     label={ field.label }
                                     type={ field.type }
                                     rules={ field.rules }
-                                    options={ field.type === "select" ? field.options : null }
                                 />
                             )) }
                         </div>
@@ -63,9 +62,10 @@ const ProfileTab = () => {
                         <img src={ showCardInfo ? dropdownInactive : dropdownActive } alt="Toggle Additional Information" />
                         <span className="body-semibold">Card Information (Optional)</span>
                     </div>
+                    { showCardInfo && (
                         <div className="collapsable-column">
                             <div className="collapsable-form">
-                                { showCardInfo && cardInformationFields.map(field => (
+                            { cardInformationFields.map(field => (
                                     <div 
                                         key={ field.name } 
                                         className={
@@ -78,12 +78,12 @@ const ProfileTab = () => {
                                         label={ field.label }
                                         type={ field.type }
                                         rules={ field.rules }
-                                        options={ field.type === "select" ? field.options : null }
                                     />
                                 </div>
                                 )) }
                             </div>
                         </div>
+                    ) }
                 </div>
                 <div className="general-information">
                     <div className="general-information-header" onClick={ toggleAdditionalInfo2 }>
