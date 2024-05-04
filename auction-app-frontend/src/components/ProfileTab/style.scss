@@ -71,6 +71,10 @@
                         }
                     }
 
+                    .input-field {
+                        position: relative;
+                    }
+
                     .card-row {
                         input {
                             width: 170px;
@@ -78,6 +82,13 @@
 
                         label {
                             min-height: 24px;
+                        }
+
+                        .error-message {
+                            width: 170px;
+                            position: absolute;
+                            padding: 0;
+                            bottom: -35px;
                         }
                     }
                     

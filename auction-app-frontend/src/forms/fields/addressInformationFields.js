@@ -5,40 +5,32 @@ export const addressInformationFields = [
         label: "Street",
         type: "text",
         name: "street",
-        rules: {
-            ...rules.required("Street")
-        }
+        rules: rules.street()  
     },
     {
         label: "City",
         type: "text",
         name: "city",
-        rules: {
-            ...rules.required("")
-        }
+        rules: rules.city()
     },
     {
         label: "Zip Code",
         type: "number",
         name: "zipCode",
         rules: {
-            ...rules.required("")
+            ...rules.required("Zip Code"),
         }
     }, 
     {
         label: "State",
         type: "text",
         name: "state",
-        rules: {
-            ...rules.required("")
-        }
+        rules: rules.state()
     },
     {
         label: "Country",
         type: "text",
         name: "country",
-        rules: {
-            ...rules.required("")
-        }
+        rules: rules.country()
     }
 ];

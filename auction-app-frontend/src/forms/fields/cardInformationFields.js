@@ -14,31 +14,23 @@ export const cardInformationFields = [
         label: "Card Number",
         type: "text",
         name: "cardNumber",
-        rules: {
-            ...rules.required("Card Number")
-        }
+        rules: rules.creditCard()
     },
     {
         label: "Expiration Date",
         type: "text",
         name: "expirationMonth",
-        rules: {
-            ...rules.required("Expiration Month")
-        }
+        rules: rules.expirationMonth()
     },
     {
         type: "text",
         name: "expirationYear",
-        rules: {
-            ...rules.required("Expiration Year")
-        }
+        rules: rules.expirationYear()
     },
     {
         label: "CVV",
         type: "text",
         name: "cvv",
-        rules: {
-            ...rules.required("CVV")
-        }
+        rules: rules.cvv()
     }
 ];
