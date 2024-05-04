@@ -21,9 +21,16 @@ export const cardInformationFields = [
     {
         label: "Expiration Date",
         type: "text",
-        name: "expirationDate",
+        name: "expirationMonth",
         rules: {
-            ...rules.required("Expiration Date")
+            ...rules.required("Expiration Month")
+        }
+    },
+    {
+        type: "text",
+        name: "expirationYear",
+        rules: {
+            ...rules.required("Expiration Year")
         }
     },
     {

@@ -63,40 +63,53 @@ const ProfileTab = () => {
                         <img src={ showCardInfo ? dropdownInactive : dropdownActive } alt="Toggle Additional Information" />
                         <span className="body-semibold">Card Information (Optional)</span>
                     </div>
-                    { showCardInfo && cardInformationFields.map(field => (
                         <div className="collapsable-column">
                             <div className="collapsable-form">
-                                <InputField
-                                    key={ field.name }
-                                    name={ field.name }
-                                    label={ field.label }
-                                    type={ field.type }
-                                    rules={ field.rules }
-                                    options={ field.type === "select" ? field.options : null }
-                                />
+                                { showCardInfo && cardInformationFields.map(field => (
+                                    <div 
+                                        key={ field.name } 
+                                        className={
+                                            `${field.name === "expirationMonth" 
+                                            || field.name === "expirationYear" 
+                                            || field.name === "cvv"
+                                            ? "row-field card-row" : "column-field"}` }>
+                                    <InputField
+                                        name={ field.name }
+                                        label={ field.label }
+                                        type={ field.type }
+                                        rules={ field.rules }
+                                        options={ field.type === "select" ? field.options : null }
+                                    />
+                                </div>
+                                )) }
                             </div>
                         </div>
-                    )) }
                 </div>
                 <div className="general-information">
                     <div className="general-information-header" onClick={ toggleAdditionalInfo2 }>
                         <img src={ showAddressInfo ? dropdownInactive : dropdownActive } alt="Toggle Additional Information" />
                         <span className="body-semibold">Shipping Address (Optional)</span>
                     </div>
-                    { showAddressInfo && addressInformationFields.map(field => (
+                    { showAddressInfo && (
                         <div className="collapsable-column">
                             <div className="collapsable-form">
-                                <InputField
-                                    key={ field.name }
-                                    name={ field.name }
-                                    label={ field.label }
-                                    type={ field.type }
-                                    rules={ field.rules }
-                                    options={ field.type === "select" ? field.options : null }
-                                />
+                                { addressInformationFields.map(field => (
+                                    <div 
+                                        key={ field.name } 
+                                        className={ `${field.name === "zipCode" || field.name === "city" 
+                                            ? "row-field" : "column-field"}` }>
+                                        <InputField
+                                            name={ field.name }
+                                            label={ field.label }
+                                            type={ field.type } 
+                                            rules={ field.rules }
+                                            options={ field.type === "select" ? field.options : null }
+                                        />
+                                    </div>
+                                )) }
                             </div>
                         </div>
-                    )) }
+                    ) }
                 </div>
             </FormContainer>
         </div>
