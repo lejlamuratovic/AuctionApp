@@ -55,19 +55,39 @@
                 padding: 0 64px;
 
                 .collapsable-form {
-                    @include flex-container(column, flex-end, flex-end);
+                    margin: 64px 0;
+                    @include flex-container(row, flex-end, center);
+                    flex-wrap: wrap;
+                    gap: 20px;
 
-                    .input-field {
-                        margin: 16px 0;
+                    .column-field {
+                        @include flex-container(column, flex-end, flex-end);
+                        flex-basis: 100%;
                     }
+
+                    .row-field {
+                        input {
+                            width: 263px;
+                        }
+                    }
+
+                    .card-row {
+                        input {
+                            width: 170px;
+                        }
+
+                        label {
+                            min-height: 24px;
+                        }
+                    }
+                    
                 }
+            }       
+
+            button {
+                float: right;
+                padding: 16px 32px;
             }
-
-        }
-
-        button {
-            float: right;
-            padding: 16px 32px;
         }
     }
 }
