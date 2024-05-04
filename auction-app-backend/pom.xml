@@ -123,6 +123,11 @@
             <version>2.23.1</version>
         </dependency>
         
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk</artifactId>
+            <version>1.12.713</version>
+        </dependency>
+
     </dependencies>
 
     <build>
