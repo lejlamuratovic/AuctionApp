@@ -88,6 +88,14 @@ export const rules = {
         ...rules.maxLength(50, "Country"),
         ...rules.pattern(/^[a-zA-Z\s]{2,50}$/, "Invalid country name")
     }),
+    startDate: () => ({
+        ...rules.required("Start date"),
+        validate: (value) => isDateInPast(value) || "Start date cannot be in the past"
+    }),
+    endDate: () => ({
+        ...rules.required("End date"),
+        validate: (value) => isDateInPast(value) || "End date cannot be in the past"
+    }),
 };
 
 const checkLuhn = (cardNo) => {
@@ -116,4 +124,12 @@ const validateYear = (value) => {
     const fullYear = parseInt('20' + value, 10);
 
     return fullYear >= currentYear;
+};
+
+const isDateInPast = (dateString) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);  // to ensure we're comparing dates without time
+    const inputDate = new Date(dateString);
+
+    return inputDate > today;
 };
