@@ -27,8 +27,14 @@
         }
         
         .input-field:has(input[name="city"]), .input-field:has(input[name="zipCode"])  {
+            position: relative;
             flex-basis: auto;
             width: 251px;
+
+            .error-message {
+                position: absolute;
+                top: 100px;
+            }
         }
 
         .input-field:has(input[name="city"]) {

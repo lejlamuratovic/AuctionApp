@@ -29,8 +29,14 @@
         .input-field:has(input[type="date"]) {
             flex-basis: auto;
             width: 251px;
-        }
+            position: relative;
 
+            .error-message {
+                position: absolute;
+                top: 100px;
+            }
+        }
+        
         .input-field:has(input[name="startDate"]) {
             margin-right: 23px;
         }

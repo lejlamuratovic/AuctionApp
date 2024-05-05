@@ -15,16 +15,12 @@ export const productPriceFormFields = [
         label: "Start date",
         type: "date",
         name: "startDate",
-        rules: {
-            ...rules.required("Start date")
-        }
+        rules: rules.startDate()
     },
     {
         label: "End date",
         type: "date",
         name: "endDate",
-        rules: {
-            ...rules.required("End date")
-        }
+        rules: rules.endDate()
     }
 ];
