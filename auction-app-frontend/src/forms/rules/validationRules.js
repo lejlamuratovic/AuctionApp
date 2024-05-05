@@ -68,7 +68,7 @@ export const rules = {
         ...rules.required("Street"),
         ...rules.minLength(3, "Street"),
         ...rules.maxLength(100, "Street"),
-        ...rules.pattern(/^[a-zA-Z0-9\s,."-]{3,100}$/, "Invalid street name")
+        ...rules.pattern(/^[a-zA-Z0-9\s,.'-]{3,100}$/, "Invalid street name")
     }),
     city: () => ({
         ...rules.required("City"),
@@ -131,7 +131,7 @@ const checkCardNumberValidity = (cardNo) => {
 
 const validateYear = (value) => {
     const currentYear = new Date().getFullYear();
-    const fullYear = parseInt("20" + value, 10);
+    const fullYear = parseInt('20' + value, 10);
 
     return fullYear >= currentYear;
 };

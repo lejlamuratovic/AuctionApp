@@ -25,3 +25,6 @@ export { default as ProductBidsItem } from "./ProductBidsItem/ProductBidsItem";
 export { default as SettingsTab } from "./SettingsTab/SettingsTab";
 export { default as SelectField } from "./SelectField/SelectField";
 export { default as EmptyTab } from "./EmptyTab/EmptyTab";
+export { default as ProductPriceForm } from "./ProductPriceForm/ProductPriceForm";
+export { default as ProductDetailsForm } from "./ProductDetailsForm/ProductDetailsForm";
+export { default as LocationForm } from "./LocationForm/LocationForm";

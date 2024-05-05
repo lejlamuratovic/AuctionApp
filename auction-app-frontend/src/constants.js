@@ -53,6 +53,7 @@ export const ROUTE_PATHS = {
   PRODUCT: "/product",
   LOGIN: "/login",
   REGISTER: "/register",
+  ADD_ITEM: "/add-item",
 };
 
 export const HIDE_BREADCRUMBS_ON_PATHS = [
@@ -93,8 +94,12 @@ export const BUTTON_LABELS = {
   CHANGE_PHOTO: "Change photo",
   SAVE_INFO: "SAVE INFO",
   BID: "BID",
-  DEACTIVATE: "DEACTIVATE",
   LOAD_MORE: "LOAD MORE",
+  REGISTER: "REGISTER",
+  DEACTIVATE: "DEACTIVATE",
+  CANCEL: "CANCEL",
+  NEXT: "NEXT",
+  BACK: "BACK",
 };
 
 export const CONNECTION_STATUSES = {
@@ -110,6 +115,7 @@ export const USER_TYPES = {
 export const AUCTION_STATUS = {
   EXPIRED: "Expired",
 };
+
 
 export const BUTTON_VARIANTS = {
   OUTLINED: "outlined",
