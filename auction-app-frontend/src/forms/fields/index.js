@@ -1,2 +1,5 @@
 export * from "./loginFormFields.js"
 export * from "./registerFormFields.js"
+export * from "./productDetailsFormFields.js"
+export * from "./productPriceFormFields.js"
+export * from "./locationShippingFormFields.js"

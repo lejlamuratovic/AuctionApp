@@ -1,0 +1,28 @@
+@import "src/scss/index.scss";
+
+.add-item-form-container {
+    @include flex-container(column, center, center);
+    max-width: 738px;
+    border: 1px solid $neutral09;
+    margin: auto;
+    padding: 32px;
+
+    .form {
+        @include flex-container(column, center, center);
+        width: 548px;
+        margin-bottom: 32px;
+
+        .form-header {
+            margin-bottom: 64px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding-bottom: 32px;
+
+            input {
+                width: 100%;
+            }
+        }
+    }
+}

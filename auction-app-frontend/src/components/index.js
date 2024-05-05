@@ -16,3 +16,6 @@ export { default as InputField } from "./InputField/InputField";
 export { default as FormContainer } from "./FormContainer/FormContainer";
 export { default as LoginForm } from "./LoginForm/LoginForm";
 export { default as RegisterForm } from "./RegisterForm/RegisterForm";
+export { default as ProductPriceForm } from "./ProductPriceForm/ProductPriceForm";
+export { default as ProductDetailsForm } from "./ProductDetailsForm/ProductDetailsForm";
+export { default as LocationForm } from "./LocationForm/LocationForm";
