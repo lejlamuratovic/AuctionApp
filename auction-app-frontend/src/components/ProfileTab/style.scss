@@ -55,43 +55,67 @@
                 padding: 0 64px;
 
                 .collapsable-form {
+                    @include flex-container(row, flex-end, flex-end);
                     margin: 64px 0;
-                    @include flex-container(row, flex-end, center);
+                    width: 100%;
                     flex-wrap: wrap;
                     gap: 20px;
 
-                    .column-field {
+                    .input-field {
                         @include flex-container(column, flex-end, flex-end);
                         flex-basis: 100%;
-                    }
-
-                    .row-field {
-                        input {
-                            width: 263px;
-                        }
-                    }
-
-                    .input-field {
                         position: relative;
+
+                        label, .error-message {
+                            width: 546px;
+                            text-align: left;
+                        }
+
+                        &:has(input[name="city"]), 
+                        &:has(input[name="zipCode"]),
+                        &:has(input[name="expirationYear"]),
+                        &:has(input[name="expirationMonth"]),
+                        &:has(input[name="cvv"]) {
+                            flex-basis: auto;
+                        }
+
+                        &:has(input[name="city"]), 
+                        &:has(input[name="zipCode"]) {
+                            input {
+                                width: 263px;
+                            }
+
+                            label, .error-message {
+                                width: 263px;
+                                min-height: 24px;
+                            }
+
+                            .error-message {
+                                position: absolute;
+                                padding: 0;
+                                bottom: -30px;
+                            }
+                        }
+
+                        &:has(input[name="expirationYear"]),
+                        &:has(input[name="expirationMonth"]),
+                        &:has(input[name="cvv"]) {
+                            input {
+                                width: 168px;
+                            }
+
+                            label, .error-message {
+                                width: 168px;
+                                min-height: 24px;
+                            }
+
+                            .error-message {
+                                position: absolute;
+                                padding: 0;
+                                bottom: -30px;
+                            }
+                        }
                     }
-
-                    .card-row {
-                        input {
-                            width: 170px;
-                        }
-
-                        label {
-                            min-height: 24px;
-                        }
-
-                        .error-message {
-                            width: 170px;
-                            position: absolute;
-                            padding: 0;
-                            bottom: -35px;
-                        }
-                    }
-                    
                 }
             }       
         }
