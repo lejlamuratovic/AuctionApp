@@ -66,21 +66,14 @@ const ProfileTab = () => {
                         <div className="collapsable-column">
                             <div className="collapsable-form">
                             { cardInformationFields.map(field => (
-                                    <div 
-                                        key={ field.name } 
-                                        className={
-                                            `${field.name === "expirationMonth" 
-                                            || field.name === "expirationYear" 
-                                            || field.name === "cvv"
-                                            ? "row-field card-row" : "column-field"}` }>
-                                    <InputField
-                                        name={ field.name }
-                                        label={ field.label }
-                                        type={ field.type }
-                                        rules={ field.rules }
-                                    />
-                                </div>
-                                )) }
+                                <InputField
+                                    key={ field.name } 
+                                    name={ field.name }
+                                    label={ field.label }
+                                    type={ field.type }
+                                    rules={ field.rules }
+                                />
+                            )) }
                             </div>
                         </div>
                     ) }
@@ -94,18 +87,14 @@ const ProfileTab = () => {
                         <div className="collapsable-column">
                             <div className="collapsable-form">
                                 { addressInformationFields.map(field => (
-                                    <div 
-                                        key={ field.name } 
-                                        className={ `${field.name === "zipCode" || field.name === "city" 
-                                            ? "row-field" : "column-field"}` }>
-                                        <InputField
-                                            name={ field.name }
-                                            label={ field.label }
-                                            type={ field.type } 
-                                            rules={ field.rules }
-                                            options={ field.type === "select" ? field.options : null }
-                                        />
-                                    </div>
+                                    <InputField
+                                        key={ field.name }
+                                        name={ field.name }
+                                        label={ field.label }
+                                        type={ field.type } 
+                                        rules={ field.rules }
+                                        options={ field.type === "select" ? field.options : null }
+                                    />
                                 )) }
                             </div>
                         </div>
