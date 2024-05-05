@@ -6,6 +6,6 @@ import com.example.auctionapp.response.NotificationResponse;
 import java.util.UUID;
 
 public interface NotificationService {
-    public void notifyUser(final UUID userId, final NotificationType notificationType, final UUID productId);
+    void notifyUser(final UUID userId, final NotificationType notificationType, final UUID productId);
     NotificationResponse getLatestNotificationForUserAndProduct(final UUID userId, final UUID productId);
 }

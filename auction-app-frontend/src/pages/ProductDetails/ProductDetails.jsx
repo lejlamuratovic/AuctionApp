@@ -161,7 +161,7 @@ const ProductDetails = () => {
               <span className="item-value">{ timeLeft }</span>
             </div>
           </div>
-          { (timeLeft !== AUCTION_STATUS.EXPIRED && userType === USER_TYPES.USER && userId !== product.userId) && (
+          { (AUCTION_STATUS.EXPIRED !== timeLeft && USER_TYPES.USER === userType && userId !== product.userId) && (
             <div className="place-bid-form">
               <FormContainer 
                 formFields={ additionalPlaceBidsFormFields } 

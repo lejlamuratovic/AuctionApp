@@ -81,7 +81,7 @@ export const BUTTON_VARIANTS = {
 
 export const CONNECTION_STATUSES = {
   CONNECTED: "connected",
-  DISCONNECTED: "Disconnected",
+  DISCONNECTED: "disconnected",
 };
 
 export const USER_TYPES = {
