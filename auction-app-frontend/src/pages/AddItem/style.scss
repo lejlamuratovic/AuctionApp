@@ -26,3 +26,34 @@
         }
     }
 }
+
+.form-navigation {
+    @include flex-container(row, space-between, center);
+    width: 224px;
+    gap: 10px;
+    margin: 50px auto;
+
+    hr {
+        width: 10px;
+        flex-basis: 100%;
+        border: 1px solid $neutral09;
+
+        &:last-child {
+            display: none;
+        }
+    }
+
+    .circle {
+        min-width: 16px;
+        min-height: 16px;
+        border-radius: 50%;
+
+        &.active {
+            background-color: $primary;
+        }
+
+        &.inactive {
+            border: 1px solid $primary;
+        }
+    }
+}

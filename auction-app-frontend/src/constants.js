@@ -127,3 +127,9 @@ export const POLICY_AND_COMMUNITY = [
   { id: "pushNotifications", label: "Push Notifications" },
   { id: "smsNotifications", label: "SMS" },
 ];
+
+export const ADD_ITEM_FORMS_MAP = {
+  DETAILS: "details",
+  PRICES: "prices",
+  SHIPPING: "shipping",
+};
