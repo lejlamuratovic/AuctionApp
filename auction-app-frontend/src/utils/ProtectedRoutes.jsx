@@ -1,4 +1,4 @@
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
 import { ROUTE_PATHS } from "src/constants";
 
@@ -11,7 +11,7 @@ const ProtectedRoutes = ({ children }) => {
         return <Navigate to={ROUTE_PATHS.LOGIN} state={{ from: location }} />;
     }
 
-  return children; // return children if user is authenticated
+  return <Outlet />; // return child route elements
 };
 
 export default ProtectedRoutes;
