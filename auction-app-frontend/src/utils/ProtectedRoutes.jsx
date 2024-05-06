@@ -8,7 +8,7 @@ const ProtectedRoutes = ({ children }) => {
     const accessToken = localStorage.getItem("accessToken");
 
     if (accessToken === null) {
-        return <Navigate to={ROUTE_PATHS.LOGIN} state={{ from: location }} />;
+        return <Navigate to={ ROUTE_PATHS.LOGIN } state={ { from: location } } />;
     }
 
   return <Outlet />; // return child route elements

@@ -82,6 +82,7 @@ export const HOME_DEFAULT_PAGE_NUMBER = 8;
 export const BUTTON_LABELS = {
   EXPIRED: "Expired",
   REGISTER: "REGISTER",
+  LOGIN: "LOGIN",
   PLACE_BID: "PLACE BID",
   ADD_ITEM: "ADD ITEM",
   CHANGE_PHOTO: "Change photo",

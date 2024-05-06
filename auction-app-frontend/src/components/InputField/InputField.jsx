@@ -18,9 +18,9 @@ const InputField = ({ name, label, type, rules, step, options }) => {
     
         switch (type) {
             case "dob":
-                return <DobField name={name} rules={rules} />;
+                return <DobField name={ name } rules={ rules } />;
             case "select":
-                return <SelectField name={name} options={options} rules={rules} />;
+                return <SelectField name={ name } options={ options } rules={ rules } />;
             default:
                 return <input {...inputProps} />;
         }
