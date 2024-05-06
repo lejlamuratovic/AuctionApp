@@ -44,15 +44,17 @@ const ProfileTab = () => {
                             <Button label={ BUTTON_LABELS.CHANGE_PHOTO } variant={ BUTTON_VARIANTS.OUTLINED } />
                         </div>
                         <div className="general-information-column">
-                            { personalInformationFormFields.map(field => (
-                                <InputField
-                                    key={ field.name }
-                                    name={ field.name }
-                                    label={ field.label }
-                                    type={ field.type }
-                                    rules={ field.rules }
-                                />
-                            )) }
+                            <div className="profile-form">
+                                { personalInformationFormFields.map(field => (
+                                    <InputField
+                                        key={ field.name }
+                                        name={ field.name }
+                                        label={ field.label }
+                                        type={ field.type }
+                                        rules={ field.rules }
+                                    />
+                                )) }
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -64,7 +66,7 @@ const ProfileTab = () => {
                     </div>
                     { showCardInfo && (
                         <div className="collapsable-column">
-                            <div className="collapsable-form">
+                            <div className="profile-form">
                             { cardInformationFields.map(field => (
                                 <InputField
                                     key={ field.name } 
@@ -85,7 +87,7 @@ const ProfileTab = () => {
                     </div>
                     { showAddressInfo && (
                         <div className="collapsable-column">
-                            <div className="collapsable-form">
+                            <div className="profile-form">
                                 { addressInformationFields.map(field => (
                                     <InputField
                                         key={ field.name }

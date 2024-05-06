@@ -27,10 +27,20 @@ export const personalInformationFormFields = [
   },
   {
     label: "Date of Birth",
-    type: "dob", // custom type
-    name: "dob",
-    rules: {
-      ...rules.required("Date of birth"),
-    }
+    type: "number",
+    name: "month",
+    rules: rules.month()
+  },
+  {
+    label: " ",
+    type: "number",
+    name: "day",
+    rules: rules.day()
+  },
+  {
+    label: " ",
+    type: "number",
+    name: "year",
+    rules: rules.year()
   }
 ];

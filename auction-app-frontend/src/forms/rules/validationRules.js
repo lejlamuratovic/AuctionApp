@@ -68,7 +68,7 @@ export const rules = {
         ...rules.required("Street"),
         ...rules.minLength(3, "Street"),
         ...rules.maxLength(100, "Street"),
-        ...rules.pattern(/^[a-zA-Z0-9\s,.'-]{3,100}$/, "Invalid street name")
+        ...rules.pattern(/^[a-zA-Z0-9\s,."-]{3,100}$/, "Invalid street name")
     }),
     city: () => ({
         ...rules.required("City"),
@@ -88,6 +88,24 @@ export const rules = {
         ...rules.maxLength(50, "Country"),
         ...rules.pattern(/^[a-zA-Z\s]{2,50}$/, "Invalid country name")
     }),
+    month: () => ({
+        ...rules.required("Month"),
+        ...rules.minValue(1, "Month"),
+        ...rules.maxValue(12, "Month"),
+        ...rules.pattern(/^[0-9]{1,2}$/, "Invalid month")
+    }),
+    day: () => ({
+        ...rules.required("Day"),
+        ...rules.minValue(1, "Day"),
+        ...rules.maxValue(31, "Day"),
+        ...rules.pattern(/^[0-9]{1,2}$/, "Invalid day")
+    }),
+    year: () => ({
+        ...rules.required("Year"),
+        ...rules.minValue(1930, "Year"),
+        ...rules.maxValue(2024, "Year"),
+        ...rules.pattern(/^[0-9]{2,4}$/, "Invalid year")
+    })
 };
 
 const checkLuhn = (cardNo) => {
@@ -113,7 +131,7 @@ const checkLuhn = (cardNo) => {
 
 const validateYear = (value) => {
     const currentYear = new Date().getFullYear();
-    const fullYear = parseInt('20' + value, 10);
+    const fullYear = parseInt("20" + value, 10);
 
     return fullYear >= currentYear;
 };
