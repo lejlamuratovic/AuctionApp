@@ -3,6 +3,8 @@ import { useLocation } from "react-router-dom";
 
 import { ProductDetailsForm, ProductPriceForm, LocationForm } from "src/components";
 
+import { ADD_ITEM_FORMS_MAP } from "src/constants";
+
 import "./style.scss";
 
 const AddItem = () => {
@@ -30,23 +32,43 @@ const AddItem = () => {
 
   const renderActiveForm = () => {
     switch (activeForm) {
-      case "details":
+      case ADD_ITEM_FORMS_MAP.DETAILS:
         return <ProductDetailsForm />;
-      case "prices":
+      case ADD_ITEM_FORMS_MAP.PRICES:
         return <ProductPriceForm />;
-      case "shipping":
+      case ADD_ITEM_FORMS_MAP.SHIPPING:
         return <LocationForm />;
       default:
         return null;
     }
   };
 
+  const isActive = (form) => {
+    const activeIndex = Object.values(ADD_ITEM_FORMS_MAP).indexOf(activeForm);
+    const formIndex = Object.values(ADD_ITEM_FORMS_MAP).indexOf(form);
+
+    return formIndex <= activeIndex;
+  };
+
   return (
-    <div className="add-item-form-container">
-      <div>
-        { renderActiveForm() }
+    <>
+      <div className="form-navigation">
+        { Object.keys(ADD_ITEM_FORMS_MAP).map((key) => (
+          <>
+            <div
+              key={ key }
+              className={ `circle ${isActive(ADD_ITEM_FORMS_MAP[key]) ? "active" : "inactive"}` }
+            />
+            <hr />
+          </>
+       )) }
       </div>
-    </div>
+      <div className="add-item-form-container">
+        <div>
+          { renderActiveForm() }
+        </div>
+      </div>
+    </>
   );
 }
 
