@@ -48,7 +48,6 @@ export const ROUTE_PATHS = {
   ABOUT_US: "/about-us",
   PRIVACY_POLICY: "/privacy-policy",
   TERMS_AND_CONDITIONS: "/terms-and-conditions",
-  SHOP: "/shop",
   PRODUCT: "/product",
   LOGIN: "/login",
   REGISTER: "/register",
@@ -139,3 +138,10 @@ export const POLICY_AND_COMMUNITY = [
   { id: "pushNotifications", label: "Push Notifications" },
   { id: "smsNotifications", label: "SMS" },
 ];
+
+export const MY_ACCOUNT_TABS_MAP = {
+  PROFILE: "profile",
+  SELLER: "seller",
+  BIDS: "bids",
+  SETTINGS: "settings",
+};

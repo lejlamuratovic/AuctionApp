@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 
 import { Button, ProfileTab, SellerTab, BidsTab, SettingsTab } from "src/components";
 
-import { MY_ACCOUNT_TABS, BUTTON_LABELS, BUTTON_VARIANTS } from "src/constants";
+import { MY_ACCOUNT_TABS, BUTTON_LABELS, BUTTON_VARIANTS, MY_ACCOUNT_TABS_MAP } from "src/constants";
 
 import "./style.scss";
 
@@ -33,13 +33,13 @@ const MyAccount = () => {
 
   const renderActiveTabContent = () => {
     switch (activeTab) {
-      case "profile":
+      case MY_ACCOUNT_TABS_MAP.PROFILE:
         return <ProfileTab />;
-      case "seller": 
+      case MY_ACCOUNT_TABS_MAP.SELLER: 
         return <SellerTab />;
-      case "bids":
+      case MY_ACCOUNT_TABS_MAP.BIDS:
         return <BidsTab />;
-      case "settings":
+      case MY_ACCOUNT_TABS_MAP.SETTINGS:
         return <SettingsTab />;
       default:
         return null;
