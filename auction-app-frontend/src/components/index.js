@@ -18,8 +18,6 @@ export { default as LoginForm } from "./LoginForm/LoginForm";
 export { default as RegisterForm } from "./RegisterForm/RegisterForm";
 export { default as Notifications } from "./Notifications/Notifications";
 export { default as MyAccountOptions } from "./MyAccountOptions/MyAccountOptions";
-export { default as PersonalInformation } from "./PersonalInformation/PersonalInformation";
-export { default as MyAccountOptions } from "./MyAccountOptions/MyAccountOptions";
 export { default as ProfileTab } from "./ProfileTab/ProfileTab";
 export { default as SellerTab } from "./SellerTab/SellerTab";
 export { default as ProductBidsTable } from "./ProductBidsTable/ProductBidsTable";
