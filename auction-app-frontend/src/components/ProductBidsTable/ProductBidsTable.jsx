@@ -1,11 +1,20 @@
+import { useNavigate } from "react-router-dom";
+
 import { ProductBidsItem } from "src/components";
 
-import { HEADERS } from "src/constants";
+import { HEADERS, ROUTE_PATHS } from "src/constants";
+import { calculateTimeLeft } from "src/utils/calculateTimeDifference";
 
 import "./style.scss";
 
 const ProductBidsTable = ({ emptyMessageComponent, items, buttonLabel }) => {
+  const navigate = useNavigate();
+
   const hasItems = items ? items.length > 0 : false;
+
+  const navigateToProduct = (id) => {
+    navigate(`${ROUTE_PATHS.PRODUCT}/${id}`);
+  }
 
   return (
     <div className="table">
@@ -17,17 +26,19 @@ const ProductBidsTable = ({ emptyMessageComponent, items, buttonLabel }) => {
         )) }
       </div>
       { hasItems ? (
-        <div className="table-content">
+        <div className="table-content body-bold">
           {items.map(item => (
             <ProductBidsItem
               key={ item.id }
-              imgSrc={ item.imgSrc }
-              title={ item.title }
-              timeLeft={ item.timeLeft }
-              yourPrice={ item.yourPrice }
-              noBids={ item.noBids }
-              highestBid={ item.highestBid }
+              imgSrc={ item.product.productImages[0].imageUrl }
+              title={ item.product.name }
+              timeLeft={ calculateTimeLeft(item.product.endDate) }
+              yourPrice={ item.bidAmount }
+              noBids={ item.product.bidsCount }
+              highestBid={ item.product.highestBid }
               buttonLabel={ buttonLabel }
+              onButtonClick={ () => navigateToProduct(item.product.id) }
+              highestBidder={ item.bidAmount === item.product.highestBid }
             />
           )) }
         </div>

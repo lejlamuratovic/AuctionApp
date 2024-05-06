@@ -21,6 +21,14 @@
         text-align: center;
     }
 
+    .highestBid {
+        color: $success; 
+    }
+
+    .lowerBid {
+        color: $info;
+    }
+
     .item-actions {
         @include flex-container(row, center, center);
 
