@@ -20,15 +20,12 @@ export const rules = {
             message: `${field} must be at least $${minValue}`
         }
     }),
-<<<<<<< HEAD
-=======
     maxValue: (maxValue, field) => ({
         max: {
             value: maxValue,
             message: `${field} must be at most $${maxValue}`
         }
     }),
->>>>>>> 9013752 (personal information form)
     pattern: (pattern, message) => ({
         pattern: {
             value: pattern,
