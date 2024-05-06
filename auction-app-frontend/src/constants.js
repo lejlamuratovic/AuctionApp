@@ -1,3 +1,14 @@
+import { 
+  seller, 
+  profile, 
+  settings, 
+  bids, 
+  sellerActive,
+  profileActive,
+  settingsActive,
+  bidsActive  
+} from "src/assets/icons";
+
 export const BASE_URL = "http://localhost:8080/api/v1";
 
 export const WEB_SOCKET_BASE_URL = "ws://localhost:8080/websocket";
@@ -74,11 +85,6 @@ export const BUTTON_LABELS = {
   PLACE_BID: "PLACE BID",
 };
 
-export const BUTTON_VARIANTS = {
-  OUTLINED: "outlined",
-  FILLED: "filled"
-}
-
 export const CONNECTION_STATUSES = {
   CONNECTED: "connected",
   DISCONNECTED: "disconnected",
@@ -91,4 +97,19 @@ export const USER_TYPES = {
 
 export const AUCTION_STATUS = {
   EXPIRED: "Expired",
+  REGISTER: "REGISTER",
+  PLACE_BID: "PLACE BID",
+  ADD_ITEM: "ADD ITEM",
 };
+
+export const BUTTON_VARIANTS = {
+  OUTLINED: "outlined",
+  FILLED: "filled"
+}
+
+export const MY_ACCOUNT_TABS = [
+  { id: "profile", label: "Profile", icon: profile, activeIcon: profileActive},
+  { id: "seller", label: "Seller", icon: seller, activeIcon: sellerActive},
+  { id: "settings", label: "Settings", icon: settings, activeIcon: settingsActive},
+  { id: "bids", label: "Bids", icon: bids, activeIcon: bidsActive},
+];

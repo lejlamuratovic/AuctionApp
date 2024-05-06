@@ -17,3 +17,4 @@ export { default as FormContainer } from "./FormContainer/FormContainer";
 export { default as LoginForm } from "./LoginForm/LoginForm";
 export { default as RegisterForm } from "./RegisterForm/RegisterForm";
 export { default as Notifications } from "./Notifications/Notifications";
+export { default as MyAccountOptions } from "./MyAccountOptions/MyAccountOptions";
