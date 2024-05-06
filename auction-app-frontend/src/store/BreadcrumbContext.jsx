@@ -36,7 +36,7 @@ export const BreadcrumbProvider = ({ children }) => {
 
       setBreadcrumbs([
         { path: "/my-account", label: "My Account" },
-        { path: `${pathname}#${hash}`, label }
+        { path: `${ pathname }#${ hash }`, label }
       ]);
 
       setTitle(label);

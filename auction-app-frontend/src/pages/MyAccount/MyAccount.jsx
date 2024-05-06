@@ -54,11 +54,11 @@ const MyAccount = () => {
             <span
               key={ tab.id }
               onClick={ changeActiveTab(tab.id) }
-              className={ `tab ${activeTab === tab.id ? "active" : "inactive"} body-semibold` }
+              className={ `${ activeTab === tab.id ? "active" : "inactive" } tab body-semibold` }
             >
               <img 
                   src={ activeTab === tab.id ? tab.activeIcon : tab.icon } 
-                  alt={ `${tab.label} icon` } 
+                  alt={ `${ tab.label } icon` } 
                   className="tab-icon" 
               />
               { tab.label }

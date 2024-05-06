@@ -18,8 +18,8 @@ const ProfileTab = () => {
     const [showCardInfo, setShowCardInfo] = useState(false);
     const [showAddressInfo, setShowAddressInfo] = useState(false);
 
-    const toggleAdditionalInfo1 = () => setShowCardInfo(!showCardInfo);
-    const toggleAdditionalInfo2 = () => setShowAddressInfo(!showAddressInfo);
+    const toggleCreditCardInfo = () => setShowCardInfo(!showCardInfo);
+    const toggleAddressInfo = () => setShowAddressInfo(!showAddressInfo);
 
     const onSubmit = (data) => {
         console.log(data);
@@ -60,7 +60,7 @@ const ProfileTab = () => {
                 </div>
                 {/* collapsible sections */}
                 <div className="general-information">
-                    <div className="general-information-header" onClick={ toggleAdditionalInfo1 }>
+                    <div className="general-information-header" onClick={ toggleCreditCardInfo }>
                         <img src={ showCardInfo ? dropdownInactive : dropdownActive } alt="Toggle Additional Information" />
                         <span className="body-semibold">Card Information (Optional)</span>
                     </div>
@@ -81,7 +81,7 @@ const ProfileTab = () => {
                     ) }
                 </div>
                 <div className="general-information">
-                    <div className="general-information-header" onClick={ toggleAdditionalInfo2 }>
+                    <div className="general-information-header" onClick={ toggleAddressInfo }>
                         <img src={ showAddressInfo ? dropdownInactive : dropdownActive } alt="Toggle Additional Information" />
                         <span className="body-semibold">Shipping Address (Optional)</span>
                     </div>

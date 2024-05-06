@@ -47,7 +47,7 @@ export const rules = {
     creditCard: () => ({
         ...rules.required("Credit Card"),
         ...rules.pattern(/^\d{16}$/, "Enter a valid 16-digit number"),
-        validate: (value) => checkLuhn(value) || "Enter a valid credit card number"
+        validate: (value) => checkCardNumberValidity(value) || "Enter a valid credit card number"
     }),
     expirationYear: () => ({
         ...rules.required("Year"),
@@ -108,7 +108,7 @@ export const rules = {
     })
 };
 
-const checkLuhn = (cardNo) => {
+const checkCardNumberValidity = (cardNo) => {
     let s = 0;
     let doubleDigit = false;
 

@@ -5,7 +5,7 @@ const placeBid = (data) => {
 }
 
 const findBidsByUserId = (userId) => {
-    return getRequest(`/bids/${userId}`);
+    return getRequest(`/bids/${ userId }`);
 }
 
 export { placeBid, findBidsByUserId };

@@ -66,7 +66,7 @@ const ProductDetails = () => {
 
   useEffect(() => {
     if (product) {
-      setTitle(`${product.name}`);
+      setTitle(`${ product.name }`);
       setAdditionalPlaceBidsFormFields(placeBidsFormFields(product.startPrice, product.highestBid));
       setTimeLeft(calculateTimeLeft(product.endDate));
     }
@@ -125,12 +125,12 @@ const ProductDetails = () => {
             <div className="other-images-container">
               { productImages.map((image, index) => (
                 <div
-                  key={ `${image.imageUrl}-${index}` }
+                  key={ `${ image.imageUrl }-${ index }` }
                   className="image-container"
                 >
                   <img
                     src={ image.imageUrl }
-                    alt={ `Product ${index + 1}` }
+                    alt={ `Product ${ index + 1 }` }
                     onClick={ () => handleImageClick(image) }
                   />
                 </div>

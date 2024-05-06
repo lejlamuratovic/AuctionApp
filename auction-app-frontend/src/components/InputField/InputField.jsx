@@ -24,7 +24,6 @@ const InputField = ({ name, label, type, rules, step, options }) => {
         }
     };
     
-
     return (
         <div className="input-field">
             <label htmlFor={ name } className="body-semibold">{ label }</label>

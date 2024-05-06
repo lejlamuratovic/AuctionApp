@@ -28,7 +28,7 @@ const SellerTab = () => {
         { SELLER_TABS.map((tab) => (
           <span 
             key={ tab.id } 
-            className={ `tab body-semibold ${activeTab === tab.id ? 'active' : ''}` }
+            className={ `${ activeTab === tab.id ? 'active' : '' } tab body-semibold` }
             onClick={ () => onTabClick(tab.id) }
           >
             { tab.label }

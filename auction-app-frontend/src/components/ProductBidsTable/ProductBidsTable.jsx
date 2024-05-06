@@ -13,14 +13,14 @@ const ProductBidsTable = ({ emptyMessageComponent, items, buttonLabel }) => {
   const hasItems = items ? items.length > 0 : false;
 
   const navigateToProduct = (id) => {
-    navigate(`${ROUTE_PATHS.PRODUCT}/${id}`);
+    navigate(`${ ROUTE_PATHS.PRODUCT }/${ id }`);
   }
 
   return (
     <div className="table">
       <div className="table-header body-bold">
         { HEADERS.map(header => (
-          <div className={ `header-item ${header.id}` } key={ header.id }>
+          <div className={ `${ header.id } header-item` } key={ header.id }>
             { header.text }
           </div>
         )) }
@@ -33,7 +33,7 @@ const ProductBidsTable = ({ emptyMessageComponent, items, buttonLabel }) => {
               imgSrc={ item.product.productImages[0].imageUrl }
               title={ item.product.name }
               timeLeft={ calculateTimeLeft(item.product.endDate) }
-              yourPrice={ item.bidAmount }
+              bidPrice={ item.bidAmount }
               noBids={ item.product.bidsCount }
               highestBid={ item.product.highestBid }
               buttonLabel={ buttonLabel }
