@@ -6,7 +6,9 @@ import {
   sellerActive,
   profileActive,
   settingsActive,
-  bidsActive  
+  bidsActive,
+  gavel,
+  cart
 } from "src/assets/icons";
 
 export const BASE_URL = "http://localhost:8080/api/v1";
@@ -145,3 +147,18 @@ export const MY_ACCOUNT_TABS_MAP = {
   BIDS: "bids",
   SETTINGS: "settings",
 };
+
+export const EMPTY_TABS = [
+  { 
+  id: "bids", 
+  icon: gavel,
+  text: "You don’t have any bids and there are so many cool products available for sale",
+  boldText: "START BIDDING" 
+  },
+  {
+    id: "seller",
+    icon: cart,
+    text: "You do not have any scheduled items for sale",
+    boldText: "START SELLING"
+  }
+];

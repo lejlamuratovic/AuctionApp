@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
 
-import { ProductBidsItem } from "src/components";
+import { ProductBidsItem, EmptyTab } from "src/components";
 
 import { HEADERS, ROUTE_PATHS } from "src/constants";
 import { calculateTimeLeft } from "src/utils/calculateTimeDifference";
 
 import "./style.scss";
 
-const ProductBidsTable = ({ emptyMessageComponent, items, buttonLabel }) => {
+const ProductBidsTable = ({ emptyMessageComponent, items, buttonLabel, tabId }) => {
   const navigate = useNavigate();
 
   const hasItems = items ? items.length > 0 : false;
@@ -27,7 +27,7 @@ const ProductBidsTable = ({ emptyMessageComponent, items, buttonLabel }) => {
       </div>
       { hasItems ? (
         <div className="table-content body-bold">
-          {items.map(item => (
+          { items.map(item => (
             <ProductBidsItem
               key={ item.id }
               imgSrc={ item.product.productImages[0].imageUrl }
@@ -44,7 +44,7 @@ const ProductBidsTable = ({ emptyMessageComponent, items, buttonLabel }) => {
         </div>
       ) : (
         <div className="table-empty">
-          { emptyMessageComponent }
+          <EmptyTab tabId={ tabId } />
         </div>
       ) }
     </div>

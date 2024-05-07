@@ -2,21 +2,12 @@ import { useState } from "react";
 
 import { ProductBidsTable } from "src/components";
 
-import { cart } from "src/assets/icons";
-import { SELLER_TABS } from "src/constants";
+import { SELLER_TABS, MY_ACCOUNT_TABS_MAP } from "src/constants";
 
 import "./style.scss";
 
 const SellerTab = () => {
   const [activeTab, setActiveTab] = useState(SELLER_TABS[0].id);
-
-  const noItemsComponent = (
-    <div className="no-items-message body-semibold">
-      <img src={ cart } alt="cart icon" className="no-items-icon" />
-      <span className="body-regular"> You do not have any scheduled items for sale </span>
-      <span className="body-bold"> START SELLING </span>
-    </div>
-  );
 
   const onTabClick = (tabId) => {
     setActiveTab(tabId);
@@ -35,7 +26,7 @@ const SellerTab = () => {
           </span>
         )) }
       </div>
-      <ProductBidsTable emptyMessageComponent={ noItemsComponent } />
+      <ProductBidsTable tabId={ MY_ACCOUNT_TABS_MAP.SELLER } />
     </div>
   )
 }

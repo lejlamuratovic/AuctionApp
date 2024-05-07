@@ -24,3 +24,4 @@ export { default as BidsTab } from "./BidsTab/BidsTab";
 export { default as ProductBidsItem } from "./ProductBidsItem/ProductBidsItem";
 export { default as SettingsTab } from "./SettingsTab/SettingsTab";
 export { default as SelectField } from "./SelectField/SelectField";
+export { default as EmptyTab } from "./EmptyTab/EmptyTab";
