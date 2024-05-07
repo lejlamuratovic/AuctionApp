@@ -25,6 +25,10 @@
                     background-color: $primary;
                     border: none;
                 }
+
+                &:hover {
+                    cursor: pointer;
+                }
             }
         }
     

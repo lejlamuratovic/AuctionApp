@@ -80,6 +80,8 @@ export const SHOP_DEFAULT_PAGE_NUMBER = 9;
 
 export const HOME_DEFAULT_PAGE_NUMBER = 8;
 
+export const BIDS_DEFAULT_PAGE_NUMBER = 8;
+
 export const BUTTON_LABELS = {
   EXPIRED: "Expired",
   REGISTER: "REGISTER",
@@ -92,6 +94,7 @@ export const BUTTON_LABELS = {
   SAVE_INFO: "SAVE INFO",
   BID: "BID",
   DEACTIVATE: "DEACTIVATE",
+  LOAD_MORE: "LOAD MORE",
 };
 
 export const CONNECTION_STATUSES = {

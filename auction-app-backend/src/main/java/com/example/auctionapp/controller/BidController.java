@@ -5,15 +5,16 @@ import com.example.auctionapp.request.BidRequest;
 import com.example.auctionapp.service.BidService;
 import com.example.auctionapp.util.SecurityRoles;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -34,7 +35,11 @@ public class BidController {
 
     @PreAuthorize(SecurityRoles.ALL)
     @GetMapping(path = "/{userId}")
-    public List<Bid> getBidsByUserId(@PathVariable final UUID userId) {
-        return bidService.getBidsByUserId(userId);
+    public Page<Bid> getBidsByUserId(
+            @PathVariable final UUID userId,
+            @RequestParam(value = "page", defaultValue = "0") final int page,
+            @RequestParam(value = "size", defaultValue = "8") final int size
+    ) {
+        return bidService.getBidsByUserId(userId, page, size);
     }
 }

@@ -12,14 +12,15 @@ import com.example.auctionapp.request.BidRequest;
 import com.example.auctionapp.service.BidService;
 import com.example.auctionapp.service.NotificationService;
 import com.example.auctionapp.util.ValidationUtility;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.UUID;
 
-import static java.util.stream.Collectors.toList;
 
 @Service
 public class BidServiceImpl implements BidService {
@@ -82,10 +83,10 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
-    public List<Bid> getBidsByUserId(final UUID userId) {
-        return bidRepository.findDistinctHighestBidsByUserId(userId)
-                .stream()
-                .map(BidEntity::toDomainModel)
-                .collect(toList());
+    public Page<Bid> getBidsByUserId(final UUID userId, final int page, final int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        return bidRepository.findBidEntitiesByUserEntity_UserIdOrderByBidTimeDesc(userId, pageable)
+                .map(BidEntity::toDomainModel);
     }
 }
