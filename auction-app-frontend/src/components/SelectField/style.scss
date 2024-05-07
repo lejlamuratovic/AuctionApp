@@ -1,20 +1,26 @@
 @import "src/scss/index.scss";
 
 .custom-select {
-    overflow: hidden;
+    div {
+        width: 262px;
+        height: 48px;
+    }
 
-    select {
-        overflow: hidden;
-        -moz-appearance: none; /* Firefox */
-        -webkit-appearance: none; /* Safari and Chrome */
-        appearance: none;
+    .dropdown-btn, .dropdown-item {
+        @include flex-container(row, space-between, center);
         padding: 12px 24px;
+    }
+
+    .dropdown-btn {
+        border: 2px solid $neutral09;
+        margin-bottom: 5px;
+    }
+
+    .dropdown-item {
         border: 1px solid $neutral09;
-        background-image: url("src/assets/icons/drop-down.svg");
-        background-repeat: no-repeat;
-        background-position: right 0.7rem top 50%;
-        background-size: 0.65rem auto;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
+
+        &:hover {
+            background-color: $neutral09;
+        }
     }
 }
