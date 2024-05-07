@@ -1,5 +1,7 @@
 import { FormProvider } from "react-hook-form";
+
 import { InputField, Button } from "src/components";
+
 import { BUTTON_VARIANTS } from "src/constants";
 
 const FormContainer = ({ 
@@ -10,7 +12,7 @@ const FormContainer = ({
   error, 
   buttonVariant = BUTTON_VARIANTS.FILLED, 
   buttonIcon, 
-  children, 
+  children,
   onCancel, 
   cancelLabel,
   onBack,
@@ -28,6 +30,7 @@ const FormContainer = ({
               rules={ field.rules }
               step={ field.type === "number" ? field.step : null }
               options={ field.type === "select" ? field.options : null }
+              className={ field.specialClass ? field.specialClass : ""}
           />
         )) }
         { error && 
