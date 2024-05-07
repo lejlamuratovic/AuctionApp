@@ -20,17 +20,20 @@ export const cardInformationFields = [
         label: "Expiration Date",
         type: "text",
         name: "expirationMonth",
+        specialClass: "input-field-third",
         rules: rules.expirationMonth()
     },
     {
         type: "text",
         name: "expirationYear",
+        specialClass: "input-field-third",
         rules: rules.expirationYear()
     },
     {
         label: "CVV",
         type: "text",
         name: "cvv",
+        specialClass: "input-field-third",
         rules: rules.cvv()
     }
 ];

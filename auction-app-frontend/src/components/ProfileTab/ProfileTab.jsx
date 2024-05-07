@@ -52,6 +52,7 @@ const ProfileTab = () => {
                                         label={ field.label }
                                         type={ field.type }
                                         rules={ field.rules }
+                                        className={ field.specialClass ? field.specialClass : "" }
                                     />
                                 )) }
                             </div>
@@ -74,6 +75,7 @@ const ProfileTab = () => {
                                     label={ field.label }
                                     type={ field.type }
                                     rules={ field.rules }
+                                    className={ field.specialClass ? field.specialClass : "" }
                                 />
                             )) }
                             </div>
@@ -95,7 +97,7 @@ const ProfileTab = () => {
                                         label={ field.label }
                                         type={ field.type } 
                                         rules={ field.rules }
-                                        options={ field.type === "select" ? field.options : null }
+                                        className={ field.specialClass ? field.specialClass : "" }
                                     />
                                 )) }
                             </div>

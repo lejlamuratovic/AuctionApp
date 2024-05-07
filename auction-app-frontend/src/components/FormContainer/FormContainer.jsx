@@ -15,6 +15,7 @@ const FormContainer = ({ formFields, onSubmit, buttonLabel, methods, error, butt
               rules={ field.rules }
               step={ field.type === "number" ? field.step : null }
               options={ field.type === "select" ? field.options : null }
+              className={ field.specialClass ? field.specialClass : ""}
           />
         )) }
         { error && 

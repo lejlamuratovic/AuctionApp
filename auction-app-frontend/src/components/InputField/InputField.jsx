@@ -4,7 +4,7 @@ import { SelectField } from "src/components";
 
 import "./style.scss";
 
-const InputField = ({ name, label, type, rules, step, options }) => {
+const InputField = ({ name, label, type, rules, step, options, className }) => {
     const { register, formState: { errors } } = useFormContext();
 
     const renderField = () => {
@@ -23,9 +23,9 @@ const InputField = ({ name, label, type, rules, step, options }) => {
                 return <input {...inputProps} />;
         }
     };
-    
+
     return (
-        <div className="input-field">
+        <div className={`${className} input-field`}>
             <label htmlFor={ name } className="body-semibold">{ label }</label>
             { renderField() }
             { errors[name] && <span className="error-message body-small-regular">{ errors[name].message }</span> }

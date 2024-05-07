@@ -29,18 +29,21 @@ export const personalInformationFormFields = [
     label: "Date of Birth",
     type: "number",
     name: "month",
+    specialClass: "input-field-third",
     rules: rules.month()
   },
   {
     label: " ",
     type: "number",
     name: "day",
+    specialClass: "input-field-third",
     rules: rules.day()
   },
   {
     label: " ",
     type: "number",
     name: "year",
+    specialClass: "input-field-third",
     rules: rules.year()
   }
 ];

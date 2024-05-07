@@ -11,12 +11,14 @@ export const addressInformationFields = [
         label: "City",
         type: "text",
         name: "city",
+        specialClass: "input-field-half",
         rules: rules.city()
     },
     {
         label: "Zip Code",
         type: "number",
         name: "zipCode",
+        specialClass: "input-field-half",
         rules: {
             ...rules.required("Zip Code"),
         }
