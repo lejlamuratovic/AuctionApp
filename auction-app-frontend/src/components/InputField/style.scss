@@ -80,4 +80,30 @@
         padding: 0 !important;
         bottom: -30px !important;
     }
+<<<<<<< HEAD
+=======
+}
+
+.file-upload-container {
+    @include flex-container(column, center, center);
+    width: 548px;
+    height: 300px;
+    border: 1px dashed $neutral09;
+    gap: 16px;
+
+    .file-upload-header {
+        color: $primary;
+        cursor: pointer;
+    }
+
+    .file-upload-info {
+        color: $neutral05;
+    }
+}
+
+.uploaded-files {
+    @include flex-container(column, start, start);
+    gap: 8px;
+    color: $neutral05;
+>>>>>>> 74f2ca5 (drag and drop input field style)
 }

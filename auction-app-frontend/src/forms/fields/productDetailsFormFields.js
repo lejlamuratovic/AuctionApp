@@ -21,4 +21,12 @@ export const productDetailsFormFields = [
       ...rules.maxLength(700, "Description")
     }
   },
+  {
+    label: "Files",
+    type: "file",
+    name: "file",
+    rules: {
+      ...rules.required("File")
+    }
+  }
 ];
