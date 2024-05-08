@@ -171,6 +171,12 @@ export const EMPTY_TABS = [
 export const HIGHEST_BID_MESSAGE = "Congratulations! You are the highest bidder.";
 export const LOWER_BID_MESSAGE = "There are higher bids than yours. You could give a second try.";
 
+export const ADD_ITEM_FORMS = [
+  { id: "details", label: "Details" },
+  { id: "prices", label: "Prices" },
+  { id: "shipping", label: "Shipping" },
+];
+
 export const ADD_ITEM_FORMS_MAP = {
   DETAILS: "details",
   PRICES: "prices",
