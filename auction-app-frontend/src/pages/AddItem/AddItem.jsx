@@ -11,6 +11,11 @@ const AddItem = () => {
   const location = useLocation();
 
   const [activeForm, setActiveForm] = useState(location.hash.replace("#", "") || "details");
+  const [formData, setFormData] = useState({
+    details: {},
+    prices: {},
+    shipping: {}
+  });
 
   const handleHashChange = () => {
     const newForm = location.hash.replace("#", "");
@@ -30,17 +35,35 @@ const AddItem = () => {
     };
   }, [location.hash]);
 
+  const updateFormData = (section, data) => {
+    setFormData(prev => ({ ...prev, [section]: data }));
+  };
+
+  const handleFinalSubmit = () => {
+    console.log(formData);
+  };
+
   const renderActiveForm = () => {
     switch (activeForm) {
       case ADD_ITEM_FORMS_MAP.DETAILS:
-        return <ProductDetailsForm />;
+          return <ProductDetailsForm 
+                    formData={ formData.details } 
+                    setFormData={ (data) => updateFormData(ADD_ITEM_FORMS_MAP.DETAILS, data) } 
+                  />;
       case ADD_ITEM_FORMS_MAP.PRICES:
-        return <ProductPriceForm />;
+          return <ProductPriceForm 
+                    formData={formData.prices} 
+                    setFormData={ (data) => updateFormData(ADD_ITEM_FORMS_MAP.PRICES, data) } 
+                  />;
       case ADD_ITEM_FORMS_MAP.SHIPPING:
-        return <LocationForm />;
+          return <LocationForm 
+                    formData={ formData.shipping } 
+                    setFormData={ (data) => updateFormData(ADD_ITEM_FORMS_MAP.SHIPPING, data) } 
+                    handleFinalSubmit= {handleFinalSubmit } 
+                  />;
       default:
-        return null;
-    }
+          return null;
+  }
   };
 
   const isActive = (form) => {
@@ -53,14 +76,14 @@ const AddItem = () => {
   return (
     <>
       <div className="form-navigation">
-        { Object.keys(ADD_ITEM_FORMS_MAP).map((key) => (
-          <>
+        { Object.keys(ADD_ITEM_FORMS_MAP).map((key, index, array) => (
+          <div key={ key } className="circles-container">
             <div
               key={ key }
               className={ `circle ${isActive(ADD_ITEM_FORMS_MAP[key]) ? "active" : "inactive"}` }
             />
-            <hr />
-          </>
+            { index < array.length - 1 && <hr /> }
+          </div>
        )) }
       </div>
       <div className="add-item-form-container">

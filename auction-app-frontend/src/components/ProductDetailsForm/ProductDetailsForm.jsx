@@ -8,16 +8,19 @@ import { BUTTON_LABELS, ROUTE_PATHS } from "src/constants";
 
 import "./style.scss"
 
-const ProductDetailsForm = () => {
+const ProductDetailsForm = ({ formData, setFormData }) => {
     const navigate = useNavigate();
 
     const methods = useForm({
-        mode: "onBlur"
+        mode: "onBlur",
+        defaultValues: formData
     });
 
     const onSubmit = (data) => {
+        setFormData(data);
+        
         navigate("#prices");
-    }
+    };
 
     const onCancel = () => {
         navigate(ROUTE_PATHS.MY_ACCOUNT);

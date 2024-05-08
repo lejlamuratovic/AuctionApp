@@ -28,21 +28,21 @@
 }
 
 .form-navigation {
-    @include flex-container(row, space-between, center);
+    @include flex-container(row, center, center);
     width: 224px;
     gap: 10px;
     margin: 50px auto;
 
-    hr {
-        width: 10px;
-        flex-basis: 100%;
-        border: 1px solid $neutral09;
+    .circles-container {
+        @include flex-container(row, space-between, center);
+        gap: 10px;
 
-        &:last-child {
-            display: none;
+        hr {
+            width: 50px;
+            border: 1px solid $neutral09;
         }
     }
-
+    
     .circle {
         min-width: 16px;
         min-height: 16px;

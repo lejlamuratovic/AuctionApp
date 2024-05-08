@@ -72,11 +72,8 @@ const App = () => {
               />
               <Route element={ <ProtectedRoutes /> }>
                 <Route path={ ROUTE_PATHS.MY_ACCOUNT } element={ <MyAccount /> } />
+                <Route path={ ROUTE_PATHS.ADD_ITEM } element={ <AddItem /> } />
               </Route>
-              <Route 
-                path={ ROUTE_PATHS.ADD_ITEM }
-                element={ <AddItem /> }
-              />
             </Routes>
           </div>
           <Footer />
