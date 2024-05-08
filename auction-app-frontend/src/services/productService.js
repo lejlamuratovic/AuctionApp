@@ -26,4 +26,8 @@ const getProducts = (page, size, categoryId, searchQuery) => {
   );
 };
 
-export { getProducts, getProduct, getProductRandom, getProductsByCriteria };
+const getBidData = (productId) => {
+  return getRequest(`/products/${ productId }/bid-details`);
+};
+
+export { getProducts, getProduct, getProductRandom, getProductsByCriteria, getBidData };

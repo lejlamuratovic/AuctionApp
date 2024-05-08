@@ -165,3 +165,6 @@ export const EMPTY_TABS = [
     boldText: "START SELLING"
   }
 ];
+
+export const HIGHEST_BID_MESSAGE = "Congratulations! You are the highest bidder.";
+export const LOWER_BID_MESSAGE = "There are higher bids than yours. You could give a second try.";
