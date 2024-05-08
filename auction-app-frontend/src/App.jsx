@@ -69,7 +69,7 @@ const App = () => {
                 path={ ROUTE_PATHS.REGISTER }
                 element={ <RegisterPage /> }
               />
-              <Route element={<ProtectedRoutes />}>
+              <Route element={ <ProtectedRoutes /> }>
                 <Route path={ ROUTE_PATHS.MY_ACCOUNT } element={ <MyAccount /> } />
               </Route>
             </Routes>

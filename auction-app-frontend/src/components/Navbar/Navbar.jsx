@@ -16,7 +16,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className={ `${ shouldHideOptions ? 'center-logo' : ''} navbar` }>
+      <div className={ `${ shouldHideOptions ? 'center-logo' : '' } navbar` }>
         <div className="app-logo">
           <Link to="/">
             <img src={ logo } alt="Auction App Logo" />

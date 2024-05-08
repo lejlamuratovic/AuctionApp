@@ -175,7 +175,7 @@ const ProductDetails = () => {
                     <span className="body-regular">Loading...</span>
                   ) : (
                     <span className="body-bold">
-                      {product.highestBid === null ? "0" : `$${product.highestBid}`}
+                      { product.highestBid === null ? "0" : `$${ product.highestBid }` }
                     </span>
                   ) }
               </span>

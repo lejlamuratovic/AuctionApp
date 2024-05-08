@@ -9,5 +9,5 @@ import java.util.UUID;
 
 public interface BidService {
     Bid placeBid(final BidRequest bidRequest);
-    Page<Bid> getBidsByUserId(final UUID userId, final int page, final int size);
+    Page<Bid> getBidsForUser(final UUID userId, final int page, final int size);
 }

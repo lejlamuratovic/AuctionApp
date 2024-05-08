@@ -35,11 +35,11 @@ public class BidController {
 
     @PreAuthorize(SecurityRoles.ALL)
     @GetMapping(path = "/{userId}")
-    public Page<Bid> getBidsByUserId(
+    public Page<Bid> getBidsForUser(
             @PathVariable final UUID userId,
             @RequestParam(value = "page", defaultValue = "0") final int page,
             @RequestParam(value = "size", defaultValue = "8") final int size
     ) {
-        return bidService.getBidsByUserId(userId, page, size);
+        return bidService.getBidsForUser(userId, page, size);
     }
 }

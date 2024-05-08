@@ -83,7 +83,7 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
-    public Page<Bid> getBidsByUserId(final UUID userId, final int page, final int size) {
+    public Page<Bid> getBidsForUser(final UUID userId, final int page, final int size) {
         Pageable pageable = PageRequest.of(page, size);
 
         return bidRepository.findBidEntitiesByUserEntity_UserIdOrderByBidTimeDesc(userId, pageable)

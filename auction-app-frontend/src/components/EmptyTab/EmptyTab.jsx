@@ -7,7 +7,7 @@ const EmptyTab = ({ tabId }) => {
 
     return (
         <div className="empty-tab-container">
-            <img src={ tabData.icon } alt={ `${tabId} icon` } className="no-items-icon" />
+            <img src={ tabData.icon } alt={ `${ tabId } icon` } className="no-items-icon" />
             <span className="body-regular">{ tabData.text }</span>
             <span className="body-bold">{ tabData.boldText }</span>
         </div>
