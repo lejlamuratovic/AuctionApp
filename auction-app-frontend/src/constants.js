@@ -87,6 +87,7 @@ export const BUTTON_LABELS = {
   EXPIRED: "Expired",
   REGISTER: "REGISTER",
   LOGIN: "LOGIN",
+<<<<<<< HEAD
   PLACE_BID: "PLACE BID",
   ADD_ITEM: "ADD ITEM",
   CHANGE_PHOTO: "Change photo",
@@ -96,12 +97,21 @@ export const BUTTON_LABELS = {
   BID: "BID",
   LOAD_MORE: "LOAD MORE",
   REGISTER: "REGISTER",
+=======
+  REGISTER: "REGISTER",
+  PLACE_BID: "PLACE BID",
+  ADD_ITEM: "ADD ITEM",
+  CHANGE_PHOTO: "Change photo",
+  SAVE_INFO: "SAVE INFO",
+  BID: "BID",
+>>>>>>> 74f2ca5855d92f172676fa93b966e976850a3a2c
   DEACTIVATE: "DEACTIVATE",
   CANCEL: "CANCEL",
   NEXT: "NEXT",
   BACK: "BACK",
 };
 
+<<<<<<< HEAD
 export const CONNECTION_STATUSES = {
   CONNECTED: "connected",
   DISCONNECTED: "disconnected",
@@ -117,11 +127,14 @@ export const AUCTION_STATUS = {
 };
 
 
+=======
+>>>>>>> 74f2ca5855d92f172676fa93b966e976850a3a2c
 export const BUTTON_VARIANTS = {
   OUTLINED: "outlined",
   FILLED: "filled"
 }
 
+<<<<<<< HEAD
 export const MY_ACCOUNT_TABS = [
   { id: "profile", label: "Profile", icon: profile, activeIcon: profileActive},
   { id: "seller", label: "Seller", icon: seller, activeIcon: sellerActive},
@@ -129,6 +142,8 @@ export const MY_ACCOUNT_TABS = [
   { id: "settings", label: "Settings", icon: settings, activeIcon: settingsActive},
 ];
 
+=======
+>>>>>>> 74f2ca5855d92f172676fa93b966e976850a3a2c
 export const HEADERS = [
   { id: 'image', text: 'Item' },
   { id: 'name', text: 'Name' },

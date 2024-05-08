@@ -7,6 +7,8 @@ import { SelectField, ErrorComponent } from "src/components";
 import "./style.scss";
 
 const InputField = ({ name, label, type, rules, step, options, className }) => {
+    const { register, formState: { errors } } = useFormContext();
+    
     const [files, setFiles] = useState([]);
     
     const handleFileChange = (fileList) => {
@@ -15,8 +17,6 @@ const InputField = ({ name, label, type, rules, step, options, className }) => {
         setFiles(prevFiles => [...prevFiles, ...filesArray]);
     };
     
-    
-    const { register, formState: { errors } } = useFormContext();
 
     const fileTypes = ["JPG", "PNG", "GIF"];
 
