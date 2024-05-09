@@ -65,4 +65,9 @@ public class CategoryController {
     public void deleteCategory(@PathVariable final UUID id) {
         this.categoryService.deleteCategory(id);
     }
+
+    @GetMapping("/{id}/subcategories")
+    public List<Category> getSubcategoriesByCategory(@PathVariable final UUID id) {
+        return this.categoryService.getSubcategoriesByCategory(id);
+    }
 }

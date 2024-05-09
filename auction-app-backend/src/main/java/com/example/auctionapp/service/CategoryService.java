@@ -14,4 +14,5 @@ public interface CategoryService {
     void deleteCategory(final UUID id);
     List<Category> getTopLevelCategories();
     List<Category> getCategoriesWithSubcategories();
+    List<Category> getSubcategoriesByCategory(final UUID categoryId);
 }

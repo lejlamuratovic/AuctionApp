@@ -8,4 +8,8 @@ const getCategoriesWithSubcategories = () => {
   return getRequest("/categories/with-subcategories");
 };
 
-export { getTopLevelCategories, getCategoriesWithSubcategories };
+const getSubcategoriesByParentCategory = (id) => {
+  return getRequest(`/categories/${id}/subcategories`);
+}
+
+export { getTopLevelCategories, getCategoriesWithSubcategories, getSubcategoriesByParentCategory };
