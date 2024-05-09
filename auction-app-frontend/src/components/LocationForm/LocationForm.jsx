@@ -23,10 +23,10 @@ const LocationForm = ({ formData, setFormData, handleFinalSubmit }) => {
         const data = methods.getValues();
 
         if (!showCardInfo) {
-            setFormData({...formData, ...data});
+            setFormData({...formData, data});
             setShowCardInfo(true);
         } else {
-            setFormData({...formData, ...data});
+            setFormData({...formData, data});
             handleFinalSubmit();
         }
     };

@@ -62,7 +62,7 @@
 }
 
 .input-field-third {
-    label, .error-message {
+    label {
         width: 168px !important;
         min-height: 24px !important;
     }
@@ -70,7 +70,9 @@
     .error-message {
         position: absolute !important;
         padding: 0 !important;
-        bottom: -30px !important;
+        bottom: -55px !important;
+        width: 168px !important;
+        min-height: 48px !important;
     }
 }
 
