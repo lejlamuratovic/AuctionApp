@@ -32,6 +32,7 @@ const FormContainer = ({
               options={ field.type === "select" ? field.options : null }
               className={ field.specialClass ? field.specialClass : ""}
               placeholder={ field.placeholder }
+              onSelectChange={ field.onSelectChange }
           />
         )) }
         { error && 

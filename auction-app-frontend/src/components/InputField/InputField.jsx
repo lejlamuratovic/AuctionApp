@@ -6,7 +6,7 @@ import { SelectField, ErrorComponent } from "src/components";
 
 import "./style.scss";
 
-const InputField = ({ name, label, type, rules, step, options, className, placeholder }) => {
+const InputField = ({ name, label, type, rules, step, options, className, placeholder, onSelectChange }) => {
     const { register, setValue, formState: { errors } } = useFormContext();
     const [dateValue, setDateValue] = useState(""); 
     const [files, setFiles] = useState([]);
@@ -49,7 +49,13 @@ const InputField = ({ name, label, type, rules, step, options, className, placeh
                     />
                 );
             case "select":
-                return <SelectField name={ name } options={ options } rules={ rules } />;
+                return <SelectField 
+                    name={ name } 
+                    options={ options } 
+                    rules={ rules } 
+                    label={ label } 
+                    onSelectChange={ onSelectChange }
+                />;
             case "file": 
                 return <>
                 <FileUploader 

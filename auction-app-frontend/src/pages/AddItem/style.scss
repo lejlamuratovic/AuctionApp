@@ -29,9 +29,15 @@
 
             .input-field-half {
                 margin: 0 5px 24px 5px;
+                max-width: 264px;
 
                 input {
-                    width: 264px;
+                    width: 100%;
+                }
+
+                .custom-select {
+                    width: 100%;
+                    max-height: 48px;
                 }
             }
 

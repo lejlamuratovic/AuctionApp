@@ -5,8 +5,8 @@ import { dropdown } from "src/assets/icons";
 
 import "./style.scss";
 
-const SelectField = ({ name, options, rules, label }) => {
-    const { register, formState: { errors } } = useFormContext();
+const SelectField = ({ name, options = [], rules, label, onSelectChange }) => {
+    const { register, setValue, formState: { errors } } = useFormContext();
     
     const [selected, setSelected] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
@@ -17,10 +17,13 @@ const SelectField = ({ name, options, rules, label }) => {
         setSelected(value);
         setValue(name, value);
         setIsOpen(false);
+    
+        if (onSelectChange) {
+            onSelectChange(value);
+        }
     };
 
     useEffect(() => {
-        // register field
         register(name, { ...rules });
     }, [register, name, rules]);
     
@@ -35,7 +38,7 @@ const SelectField = ({ name, options, rules, label }) => {
             </div>
             { isOpen && (
                 <div className="dropdown-content">
-                    { options.map(option => (
+                    { options.map((option) => (
                         <div key={ option.value } className="dropdown-item" onClick={ () => handleSelect(option.value) }>
                             { option.label }
                         </div>
