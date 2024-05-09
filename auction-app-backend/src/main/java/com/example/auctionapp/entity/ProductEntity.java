@@ -69,6 +69,10 @@ public class ProductEntity {
     @Formula("(SELECT MAX(b.bid_amount) FROM auction_app.bid b WHERE b.product_id = product_id)")
     private BigDecimal highestBid;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payment_info_id")
+    private PaymentInfoEntity paymentInfo;
+
     public ProductEntity() {
     }
 
@@ -80,7 +84,8 @@ public class ProductEntity {
                          final LocalDateTime endDate,
                          final String status,
                          final CategoryEntity categoryEntity,
-                         final UserEntity userEntity) {
+                         final UserEntity userEntity,
+                         final PaymentInfoEntity paymentInfoEntity) {
         this.productId = productId;
         this.name = name;
         this.description = description;
@@ -90,6 +95,7 @@ public class ProductEntity {
         this.status = status;
         this.categoryEntity = categoryEntity;
         this.userEntity = userEntity;
+        this.paymentInfo = paymentInfoEntity;
     }
 
     public Product toDomainModel() {
@@ -216,5 +222,13 @@ public class ProductEntity {
 
     public void setHighestBid(final BigDecimal highestBid) {
         this.highestBid = highestBid;
+    }
+
+    public PaymentInfoEntity getPaymentInfo() {
+        return this.paymentInfo;
+    }
+
+    public void setPaymentInfo(final PaymentInfoEntity paymentInfo) {
+        this.paymentInfo = paymentInfo;
     }
 }
