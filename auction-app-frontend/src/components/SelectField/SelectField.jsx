@@ -6,7 +6,7 @@ import { dropdown } from "src/assets/icons";
 import "./style.scss";
 
 const SelectField = ({ name, options = [], rules, label, onSelectChange }) => {
-    const { register, setValue, formState: { errors } } = useFormContext();
+    const { register, setValue } = useFormContext();
     
     const [selected, setSelected] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
@@ -45,7 +45,6 @@ const SelectField = ({ name, options = [], rules, label, onSelectChange }) => {
                     )) }
                 </div>
             ) }
-            { errors[name] && <span className="error-message">{ errors[name].message }</span> }
         </div>
     );
 };
