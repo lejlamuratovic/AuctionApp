@@ -22,6 +22,7 @@ export const locationShippingFormFields = [
         label: "City",
         type: "text",
         name: "city",
+        specialClass: "input-field-half",
         rules: {
             ...rules.required("City"),
             ...rules.minLength(3, "City"),
@@ -33,6 +34,7 @@ export const locationShippingFormFields = [
         label: "Zip Code",
         type: "text",
         name: "zipCode",
+        specialClass: "input-field-half",
         rules: {
             ...rules.required("Zip code"),
             ...rules.minLength(5, "Zip code"),

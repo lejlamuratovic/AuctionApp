@@ -6,11 +6,16 @@ import { SelectField, ErrorComponent } from "src/components";
 
 import "./style.scss";
 
-const InputField = ({ name, label, type, rules, step, options, className }) => {
+const InputField = ({ name, label, type, rules, step, options, className, placeholder }) => {
     const { register, setValue, formState: { errors } } = useFormContext();
-    
+    const [dateValue, setDateValue] = useState(""); 
     const [files, setFiles] = useState([]);
     
+    const onChangeDate = (event) => {
+        setDateValue(event.target.value);
+        setValue(name, event.target.value);
+    };
+
     const handleFileChange = (fileList) => {
         const filesArray = Array.from(fileList);
 
@@ -19,7 +24,6 @@ const InputField = ({ name, label, type, rules, step, options, className }) => {
         // form state
         setValue(name, filesArray, { shouldValidate: true });
     };
-    
 
     const fileTypes = ["JPG", "PNG", "GIF"];
 
@@ -29,10 +33,21 @@ const InputField = ({ name, label, type, rules, step, options, className }) => {
             id: name,
             type: type,
             className: errors[name] ? "error" : "",
-            ...(step && { step }) 
+            ...(step && { step }) ,
+            placeholder: placeholder || ""
         };
     
         switch (type) {
+            case "date": 
+                return (
+                    <input
+                        { ...inputProps }
+                        type="date"
+                        value={ dateValue }
+                        onChange={ onChangeDate } 
+                        style={ !dateValue ? { color: "transparent" } : {} } 
+                    />
+                );
             case "select":
                 return <SelectField name={ name } options={ options } rules={ rules } />;
             case "file": 

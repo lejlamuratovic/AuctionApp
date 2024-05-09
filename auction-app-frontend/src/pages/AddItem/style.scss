@@ -16,12 +16,37 @@
             margin-bottom: 64px;
         }
 
-        .input-field {
+        .form-fields form {
+            @include flex-container(row, center, center);
             width: 100%;
-            padding-bottom: 32px;
+            flex-wrap: wrap;
 
-            input {
-                width: 100%;
+            .input-field {
+                @include flex-container(column, flex-start, flex-start);
+                flex-basis: 100%;
+                margin-bottom: 24px;
+            }
+
+            .input-field-half {
+                margin: 0 5px 24px 5px;
+
+                input {
+                    width: 264px;
+                }
+            }
+
+            .input-field-half-date {
+                input {
+                    width: 251px;
+                }
+            }
+
+            .input-field-third {
+                margin: 0 7px 24px 7px;
+
+                input {
+                    width: 168px;
+                }
             }
         }
     }

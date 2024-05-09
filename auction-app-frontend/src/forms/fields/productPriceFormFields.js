@@ -15,12 +15,14 @@ export const productPriceFormFields = [
         label: "Start date",
         type: "date",
         name: "startDate",
+        specialClass: "input-field-half-date",
         rules: rules.startDate()
     },
     {
         label: "End date",
         type: "date",
         name: "endDate",
+        specialClass: "input-field-half-date",
         rules: rules.endDate()
     }
 ];

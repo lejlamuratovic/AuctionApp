@@ -44,15 +44,11 @@
 
 }
 
-.input-field-half, .input-field-third {
+.input-field-half, .input-field-third, .input-field-half-date {
     flex-basis: auto !important;
 }
 
 .input-field-half {
-    input {
-        width: 260px !important;
-    }
-
     label, .error-message {
         width: 263px !important;
         min-height: 24px !important;
@@ -66,10 +62,6 @@
 }
 
 .input-field-third {
-    input {
-        width: 171px !important;
-    }
-
     label, .error-message {
         width: 168px !important;
         min-height: 24px !important;

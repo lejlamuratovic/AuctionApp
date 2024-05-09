@@ -31,6 +31,7 @@ const FormContainer = ({
               step={ field.type === "number" ? field.step : null }
               options={ field.type === "select" ? field.options : null }
               className={ field.specialClass ? field.specialClass : ""}
+              placeholder={ field.placeholder }
           />
         )) }
         { error && 

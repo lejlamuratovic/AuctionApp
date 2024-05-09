@@ -16,33 +16,4 @@
             width: 130px;
         }
     }
-
-    form {
-        @include flex-container(row, center, center);
-        width: 100%;
-        flex-wrap: wrap;
-
-        .input-field {
-            flex-basis: 100%;
-        }
-        
-        .input-field:has(input[name="city"]), .input-field:has(input[name="zipCode"])  {
-            position: relative;
-            flex-basis: auto;
-            width: 251px;
-
-            .error-message {
-                position: absolute;
-                top: 100px;
-            }
-        }
-
-        .input-field:has(input[name="city"]) {
-            margin-right: 23px;
-        }
-
-        .input-field:has(input[name="zipCode"]) {
-            margin-left: 23px;
-        }
-    }
 }
