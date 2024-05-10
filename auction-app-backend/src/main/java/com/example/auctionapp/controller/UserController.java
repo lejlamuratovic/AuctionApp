@@ -26,13 +26,13 @@ public class UserController {
     }
 
     @PreAuthorize(SecurityRoles.ALL)
-    @GetMapping(path="/user/{userId}/payment-info")
+    @GetMapping(path="/{userId}/payment-info")
     public PaymentInfo getPaymentInfoByUser(@PathVariable final UUID userId) {
         return userService.getPaymentInfoByUser(userId);
     }
 
     @PreAuthorize(SecurityRoles.ALL)
-    @PostMapping(path="/user/{userId}/payment-info")
+    @PostMapping(path="/{userId}/payment-info")
     public PaymentInfo addPaymentInfoToUser(@PathVariable final UUID userId,
                                             @RequestBody final PaymentAddRequest paymentAddRequest) {
         return userService.addPaymentInfoToUser(userId, paymentAddRequest);

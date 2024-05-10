@@ -1,23 +1,63 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { set, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import { FormContainer } from "src/components";
+import { FormContainer, LoadingComponent, ErrorComponent } from "src/components";
 
 import { locationShippingFormFields, cardInformationFields } from "src/forms/fields";
 import { BUTTON_LABELS, ROUTE_PATHS } from "src/constants";
+import { getPaymentInfoByUser } from "src/services";
+import { useUser } from "src/store/UserContext";
 
 import "./style.scss";
 
 const LocationForm = ({ formData, setFormData, handleFinalSubmit }) => {
     const navigate = useNavigate();
 
+    const { userId } = useUser(); 
+
     const [showCardInfo, setShowCardInfo] = useState(false);
+    const [paymentInfo, setPaymentInfo] = useState({});
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const methods = useForm({
         mode: "onBlur", 
         defaultValues: formData
     });
+
+    const fetchPaymentInfo = () => {
+        if (!userId) return;
+
+        setLoading(true);
+
+        getPaymentInfoByUser(userId)
+            .then((response) => {
+                const { expirationDate, ...rest } = response;
+                const [year, month, day] = expirationDate.split('-');
+    
+                const expirationMonth = month;
+                const expirationYear = year.substring(2);
+    
+                const updatedPaymentInfo = {
+                    ...rest,
+                    expirationMonth,
+                    expirationYear
+                };
+
+                setPaymentInfo(updatedPaymentInfo);
+
+                methods.reset({ ...methods.getValues(), ...updatedPaymentInfo });
+            }).catch((error) => {
+                setError(error.message);
+            }).finally(() => {
+                setLoading(false);
+            });
+    };
+
+    useEffect(() => {
+        fetchPaymentInfo();
+    }, [userId]);
 
     const onSubmit = () => {
         const data = methods.getValues();
@@ -45,6 +85,9 @@ const LocationForm = ({ formData, setFormData, handleFinalSubmit }) => {
 
     const combinedFormFields = showCardInfo ? 
         [...locationShippingFormFields, ...cardInformationFields] : locationShippingFormFields;
+
+    if (loading) return <LoadingComponent />;
+    if (error) return <ErrorComponent message={error} />;
 
     return (
         <div className="location-form form">

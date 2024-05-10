@@ -13,11 +13,11 @@ const logoutUser = () => {
 }
 
 const getPaymentInfoByUser = (userId) => {
-    return getRequest(`/user/${userId}/payment-info`);
+    return getRequest(`/users/${userId}/payment-info`);
 }
 
 const addPaymentInfoToUser = (userId, data) => {
-    return postRequest(`/user/${userId}/payment-info`, data);
+    return postRequest(`/users/${userId}/payment-info`, data);
 }
 
 export { registerUser, loginUser, logoutUser, getPaymentInfoByUser, addPaymentInfoToUser };
