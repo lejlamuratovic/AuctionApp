@@ -182,3 +182,5 @@ export const ADD_ITEM_FORMS_MAP = {
   PRICES: "prices",
   SHIPPING: "shipping",
 };
+
+export const successfulRegistrationMessage = "Registration successful, please login.";

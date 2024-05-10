@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
@@ -18,11 +18,19 @@ const LoginForm = () => {
   const location = useLocation();
   const { from } = location.state || { from: { pathname: "/" } };
 
+  const [message, setMessage] = useState(location.state?.message || null);
+
   const [error, setError] = useState(null);
 
   const methods = useForm({
     mode: "onBlur" // validate on blur, when user moves to the next field
   });
+
+  useEffect(() => {
+    if (location.state?.message) {
+      setMessage(location.state.message);
+    }
+  }, [location]);
 
   const onSubmit = (data) => {
     loginUser(data)
@@ -47,6 +55,7 @@ const LoginForm = () => {
   return (
     <div className="login-form-container">
         <h5 className="form-title">LOGIN</h5>
+        { message && <div className="alert-success body-regular">{ message }</div> }
         <div className="login-form">
           <FormContainer 
             formFields={ loginFormFields } 
