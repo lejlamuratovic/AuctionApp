@@ -5,13 +5,15 @@ import com.example.auctionapp.request.ProductAddRequest;
 import com.example.auctionapp.response.BidSummaryResponse;
 import com.example.auctionapp.response.ProductSearchResponse;
 import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface ProductService {
     ProductSearchResponse getProducts(final UUID categoryId, final String searchProduct, final int page, final int size);
     Product getProductById(final UUID id);
-    Product addProduct(final ProductAddRequest productRequest);
+    Product addProduct(final ProductAddRequest productRequest, final List<MultipartFile> images);
     Product updateProduct(final UUID id, final ProductAddRequest productRequest);
     void deleteProduct(final UUID id);
     Page<Product> getProductsByCriteria(final int page, final int size, final String type);

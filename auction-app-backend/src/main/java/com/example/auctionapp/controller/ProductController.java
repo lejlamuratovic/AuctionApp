@@ -8,6 +8,7 @@ import com.example.auctionapp.request.ProductAddRequest;
 import com.example.auctionapp.util.SecurityRoles;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +18,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -42,9 +46,12 @@ public class ProductController {
     }
 
     @PreAuthorize(SecurityRoles.ALL)
-    @PostMapping
-    public Product addProduct(@RequestBody final ProductAddRequest product) {
-        return this.productService.addProduct(product);
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Product addProduct(
+            @RequestPart("product") ProductAddRequest productRequest,
+            @RequestPart("images") List<MultipartFile> images) {
+
+        return productService.addProduct(productRequest, images);
     }
 
     @GetMapping(path = "/{id}")

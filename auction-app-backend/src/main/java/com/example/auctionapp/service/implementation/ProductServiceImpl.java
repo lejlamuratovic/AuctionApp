@@ -1,5 +1,11 @@
 package com.example.auctionapp.service.implementation;
 
+import com.example.auctionapp.entity.PaymentInfoEntity;
+import com.example.auctionapp.entity.ProductImageEntity;
+import com.example.auctionapp.entity.UserEntity;
+import com.example.auctionapp.external.AmazonClient;
+import com.example.auctionapp.repository.PaymentInfoRepository;
+import com.example.auctionapp.repository.ProductImageRepository;
 import com.example.auctionapp.repository.UserRepository;
 import com.example.auctionapp.request.ProductAddRequest;
 import com.example.auctionapp.entity.ProductEntity;
@@ -18,20 +24,30 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
+    private final PaymentInfoRepository paymentInfoRepository;
+    private final AmazonClient amazonClient;
+    private final ProductImageRepository productImageRepository;
 
-    public ProductServiceImpl(final ProductRepository productRepository, final CategoryRepository categoryRepository, UserRepository userRepository) {
+    public ProductServiceImpl(final ProductRepository productRepository, final CategoryRepository categoryRepository, UserRepository userRepository, PaymentInfoRepository paymentInfoRepository, AmazonClient amazonClient, ProductImageRepository productImageRepository) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
         this.userRepository = userRepository;
+        this.paymentInfoRepository = paymentInfoRepository;
+        this.amazonClient = amazonClient;
+        this.productImageRepository = productImageRepository;
     }
 
     @Override
@@ -64,9 +80,34 @@ public class ProductServiceImpl implements ProductService {
         return productEntity.toDomainModel();
     }
 
+    @Transactional
     @Override
-    public Product addProduct(final ProductAddRequest productRequest) {
-        final ProductEntity productEntity = productRequest.toEntity();
+    public Product addProduct(final ProductAddRequest productRequest, final List<MultipartFile> images) {
+        PaymentInfoEntity paymentInfoEntity;
+
+        if (productRequest.isUseExistingPaymentInfo() && productRequest.getUserId() != null) {
+            UserEntity user = userRepository.findById(productRequest.getUserId())
+                    .orElseThrow(() -> new ResourceNotFoundException("User with the given ID does not exist"));
+
+            paymentInfoEntity = user.getPaymentInfoEntity();
+            if (paymentInfoEntity == null) {
+                throw new ResourceNotFoundException("No existing payment info available for this user");
+            }
+        } else {
+            paymentInfoEntity = new PaymentInfoEntity();
+            paymentInfoEntity.setAddress(productRequest.getAddress());
+            paymentInfoEntity.setCity(productRequest.getCity());
+            paymentInfoEntity.setZipCode(productRequest.getZipCode());
+            paymentInfoEntity.setExpirationDate(productRequest.getExpirationDate());
+            paymentInfoEntity.setCardNumber(productRequest.getCardNumber());
+            paymentInfoEntity.setNameOnCard(productRequest.getNameOnCard());
+            paymentInfoEntity.setCountry(productRequest.getCountry());
+
+            paymentInfoRepository.save(paymentInfoEntity);
+        }
+
+        ProductEntity productEntity = productRequest.toEntity();
+        productEntity.setPaymentInfo(paymentInfoEntity);
 
         if (productRequest.getCategoryId() != null) {
             productEntity.setCategory(categoryRepository.findById(productRequest.getCategoryId())
@@ -78,7 +119,29 @@ public class ProductServiceImpl implements ProductService {
                     .orElseThrow(() -> new ResourceNotFoundException("User with the given ID does not exist")));
         }
 
-        return this.productRepository.save(productEntity).toDomainModel();
+        productEntity = productRepository.saveAndFlush(productEntity);
+
+        ProductEntity savedProduct = productEntity;
+
+        List<ProductImageEntity> imageEntities = images.stream().map(image -> {
+            try {
+                final String imageUrl = amazonClient.uploadFile(image);
+
+                ProductImageEntity imageEntity = new ProductImageEntity();
+                imageEntity.setImageUrl(imageUrl);
+                imageEntity.setProductEntity(savedProduct);
+
+                productImageRepository.save(imageEntity);
+
+                return imageEntity;
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to upload image", e);
+            }
+        }).collect(toList());
+
+        productEntity.setProductImages(imageEntities);
+
+        return productRepository.save(productEntity).toDomainModel();
     }
 
     @Override

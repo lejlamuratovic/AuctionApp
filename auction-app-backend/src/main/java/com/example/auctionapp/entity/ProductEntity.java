@@ -18,6 +18,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -109,10 +110,16 @@ public class ProductEntity {
         product.setEndDate(this.endDate);
         product.setStatus(this.status);
         product.setCategoryId(this.categoryEntity.getCategoryId());
-        List<ProductImage> productImageList = this.productImages.stream()
-                .map(ProductImageEntity::toDomainModel)
-                .collect(toList());
-        product.setProductImages(productImageList);
+
+        if (this.productImages != null) {
+            List<ProductImage> productImageList = this.productImages.stream()
+                    .map(ProductImageEntity::toDomainModel)
+                    .collect(toList());
+            product.setProductImages(productImageList);
+        } else {
+            product.setProductImages(new ArrayList<>());
+        }
+
         product.setUserId(this.userEntity.getUserId());
         product.setBidsCount(this.bidsCount);
         product.setHighestBid(this.highestBid);

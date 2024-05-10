@@ -2,9 +2,9 @@ package com.example.auctionapp.request;
 
 import com.example.auctionapp.entity.ProductEntity;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
-import java.util.List;
 
 public class ProductAddRequest {
     private String name;
@@ -14,8 +14,17 @@ public class ProductAddRequest {
     private LocalDateTime endDate;
     private String status;
     private UUID categoryId;
-    private List<String> imageUrls;
     private UUID userId;
+    private String nameOnCard;
+    private String cardNumber;
+    private LocalDate expirationDate;
+    private String zipCode;
+    private String city;
+    private String address;
+    private String country;
+
+    // flag to use existing payment info
+    private boolean useExistingPaymentInfo;
 
     public ProductAddRequest() {
     }
@@ -89,19 +98,75 @@ public class ProductAddRequest {
         this.categoryId = categoryId;
     }
 
-    public List<String> getImageUrls() {
-        return this.imageUrls;
-    }
-
-    public void setImageUrls(final List<String> imageUrls) {
-        this.imageUrls = imageUrls;
-    }
-
     public UUID getUserId() {
         return this.userId;
     }
 
     public void setUserId(final UUID userId) {
         this.userId = userId;
+    }
+
+    public String getNameOnCard() {
+        return this.nameOnCard;
+    }
+
+    public void setNameOnCard(final String nameOnCard) {
+        this.nameOnCard = nameOnCard;
+    }
+
+    public String getCardNumber() {
+        return this.cardNumber;
+    }
+
+    public void setCardNumber(final String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
+    public LocalDate getExpirationDate() {
+        return this.expirationDate;
+    }
+
+    public void setExpirationDate(final LocalDate expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
+    public String getZipCode() {
+        return this.zipCode;
+    }
+
+    public void setZipCode(final String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public String getCity() {
+        return this.city;
+    }
+
+    public void setCity(final String city) {
+        this.city = city;
+    }
+
+    public String getAddress() {
+        return this.address;
+    }
+
+    public void setAddress(final String address) {
+        this.address = address;
+    }
+
+    public String getCountry() {
+        return this.country;
+    }
+
+    public void setCountry(final String country) {
+        this.country = country;
+    }
+
+    public boolean isUseExistingPaymentInfo() {
+        return this.useExistingPaymentInfo;
+    }
+
+    public void setUseExistingPaymentInfo(final boolean useExistingPaymentInfo) {
+        this.useExistingPaymentInfo = useExistingPaymentInfo;
     }
 }
