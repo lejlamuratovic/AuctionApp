@@ -1,9 +1,12 @@
 package com.example.auctionapp.entity;
 
+import com.example.auctionapp.entity.enums.ProductStatus;
 import com.example.auctionapp.model.Product;
 import com.example.auctionapp.model.ProductImage;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -51,7 +54,8 @@ public class ProductEntity {
     private LocalDateTime endDate;
 
     @Column(name = "status")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private ProductStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
@@ -83,7 +87,7 @@ public class ProductEntity {
                          final BigDecimal startPrice,
                          final LocalDateTime startDate,
                          final LocalDateTime endDate,
-                         final String status,
+                         final ProductStatus status,
                          final CategoryEntity categoryEntity,
                          final UserEntity userEntity,
                          final PaymentInfoEntity paymentInfoEntity) {
@@ -175,11 +179,11 @@ public class ProductEntity {
         this.endDate = endDate;
     }
 
-    public String getStatus() {
+    public ProductStatus getStatus() {
         return this.status;
     }
 
-    public void setStatus(final String status) {
+    public void setStatus(final ProductStatus status) {
         this.status = status;
     }
 

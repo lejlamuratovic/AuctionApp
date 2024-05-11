@@ -12,7 +12,6 @@ public class ProductAddRequest {
     private BigDecimal startPrice;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private String status;
     private UUID categoryId;
     private UUID userId;
     private String nameOnCard;
@@ -22,9 +21,6 @@ public class ProductAddRequest {
     private String city;
     private String address;
     private String country;
-
-    // flag to use existing payment info
-    private boolean useExistingPaymentInfo;
 
     public ProductAddRequest() {
     }
@@ -37,7 +33,6 @@ public class ProductAddRequest {
         productEntity.setStartPrice(this.startPrice);
         productEntity.setStartDate(this.startDate);
         productEntity.setEndDate(this.endDate);
-        productEntity.setStatus(this.status);
 
         return productEntity;
     }
@@ -80,14 +75,6 @@ public class ProductAddRequest {
 
     public void setEndDate(final LocalDateTime endDate) {
         this.endDate = endDate;
-    }
-
-    public String getStatus() {
-        return this.status;
-    }
-
-    public void setStatus(final String status) {
-        this.status = status;
     }
 
     public UUID getCategoryId() {
@@ -160,13 +147,5 @@ public class ProductAddRequest {
 
     public void setCountry(final String country) {
         this.country = country;
-    }
-
-    public boolean isUseExistingPaymentInfo() {
-        return this.useExistingPaymentInfo;
-    }
-
-    public void setUseExistingPaymentInfo(final boolean useExistingPaymentInfo) {
-        this.useExistingPaymentInfo = useExistingPaymentInfo;
     }
 }

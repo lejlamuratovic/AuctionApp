@@ -1,14 +1,21 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { ProductDetailsForm, ProductPriceForm, LocationForm } from "src/components";
 
-import { ADD_ITEM_FORMS_MAP } from "src/constants";
+import { ADD_ITEM_FORMS_MAP, ROUTE_PATHS } from "src/constants";
+import { addProduct } from "src/services";
+import { useUser } from "src/store/UserContext";
+
+import axios from 'axios';
 
 import "./style.scss";
 
 const AddItem = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const { userId } = useUser();
 
   const [activeForm, setActiveForm] = useState(location.hash.replace("#", "") || "details");
   const [formData, setFormData] = useState({
@@ -40,7 +47,56 @@ const AddItem = () => {
   };
 
   const handleFinalSubmit = () => {
-    console.log(formData);
+    // check if all forms are filled and navigate back to a specific one if it isnt
+    const isObjectEmpty = (obj) => Object.keys(obj).length === 0;
+
+    if (isObjectEmpty(formData.details)) {
+      setActiveForm(ADD_ITEM_FORMS_MAP.DETAILS);
+    } else if (isObjectEmpty(formData.prices)) {
+      setActiveForm(ADD_ITEM_FORMS_MAP.PRICES);
+    } else if (isObjectEmpty(formData.shipping)) {
+      setActiveForm(ADD_ITEM_FORMS_MAP.SHIPPING);
+    } else {
+      handleAddProduct();
+    }
+  };
+
+  const handleAddProduct = () => {
+    // create form data to send to the backend
+    const productData = new FormData();
+
+    const startDate = formData.prices.startDate + 'T00:00:00';
+    const endDate = formData.prices.endDate + 'T00:00:00';
+
+    const productDetails = {
+        name: formData.details.productName,
+        categoryId: formData.details.subcategory,
+        description: formData.details.description,
+        startPrice: formData.prices.startPrice,
+        startDate: startDate,
+        endDate: endDate,
+        userId: userId,
+        address: formData.shipping.address,
+        nameOnCard: formData.shipping.nameOnCard,
+        cardNumber: formData.shipping.cardNumber,
+        city: formData.shipping.city,
+        country: formData.shipping.country,
+        zipCode: formData.shipping.zipCode,
+        address: formData.shipping.address,
+        expirationDate: new Date().toISOString()
+    };
+  
+    // append the product data to the form data object
+    productData.append('product', new Blob([JSON.stringify(productDetails)], { type: "application/json" }));
+    formData.details.file.forEach(file => productData.append('images', file));
+  
+    addProduct(productData)
+      .then((response) => {
+        navigate(`${ ROUTE_PATHS.PRODUCT }/${ response.id }`);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const renderActiveForm = () => {

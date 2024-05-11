@@ -2,7 +2,7 @@ import { useFormContext } from "react-hook-form";
 import { useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
 
-import { SelectField, ErrorComponent } from "src/components"; 
+import { SelectField } from "src/components"; 
 
 import "./style.scss";
 

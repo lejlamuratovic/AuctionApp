@@ -49,8 +49,8 @@ public class ProductController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Product addProduct(
             @RequestPart("product") ProductAddRequest productRequest,
-            @RequestPart("images") List<MultipartFile> images) {
-
+            @RequestPart("images") List<MultipartFile> images
+    ) {
         return productService.addProduct(productRequest, images);
     }
 

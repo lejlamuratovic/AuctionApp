@@ -14,7 +14,7 @@ import "./style.scss";
 const LocationForm = ({ formData, setFormData, handleFinalSubmit }) => {
     const navigate = useNavigate();
 
-    const { userId } = useUser(); 
+    const { userId, email } = useUser(); 
 
     const [showCardInfo, setShowCardInfo] = useState(false);
     const [paymentInfo, setPaymentInfo] = useState({});
@@ -42,10 +42,12 @@ const LocationForm = ({ formData, setFormData, handleFinalSubmit }) => {
                 const updatedPaymentInfo = {
                     ...rest,
                     expirationMonth,
-                    expirationYear
+                    expirationYear,
+                    email
                 };
 
                 setPaymentInfo(updatedPaymentInfo);
+                setFormData({ ...formData, ...updatedPaymentInfo });
 
                 methods.reset({ ...methods.getValues(), ...updatedPaymentInfo });
             }).catch((error) => {

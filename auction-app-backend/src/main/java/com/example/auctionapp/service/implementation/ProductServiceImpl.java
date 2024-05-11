@@ -3,6 +3,7 @@ package com.example.auctionapp.service.implementation;
 import com.example.auctionapp.entity.PaymentInfoEntity;
 import com.example.auctionapp.entity.ProductImageEntity;
 import com.example.auctionapp.entity.UserEntity;
+import com.example.auctionapp.entity.enums.ProductStatus;
 import com.example.auctionapp.external.AmazonClient;
 import com.example.auctionapp.repository.PaymentInfoRepository;
 import com.example.auctionapp.repository.ProductImageRepository;
@@ -83,31 +84,21 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     @Override
     public Product addProduct(final ProductAddRequest productRequest, final List<MultipartFile> images) {
-        PaymentInfoEntity paymentInfoEntity;
-
-        if (productRequest.isUseExistingPaymentInfo() && productRequest.getUserId() != null) {
-            UserEntity user = userRepository.findById(productRequest.getUserId())
-                    .orElseThrow(() -> new ResourceNotFoundException("User with the given ID does not exist"));
-
-            paymentInfoEntity = user.getPaymentInfoEntity();
-            if (paymentInfoEntity == null) {
-                throw new ResourceNotFoundException("No existing payment info available for this user");
-            }
-        } else {
-            paymentInfoEntity = new PaymentInfoEntity();
-            paymentInfoEntity.setAddress(productRequest.getAddress());
-            paymentInfoEntity.setCity(productRequest.getCity());
-            paymentInfoEntity.setZipCode(productRequest.getZipCode());
-            paymentInfoEntity.setExpirationDate(productRequest.getExpirationDate());
-            paymentInfoEntity.setCardNumber(productRequest.getCardNumber());
-            paymentInfoEntity.setNameOnCard(productRequest.getNameOnCard());
-            paymentInfoEntity.setCountry(productRequest.getCountry());
-
-            paymentInfoRepository.save(paymentInfoEntity);
-        }
-
         ProductEntity productEntity = productRequest.toEntity();
+        PaymentInfoEntity paymentInfoEntity = new PaymentInfoEntity();
+
+        paymentInfoEntity.setAddress(productRequest.getAddress());
+        paymentInfoEntity.setCity(productRequest.getCity());
+        paymentInfoEntity.setZipCode(productRequest.getZipCode());
+        paymentInfoEntity.setExpirationDate(productRequest.getExpirationDate());
+        paymentInfoEntity.setCardNumber(productRequest.getCardNumber());
+        paymentInfoEntity.setNameOnCard(productRequest.getNameOnCard());
+        paymentInfoEntity.setCountry(productRequest.getCountry());
+
+        paymentInfoRepository.save(paymentInfoEntity);
+
         productEntity.setPaymentInfo(paymentInfoEntity);
+        productEntity.setStatus(ProductStatus.ACTIVE);
 
         if (productRequest.getCategoryId() != null) {
             productEntity.setCategory(categoryRepository.findById(productRequest.getCategoryId())
@@ -154,7 +145,7 @@ public class ProductServiceImpl implements ProductService {
         existingProductEntity.setStartPrice(productRequest.getStartPrice());
         existingProductEntity.setStartDate(productRequest.getStartDate());
         existingProductEntity.setEndDate(productRequest.getEndDate());
-        existingProductEntity.setStatus(productRequest.getStatus());
+        existingProductEntity.setStatus(ProductStatus.ACTIVE);
 
         if (productRequest.getCategoryId() != null) {
             existingProductEntity.setCategory(categoryRepository.findById(productRequest.getCategoryId())
