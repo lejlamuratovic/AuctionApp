@@ -28,35 +28,39 @@ const LocationForm = ({ formData, setFormData, handleFinalSubmit }) => {
 
     const fetchPaymentInfo = () => {
         if (!userId) return;
-
+    
         setLoading(true);
-
+    
         getPaymentInfoByUser(userId)
             .then((response) => {
                 const { expirationDate, ...rest } = response;
                 const [year, month, day] = expirationDate.split('-');
-    
+        
                 const expirationMonth = month;
                 const expirationYear = year.substring(2);
-    
+        
                 const updatedPaymentInfo = {
                     ...rest,
                     expirationMonth,
                     expirationYear,
                     email
                 };
-
+    
                 setPaymentInfo(updatedPaymentInfo);
                 setFormData({ ...formData, ...updatedPaymentInfo });
-
+    
                 methods.reset({ ...methods.getValues(), ...updatedPaymentInfo });
             }).catch((error) => {
-                setError(error.message);
+                if (error.response && error.response.status === 500) {
+                    methods.reset({ ...methods.getValues() }); // reset form if user has no payment info
+                } else {
+                    setError(error.message);
+                }
             }).finally(() => {
                 setLoading(false);
             });
     };
-
+    
     useEffect(() => {
         fetchPaymentInfo();
     }, [userId]);

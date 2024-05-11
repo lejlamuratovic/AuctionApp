@@ -36,6 +36,8 @@ const InputField = ({ name, label, type, rules, step, options, className, placeh
                         style={ !dateValue ? { color: "transparent" } : {} } 
                     />
                 );
+            case "textarea": 
+                return <textarea { ...inputProps } />;
             case "select":
                 return <SelectField 
                     name={ name } 
