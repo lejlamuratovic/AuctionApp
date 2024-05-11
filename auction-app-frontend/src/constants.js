@@ -123,6 +123,7 @@ export const BUTTON_VARIANTS = {
 
 export const MY_ACCOUNT_TABS = [
   { id: "profile", label: "Profile", icon: profile, activeIcon: profileActive},
+  { id: "seller", label: "Seller", icon: seller, activeIcon: sellerActive},
   { id: "bids", label: "Bids", icon: bids, activeIcon: bidsActive},
   { id: "settings", label: "Settings", icon: settings, activeIcon: settingsActive},
 ];

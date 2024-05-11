@@ -47,7 +47,8 @@ export const productDetailsFormFields = (categories, subcategories, setSelectedC
     type: "file",
     name: "file",
     rules: {
-      ...rules.required("File")
+      ...rules.required("File"),
+      ...rules.minimumFiles(3)
     }
   }
 ];

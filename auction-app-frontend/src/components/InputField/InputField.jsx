@@ -1,8 +1,7 @@
 import { useFormContext } from "react-hook-form";
 import { useState } from "react";
-import { FileUploader } from "react-drag-drop-files";
 
-import { SelectField } from "src/components"; 
+import { SelectField, CustomFileUploader } from "src/components"; 
 
 import "./style.scss";
 
@@ -10,22 +9,11 @@ const InputField = ({ name, label, type, rules, step, options, className, placeh
     const { register, setValue, formState: { errors } } = useFormContext();
     const [dateValue, setDateValue] = useState(""); 
     const [files, setFiles] = useState([]);
-    
+        
     const onChangeDate = (event) => {
         setDateValue(event.target.value);
         setValue(name, event.target.value);
     };
-
-    const handleFileChange = (fileList) => {
-        const filesArray = Array.from(fileList);
-
-        // local state
-        setFiles(prevFiles => [...prevFiles, ...filesArray]);
-        // form state
-        setValue(name, filesArray, { shouldValidate: true });
-    };
-
-    const fileTypes = ["JPG", "PNG", "GIF"];
 
     const renderField = () => {
         const inputProps = {
@@ -56,30 +44,8 @@ const InputField = ({ name, label, type, rules, step, options, className, placeh
                     label={ label } 
                     onSelectChange={ onSelectChange }
                 />;
-            case "file": 
-                return <>
-                <FileUploader 
-                    handleChange={ handleFileChange } 
-                    name="file" 
-                    types={ fileTypes } 
-                    multiple={ true }
-                > 
-                    <div className="file-upload-container">
-                        <span className="file-upload-header body-bold">Upload photos</span>
-                        <span className="file-upload-text body-regular">or just drag and drop</span>
-                        <span className="file-upload-info body-regular">(Add at least 3 files)</span>
-                    </div>
-                </FileUploader>
-                { files.length > 0 && (
-                    <div className="uploaded-files body-regular">
-                        { files.map((file, index) => (
-                            <div key={ index } className="file-name">
-                                { file.name }
-                            </div>
-                        )) }
-                    </div>
-                ) }
-                </>
+            case "file":
+                    return <CustomFileUploader name={name} setFiles={setFiles} setValue={setValue} files={files} />;
             default:
                 return <input {...inputProps} />;
         }

@@ -32,6 +32,9 @@ export const rules = {
             message: message
         }
     }),
+    minimumFiles: (minFiles) => ({
+        validate: (files) => files.length >= minFiles || `Add at least ${minFiles} files`
+    }),
     email: () => ({
         ...rules.required("Email"),
         ...rules.pattern(/^\S+@\S+\.\S+$/, "Please enter a valid email")
