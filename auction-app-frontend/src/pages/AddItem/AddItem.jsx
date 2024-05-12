@@ -17,7 +17,9 @@ const AddItem = () => {
 
   const { userId } = useUser();
 
-  const [activeForm, setActiveForm] = useState(location.hash.replace("#", "") || "details");
+  const initialForm = location.hash ? location.hash.replace("#", "") : ADD_ITEM_FORMS_MAP.DETAILS;
+
+  const [activeForm, setActiveForm] = useState(initialForm);
   const [formData, setFormData] = useState({
     details: {},
     prices: {},
@@ -31,6 +33,10 @@ const AddItem = () => {
       setActiveForm(newForm);
     }
   };
+
+  useEffect(() => {
+    navigate(`#${activeForm}`);
+  }, []);
 
   useEffect(() => {
     handleHashChange();
@@ -76,7 +82,6 @@ const AddItem = () => {
         startDate: startDate,
         endDate: endDate,
         userId: userId,
-        address: formData.shipping.address,
         nameOnCard: formData.shipping.nameOnCard,
         cardNumber: formData.shipping.cardNumber,
         city: formData.shipping.city,
