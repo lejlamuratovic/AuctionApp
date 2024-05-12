@@ -16,6 +16,7 @@ const LocationForm = ({ formData, setFormData, handleFinalSubmit }) => {
 
     const { userId, email } = useUser(); 
 
+    const [originalPaymentInfo, setOriginalPaymentInfo] = useState(formData);
     const [showCardInfo, setShowCardInfo] = useState(false);
     const [paymentInfo, setPaymentInfo] = useState({});
     const [error, setError] = useState(null);
@@ -47,6 +48,7 @@ const LocationForm = ({ formData, setFormData, handleFinalSubmit }) => {
                 };
     
                 setPaymentInfo(updatedPaymentInfo);
+                setOriginalPaymentInfo(updatedPaymentInfo); // for later use
                 setFormData({ ...formData, ...updatedPaymentInfo });
     
                 methods.reset({ ...methods.getValues(), ...updatedPaymentInfo });
@@ -65,14 +67,33 @@ const LocationForm = ({ formData, setFormData, handleFinalSubmit }) => {
         fetchPaymentInfo();
     }, [userId]);
 
+    const hasDataChanged = () => {
+        const currentData = methods.getValues();
+        
+        // compare without CVV
+        const currentDataWithoutCVV = {...currentData};
+        const originalDataWithoutCVV = {...originalPaymentInfo};
+        
+        delete currentDataWithoutCVV.cvv;
+        delete originalDataWithoutCVV.cvv;
+    
+        return JSON.stringify(currentDataWithoutCVV) !== JSON.stringify(originalDataWithoutCVV);
+    };
+
     const onSubmit = () => {
         const data = methods.getValues();
 
+        const modifiedData = {
+            ...data,
+            dataChanged: hasDataChanged()
+        };
+    
         if (!showCardInfo) {
-            setFormData({...formData, data});
+            setFormData({...formData, ...modifiedData});
             setShowCardInfo(true);
         } else {
-            setFormData({...formData, data});
+            setFormData({...formData, ...modifiedData});
+            
             handleFinalSubmit();
         }
     };
@@ -93,7 +114,6 @@ const LocationForm = ({ formData, setFormData, handleFinalSubmit }) => {
             navigate("#prices");
         }
     };
-    
 
     const combinedFormFields = showCardInfo ? 
         [...locationShippingFormFields, ...cardInformationFields] : locationShippingFormFields;
@@ -115,7 +135,7 @@ const LocationForm = ({ formData, setFormData, handleFinalSubmit }) => {
                     buttonLabel={ BUTTON_LABELS.NEXT }
                     cancelLabel={ BUTTON_LABELS.CANCEL }
                     backLabel={ BUTTON_LABELS.BACK }
-                    methods= {methods }
+                    methods= { methods }
                 />
             </div>
         </div>

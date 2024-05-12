@@ -21,6 +21,7 @@ public class ProductAddRequest {
     private String city;
     private String address;
     private String country;
+    private boolean dataChanged;
 
     public ProductAddRequest() {
     }
@@ -147,5 +148,13 @@ public class ProductAddRequest {
 
     public void setCountry(final String country) {
         this.country = country;
+    }
+
+    public boolean isDataChanged() {
+        return dataChanged;
+    }
+
+    public void setDataChanged(boolean dataChanged) {
+        this.dataChanged = dataChanged;
     }
 }

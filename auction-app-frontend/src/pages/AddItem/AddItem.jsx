@@ -68,12 +68,18 @@ const AddItem = () => {
   };
 
   const handleAddProduct = () => {
-    // create form data to send to the backend
     const productData = new FormData();
+  
+    // convert dates to ISO strings
+    const startDate = formData.prices.startDate ? new Date(formData.prices.startDate).toISOString() : null;
+    const endDate = formData.prices.endDate ? new Date(formData.prices.endDate).toISOString() : null;
 
-    const startDate = formData.prices.startDate + 'T00:00:00';
-    const endDate = formData.prices.endDate + 'T00:00:00';
+    const expirationDate = formData.shipping.expirationMonth && formData.shipping.expirationYear
+    ? new Date(`20${formData.shipping.expirationYear}-${formData.shipping.expirationMonth}-01`).toISOString()
+    : null;
 
+    console.log(expirationDate);
+  
     const productDetails = {
         name: formData.details.productName,
         categoryId: formData.details.subcategory,
@@ -82,26 +88,30 @@ const AddItem = () => {
         startDate: startDate,
         endDate: endDate,
         userId: userId,
-        nameOnCard: formData.shipping.nameOnCard,
-        cardNumber: formData.shipping.cardNumber,
-        city: formData.shipping.city,
-        country: formData.shipping.country,
-        zipCode: formData.shipping.zipCode,
-        address: formData.shipping.address,
-        expirationDate: new Date().toISOString()
+        dataChanged: formData.shipping.dataChanged
     };
   
-    // append the product data to the form data object
+    // append shipping data if it has changed
+    if (formData.shipping.dataChanged) {
+        productDetails.nameOnCard = formData.shipping.nameOnCard;
+        productDetails.cardNumber = formData.shipping.cardNumber;
+        productDetails.city = formData.shipping.city;
+        productDetails.country = formData.shipping.country;
+        productDetails.zipCode = formData.shipping.zipCode;
+        productDetails.address = formData.shipping.address;
+        productDetails.expirationDate = expirationDate;
+    }
+  
     productData.append('product', new Blob([JSON.stringify(productDetails)], { type: "application/json" }));
     formData.details.file.forEach(file => productData.append('images', file));
   
     addProduct(productData)
-      .then((response) => {
-        navigate(`${ ROUTE_PATHS.PRODUCT }/${ response.id }`);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+        .then((response) => {
+            navigate(`${ ROUTE_PATHS.PRODUCT }/${ response.id }`);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
   };
 
   const renderActiveForm = () => {

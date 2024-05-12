@@ -85,17 +85,25 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product addProduct(final ProductAddRequest productRequest, final List<MultipartFile> images) {
         ProductEntity productEntity = productRequest.toEntity();
-        PaymentInfoEntity paymentInfoEntity = new PaymentInfoEntity();
+        PaymentInfoEntity paymentInfoEntity;
 
-        paymentInfoEntity.setAddress(productRequest.getAddress());
-        paymentInfoEntity.setCity(productRequest.getCity());
-        paymentInfoEntity.setZipCode(productRequest.getZipCode());
-        paymentInfoEntity.setExpirationDate(productRequest.getExpirationDate());
-        paymentInfoEntity.setCardNumber(productRequest.getCardNumber());
-        paymentInfoEntity.setNameOnCard(productRequest.getNameOnCard());
-        paymentInfoEntity.setCountry(productRequest.getCountry());
+        if (productRequest.isDataChanged() && productRequest.getUserId() != null) {
+            UserEntity user = userRepository.findById(productRequest.getUserId())
+                    .orElseThrow(() -> new ResourceNotFoundException("User with the given ID does not exist"));
 
-        paymentInfoRepository.save(paymentInfoEntity);
+            paymentInfoEntity = user.getPaymentInfo();
+        } else {
+            paymentInfoEntity = new PaymentInfoEntity();
+
+            paymentInfoEntity.setAddress(productRequest.getAddress());
+            paymentInfoEntity.setCity(productRequest.getCity());
+            paymentInfoEntity.setZipCode(productRequest.getZipCode());
+            paymentInfoEntity.setExpirationDate(productRequest.getExpirationDate());
+            paymentInfoEntity.setCardNumber(productRequest.getCardNumber());
+            paymentInfoEntity.setNameOnCard(productRequest.getNameOnCard());
+            paymentInfoEntity.setCountry(productRequest.getCountry());
+            paymentInfoRepository.save(paymentInfoEntity);
+        }
 
         productEntity.setPaymentInfo(paymentInfoEntity);
         productEntity.setStatus(ProductStatus.ACTIVE);
@@ -105,7 +113,7 @@ public class ProductServiceImpl implements ProductService {
                     .orElseThrow(() -> new ResourceNotFoundException("Category with the given ID does not exist")));
         }
 
-        if(productRequest.getUserId() != null) {
+        if (productRequest.getUserId() != null) {
             productEntity.setUserEntity(userRepository.findById(productRequest.getUserId())
                     .orElseThrow(() -> new ResourceNotFoundException("User with the given ID does not exist")));
         }
