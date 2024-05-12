@@ -33,7 +33,6 @@ const InputField = ({ name, label, type, rules, step, options, className, placeh
                         type="date"
                         value={ dateValue }
                         onChange={ onChangeDate } 
-                        style={ !dateValue ? { color: "transparent" } : {} } 
                     />
                 );
             case "textarea": 

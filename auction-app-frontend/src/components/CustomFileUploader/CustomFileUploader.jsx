@@ -1,23 +1,34 @@
+import { useEffect } from "react";
 import { FileUploader } from "react-drag-drop-files";
+import { useFormContext } from "react-hook-form";
+
+import { FILE_TYPES } from "src/constants";
 
 import "./style.scss";
 
 const CustomFileUploader = ({ name, setFiles, setValue, files }) => {
+    const { watch } = useFormContext();
+    
+    const currentValue = watch(name);
+
+    useEffect(() => {
+        if (currentValue) setFiles(currentValue);
+    }, [currentValue]);
+
     const handleFileChange = (fileList) => {
         const filesArray = Array.from(fileList);
 
         setFiles(prevFiles => [...prevFiles, ...filesArray]);
         setValue(name, [...files, ...filesArray]);
     };
-    
-    const fileTypes = ["JPG", "PNG", "GIF"];
+
 
     return (
         <>
             <FileUploader
                 handleChange={ handleFileChange }
                 name={ name }
-                types={ fileTypes }
+                types={ FILE_TYPES }
                 multiple={ true }
             >
                 <div className="file-upload-container">

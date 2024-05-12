@@ -129,11 +129,13 @@ export const MY_ACCOUNT_TABS = [
 ];
 
 export const HEADERS = [
-  { id: 'timeLeft', text: 'Time Left' },
-  { id: 'yourPrice', text: 'Your Price' },
-  { id: 'noBids', text: 'No. Bids' },
-  { id: 'highestBid', text: 'Highest Bid' },
-  { id: 'actions', text: '' }
+  { id: "item", text: "Item" },
+  { id: "name", text: "Name"},
+  { id: "timeLeft", text: "Time Left" },
+  { id: "yourPrice", text: "Your Price" },
+  { id: "noBids", text: "No. Bids" },
+  { id: "highestBid", text: "Highest Bid" },
+  { id: "actions", text: "" }
 ];
 
 export const SELLER_TABS = [
@@ -185,3 +187,5 @@ export const ADD_ITEM_FORMS_MAP = {
 };
 
 export const successfulRegistrationMessage = "Registration successful, please login.";
+
+export const FILE_TYPES = ["JPG", "PNG", "GIF"];

@@ -33,41 +33,49 @@ const ProductDetailsForm = ({ formData, setFormData }) => {
         navigate(ROUTE_PATHS.MY_ACCOUNT);
     }
 
-    const getCategories = () => {
-        getTopLevelCategories()
-            .then((categories) => {
-                const formattedCategories = categories.map(category => ({
-                    value: category.id,
-                    label: category.name
-                }));
+    const getCategories = async () => {
+        try {
+            const categoriesData = await getTopLevelCategories();
+            const formattedCategories = categoriesData.map(category => ({
+                value: category.id,
+                label: category.name
+            }));
 
-                setCategories(formattedCategories);
-            })
-            .catch((error) => {
-                setError(error.message);
-            })
+            setCategories(formattedCategories);
+
+            // fetch subcategories if form data has category
+            if (formData.category) {
+                setSelectedCategory(formData.category);
+            }
+
+        } catch (error) {
+            setError(error.message);
+        }
     }
 
-    useEffect(() => {
-        if (selectedCategory != null) {
-            getSubcategoriesByParentCategory(selectedCategory)
-                .then((subcategories) => {
-                    const formattedSubcategories = subcategories.map(subcategory => ({
-                        value: subcategory.id,
-                        label: subcategory.name
-                    }));
-                    
-                    setSubcategories(formattedSubcategories);
-                })
-                .catch((error) => {
-                    setError(error.message);
-                });
+    const fetchSubcategories = async (categoryId) => {
+        try {
+            const subcategoriesData = await getSubcategoriesByParentCategory(categoryId);
+            const formattedSubcategories = subcategoriesData.map(subcategory => ({
+                value: subcategory.id,
+                label: subcategory.name
+            }));
+            
+            setSubcategories(formattedSubcategories);
+        } catch (error) {
+            setError(error.message);
         }
-    }, [selectedCategory]);
+    }
 
     useEffect(() => {
         getCategories();
     }, []);
+
+    useEffect(() => {
+        if (selectedCategory) {
+            fetchSubcategories(selectedCategory);
+        }
+    }, [selectedCategory]);
 
     return (
         <div className="details-form form">
@@ -85,7 +93,7 @@ const ProductDetailsForm = ({ formData, setFormData }) => {
                 />
             </div>
         </div>
-    )
+    );
 }
 
 export default ProductDetailsForm;
