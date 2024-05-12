@@ -27,6 +27,10 @@ const ProductPriceForm = ({ formData, setFormData }) => {
     }
 
     const onBack = () => {
+        const data = methods.getValues();
+        
+        setFormData(data);
+
         navigate("#details");
     }
 

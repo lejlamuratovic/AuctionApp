@@ -82,12 +82,18 @@ const LocationForm = ({ formData, setFormData, handleFinalSubmit }) => {
     };
 
     const onBack = () => {
+        const data = methods.getValues();
+
         if (showCardInfo) {
+            setFormData(data);
             setShowCardInfo(false);
         } else {
+            setFormData(data);
+
             navigate("#prices");
         }
     };
+    
 
     const combinedFormFields = showCardInfo ? 
         [...locationShippingFormFields, ...cardInformationFields] : locationShippingFormFields;

@@ -7,6 +7,7 @@ import "./style.scss";
 
 const InputField = ({ name, label, type, rules, step, options, className, placeholder, onSelectChange }) => {
     const { register, setValue, formState: { errors } } = useFormContext();
+
     const [dateValue, setDateValue] = useState(""); 
     const [files, setFiles] = useState([]);
         
@@ -31,7 +32,6 @@ const InputField = ({ name, label, type, rules, step, options, className, placeh
                     <input
                         { ...inputProps }
                         type="date"
-                        value={ dateValue }
                         onChange={ onChangeDate } 
                     />
                 );
