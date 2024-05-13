@@ -11,9 +11,9 @@ import {
   cart
 } from "src/assets/icons";
 
-export const BASE_URL = "http://localhost:8080/api/v1";
+export const BASE_URL = "https://auctionapp-6r6v.onrender.com/api/v1";
 
-export const WEB_SOCKET_BASE_URL = "ws://localhost:8080/websocket";
+export const WEB_SOCKET_BASE_URL = "wss://auctionapp-6r6v.onrender.com/websocket";
 
 export const NAV_ITEMS = [
   {
