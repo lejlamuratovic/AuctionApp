@@ -7,7 +7,7 @@ import { calculateTimeLeft } from "src/utils/calculateTimeDifference";
 
 import "./style.scss";
 
-const ProductBidsTable = ({ emptyMessageComponent, items, buttonLabel, tabId }) => {
+const ProductBidsTable = ({ items, buttonLabel, tabId }) => {
   const navigate = useNavigate();
 
   const hasItems = items ? items.length > 0 : false;
@@ -15,6 +15,32 @@ const ProductBidsTable = ({ emptyMessageComponent, items, buttonLabel, tabId }) 
   const navigateToProduct = (id) => {
     navigate(`${ ROUTE_PATHS.PRODUCT }/${ id }`);
   }
+
+  const adjustItemData = (items) => {
+    return items.map(item => {
+      // check if nested
+      if (item.product && item.product.id) {
+        return {
+          ...item.product,
+          bidAmount: item.bidAmount,
+          bidTime: item.bidTime,
+          id: item.id 
+        };
+      } else {
+        return {
+          ...item,
+          bidAmount: item.startPrice,
+          highestBid: item.highestBid ? item.highestBid : 0,
+        }
+      }
+    });
+  }
+
+  const adjustedItems = items ? adjustItemData(items) : [];
+
+  
+  console.log("items", items);
+  console.log("adjustedItems", adjustedItems);
 
   return (
     <div className="table">
@@ -27,18 +53,18 @@ const ProductBidsTable = ({ emptyMessageComponent, items, buttonLabel, tabId }) 
       </div>
       { hasItems ? (
         <div className="table-content body-bold">
-          { items.map(item => (
+          { adjustedItems.map(item => (
             <ProductBidsItem
               key={ item.id }
-              imgSrc={ item.product.productImages[0].imageUrl }
-              title={ item.product.name }
-              timeLeft={ calculateTimeLeft(item.product.endDate) }
+              imgSrc={ item.productImages[0].imageUrl }
+              title={ item.name }
+              timeLeft={ calculateTimeLeft(item.endDate) }
               bidPrice={ item.bidAmount }
-              noBids={ item.product.bidsCount }
-              highestBid={ item.product.highestBid }
+              noBids={ item.bidsCount }
+              highestBid={ item.highestBid }
               buttonLabel={ buttonLabel }
-              onButtonClick={ () => navigateToProduct(item.product.id) }
-              highestBidder={ item.bidAmount === item.product.highestBid }
+              onButtonClick={ () => navigateToProduct(item.id) }
+              highestBidder={ item.bidAmount === item.highestBid }
             />
           )) }
         </div>

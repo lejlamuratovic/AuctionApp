@@ -35,4 +35,20 @@ const addProduct = (formData) => {
   return postRequest("/products", formData);
 };
 
-export { getProducts, getProduct, getProductRandom, getProductsByCriteria, getBidData, addProduct };
+const findProductsByUserIdAndStatus = (userId, status, page, size) => {
+  console.log("userId", userId);
+  console.log("status", status);
+  console.log("page", page);
+  console.log("size", size);
+  return getRequest(`/products/user?userId=${ userId }&status=${ status }&page=${ page }&size=${ size }`);
+}
+
+export { 
+  getProducts, 
+  getProduct, 
+  getProductRandom, 
+  getProductsByCriteria, 
+  getBidData, 
+  addProduct,
+  findProductsByUserIdAndStatus
+};

@@ -218,4 +218,16 @@ public class ProductServiceImpl implements ProductService {
 
         return new BidSummaryResponse(productEntity.getHighestBid(), productEntity.getBidsCount());
     }
+
+    @Override
+    public Page<Product> getProductByUserAndStatus(final UUID userId,
+                                            final ProductStatus productStatus,
+                                            final int page,
+                                            final int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        return this.productRepository
+                .findProductEntityByUserEntity_UserIdAndAndStatus(userId, productStatus, pageable)
+                .map(ProductEntity::toDomainModel);
+    }
 }

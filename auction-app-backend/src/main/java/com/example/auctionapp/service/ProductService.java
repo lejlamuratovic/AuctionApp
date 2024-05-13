@@ -1,5 +1,6 @@
 package com.example.auctionapp.service;
 
+import com.example.auctionapp.entity.enums.ProductStatus;
 import com.example.auctionapp.model.Product;
 import com.example.auctionapp.request.ProductAddRequest;
 import com.example.auctionapp.response.BidSummaryResponse;
@@ -19,4 +20,8 @@ public interface ProductService {
     Page<Product> getProductsByCriteria(final int page, final int size, final String type);
     Product getRandomProduct();
     BidSummaryResponse getBidSummary(final UUID productId);
+    Page<Product> getProductByUserAndStatus(final UUID userId,
+                                            final ProductStatus productStatus,
+                                            final int page,
+                                            final int size);
 }

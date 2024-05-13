@@ -115,7 +115,6 @@ export const AUCTION_STATUS = {
   EXPIRED: "Expired",
 };
 
-
 export const BUTTON_VARIANTS = {
   OUTLINED: "outlined",
   FILLED: "filled"
@@ -189,3 +188,8 @@ export const ADD_ITEM_FORMS_MAP = {
 export const successfulRegistrationMessage = "Registration successful, please login.";
 
 export const FILE_TYPES = ["JPG", "PNG", "GIF"];
+
+export const PRODUCT_STATUS = {
+  ACTIVE: "ACTIVE",
+  SOLD: "SOLD"
+};

@@ -1,6 +1,9 @@
 package com.example.auctionapp.repository;
 
 import com.example.auctionapp.entity.ProductEntity;
+import com.example.auctionapp.entity.enums.ProductStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -17,4 +20,8 @@ public interface ProductRepository extends JpaRepository<ProductEntity, UUID>, J
     List<String> findAllProductNames();
 
     Optional<ProductEntity> findProductEntityByProductId(final UUID productId);
+
+    Page<ProductEntity> findProductEntityByUserEntity_UserIdAndAndStatus(final UUID userId,
+                                                                         final ProductStatus status,
+                                                                         Pageable page);
 }

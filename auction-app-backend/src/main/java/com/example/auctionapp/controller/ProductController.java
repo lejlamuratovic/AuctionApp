@@ -1,5 +1,6 @@
 package com.example.auctionapp.controller;
 
+import com.example.auctionapp.entity.enums.ProductStatus;
 import com.example.auctionapp.model.Product;
 import com.example.auctionapp.response.BidSummaryResponse;
 import com.example.auctionapp.response.ProductSearchResponse;
@@ -87,5 +88,15 @@ public class ProductController {
     @GetMapping("/{productId}/bid-details")
     public BidSummaryResponse getBidSummary(@PathVariable final UUID productId) {
         return this.productService.getBidSummary(productId);
+    }
+
+    @PreAuthorize(SecurityRoles.ALL)
+    @GetMapping("/user")
+    public Page<Product> getProductsByUserAndStatus(
+            @RequestParam(value = "userId") final UUID userId,
+            @RequestParam(value = "status") final ProductStatus status,
+            @RequestParam(value = "page", defaultValue = "0") final int page,
+            @RequestParam(value = "size", defaultValue = "8") final int size) {
+        return this.productService.getProductByUserAndStatus(userId, status, page, size);
     }
 }
