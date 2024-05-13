@@ -33,12 +33,12 @@ public class CategoryController {
         return this.categoryService.getCategories();
     }
 
-    @GetMapping("/top-level")
+    @GetMapping(path="/top-level")
     public List<Category> getTopLevelCategories() {
         return this.categoryService.getTopLevelCategories();
     }
 
-    @GetMapping("/with-subcategories")
+    @GetMapping(path="/with-subcategories")
     public List<Category> getCategoriesWithSubcategories() {
         return this.categoryService.getCategoriesWithSubcategories();
     }
@@ -64,10 +64,5 @@ public class CategoryController {
     @DeleteMapping(path = "/{id}")
     public void deleteCategory(@PathVariable final UUID id) {
         this.categoryService.deleteCategory(id);
-    }
-
-    @GetMapping("/{id}/subcategories")
-    public List<Category> getSubcategoriesByCategory(@PathVariable final UUID id) {
-        return this.categoryService.getSubcategoriesByCategory(id);
     }
 }

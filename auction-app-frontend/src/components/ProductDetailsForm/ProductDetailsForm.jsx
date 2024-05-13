@@ -3,17 +3,16 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { FormContainer } from "src/components";
-
 import { productDetailsFormFields } from "src/forms/fields";
-import { getTopLevelCategories, getSubcategoriesByParentCategory } from "src/services";
+import { getCategoriesWithSubcategories } from "src/services";
 import { BUTTON_LABELS, ROUTE_PATHS } from "src/constants";
 
-import "./style.scss"
+import "./style.scss";
 
 const ProductDetailsForm = ({ formData, setFormData }) => {
-    const [categories, setCategories] = useState();
-    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [categories, setCategories] = useState([]);
     const [subcategories, setSubcategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(null);
     const [error, setError] = useState({});
 
     const navigate = useNavigate();
@@ -33,39 +32,25 @@ const ProductDetailsForm = ({ formData, setFormData }) => {
         navigate(ROUTE_PATHS.MY_ACCOUNT);
     }
 
-    const getCategories = async () => {
-        try {
-            const categoriesData = await getTopLevelCategories();
+    const getCategories = () => {
+        getCategoriesWithSubcategories()
+        .then((categoriesData) => {
             const formattedCategories = categoriesData.map(category => ({
                 value: category.id,
-                label: category.name
+                label: category.name,
+                subCategories: category.subCategories
             }));
 
             setCategories(formattedCategories);
 
-            // fetch subcategories if form data has category
+            // autoselect category if already in form data
             if (formData.category) {
                 setSelectedCategory(formData.category);
             }
-
-        } catch (error) {
-            setError(error.message);
-        }
-    }
-
-    const fetchSubcategories = async (categoryId) => {
-        try {
-            const subcategoriesData = await getSubcategoriesByParentCategory(categoryId);
-            const formattedSubcategories = subcategoriesData.map(subcategory => ({
-                value: subcategory.id,
-                label: subcategory.name
-            }));
-            
-            setSubcategories(formattedSubcategories);
-        } catch (error) {
-            setError(error.message);
-        }
-    }
+        }).catch(err => {
+            setError(err.message);
+        });
+    };
 
     useEffect(() => {
         getCategories();
@@ -73,9 +58,18 @@ const ProductDetailsForm = ({ formData, setFormData }) => {
 
     useEffect(() => {
         if (selectedCategory) {
-            fetchSubcategories(selectedCategory);
+            const category = categories.find(cat => cat.value === selectedCategory);
+
+            if (category.subCategories) {
+                const formattedSubcategories = category.subCategories.map(subcategory => ({
+                    value: subcategory.id,
+                    label: subcategory.name
+                }));
+
+                setSubcategories(formattedSubcategories);
+            }
         }
-    }, [selectedCategory]);
+    }, [selectedCategory, categories]);
 
     return (
         <div className="details-form form">
@@ -84,8 +78,8 @@ const ProductDetailsForm = ({ formData, setFormData }) => {
             </div>
             <div className="form-fields">
                 <FormContainer 
-                    formFields={ productDetailsFormFields(categories, subcategories, setSelectedCategory) } 
-                    onSubmit={ methods.handleSubmit(onSubmit) } 
+                    formFields={ productDetailsFormFields(categories, subcategories, setSelectedCategory) }
+                    onSubmit={ methods.handleSubmit(onSubmit) }
                     onCancel={ onCancel }
                     buttonLabel={ BUTTON_LABELS.NEXT }
                     cancelLabel={ BUTTON_LABELS.CANCEL }

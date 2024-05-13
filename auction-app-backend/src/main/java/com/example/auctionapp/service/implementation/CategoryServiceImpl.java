@@ -83,15 +83,4 @@ public class CategoryServiceImpl implements CategoryService {
                 .map(CategoryEntity::toDomainModel)
                 .collect(toList());
     }
-
-    @Override
-    public List<Category> getSubcategoriesByCategory(final UUID categoryId) {
-        final CategoryEntity categoryEntity = this.categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Category with the given ID does not exist"));
-
-        return this.categoryRepository.findByParentCategoryCategoryId(categoryEntity.getCategoryId())
-                .stream()
-                .map(CategoryEntity::toDomainModel)
-                .collect(toList());
-    }
 }
