@@ -99,6 +99,7 @@ export const BUTTON_LABELS = {
   CANCEL: "CANCEL",
   NEXT: "NEXT",
   BACK: "BACK",
+  VIEW: "VIEW",
 };
 
 export const CONNECTION_STATUSES = {

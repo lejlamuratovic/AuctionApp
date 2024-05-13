@@ -78,7 +78,7 @@ const SellerTab = () => {
       </div>
       <ProductBidsTable 
         items={ products }
-        buttonLabel={ BUTTON_LABELS.BID }
+        buttonLabel={ BUTTON_LABELS.VIEW }
         tabId={ MY_ACCOUNT_TABS_MAP.SELLER } 
       />
       { hasMore && (
