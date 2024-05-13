@@ -90,6 +90,7 @@ const ProductDetails = () => {
     if (product) {
       setTitle(`${ product.name }`);
       setAdditionalPlaceBidsFormFields(placeBidsFormFields(product.startPrice, product.highestBid));
+      
       setTimeLeft(calculateTimeLeft(product.endDate));
     }
   }, [product, setTitle]);
