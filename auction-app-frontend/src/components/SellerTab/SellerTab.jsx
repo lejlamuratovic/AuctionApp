@@ -43,7 +43,7 @@ const SellerTab = () => {
         setProducts((prevItems) =>
           page === 0 ? [...products.content] : [...prevItems, ...products.content]
         );
-        setHasMore(bids.last !== true);
+        setHasMore(products.last !== true);
       })
       .catch((error) => {
         setError(error.message);
