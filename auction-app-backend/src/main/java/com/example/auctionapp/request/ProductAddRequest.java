@@ -1,26 +1,70 @@
 package com.example.auctionapp.request;
 
 import com.example.auctionapp.entity.ProductEntity;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class ProductAddRequest {
+    @NotEmpty(message = "Product name is required")
+    @Size(min = 2, max = 100, message = "Product name must be between 2 and 100 characters long")
     private String name;
+
+    @NotEmpty(message = "Description is required")
+    @Size(min = 10, max = 700, message = "Description must be between 10 and 700 characters long")
     private String description;
+
+    @NotNull(message = "Start price is required")
+    @DecimalMin(value = "0.01", message = "Start price must be at least 0.01")
     private BigDecimal startPrice;
+
+    @FutureOrPresent(message = "Start date must be in the present or future")
     private LocalDateTime startDate;
+
+    @Future(message = "End date must be in the future")
     private LocalDateTime endDate;
+
+    @NotNull(message = "Category ID is required")
     private UUID categoryId;
+
+    @NotNull(message = "User ID is required")
     private UUID userId;
+
+    @NotEmpty(message = "Name on card is required")
+    @Size(min = 2, message = "Name on card must be at least 2 characters long")
     private String nameOnCard;
+
+    @NotEmpty(message = "Card number is required")
     private String cardNumber;
-    private LocalDate expirationDate;
-    private String zipCode;
-    private String city;
+
+    @NotEmpty(message = "Address is required")
+    @Pattern(regexp = "^[a-zA-Z0-9\\s,.'-]{3,100}$", message = "Invalid address")
     private String address;
+
+    @NotEmpty(message = "City is required")
+    @Pattern(regexp = "^[a-zA-Z\\s]{3,50}$", message = "Invalid city")
+    private String city;
+
+    @NotEmpty(message = "Zip code is required")
+    @Pattern(regexp = "^[0-9]{5,10}$", message = "Invalid zip code")
+    private String zipCode;
+
+    @NotEmpty(message = "Country is required")
+    @Pattern(regexp = "^[a-zA-Z\\s]{3,50}$", message = "Invalid country")
     private String country;
+
+    @Future(message = "Expiration date must be in the future")
+    private LocalDate expirationDate;
+    
     private boolean dataChanged;
 
     public ProductAddRequest() {
