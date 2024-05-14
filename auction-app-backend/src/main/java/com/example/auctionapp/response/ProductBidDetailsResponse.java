@@ -15,7 +15,7 @@ public class ProductBidDetailsResponse {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private ProductStatus status;
-    List<ProductImage> productImages;
+    private List<ProductImage> productImages;
     private UUID userId;
     private BigDecimal bidAmount;
     private int bidsCount;

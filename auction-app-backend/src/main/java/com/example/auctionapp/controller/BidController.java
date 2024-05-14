@@ -29,13 +29,13 @@ public class BidController {
     }
 
     @PreAuthorize(SecurityRoles.ALL)
-    @PostMapping(path = "/place-bid")
+    @PostMapping("/place-bid")
     public Bid placeBid(@RequestBody final BidRequest bidRequest) {
         return bidService.placeBid(bidRequest);
     }
 
     @PreAuthorize(SecurityRoles.ALL)
-    @GetMapping(path = "/{userId}")
+    @GetMapping("/{userId}")
     public Page<ProductBidDetailsResponse> getBidsForUser(
             @PathVariable final UUID userId,
             @RequestParam(value = "page", defaultValue = "0") final int page,

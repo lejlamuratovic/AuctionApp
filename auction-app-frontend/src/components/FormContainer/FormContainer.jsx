@@ -2,7 +2,7 @@ import { FormProvider } from "react-hook-form";
 import { useState } from "react";
 
 import { InputField, TextAreaField, SelectField, CustomFileUploader, Button } from "src/components";
-import { BUTTON_VARIANTS } from "src/constants";
+import { BUTTON_VARIANTS, FIELD_TYPES } from "src/constants";
 
 const FormContainer = ({
   formFields,
@@ -26,7 +26,7 @@ const FormContainer = ({
       <form onSubmit={ methods.handleSubmit(onSubmit) }>
         { children ? children : formFields.map((field) => {
           switch (field.type) {
-            case "textarea":
+            case FIELD_TYPES.TEXTAREA:
               return (
                 <TextAreaField
                   key={ field.name }
@@ -37,7 +37,7 @@ const FormContainer = ({
                   placeholder={ field.placeholder }
                 />
               );
-            case "select":
+            case FIELD_TYPES.SELECT:
               return (
                 <SelectField
                   key={ field.name }
@@ -49,7 +49,7 @@ const FormContainer = ({
                   className={ field.specialClass }
                 />
               );
-            case "file":
+            case FIELD_TYPES.FILE:
               return (
                 <CustomFileUploader
                   key={ field.name }
@@ -68,7 +68,7 @@ const FormContainer = ({
                   label={ field.label }
                   type={ field.type }
                   rules={ field.rules }
-                  step={ field.type === "number" ? field.step : undefined }
+                  step={ field.type === FIELD_TYPES.NUMBER ? field.step : undefined }
                   className={ field.specialClass }
                   placeholder={ field.placeholder }
                 />

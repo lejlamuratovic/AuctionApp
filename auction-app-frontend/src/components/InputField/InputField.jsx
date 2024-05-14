@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 
+import { FIELD_TYPES } from "src/constants";
+
 import "./style.scss";
 
 const InputField = ({ name, label, type, rules, step, className, placeholder }) => {
@@ -23,10 +25,10 @@ const InputField = ({ name, label, type, rules, step, className, placeholder }) 
     return (
         <div className={ `${ className } input-field` }>
             <label htmlFor={ name } className="body-semibold">{ label }</label>
-            { type === "date" ? (
-                <input { ...inputProps } type="date" onChange={ onChangeDate } />
+            { FIELD_TYPES.DATE === type ? (
+                <input { ...inputProps } type={ FIELD_TYPES.DATE } onChange={ onChangeDate } />
             ) : (
-                <input { ...inputProps } type={ type } step={ type === "number" ? step : undefined } />
+                <input { ...inputProps } type={ type } step={ FIELD_TYPES.NUMBER === type ? step : undefined } />
             ) }
             { errors[name] && <span className="error-message body-small-regular">{ errors[name].message }</span> }
         </div>

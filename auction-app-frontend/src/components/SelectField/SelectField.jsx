@@ -37,7 +37,7 @@ const SelectField = ({ name, options = [], rules, label, onSelectChange, classNa
     const displayLabel = selected ? options.find(option => option.value === selected)?.label : label;
 
     return (
-        <div className={ `${className} input-field` }>
+        <div className={ `${ className } input-field` }>
             <div className="custom-select body-regular">
                 <div className="dropdown-btn" onClick={ toggleDropdown }>
                     { displayLabel }

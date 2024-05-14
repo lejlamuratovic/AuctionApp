@@ -56,19 +56,19 @@ public class ProductController {
         return productService.addProduct(productRequest, images);
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping( "/{id}")
     public Product getProductById(@PathVariable final UUID id) {
         return this.productService.getProductById(id);
     }
 
     @PreAuthorize(SecurityRoles.ALL)
-    @PutMapping(path = "/{id}")
+    @PutMapping( "/{id}")
     public Product updateProduct(@PathVariable final UUID id, @RequestBody final ProductAddRequest product) {
         return this.productService.updateProduct(id, product);
     }
 
     @PreAuthorize(SecurityRoles.ALL)
-    @DeleteMapping(path = "/{id}")
+    @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable final UUID id) {
         this.productService.deleteProduct(id);
     }

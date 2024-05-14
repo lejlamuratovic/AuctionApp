@@ -194,3 +194,12 @@ export const PRODUCT_STATUS = {
   ACTIVE: "ACTIVE",
   SOLD: "SOLD"
 };
+
+export const FIELD_TYPES = {
+  TEXT: "text",
+  TEXTAREA: "textarea",
+  SELECT: "select",
+  FILE: "file",
+  NUMBER: "number",
+  DATE: "date",
+};
