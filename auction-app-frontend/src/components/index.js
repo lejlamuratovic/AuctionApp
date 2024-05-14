@@ -30,3 +30,4 @@ export { default as ProductDetailsForm } from "./ProductDetailsForm/ProductDetai
 export { default as LocationForm } from "./LocationForm/LocationForm";
 export { default as CustomFileUploader } from "./CustomFileUploader/CustomFileUploader";
 export { default as TextAreaField } from "./TextAreaField/TextAreaField";
+export { default as ButtonLoadingIndicator } from "./ButtonLoadingIndicator/ButtonLoadingIndicator";

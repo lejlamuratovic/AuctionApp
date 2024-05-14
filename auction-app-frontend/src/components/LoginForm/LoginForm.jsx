@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
-import { FormContainer } from "src/components";
+import { FormContainer, ButtonLoadingIndicator } from "src/components";
 
 import { loginUser } from "src/services";
 import { useUser } from "src/store/UserContext";
@@ -19,8 +19,8 @@ const LoginForm = () => {
   const { from } = location.state || { from: { pathname: "/" } };
 
   const [message, setMessage] = useState(location.state?.message || null);
-
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const methods = useForm({
     mode: "onBlur" // validate on blur, when user moves to the next field
@@ -33,6 +33,8 @@ const LoginForm = () => {
   }, [location]);
 
   const onSubmit = (data) => {
+    setLoading(true);
+
     loginUser(data)
       .then((response) => {
         setUserName(response.name);
@@ -45,8 +47,11 @@ const LoginForm = () => {
         } else {
           navigate(ROUTE_PATHS.HOME);
         }
+
+        setLoading(false);
       }).catch((error) => {
         setError(error.response.data.message);
+        setLoading(false);
       });
   }
 
@@ -60,7 +65,7 @@ const LoginForm = () => {
           <FormContainer 
             formFields={ loginFormFields } 
             onSubmit={ methods.handleSubmit(onSubmit) } 
-            buttonLabel={ BUTTON_LABELS.LOGIN }
+            buttonLabel={ loading ? <ButtonLoadingIndicator /> : BUTTON_LABELS.LOGIN }
             methods={ methods }
             error={ errorMessage }
           />
@@ -69,4 +74,4 @@ const LoginForm = () => {
   )
 }
 
-export default LoginForm
+export default LoginForm;
