@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { FormContainer } from "src/components";
 
 import { registerUser  } from "src/services";
-import { ROUTE_PATHS, BUTTON_LABELS, successfulRegistrationMessage } from "src/constants";
+import { ROUTE_PATHS, BUTTON_LABELS, SUCCESSFUL_REGISTRATION_MESSAGE } from "src/constants";
 import { registerFormFields } from "src/forms/fields";
 
 import "./style.scss";
@@ -26,7 +26,7 @@ const RegisterForm = () => {
       .then(() => {
         setError(null);
 
-        navigate(ROUTE_PATHS.LOGIN, { state: { message: successfulRegistrationMessage } });
+        navigate(ROUTE_PATHS.LOGIN, { state: { message: SUCCESSFUL_REGISTRATION_MESSAGE } });
       })
       .catch((error) => {
         setError(error.response.data.message);

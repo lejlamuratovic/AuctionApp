@@ -28,17 +28,12 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping
-    public List<Category> getCategories() {
-        return this.categoryService.getCategories();
-    }
-
     @GetMapping(path="/top-level")
     public List<Category> getTopLevelCategories() {
         return this.categoryService.getTopLevelCategories();
     }
 
-    @GetMapping(path="/with-subcategories")
+    @GetMapping
     public List<Category> getCategoriesWithSubcategories() {
         return this.categoryService.getCategoriesWithSubcategories();
     }

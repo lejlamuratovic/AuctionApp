@@ -11,14 +11,13 @@ public class PaymentAddRequest {
     private String cardNumber;
     private LocalDate expirationDate;
 
-    public PaymentAddRequest(
-            final String address,
-            final String city,
-            final String country,
-            final String zipCode,
-            final String nameOnCard,
-            final String cardNumber,
-            final LocalDate expirationDate) {
+    public PaymentAddRequest(final String address,
+                             final String city,
+                             final String country,
+                             final String zipCode, 
+                             final String nameOnCard,
+                             final String cardNumber,
+                             final LocalDate expirationDate) {
         this.address = address;
         this.city = city;
         this.country = country;

@@ -32,7 +32,7 @@ security:
 JWT_SECURE: false
 
 cookie:
-  accessExpiry: 604800000 # 7 days in milliseconds
+  accessExpiry: 120000 # 2 minutes in milliseconds
   refreshExpiry: 604800000 # 7 days in milliseconds
 
 amazonProperties:
@@ -40,4 +40,3 @@ amazonProperties:
   accessKey: ${AWS_ACCESS_KEY}
   secretKey: ${AWS_SECRET_KEY}
   bucketName: ${AWS_BUCKET_NAME}
-  

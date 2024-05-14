@@ -40,7 +40,7 @@ const CustomFileUploader = ({ name, setFiles, setValue, files }) => {
             { files.length > 0 && (
                 <div className="uploaded-files body-regular">
                     { files.map((file, index) => (
-                        <div key={` ${ file.name + "-" + index } ` } className="file-name">
+                        <div key={ `${ file.name + "-" + index }` } className="file-name">
                             { file.name }
                         </div>
                     )) }

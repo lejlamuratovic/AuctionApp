@@ -18,9 +18,9 @@ ADD FOREIGN KEY (payment_info_id) REFERENCES payment_info(payment_info_id)
     ON DELETE CASCADE;
 
 ALTER TABLE product
-    ADD COLUMN payment_info_id UUID;
+ADD COLUMN payment_info_id UUID;
 
 ALTER TABLE product
-    ADD FOREIGN KEY (payment_info_id) REFERENCES payment_info(payment_info_id)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE;
+ADD FOREIGN KEY (payment_info_id) REFERENCES payment_info(payment_info_id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE;

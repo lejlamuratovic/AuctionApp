@@ -116,9 +116,10 @@ public class ProductEntity {
         product.setCategoryId(this.categoryEntity.getCategoryId());
 
         if (this.productImages != null) {
-            List<ProductImage> productImageList = this.productImages.stream()
+            final List<ProductImage> productImageList = this.productImages.stream()
                     .map(ProductImageEntity::toDomainModel)
                     .collect(toList());
+            
             product.setProductImages(productImageList);
         } else {
             product.setProductImages(new ArrayList<>());

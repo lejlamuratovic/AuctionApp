@@ -64,7 +64,7 @@ public class ProductAddRequest {
 
     @Future(message = "Expiration date must be in the future")
     private LocalDate expirationDate;
-    
+
     private boolean dataChanged;
 
     public ProductAddRequest() {

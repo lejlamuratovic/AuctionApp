@@ -186,7 +186,7 @@ export const ADD_ITEM_FORMS_MAP = {
   SHIPPING: "shipping",
 };
 
-export const successfulRegistrationMessage = "Registration successful, please login.";
+export const SUCCESSFUL_REGISTRATION_MESSAGE = "Registration successful, please login.";
 
 export const FILE_TYPES = ["JPG", "PNG", "GIF"];
 

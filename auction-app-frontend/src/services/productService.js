@@ -36,11 +36,7 @@ const addProduct = (formData) => {
 };
 
 const findProductsByUserIdAndStatus = (userId, status, page, size) => {
-  console.log("userId", userId);
-  console.log("status", status);
-  console.log("page", page);
-  console.log("size", size);
-  return getRequest(`/products/user?userId=${ userId }&status=${ status }&page=${ page }&size=${ size }`);
+  return getRequest(`/products/user-products?userId=${ userId }&status=${ status }&page=${ page }&size=${ size }`);
 }
 
 export { 

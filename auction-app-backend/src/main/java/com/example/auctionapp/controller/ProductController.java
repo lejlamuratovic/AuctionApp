@@ -91,7 +91,7 @@ public class ProductController {
     }
 
     @PreAuthorize(SecurityRoles.ALL)
-    @GetMapping("/user")
+    @GetMapping("/user-products")
     public Page<Product> getProductsByUserAndStatus(
             @RequestParam(value = "userId") final UUID userId,
             @RequestParam(value = "status") final ProductStatus status,

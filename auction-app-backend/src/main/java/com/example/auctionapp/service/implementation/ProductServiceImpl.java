@@ -42,7 +42,12 @@ public class ProductServiceImpl implements ProductService {
     private final AmazonClient amazonClient;
     private final ProductImageRepository productImageRepository;
 
-    public ProductServiceImpl(final ProductRepository productRepository, final CategoryRepository categoryRepository, UserRepository userRepository, PaymentInfoRepository paymentInfoRepository, AmazonClient amazonClient, ProductImageRepository productImageRepository) {
+    public ProductServiceImpl(final ProductRepository productRepository,
+                              final CategoryRepository categoryRepository,
+                              final UserRepository userRepository,
+                              final PaymentInfoRepository paymentInfoRepository,
+                              final AmazonClient amazonClient,
+                              final ProductImageRepository productImageRepository) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
         this.userRepository = userRepository;
@@ -86,7 +91,8 @@ public class ProductServiceImpl implements ProductService {
     public Product addProduct(final ProductAddRequest productRequest, final List<MultipartFile> images) {
         ProductEntity productEntity = productRequest.toEntity();
 
-        PaymentInfoEntity paymentInfoEntity = handlePaymentInfo(productRequest);
+        final PaymentInfoEntity paymentInfoEntity = handlePaymentInfo(productRequest);
+
         productEntity.setPaymentInfo(paymentInfoEntity);
         productEntity.setStatus(ProductStatus.ACTIVE);
 
@@ -96,63 +102,6 @@ public class ProductServiceImpl implements ProductService {
         handleProductImages(productEntity, images);
 
         return productRepository.save(productEntity).toDomainModel();
-    }
-
-    private PaymentInfoEntity handlePaymentInfo(ProductAddRequest productRequest) {
-        if (!productRequest.isDataChanged() && productRequest.getUserId() != null) {
-            final UserEntity user = userRepository.findById(productRequest.getUserId())
-                    .orElseThrow(() -> new ResourceNotFoundException("User with the given ID does not exist"));
-
-            return user.getPaymentInfo();
-        } else {
-            return createAndSavePaymentInfo(productRequest);
-        }
-    }
-
-    private PaymentInfoEntity createAndSavePaymentInfo(ProductAddRequest productRequest) {
-        PaymentInfoEntity paymentInfo = new PaymentInfoEntity();
-
-        paymentInfo.setAddress(productRequest.getAddress());
-        paymentInfo.setCity(productRequest.getCity());
-        paymentInfo.setZipCode(productRequest.getZipCode());
-        paymentInfo.setExpirationDate(productRequest.getExpirationDate());
-        paymentInfo.setCardNumber(productRequest.getCardNumber());
-        paymentInfo.setNameOnCard(productRequest.getNameOnCard());
-        paymentInfo.setCountry(productRequest.getCountry());
-
-        return paymentInfoRepository.save(paymentInfo);
-    }
-
-    private void handleCategoryAndUser(ProductEntity productEntity, ProductAddRequest productRequest) {
-        if (productRequest.getCategoryId() != null) {
-            productEntity.setCategory(categoryRepository.findById(productRequest.getCategoryId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Category with the given ID does not exist")));
-        }
-
-        if (productRequest.getUserId() != null) {
-            productEntity.setUserEntity(userRepository.findById(productRequest.getUserId())
-                    .orElseThrow(() -> new ResourceNotFoundException("User with the given ID does not exist")));
-        }
-    }
-
-    private void handleProductImages(ProductEntity productEntity, List<MultipartFile> images) {
-        final List<ProductImageEntity> imageEntities = images.stream().map(image -> {
-            try {
-                String imageUrl = amazonClient.uploadFile(image);
-                ProductImageEntity imageEntity = new ProductImageEntity();
-
-                imageEntity.setImageUrl(imageUrl);
-                imageEntity.setProductEntity(productEntity);
-
-                productImageRepository.save(imageEntity);
-
-                return imageEntity;
-            } catch (Exception e) {
-                throw new RuntimeException("Failed to upload image", e);
-            }
-        }).collect(toList());
-
-        productEntity.setProductImages(imageEntities);
     }
 
     @Override
@@ -229,5 +178,62 @@ public class ProductServiceImpl implements ProductService {
         return this.productRepository
                 .findProductEntityByUserEntity_UserIdAndAndStatus(userId, productStatus, pageable)
                 .map(ProductEntity::toDomainModel);
+    }
+    
+    private PaymentInfoEntity handlePaymentInfo(ProductAddRequest productRequest) {
+        if (!productRequest.isDataChanged() && productRequest.getUserId() != null) {
+            final UserEntity user = userRepository.findById(productRequest.getUserId())
+                    .orElseThrow(() -> new ResourceNotFoundException("User with the given ID does not exist"));
+
+            return user.getPaymentInfo();
+        } else {
+            return createAndSavePaymentInfo(productRequest);
+        }
+    }
+
+    private PaymentInfoEntity createAndSavePaymentInfo(ProductAddRequest productRequest) {
+        PaymentInfoEntity paymentInfo = new PaymentInfoEntity();
+
+        paymentInfo.setAddress(productRequest.getAddress());
+        paymentInfo.setCity(productRequest.getCity());
+        paymentInfo.setZipCode(productRequest.getZipCode());
+        paymentInfo.setExpirationDate(productRequest.getExpirationDate());
+        paymentInfo.setCardNumber(productRequest.getCardNumber());
+        paymentInfo.setNameOnCard(productRequest.getNameOnCard());
+        paymentInfo.setCountry(productRequest.getCountry());
+
+        return paymentInfoRepository.save(paymentInfo);
+    }
+
+    private void handleCategoryAndUser(ProductEntity productEntity, ProductAddRequest productRequest) {
+        if (productRequest.getCategoryId() != null) {
+            productEntity.setCategory(categoryRepository.findById(productRequest.getCategoryId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Category with the given ID does not exist")));
+        }
+
+        if (productRequest.getUserId() != null) {
+            productEntity.setUserEntity(userRepository.findById(productRequest.getUserId())
+                    .orElseThrow(() -> new ResourceNotFoundException("User with the given ID does not exist")));
+        }
+    }
+
+    private void handleProductImages(ProductEntity productEntity, List<MultipartFile> images) {
+        final List<ProductImageEntity> imageEntities = images.stream().map(image -> {
+            try {
+                String imageUrl = amazonClient.uploadFile(image);
+                ProductImageEntity imageEntity = new ProductImageEntity();
+
+                imageEntity.setImageUrl(imageUrl);
+                imageEntity.setProductEntity(productEntity);
+
+                productImageRepository.save(imageEntity);
+
+                return imageEntity;
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to upload image", e);
+            }
+        }).collect(toList());
+
+        productEntity.setProductImages(imageEntities);
     }
 }

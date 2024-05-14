@@ -117,23 +117,23 @@ const AddItem = () => {
   const renderActiveForm = () => {
     switch (activeForm) {
       case ADD_ITEM_FORMS_MAP.DETAILS:
-          return <ProductDetailsForm 
-                    formData={ formData.details } 
-                    setFormData={ (data) => updateFormData(ADD_ITEM_FORMS_MAP.DETAILS, data) } 
-                  />;
+        return <ProductDetailsForm 
+                  formData={ formData.details } 
+                  setFormData={ (data) => updateFormData(ADD_ITEM_FORMS_MAP.DETAILS, data) } 
+                />;
       case ADD_ITEM_FORMS_MAP.PRICES:
-          return <ProductPriceForm 
-                    formData={formData.prices} 
-                    setFormData={ (data) => updateFormData(ADD_ITEM_FORMS_MAP.PRICES, data) } 
-                  />;
+        return <ProductPriceForm 
+                  formData={formData.prices} 
+                  setFormData={ (data) => updateFormData(ADD_ITEM_FORMS_MAP.PRICES, data) } 
+                />;
       case ADD_ITEM_FORMS_MAP.SHIPPING:
-          return <LocationForm 
-                    formData={ formData.shipping } 
-                    setFormData={ (data) => updateFormData(ADD_ITEM_FORMS_MAP.SHIPPING, data) } 
-                    handleFinalSubmit= {handleFinalSubmit } 
-                  />;
+        return <LocationForm 
+                  formData={ formData.shipping } 
+                  setFormData={ (data) => updateFormData(ADD_ITEM_FORMS_MAP.SHIPPING, data) } 
+                  handleFinalSubmit= {handleFinalSubmit } 
+                />;
       default:
-          return null;
+        return null;
   }
   };
 

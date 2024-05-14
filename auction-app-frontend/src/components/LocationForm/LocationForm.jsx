@@ -48,7 +48,7 @@ const LocationForm = ({ formData, setFormData, handleFinalSubmit }) => {
                 };
     
                 setPaymentInfo(updatedPaymentInfo);
-                setOriginalPaymentInfo(updatedPaymentInfo); // for later use
+                setOriginalPaymentInfo(updatedPaymentInfo); // for later use, to compare if shipping data has changed before submitting
                 setFormData({ ...formData, ...updatedPaymentInfo });
     
                 methods.reset({ ...methods.getValues(), ...updatedPaymentInfo });
