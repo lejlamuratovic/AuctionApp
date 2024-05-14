@@ -35,7 +35,7 @@ const ProductBidsTable = ({ items, buttonLabel, tabId }) => {
               timeLeft={ calculateTimeLeft(item.endDate) }
               bidPrice={ item.bidAmount }
               noBids={ item.bidsCount }
-              highestBid={ item.highestBid }
+              highestBid={ item.highestBid ? item.highestBid : 0 }
               buttonLabel={ buttonLabel }
               onButtonClick={ () => navigateToProduct(item.id) }
               highestBidder={ item.bidAmount === item.highestBid }
