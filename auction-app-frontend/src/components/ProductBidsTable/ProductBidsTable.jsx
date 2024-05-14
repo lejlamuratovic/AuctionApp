@@ -16,31 +16,6 @@ const ProductBidsTable = ({ items, buttonLabel, tabId }) => {
     navigate(`${ ROUTE_PATHS.PRODUCT }/${ id }`);
   }
 
-  const adjustItemData = (items) => {
-    return items.map(item => {
-      // check if nested
-      if (item.product && item.product.id) {
-        return {
-          ...item.product,
-          bidAmount: item.bidAmount,
-          bidTime: item.bidTime,
-          id: item.id 
-        };
-      } else {
-        return {
-          ...item,
-          bidAmount: item.startPrice,
-          highestBid: item.highestBid ? item.highestBid : 0,
-        }
-      }
-    });
-  }
-
-  const adjustedItems = items ? adjustItemData(items) : [];
-
-  console.log("items", items);
-  console.log("adjustedItems", adjustedItems);
-
   return (
     <div className="table">
       <div className="table-header body-bold">
@@ -52,7 +27,7 @@ const ProductBidsTable = ({ items, buttonLabel, tabId }) => {
       </div>
       { hasItems ? (
         <div className="table-content body-bold">
-          { adjustedItems.map(item => (
+          { items.map(item => (
             <ProductBidsItem
               key={ item.id }
               imgSrc={ item.productImages[0].imageUrl }

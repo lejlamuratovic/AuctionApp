@@ -4,6 +4,7 @@ import com.example.auctionapp.entity.enums.ProductStatus;
 import com.example.auctionapp.model.Product;
 import com.example.auctionapp.request.ProductAddRequest;
 import com.example.auctionapp.response.BidSummaryResponse;
+import com.example.auctionapp.response.ProductBidDetailsResponse;
 import com.example.auctionapp.response.ProductSearchResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,8 +21,8 @@ public interface ProductService {
     Page<Product> getProductsByCriteria(final int page, final int size, final String type);
     Product getRandomProduct();
     BidSummaryResponse getBidSummary(final UUID productId);
-    Page<Product> getProductByUserAndStatus(final UUID userId,
-                                            final ProductStatus productStatus,
-                                            final int page,
-                                            final int size);
+    Page<ProductBidDetailsResponse> getProductByUserAndStatus(final UUID userId,
+                                                              final ProductStatus productStatus,
+                                                              final int page,
+                                                              final int size);
 }

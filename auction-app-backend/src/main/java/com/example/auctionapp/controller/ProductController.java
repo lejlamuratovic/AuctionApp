@@ -3,6 +3,7 @@ package com.example.auctionapp.controller;
 import com.example.auctionapp.entity.enums.ProductStatus;
 import com.example.auctionapp.model.Product;
 import com.example.auctionapp.response.BidSummaryResponse;
+import com.example.auctionapp.response.ProductBidDetailsResponse;
 import com.example.auctionapp.response.ProductSearchResponse;
 import com.example.auctionapp.service.ProductService;
 import com.example.auctionapp.request.ProductAddRequest;
@@ -92,7 +93,7 @@ public class ProductController {
 
     @PreAuthorize(SecurityRoles.ALL)
     @GetMapping("/user-products")
-    public Page<Product> getProductsByUserAndStatus(
+    public Page<ProductBidDetailsResponse> getProductsByUserAndStatus(
             @RequestParam(value = "userId") final UUID userId,
             @RequestParam(value = "status") final ProductStatus status,
             @RequestParam(value = "page", defaultValue = "0") final int page,

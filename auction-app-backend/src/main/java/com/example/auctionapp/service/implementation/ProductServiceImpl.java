@@ -15,6 +15,7 @@ import com.example.auctionapp.exceptions.repository.ResourceNotFoundException;
 import com.example.auctionapp.repository.CategoryRepository;
 import com.example.auctionapp.repository.ProductRepository;
 import com.example.auctionapp.response.BidSummaryResponse;
+import com.example.auctionapp.response.ProductBidDetailsResponse;
 import com.example.auctionapp.response.ProductSearchResponse;
 import com.example.auctionapp.service.ProductService;
 import com.example.auctionapp.specification.ProductSpecification;
@@ -171,16 +172,34 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> getProductByUserAndStatus(final UUID userId,
-                                            final ProductStatus productStatus,
-                                            final int page,
-                                            final int size) {
+    public Page<ProductBidDetailsResponse> getProductByUserAndStatus(final UUID userId,
+                                                                     final ProductStatus productStatus,
+                                                                     final int page,
+                                                                     final int size) {
         Pageable pageable = PageRequest.of(page, size);
 
         return this.productRepository
                 .findProductEntityByUserEntity_UserIdAndAndStatus(userId, productStatus, pageable)
-                .map(ProductEntity::toDomainModel);
+                .map(productEntity -> {
+                    ProductBidDetailsResponse response = new ProductBidDetailsResponse();
+
+                    response.setId(productEntity.getProductId());
+                    response.setName(productEntity.getName());
+                    response.setStartPrice(productEntity.getStartPrice());
+                    response.setStartDate(productEntity.getStartDate());
+                    response.setEndDate(productEntity.getEndDate());
+                    response.setStatus(productEntity.getStatus());
+                    response.setProductImages(productEntity.getProductImages()
+                            .stream().map(ProductImageEntity::toDomainModel).toList());
+                    response.setUserId(productEntity.getUserEntity().getUserId());
+                    response.setBidAmount(productEntity.getStartPrice());
+                    response.setBidsCount(productEntity.getBidsCount());
+                    response.setHighestBid(productEntity.getHighestBid());
+
+                    return response;
+                });
     }
+
 
     private PaymentInfoEntity handlePaymentInfo(ProductAddRequest productRequest) {
         if (!productRequest.isDataChanged() && productRequest.getUserId() != null) {

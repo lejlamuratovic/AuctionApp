@@ -2,6 +2,7 @@ package com.example.auctionapp.service.implementation;
 
 import com.example.auctionapp.entity.BidEntity;
 import com.example.auctionapp.entity.ProductEntity;
+import com.example.auctionapp.entity.ProductImageEntity;
 import com.example.auctionapp.entity.enums.NotificationType;
 import com.example.auctionapp.exceptions.repository.ResourceNotFoundException;
 import com.example.auctionapp.model.Bid;
@@ -9,6 +10,7 @@ import com.example.auctionapp.repository.BidRepository;
 import com.example.auctionapp.repository.ProductRepository;
 import com.example.auctionapp.repository.UserRepository;
 import com.example.auctionapp.request.BidRequest;
+import com.example.auctionapp.response.ProductBidDetailsResponse;
 import com.example.auctionapp.service.BidService;
 import com.example.auctionapp.service.NotificationService;
 import com.example.auctionapp.util.ValidationUtility;
@@ -83,10 +85,29 @@ public class BidServiceImpl implements BidService {
     }
 
     @Override
-    public Page<Bid> getBidsForUser(final UUID userId, final int page, final int size) {
+    public Page<ProductBidDetailsResponse> getBidsForUser(final UUID userId, final int page, final int size) {
         Pageable pageable = PageRequest.of(page, size);
 
         return bidRepository.findBidEntitiesByUserEntity_UserIdOrderByBidTimeDesc(userId, pageable)
-                .map(BidEntity::toDomainModel);
+                .map(bidEntity -> {
+                    final ProductEntity product = bidEntity.getProduct();
+
+                    ProductBidDetailsResponse response = new ProductBidDetailsResponse();
+
+                    response.setId(product.getProductId());
+                    response.setName(product.getName());
+                    response.setStartPrice(product.getStartPrice());
+                    response.setStartDate(product.getStartDate());
+                    response.setEndDate(product.getEndDate());
+                    response.setStatus(product.getStatus());
+                    response.setProductImages(product.getProductImages()
+                            .stream().map(ProductImageEntity::toDomainModel).toList());
+                    response.setUserId(product.getUserEntity().getUserId());
+                    response.setBidAmount(bidEntity.getBidAmount());
+                    response.setBidsCount(product.getBidsCount());
+                    response.setHighestBid(product.getHighestBid());
+
+                    return response;
+                });
     }
 }
