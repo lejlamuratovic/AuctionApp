@@ -29,3 +29,4 @@ export { default as ProductPriceForm } from "./ProductPriceForm/ProductPriceForm
 export { default as ProductDetailsForm } from "./ProductDetailsForm/ProductDetailsForm";
 export { default as LocationForm } from "./LocationForm/LocationForm";
 export { default as CustomFileUploader } from "./CustomFileUploader/CustomFileUploader";
+export { default as TextAreaField } from "./TextAreaField/TextAreaField";

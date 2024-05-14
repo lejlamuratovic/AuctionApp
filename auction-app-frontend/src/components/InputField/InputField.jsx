@@ -1,64 +1,36 @@
-import { useFormContext } from "react-hook-form";
 import { useState } from "react";
-
-import { SelectField, CustomFileUploader } from "src/components"; 
+import { useFormContext } from "react-hook-form";
 
 import "./style.scss";
 
-const InputField = ({ name, label, type, rules, step, options, className, placeholder, onSelectChange }) => {
+const InputField = ({ name, label, type, rules, step, className, placeholder }) => {
     const { register, setValue, formState: { errors } } = useFormContext();
 
-    const [dateValue, setDateValue] = useState(""); 
-    const [files, setFiles] = useState([]);
-        
+    const [dateValue, setDateValue] = useState("");
+
     const onChangeDate = (event) => {
         setDateValue(event.target.value);
         setValue(name, event.target.value);
     };
 
-    const renderField = () => {
-        const inputProps = {
-            ...register(name, { ...rules }),
-            id: name,
-            type: type,
-            className: errors[name] ? "error" : "",
-            ...(step && { step }) ,
-            placeholder: placeholder || ""
-        };
-    
-        switch (type) {
-            case "date": 
-                return (
-                    <input
-                        { ...inputProps }
-                        type="date"
-                        onChange={ onChangeDate } 
-                    />
-                );
-            case "textarea": 
-                return <textarea { ...inputProps } />;
-            case "select":
-                return <SelectField 
-                    name={ name } 
-                    options={ options } 
-                    rules={ rules } 
-                    label={ label } 
-                    onSelectChange={ onSelectChange }
-                />;
-            case "file":
-                    return <CustomFileUploader name={name} setFiles={setFiles} setValue={setValue} files={files} />;
-            default:
-                return <input {...inputProps} />;
-        }
+    const inputProps = {
+        ...register(name, { ...rules }),
+        id: name,
+        className: errors[name] ? "error" : "",
+        placeholder: placeholder || ""
     };
 
     return (
-        <div className={`${className} input-field`}>
+        <div className={ `${ className } input-field` }>
             <label htmlFor={ name } className="body-semibold">{ label }</label>
-            { renderField() }
+            { type === "date" ? (
+                <input { ...inputProps } type="date" onChange={ onChangeDate } />
+            ) : (
+                <input { ...inputProps } type={ type } step={ type === "number" ? step : undefined } />
+            ) }
             { errors[name] && <span className="error-message body-small-regular">{ errors[name].message }</span> }
         </div>
     );
-}
+};
 
 export default InputField;

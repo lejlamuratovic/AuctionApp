@@ -6,9 +6,13 @@ import { FILE_TYPES } from "src/constants";
 
 import "./style.scss";
 
-const CustomFileUploader = ({ name, setFiles, setValue, files }) => {
-    const { watch } = useFormContext();
-    
+const CustomFileUploader = ({ name, setFiles, rules, setValue, files = [] }) => { 
+    const { register, watch, formState: { errors } } = useFormContext();
+
+    useEffect(() => {
+        register(name, rules);
+    }, [register, name, rules]);
+
     const currentValue = watch(name);
 
     useEffect(() => {
@@ -22,9 +26,8 @@ const CustomFileUploader = ({ name, setFiles, setValue, files }) => {
         setValue(name, [...files, ...filesArray]);
     };
 
-
     return (
-        <>
+        <div className="custom-file-container">
             <FileUploader
                 handleChange={ handleFileChange }
                 name={ name }
@@ -46,7 +49,8 @@ const CustomFileUploader = ({ name, setFiles, setValue, files }) => {
                     )) }
                 </div>
             ) }
-        </>
+            { errors[name] && <span className="error-message body-small-regular">{ errors[name].message }</span> }
+        </div>
     );
 };
 

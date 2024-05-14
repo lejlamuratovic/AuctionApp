@@ -1,55 +1,95 @@
 import { FormProvider } from "react-hook-form";
+import { useState } from "react";
 
-import { InputField, Button } from "src/components";
-
+import { InputField, TextAreaField, SelectField, CustomFileUploader, Button } from "src/components";
 import { BUTTON_VARIANTS } from "src/constants";
 
-const FormContainer = ({ 
-  formFields, 
-  onSubmit, 
+const FormContainer = ({
+  formFields,
+  onSubmit,
   buttonLabel,
-  methods, 
-  error, 
-  buttonVariant = BUTTON_VARIANTS.FILLED, 
-  buttonIcon, 
+  methods,
+  error,
+  buttonVariant = BUTTON_VARIANTS.FILLED,
+  buttonIcon,
   children,
-  onCancel, 
+  onCancel,
   cancelLabel,
   onBack,
   backLabel
 }) => {
+  const [files, setFiles] = useState([]);
+
   return (
-    <FormProvider { ...methods }>
+    <FormProvider {...methods}>
+
       <form onSubmit={ methods.handleSubmit(onSubmit) }>
-        { children ? children : formFields.map(field => ( // children is used to render custom fields 
-          <InputField
-              key={ field.name }
-              name={ field.name }
-              label={ field.label }
-              type={ field.type }
-              rules={ field.rules }
-              step={ field.type === "number" ? field.step : null }
-              options={ field.type === "select" ? field.options : null }
-              className={ field.specialClass ? field.specialClass : ""}
-              placeholder={ field.placeholder }
-              onSelectChange={ field.onSelectChange }
-          />
-        )) }
-        { error && 
+        { children ? children : formFields.map((field) => {
+          switch (field.type) {
+            case "textarea":
+              return (
+                <TextAreaField
+                  key={ field.name }
+                  name={ field.name }
+                  label={ field.label}
+                  rules={ field.rules }
+                  className={ field.specialClass }
+                  placeholder={ field.placeholder }
+                />
+              );
+            case "select":
+              return (
+                <SelectField
+                  key={ field.name }
+                  name={ field.name }
+                  options={ field.options }
+                  label={ field.label }
+                  rules={ field.rules }
+                  onSelectChange={ field.onSelectChange }
+                  className={ field.specialClass }
+                />
+              );
+            case "file":
+              return (
+                <CustomFileUploader
+                  key={ field.name }
+                  name={ field.name }
+                  setFiles={ setFiles }
+                  setValue={ methods.setValue }
+                  files={ files }
+                  rules={ field.rules }
+                />
+              );
+            default:
+              return (
+                <InputField
+                  key={ field.name }
+                  name={ field.name }
+                  label={ field.label }
+                  type={ field.type }
+                  rules={ field.rules }
+                  step={ field.type === "number" ? field.step : undefined }
+                  className={ field.specialClass }
+                  placeholder={ field.placeholder }
+                />
+              );
+           }
+         }) }
+        { error &&
           <div className="error-message-body body-semibold">
             { error }
-          </div> 
-        }
+          </div>
+         }
         <div className="button-container">
-          { onCancel && <Button type="button" label={ cancelLabel } disabled={ true } onButtonClick={ onCancel }/> }
+          { onCancel && <Button type="button" label={ cancelLabel } onButtonClick={ onCancel } /> }
           <div className="btn-navigation">
             { onBack && <Button type="button" label={ backLabel } onButtonClick={ onBack } /> }
-            <Button type="submit" variant={ buttonVariant } label={ buttonLabel } iconSrc={ buttonIcon }/>
+            <Button type="submit" variant={ buttonVariant } label={ buttonLabel } iconSrc={ buttonIcon } />
           </div>
         </div>
       </form>
     </FormProvider>
   );
-}
+ };
 
 export default FormContainer;

@@ -38,7 +38,6 @@ const ProductBidsTable = ({ items, buttonLabel, tabId }) => {
 
   const adjustedItems = items ? adjustItemData(items) : [];
 
-  
   console.log("items", items);
   console.log("adjustedItems", adjustedItems);
 

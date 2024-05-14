@@ -2,6 +2,7 @@
 
 .custom-select {
     z-index: 1;
+    margin: 10px 0;
 
     .dropdown-btn, .dropdown-item {
         @include flex-container(row, space-between, center);
