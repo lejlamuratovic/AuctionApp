@@ -149,7 +149,9 @@ public class ProductServiceImpl implements ProductService {
         Sort sort = Sort.by(direction, sortBy).and(Sort.by(Sort.Direction.ASC, "productId"));
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        return productRepository.findAll(pageable).map(ProductEntity::toDomainModel);
+        return productRepository
+                .findProductEntitiesByStatusEquals(pageable, ProductStatus.ACTIVE)
+                .map(ProductEntity::toDomainModel);
     }
 
     @Override
@@ -179,7 +181,7 @@ public class ProductServiceImpl implements ProductService {
                 .findProductEntityByUserEntity_UserIdAndAndStatus(userId, productStatus, pageable)
                 .map(ProductEntity::toDomainModel);
     }
-    
+
     private PaymentInfoEntity handlePaymentInfo(ProductAddRequest productRequest) {
         if (!productRequest.isDataChanged() && productRequest.getUserId() != null) {
             final UserEntity user = userRepository.findById(productRequest.getUserId())

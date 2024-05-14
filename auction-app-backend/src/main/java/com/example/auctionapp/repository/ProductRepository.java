@@ -13,6 +13,8 @@ import java.util.UUID;
 import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<ProductEntity, UUID>, JpaSpecificationExecutor<ProductEntity> {
+    Page<ProductEntity> findProductEntitiesByStatusEquals(final Pageable pageable, final ProductStatus productStatus);
+
     @Query(value = "SELECT p FROM ProductEntity p ORDER BY RANDOM() LIMIT 1")
     Optional<ProductEntity> findRandomProduct();
 
