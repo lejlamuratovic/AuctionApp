@@ -1,5 +1,7 @@
 package com.example.auctionapp.response;
 
+import com.example.auctionapp.entity.ProductEntity;
+import com.example.auctionapp.entity.ProductImageEntity;
 import com.example.auctionapp.entity.enums.ProductStatus;
 import com.example.auctionapp.model.ProductImage;
 
@@ -20,6 +22,28 @@ public class ProductBidDetailsResponse {
     private BigDecimal bidAmount;
     private int bidsCount;
     private BigDecimal highestBid;
+
+    // constructor called by product service
+    public ProductBidDetailsResponse(final ProductEntity productEntity) {
+        this.id = productEntity.getProductId();
+        this.name = productEntity.getName();
+        this.startPrice = productEntity.getStartPrice();
+        this.startDate = productEntity.getStartDate();
+        this.endDate = productEntity.getEndDate();
+        this.status = productEntity.getStatus();
+        this.productImages = productEntity.getProductImages().stream()
+                .map(ProductImageEntity::toDomainModel).toList();
+        this.userId = productEntity.getUserEntity().getUserId();
+        this.bidAmount = productEntity.getStartPrice();
+        this.bidsCount = productEntity.getBidsCount();
+        this.highestBid = productEntity.getHighestBid();
+    }
+
+    // additional constructor for bid service
+    public ProductBidDetailsResponse(final ProductEntity productEntity, final BigDecimal bidAmount) {
+        this(productEntity);
+        this.bidAmount = bidAmount;
+    }
 
     public UUID getId() {
         return id;

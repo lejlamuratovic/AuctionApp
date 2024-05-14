@@ -180,26 +180,8 @@ public class ProductServiceImpl implements ProductService {
 
         return this.productRepository
                 .findProductEntityByUserEntity_UserIdAndAndStatus(userId, productStatus, pageable)
-                .map(productEntity -> {
-                    ProductBidDetailsResponse response = new ProductBidDetailsResponse();
-
-                    response.setId(productEntity.getProductId());
-                    response.setName(productEntity.getName());
-                    response.setStartPrice(productEntity.getStartPrice());
-                    response.setStartDate(productEntity.getStartDate());
-                    response.setEndDate(productEntity.getEndDate());
-                    response.setStatus(productEntity.getStatus());
-                    response.setProductImages(productEntity.getProductImages()
-                            .stream().map(ProductImageEntity::toDomainModel).toList());
-                    response.setUserId(productEntity.getUserEntity().getUserId());
-                    response.setBidAmount(productEntity.getStartPrice());
-                    response.setBidsCount(productEntity.getBidsCount());
-                    response.setHighestBid(productEntity.getHighestBid());
-
-                    return response;
-                });
+                .map(ProductBidDetailsResponse::new);
     }
-
 
     private PaymentInfoEntity handlePaymentInfo(ProductAddRequest productRequest) {
         if (!productRequest.isDataChanged() && productRequest.getUserId() != null) {

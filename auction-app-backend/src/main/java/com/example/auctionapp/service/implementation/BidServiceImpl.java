@@ -42,6 +42,7 @@ public class BidServiceImpl implements BidService {
     }
 
     @Transactional
+    @Override
     public Bid placeBid(final BidRequest bidRequest) {
         BidEntity bidEntity = bidRequest.toEntity();
 
@@ -89,25 +90,6 @@ public class BidServiceImpl implements BidService {
         Pageable pageable = PageRequest.of(page, size);
 
         return bidRepository.findBidEntitiesByUserEntity_UserIdOrderByBidTimeDesc(userId, pageable)
-                .map(bidEntity -> {
-                    final ProductEntity product = bidEntity.getProduct();
-
-                    ProductBidDetailsResponse response = new ProductBidDetailsResponse();
-
-                    response.setId(product.getProductId());
-                    response.setName(product.getName());
-                    response.setStartPrice(product.getStartPrice());
-                    response.setStartDate(product.getStartDate());
-                    response.setEndDate(product.getEndDate());
-                    response.setStatus(product.getStatus());
-                    response.setProductImages(product.getProductImages()
-                            .stream().map(ProductImageEntity::toDomainModel).toList());
-                    response.setUserId(product.getUserEntity().getUserId());
-                    response.setBidAmount(bidEntity.getBidAmount());
-                    response.setBidsCount(product.getBidsCount());
-                    response.setHighestBid(product.getHighestBid());
-
-                    return response;
-                });
+                .map(bidEntity -> new ProductBidDetailsResponse(bidEntity.getProduct(), bidEntity.getBidAmount()));
     }
 }
