@@ -1,23 +1,21 @@
 package com.example.auctionapp.service.implementation;
 
-import com.amazonaws.services.xray.model.InvalidRequestException;
 import com.example.auctionapp.request.ChargeRequest;
+import com.example.auctionapp.util.CustomerUtil;
 import com.stripe.Stripe;
-import com.stripe.exception.ApiConnectionException;
-import com.stripe.exception.ApiException;
-import com.stripe.exception.CardException;
 import com.stripe.exception.StripeException;
-import com.stripe.model.Charge;
+import com.stripe.model.Customer;
+import com.stripe.model.PaymentIntent;
+import com.stripe.param.PaymentIntentCreateParams;
 import jakarta.annotation.PostConstruct;
-import org.apache.http.auth.AuthenticationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Service
 public class StripeService {
+    private static final Logger logger = LoggerFactory.getLogger(StripeService.class);
 
     @Value("${stripeProperties.secretKey}")
     private String secretKey;
@@ -25,19 +23,33 @@ public class StripeService {
     @PostConstruct
     public void init() {
         Stripe.apiKey = secretKey;
+
+        logger.info("Stripe API key initialized");
     }
 
-    public Charge charge(ChargeRequest chargeRequest)
-            throws AuthenticationException,
-            InvalidRequestException,
-            StripeException {
-        Map<String, Object> chargeParams = new HashMap<>();
+    public String createPaymentIntent(ChargeRequest request) throws StripeException {
+        try {
+            logger.info("Creating payment intent for customer: {}", request.getCustomerEmail());
 
-        chargeParams.put("amount", chargeRequest.getAmount());
-        chargeParams.put("currency", chargeRequest.getCurrency());
-        chargeParams.put("description", chargeRequest.getDescription());
-        chargeParams.put("source", chargeRequest.getStripeToken());
+            final Customer customer = CustomerUtil
+                    .findOrCreateCustomer(request.getCustomerEmail(), request.getCustomerName());
 
-        return Charge.create(chargeParams);
+            final PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
+                    .setAmount(Long.parseLong(String.valueOf(request.getProduct().getHighestBid())))
+                    .setCurrency("usd")
+                    .setCustomer(customer.getId())
+                    .setAutomaticPaymentMethods(
+                            PaymentIntentCreateParams.AutomaticPaymentMethods.builder().setEnabled(true).build())
+                    .build();
+
+            final PaymentIntent paymentIntent = PaymentIntent.create(params);
+
+            logger.info("Payment intent created successfully: {}", paymentIntent.getId());
+
+            return paymentIntent.getClientSecret();
+        } catch (StripeException e) {
+            logger.error("Error creating payment intent: {}", e.getMessage(), e);
+            throw e;
+        }
     }
 }
