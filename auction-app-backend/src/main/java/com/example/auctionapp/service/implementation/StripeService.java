@@ -1,6 +1,7 @@
 package com.example.auctionapp.service.implementation;
 
 import com.example.auctionapp.request.ChargeRequest;
+import com.example.auctionapp.response.PaymentResponse;
 import com.example.auctionapp.util.CustomerUtil;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
@@ -27,10 +28,8 @@ public class StripeService {
         logger.info("Stripe API key initialized");
     }
 
-    public String createPaymentIntent(ChargeRequest request) throws StripeException {
+    public PaymentResponse createPaymentIntent(ChargeRequest request) {
         try {
-            logger.info("Creating payment intent for customer: {}", request.getCustomerEmail());
-
             final Customer customer = CustomerUtil
                     .findOrCreateCustomer(request.getCustomerEmail(), request.getCustomerName());
 
@@ -44,12 +43,12 @@ public class StripeService {
 
             final PaymentIntent paymentIntent = PaymentIntent.create(params);
 
-            logger.info("Payment intent created successfully: {}", paymentIntent.getId());
-
-            return paymentIntent.getClientSecret();
+            return new PaymentResponse(paymentIntent.getClientSecret());
         } catch (StripeException e) {
             logger.error("Error creating payment intent: {}", e.getMessage(), e);
-            throw e;
+
+            return new PaymentResponse(e.getMessage(), false);
         }
     }
+
 }

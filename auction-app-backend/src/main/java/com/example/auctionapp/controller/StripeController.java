@@ -1,11 +1,13 @@
 package com.example.auctionapp.controller;
 
 import com.example.auctionapp.request.ChargeRequest;
+import com.example.auctionapp.response.PaymentResponse;
 import com.example.auctionapp.service.implementation.StripeService;
-import com.stripe.exception.StripeException;
+import com.example.auctionapp.util.SecurityRoles;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,20 +24,11 @@ public class StripeController {
         this.stripeService = stripeService;
     }
 
-    @PostMapping("/checkout/integrated")
-    public String integratedCheckout(@RequestBody final ChargeRequest request) {
-        try {
-            logger.info("Processing integrated checkout for customer: {}", request.getCustomerEmail());
+    @PreAuthorize(SecurityRoles.ALL)
+    @PostMapping("/checkout")
+    public PaymentResponse integratedCheckout(@RequestBody final ChargeRequest request) {
+        logger.info("Processing integrated checkout for customer: {}", request.getCustomerEmail());
 
-            String clientSecret = stripeService.createPaymentIntent(request);
-
-            logger.info("Checkout processed successfully for customer: {}", request.getCustomerEmail());
-
-            return clientSecret;
-        } catch (StripeException e) {
-            logger.error("Failed integrated checkout: {}", e.getMessage(), e);
-
-            throw new RuntimeException("Payment processing failed.");
-        }
+        return stripeService.createPaymentIntent(request);
     }
 }
