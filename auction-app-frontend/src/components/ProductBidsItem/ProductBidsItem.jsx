@@ -1,10 +1,24 @@
 import { Button } from "src/components";
 
-import { BUTTON_VARIANTS } from "src/constants";
+import { BUTTON_VARIANTS, BUTTON_LABELS } from "src/constants";
 
 import "./style.scss"; 
 
-const ProductBidsItem = ({ imgSrc, title, timeLeft, bidPrice, highestBid, noBids, buttonLabel, onButtonClick, highestBidder }) => {
+const ProductBidsItem = ({ 
+  imgSrc, 
+  title, 
+  timeLeft, 
+  bidPrice, 
+  highestBid, 
+  noBids, 
+  buttonLabel, 
+  onButtonClick, 
+  highestBidder,
+  auctionEnded
+}) => {
+
+  const userIsHighestBidder = bidPrice === highestBid;
+
   return (
     <div className="product-bid-item">
       <div className="item-image">
@@ -16,7 +30,19 @@ const ProductBidsItem = ({ imgSrc, title, timeLeft, bidPrice, highestBid, noBids
       <div className="item-no-bids"> { noBids } </div>
       <div className="item-highest-bid">${ highestBid }</div>
       <div className="item-actions">
-        <Button variant={ BUTTON_VARIANTS.OUTLINED } label={ buttonLabel } onButtonClick={ onButtonClick }/>
+        { auctionEnded && userIsHighestBidder ? (
+          <Button 
+            variant={ BUTTON_VARIANTS.OUTLINED } 
+            label={ BUTTON_LABELS.PAY }
+            onButtonClick={ onButtonClick }
+          />
+        ) : (
+          <Button 
+            variant={ BUTTON_VARIANTS.OUTLINED } 
+            label={ buttonLabel } 
+            onButtonClick={ onButtonClick }
+          />
+        ) }
       </div>
     </div>
   );

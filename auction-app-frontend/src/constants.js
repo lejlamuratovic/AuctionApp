@@ -15,6 +15,8 @@ export const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const WEB_SOCKET_BASE_URL = import.meta.env.VITE_WEB_SOCKET_BASE_URL;
 
+export const STRIPE_PUBLIC_KEY = import.meta.env.VITE_STRIPE_PUBLIC_KEY;
+
 export const NAV_ITEMS = [
   {
     label: "HOME",
@@ -100,6 +102,7 @@ export const BUTTON_LABELS = {
   NEXT: "NEXT",
   BACK: "BACK",
   VIEW: "VIEW",
+  PAY: "PAY",
 };
 
 export const CONNECTION_STATUSES = {
@@ -192,7 +195,8 @@ export const FILE_TYPES = ["JPG", "PNG", "GIF"];
 
 export const PRODUCT_STATUS = {
   ACTIVE: "ACTIVE",
-  SOLD: "SOLD"
+  SOLD: "SOLD",
+  INACTIVE: "INACTIVE",
 };
 
 export const FIELD_TYPES = {
