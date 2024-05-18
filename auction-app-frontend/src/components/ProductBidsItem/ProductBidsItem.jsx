@@ -1,10 +1,13 @@
+import { useNavigate } from "react-router-dom";
+
 import { Button } from "src/components";
 
-import { BUTTON_VARIANTS, BUTTON_LABELS } from "src/constants";
+import { BUTTON_VARIANTS, BUTTON_LABELS, ROUTE_PATHS } from "src/constants";
 
 import "./style.scss"; 
 
 const ProductBidsItem = ({ 
+  id,
   imgSrc, 
   title, 
   timeLeft, 
@@ -16,8 +19,13 @@ const ProductBidsItem = ({
   highestBidder,
   auctionEnded
 }) => {
+  const navigate = useNavigate();
 
   const userIsHighestBidder = bidPrice === highestBid;
+
+  const onPayButtonClick = () => {
+    navigate(`${ ROUTE_PATHS.PRODUCT }/${ id }`);
+  }
 
   return (
     <div className="product-bid-item">
@@ -34,7 +42,7 @@ const ProductBidsItem = ({
           <Button 
             variant={ BUTTON_VARIANTS.OUTLINED } 
             label={ BUTTON_LABELS.PAY }
-            onButtonClick={ onButtonClick }
+            onButtonClick={ onPayButtonClick }
           />
         ) : (
           <Button 

@@ -26,12 +26,13 @@ const ProductBidsTable = ({ items, buttonLabel, tabId }) => {
       </div>
       {hasItems ? (
         <div className="table-content body-bold">
-          { items.map(item => {
+          { items.map((item, index) => {
             const auctionEnded = PRODUCT_STATUS.INACTIVE === item.status; 
 
             return (
               <ProductBidsItem
-                key={ item.id }
+                key={ item.id + index }
+                id={ item.id }
                 imgSrc={ item.productImages[0].imageUrl }
                 title={ item.name }
                 timeLeft={ calculateTimeLeft(item.endDate) }

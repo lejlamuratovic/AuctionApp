@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 
-import { Tabs, LoadingComponent, ErrorComponent, FormContainer, Notifications } from "src/components";
+import { Tabs, LoadingComponent, ErrorComponent, FormContainer, Notifications, Button } from "src/components";
 
 import { useBreadcrumb } from "src/store/BreadcrumbContext";
 import { useUser } from "src/store/UserContext";
@@ -138,6 +138,11 @@ const ProductDetails = () => {
   if (loading) return <LoadingComponent />;
   if (error) return <ErrorComponent message={ error } />;
 
+  const isAuctionActive = AUCTION_STATUS.ACTIVE === product?.status;
+  const userIsHighestBidder = userId === product?.highestBidderId;
+  const userIsSeller = userId === product?.sellerId;
+  const canBid = USER_TYPES.USER === userType && userId && !userIsSeller && isAuctionActive;
+
   return (
     <>
       <Notifications productId={ id } fetchProductOnUpdate={ fetchNewProductDetails }/>
@@ -200,19 +205,29 @@ const ProductDetails = () => {
               </div>
             </div>
           </div>
-          { (AUCTION_STATUS.EXPIRED !== timeLeft && USER_TYPES.USER === userType && userId !== product.userId) && (
+          {canBid ? (
             <div className="place-bid-form">
               <FormContainer 
                 formFields={ additionalPlaceBidsFormFields } 
-                onSubmit={ methods.handleSubmit(onSubmit) }
-                buttonLabel={ BUTTON_LABELS.PLACE_BID }
-                buttonVariant={ BUTTON_VARIANTS.OUTLINED }
-                buttonIcon={ go }
-                methods={ methods }
-                error= { error }
+                onSubmit={ methods.handleSubmit(onSubmit) } 
+                buttonLabel={ BUTTON_LABELS.PLACE_BID } 
+                buttonVariant={ BUTTON_VARIANTS.OUTLINED } 
+                buttonIcon={ go } 
+                methods={ methods } 
+                error={ error }
               />
             </div>
-          ) }
+            ) : !isAuctionActive && userIsHighestBidder ? (
+              <div className="payment-info">
+                <Button 
+                  onButtonClick={ () => console.log("Payment button")} 
+                  label={ BUTTON_LABELS.PAY } 
+                  variant = { BUTTON_VARIANTS.FILLED }
+                />
+              </div>
+            ) : (
+              <span className="no-active-auction body-bold">Auction has ended</span>
+            ) }
           <div className="product-information">
             <Tabs
               tabs={ PRODUCT_DETAILS_TABS }
