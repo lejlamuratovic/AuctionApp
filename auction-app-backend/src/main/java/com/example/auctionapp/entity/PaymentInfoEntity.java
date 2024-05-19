@@ -38,7 +38,7 @@ public class PaymentInfoEntity {
     @Column(name = "zip_code")
     private String zipCode;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "credit_card_id")
     private CreditCardEntity creditCardEntity;
 

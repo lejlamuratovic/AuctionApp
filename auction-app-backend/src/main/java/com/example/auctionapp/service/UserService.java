@@ -1,11 +1,15 @@
 package com.example.auctionapp.service;
 
+import com.example.auctionapp.model.CreditCard;
 import com.example.auctionapp.model.PaymentInfo;
+import com.example.auctionapp.model.User;
+import com.example.auctionapp.request.CreditCardAddRequest;
 import com.example.auctionapp.request.PaymentAddRequest;
 
 import java.util.UUID;
 
 public interface UserService {
-    PaymentInfo getPaymentInfoByUser(final UUID userId);
-    PaymentInfo addPaymentInfoToUser(final UUID userId, final PaymentAddRequest paymentRequest);
+    User getUser(final UUID userId);
+    CreditCard updateCreditCardDetails(final UUID userId, final CreditCardAddRequest addNewCreditCard);
+    PaymentInfo addOrUpdatePaymentInfo(final UUID userId, final PaymentAddRequest paymentRequest);
 }

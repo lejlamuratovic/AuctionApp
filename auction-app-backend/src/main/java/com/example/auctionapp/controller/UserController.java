@@ -1,6 +1,9 @@
 package com.example.auctionapp.controller;
 
+import com.example.auctionapp.model.CreditCard;
 import com.example.auctionapp.model.PaymentInfo;
+import com.example.auctionapp.model.User;
+import com.example.auctionapp.request.CreditCardAddRequest;
 import com.example.auctionapp.request.PaymentAddRequest;
 import com.example.auctionapp.service.UserService;
 import com.example.auctionapp.util.SecurityRoles;
@@ -26,15 +29,22 @@ public class UserController {
     }
 
     @PreAuthorize(SecurityRoles.ALL)
-    @GetMapping("/{userId}/payment-info")
-    public PaymentInfo getPaymentInfoByUser(@PathVariable final UUID userId) {
-        return userService.getPaymentInfoByUser(userId);
+    @GetMapping("/{userId}")
+    public User getUser(@PathVariable final UUID userId) {
+        return userService.getUser(userId);
     }
 
     @PreAuthorize(SecurityRoles.ALL)
     @PostMapping("/{userId}/payment-info")
     public PaymentInfo addPaymentInfoToUser(@PathVariable final UUID userId,
                                             @RequestBody final PaymentAddRequest paymentAddRequest) {
-        return userService.addPaymentInfoToUser(userId, paymentAddRequest);
+        return userService.addOrUpdatePaymentInfo(userId, paymentAddRequest);
+    }
+
+    @PreAuthorize(SecurityRoles.ALL)
+    @PostMapping("/{userId}/credit-card")
+    public CreditCard updateCreditCardDetails(@PathVariable final UUID userId,
+                                              @RequestBody final CreditCardAddRequest creditCardAddRequest) {
+        return userService.updateCreditCardDetails(userId, creditCardAddRequest);
     }
 }

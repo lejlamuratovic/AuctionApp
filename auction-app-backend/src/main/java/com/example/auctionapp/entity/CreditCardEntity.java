@@ -42,6 +42,9 @@ public class CreditCardEntity {
         this.expirationDate = expirationDate;
     }
 
+    public CreditCardEntity() {
+    }
+
     public CreditCard toDomainModel() {
         CreditCard creditCard = new CreditCard();
 
@@ -51,5 +54,37 @@ public class CreditCardEntity {
         creditCard.setNameOnCard(this.nameOnCard);
 
         return creditCard;
+    }
+
+    public UUID getCreditCardId() {
+        return this.creditCardId;
+    }
+
+    public void setCreditCardId(final UUID creditCardId) {
+        this.creditCardId = creditCardId;
+    }
+
+    public String getNameOnCard() {
+        return this.nameOnCard;
+    }
+
+    public void setNameOnCard(final String nameOnCard) {
+        this.nameOnCard = nameOnCard;
+    }
+
+    public String getCardNumber() {
+        return this.cardNumber;
+    }
+
+    public void setCardNumber(final String cardNumber) {
+        this.cardNumber = cardNumber;
+    }
+
+    public LocalDate getExpirationDate() {
+        return this.expirationDate;
+    }
+
+    public void setExpirationDate(final LocalDate expirationDate) {
+        this.expirationDate = expirationDate;
     }
 }

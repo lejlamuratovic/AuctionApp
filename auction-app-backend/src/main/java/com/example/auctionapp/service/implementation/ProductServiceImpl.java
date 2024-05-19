@@ -1,10 +1,12 @@
 package com.example.auctionapp.service.implementation;
 
+import com.example.auctionapp.entity.CreditCardEntity;
 import com.example.auctionapp.entity.PaymentInfoEntity;
 import com.example.auctionapp.entity.ProductImageEntity;
 import com.example.auctionapp.entity.UserEntity;
 import com.example.auctionapp.entity.enums.ProductStatus;
 import com.example.auctionapp.external.AmazonClient;
+import com.example.auctionapp.repository.CreditCardRepository;
 import com.example.auctionapp.repository.PaymentInfoRepository;
 import com.example.auctionapp.repository.ProductImageRepository;
 import com.example.auctionapp.repository.UserRepository;
@@ -40,6 +42,7 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final PaymentInfoRepository paymentInfoRepository;
+    private final CreditCardRepository creditCardRepository;
     private final AmazonClient amazonClient;
     private final ProductImageRepository productImageRepository;
 
@@ -47,12 +50,13 @@ public class ProductServiceImpl implements ProductService {
                               final CategoryRepository categoryRepository,
                               final UserRepository userRepository,
                               final PaymentInfoRepository paymentInfoRepository,
-                              final AmazonClient amazonClient,
+                              final CreditCardRepository creditCardRepository, final AmazonClient amazonClient,
                               final ProductImageRepository productImageRepository) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
         this.userRepository = userRepository;
         this.paymentInfoRepository = paymentInfoRepository;
+        this.creditCardRepository = creditCardRepository;
         this.amazonClient = amazonClient;
         this.productImageRepository = productImageRepository;
     }
@@ -103,31 +107,6 @@ public class ProductServiceImpl implements ProductService {
         handleProductImages(productEntity, images);
 
         return productRepository.save(productEntity).toDomainModel();
-    }
-
-    @Override
-    public Product updateProduct(final UUID id, final ProductAddRequest productRequest) {
-        final ProductEntity existingProductEntity = this.productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Product with the given ID does not exist"));
-
-        existingProductEntity.setName(productRequest.getName());
-        existingProductEntity.setDescription(productRequest.getDescription());
-        existingProductEntity.setStartPrice(productRequest.getStartPrice());
-        existingProductEntity.setStartDate(productRequest.getStartDate());
-        existingProductEntity.setEndDate(productRequest.getEndDate());
-        existingProductEntity.setStatus(ProductStatus.ACTIVE);
-
-        if (productRequest.getCategoryId() != null) {
-            existingProductEntity.setCategory(categoryRepository.findById(productRequest.getCategoryId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Category not found")));
-        }
-
-        if(productRequest.getUserId() != null) {
-            existingProductEntity.setUserEntity(userRepository.findById(productRequest.getUserId())
-                    .orElseThrow(() -> new ResourceNotFoundException("User with the given ID does not exist")));
-        }
-
-        return this.productRepository.save(existingProductEntity).toDomainModel();
     }
 
     @Override
@@ -200,10 +179,17 @@ public class ProductServiceImpl implements ProductService {
         paymentInfo.setAddress(productRequest.getAddress());
         paymentInfo.setCity(productRequest.getCity());
         paymentInfo.setZipCode(productRequest.getZipCode());
-        paymentInfo.setExpirationDate(productRequest.getExpirationDate());
-        paymentInfo.setCardNumber(productRequest.getCardNumber());
-        paymentInfo.setNameOnCard(productRequest.getNameOnCard());
         paymentInfo.setCountry(productRequest.getCountry());
+
+        CreditCardEntity creditCardEntity = new CreditCardEntity();
+
+        creditCardEntity.setExpirationDate(productRequest.getExpirationDate());
+        creditCardEntity.setNameOnCard(productRequest.getNameOnCard());
+        creditCardEntity.setCardNumber(productRequest.getCardNumber());
+
+        final CreditCardEntity savedCreditCard = creditCardRepository.save(creditCardEntity);
+
+        paymentInfo.setCreditCardEntity(savedCreditCard);
 
         return paymentInfoRepository.save(paymentInfo);
     }
