@@ -16,9 +16,6 @@ public class PaymentInfo {
     private String city;
     private String country;
     private String zipCode;
-    private String nameOnCard;
-    private String cardNumber;
-    private LocalDate expirationDate;
 
     public PaymentInfo() {
     }
@@ -61,29 +58,5 @@ public class PaymentInfo {
 
     public void setZipCode(final String zipCode) {
         this.zipCode = zipCode;
-    }
-
-    public String getNameOnCard() {
-        return this.nameOnCard;
-    }
-
-    public void setNameOnCard(final String nameOnCard) {
-        this.nameOnCard = nameOnCard;
-    }
-
-    public String getCardNumber() {
-        return this.cardNumber;
-    }
-
-    public void setCardNumber(final String cardNumber) {
-        this.cardNumber = cardNumber;
-    }
-
-    public LocalDate getExpirationDate() {
-        return this.expirationDate;
-    }
-
-    public void setExpirationDate(final LocalDate expirationDate) {
-        this.expirationDate = expirationDate;
     }
 }
