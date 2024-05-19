@@ -12,9 +12,10 @@ import { calculateTimeLeft } from "src/utils/calculateTimeDifference";
 
 import { 
   PRODUCT_DETAILS_TABS, 
-  BUTTON_LABELS, BUTTON_VARIANTS, 
+  BUTTON_LABELS, 
+  BUTTON_VARIANTS, 
   USER_TYPES,
-  AUCTION_STATUS
+  PRODUCT_STATUS
 } from "src/constants";
 import { placeBidsFormFields } from "src/forms/fields";
 import { go } from "src/assets/icons";
@@ -138,9 +139,9 @@ const ProductDetails = () => {
   if (loading) return <LoadingComponent />;
   if (error) return <ErrorComponent message={ error } />;
 
-  const isAuctionActive = AUCTION_STATUS.ACTIVE === product?.status;
+  const isAuctionActive = PRODUCT_STATUS.ACTIVE === product?.status;
   const userIsHighestBidder = userId === product?.highestBidderId;
-  const userIsSeller = userId === product?.sellerId;
+  const userIsSeller = userId === product?.userId;
   const canBid = USER_TYPES.USER === userType && userId && !userIsSeller && isAuctionActive;
 
   return (
@@ -225,8 +226,11 @@ const ProductDetails = () => {
                   variant = { BUTTON_VARIANTS.FILLED }
                 />
               </div>
-            ) : (
+            ) : !isAuctionActive ? (
               <span className="no-active-auction body-bold">Auction has ended</span>
+            ) : (
+              // just a placeholder for now
+              <span className="no-active-auction body-bold">You can't bid on your own item</span>
             ) }
           <div className="product-information">
             <Tabs
