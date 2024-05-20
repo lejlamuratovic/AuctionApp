@@ -206,7 +206,7 @@ const ProductDetails = () => {
               </div>
             </div>
           </div>
-          {canBid ? (
+          { canBid ? (
             <div className="place-bid-form">
               <FormContainer 
                 formFields={ additionalPlaceBidsFormFields } 
@@ -228,10 +228,11 @@ const ProductDetails = () => {
               </div>
             ) : !isAuctionActive ? (
               <span className="no-active-auction body-bold">Auction has ended</span>
-            ) : (
+            ) : userId ? (
               // just a placeholder for now
               <span className="no-active-auction body-bold">You can't bid on your own item</span>
-            ) }
+            ) : null 
+            }
           <div className="product-information">
             <Tabs
               tabs={ PRODUCT_DETAILS_TABS }

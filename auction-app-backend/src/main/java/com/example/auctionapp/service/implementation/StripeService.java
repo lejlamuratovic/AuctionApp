@@ -50,5 +50,4 @@ public class StripeService {
             return new PaymentResponse(e.getMessage(), false);
         }
     }
-
 }
