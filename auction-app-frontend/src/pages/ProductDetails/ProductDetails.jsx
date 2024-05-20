@@ -63,26 +63,6 @@ const ProductDetails = () => {
     }, 500);
   };
 
-  const fetchNewProductDetails = () => {
-    setBidDataLoading(true);
-
-    getBidData(id)
-      .then((bidData) => {
-        // append bid data to product
-        setProduct((prevProduct) => ({
-          ...prevProduct,
-          highestBid: bidData.highestBid,
-          bidsCount: bidData.bidsCount
-        }));
-      })
-      .catch((error) => {
-        setBidDataError(error.message);
-      })
-      .finally(() => {
-        setBidDataLoading(false);
-      });
-  };
-
   useEffect(() => {
     fetchInitialData();
   }, [id]);
@@ -119,22 +99,48 @@ const ProductDetails = () => {
   const onSubmit = (data) => {
     const bidDetails = {
       bidAmount: data.bidAmount,
-      bidTime: new Date().toISOString(), // format date to match the backend
+      bidTime: new Date().toISOString(),
       productId: product.id,
       userId: userId
     };
-
+  
     placeBid(bidDetails)
-      .then(() => {
+      .then((newBidResponse) => {
         setError(null);
+        methods.reset();
+        // update the product details with the new bid data
+        setProduct(prevProduct => ({
+          ...prevProduct,
+          highestBid: newBidResponse.highestBid || prevProduct.highestBid,
+          bidsCount: newBidResponse.bidsCount
+        }));
+        
+        fetchNewProductDetails();
       })
       .catch((error) => {
         setError(error.response.data.message);
       });
-
-    methods.reset();
-    fetchNewProductDetails();
   };
+  
+  const fetchNewProductDetails = () => {
+    setBidDataLoading(true);
+  
+    getBidData(id)
+      .then((bidData) => {
+        setProduct((prevProduct) => ({
+          ...prevProduct,
+          highestBid: bidData.highestBid,
+          bidsCount: bidData.bidsCount
+        }));
+      })
+      .catch((error) => {
+        setBidDataError(error.message);
+      })
+      .finally(() => {
+        setBidDataLoading(false);
+      });
+  };
+  
 
   if (loading) return <LoadingComponent />;
   if (error) return <ErrorComponent message={ error } />;
