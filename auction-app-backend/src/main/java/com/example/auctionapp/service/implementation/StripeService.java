@@ -28,7 +28,7 @@ public class StripeService {
         logger.info("Stripe API key initialized");
     }
 
-    public PaymentResponse createPaymentIntent(ChargeRequest request) {
+    public PaymentResponse createPaymentIntent(final ChargeRequest request) {
         try {
             final Customer customer = CustomerUtil
                     .findOrCreateCustomer(request.getCustomerEmail(), request.getCustomerName());

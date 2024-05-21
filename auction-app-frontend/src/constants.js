@@ -42,6 +42,7 @@ export const ROUTES_MAP = {
   "/about-us": "About Us",
   "/privacy-policy": "Privacy Policy",
   "/terms-and-conditions": "Terms and Conditions",
+  "/checkout": "Checkout",
   // will add more routes
 };
 
@@ -56,6 +57,7 @@ export const ROUTE_PATHS = {
   LOGIN: "/login",
   REGISTER: "/register",
   ADD_ITEM: "/add-item",
+  CHECKOUT: "/checkout",
 };
 
 export const HIDE_BREADCRUMBS_ON_PATHS = [

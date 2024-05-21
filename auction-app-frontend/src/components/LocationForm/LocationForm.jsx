@@ -33,6 +33,13 @@ const LocationForm = ({ formData, setFormData, handleFinalSubmit }) => {
 
         getUser(userId)
             .then((response) => {
+                if (!response.paymentInfoEntity || !response.paymentInfoEntity.creditCardEntity) {
+                    setPaymentInfo({});
+
+                    methods.reset({ ...formData });
+                    return;
+                }
+
                 const { expirationDate, ...rest } = response.paymentInfoEntity.creditCardEntity;
                 const [year, month, day] = expirationDate.split('-');
 
