@@ -30,7 +30,7 @@ const CheckoutComponent = () => {
             stripeToken: token.id
         };
 
-        //addPaymentInfo(paymentInfo);
+        addPaymentInfo(paymentInfo);
         console.log("Payment info: ", paymentInfo);
     };
 

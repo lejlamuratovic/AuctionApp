@@ -6,6 +6,17 @@
     padding: 40px;
     width: 664px;
 
+    .input-container {
+        input[type="text"] {
+            border: none;
+            font-size: 14px;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+        }
+    }
+
     form {
         width: 100%;
 

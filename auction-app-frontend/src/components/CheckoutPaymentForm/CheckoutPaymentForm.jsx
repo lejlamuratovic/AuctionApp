@@ -6,17 +6,20 @@ import { BUTTON_VARIANTS, BUTTON_LABELS } from "src/constants";
 
 import "./style.scss";
 
-const CheckoutPaymentForm = ({ clientSecret, onPaymentSuccess }) => {
+const CheckoutPaymentForm = ({ clientSecret, onPaymentSuccess }) =>
+{
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
     const [cardNumberError, setCardNumberError] = useState("");
     const [cardExpiryError, setCardExpiryError] = useState("");
     const [cardCvcError, setCardCvcError] = useState("");
+    const [cardholderName, setCardholderName] = useState("");
 
     const stripe = useStripe();
     const elements = useElements();
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event) =>
+    {
         event.preventDefault();
 
         if (!stripe || !elements) {
@@ -32,14 +35,14 @@ const CheckoutPaymentForm = ({ clientSecret, onPaymentSuccess }) => {
         }
 
         try {
-            const { token, error } = await stripe.createToken(cardElement);
+            const { token, error } = await stripe.createToken(cardElement, { name: cardholderName });
             if (error) {
                 setErrorMessage(error.message);
             } else {
                 setSuccessMessage("Payment confirmed successfully");
                 onPaymentSuccess(token);
             }
-        } catch (error) {
+        } catch (error){
             setErrorMessage(error.message || "An error occurred during payment confirmation.");
         }
     };
@@ -58,22 +61,34 @@ const CheckoutPaymentForm = ({ clientSecret, onPaymentSuccess }) => {
 
     return (
         <div className="form-container">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={ handleSubmit }>
+                <label className="body-regular">
+                    Name on Card
+                    <div className="input-container">
+                        <input
+                            type="text"
+                            value={ cardholderName }
+                            onChange={ (e) => setCardholderName(e.target.value) }
+                            placeholder="Name on Card"
+                            required
+                        />
+                    </div>
+                </label>
                 <label className="body-regular">
                     Card Number
                     <div className="input-container">
-                        <CardNumberElement 
-                            onChange={handleCardNumberChange}
+                        <CardNumberElement
+                            onChange={ handleCardNumberChange }
                         />
                     </div>
-                    {cardNumberError && <div className="error-message">{cardNumberError}</div>}
+                    { cardNumberError && <div className="error-message">{ cardNumberError }</div> }
                 </label>
                 <div className="form-row">
                     <label className="body-regular">
                         Expiration Date
                         <div className="input-container">
-                            <CardExpiryElement 
-                                onChange={handleCardExpiryChange}
+                            <CardExpiryElement
+                                onChange={ handleCardExpiryChange }
                             />
                         </div>
                         { cardExpiryError && <div className="error-message">{ cardExpiryError }</div> }
@@ -81,20 +96,23 @@ const CheckoutPaymentForm = ({ clientSecret, onPaymentSuccess }) => {
                     <label className="body-regular">
                         CVC
                         <div className="input-container">
-                            <CardCvcElement 
-                                onChange={handleCardCvcChange}
+                            <CardCvcElement
+                                onChange={ handleCardCvcChange }
                             />
                         </div>
                         { cardCvcError && <div className="error-message">{ cardCvcError }</div> }
                     </label>
                 </div>
-                <Button
-                    variant={ BUTTON_VARIANTS.FILLED }
-                    label={ BUTTON_LABELS.PAY }
-                    disabled={ !stripe || !elements }
-                    type="submit"
-                />
+                <div className="button-container">
+                    <Button
+                        variant={ BUTTON_VARIANTS.FILLED }
+                        label={ BUTTON_LABELS.PAY }
+                        disabled={ !stripe || !elements }
+                        type="submit"
+                    />
+                </div>
                 { successMessage && <div>{ successMessage }</div> }
+                { errorMessage && <ErrorComponent message={ errorMessage } /> }
             </form>
         </div>
     );

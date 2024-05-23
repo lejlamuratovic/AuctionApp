@@ -1,15 +1,12 @@
 package com.example.auctionapp.request;
 
-import java.time.LocalDate;
-
 public class StripePaymentAddRequest {
     private String address;
+    private String email;
     private String city;
     private String country;
     private String zipCode;
-    private String nameOnCard;
-    private String cardNumber;
-    private LocalDate expirationDate;
+    private String stripeToken;
 
     public String getAddress() {
         return this.address;
@@ -43,27 +40,19 @@ public class StripePaymentAddRequest {
         this.zipCode = zipCode;
     }
 
-    public String getNameOnCard() {
-        return this.nameOnCard;
+    public String getStripeToken() {
+        return stripeToken;
     }
 
-    public void setNameOnCard(final String nameOnCard) {
-        this.nameOnCard = nameOnCard;
+    public void setStripeToken(final String stripeToken) {
+        this.stripeToken = stripeToken;
     }
 
-    public String getCardNumber() {
-        return this.cardNumber;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCardNumber(final String cardNumber) {
-        this.cardNumber = cardNumber;
-    }
-
-    public LocalDate getExpirationDate() {
-        return this.expirationDate;
-    }
-
-    public void setExpirationDate(final LocalDate expirationDate) {
-        this.expirationDate = expirationDate;
+    public void setEmail(final String email) {
+        this.email = email;
     }
 }

@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 
 import { FormContainer } from "src/components";
-import { addressInformationFields } from "src/forms/fields";
+import { locationShippingFormFields } from "src/forms/fields";
 import { BUTTON_LABELS } from "src/constants";
 
 import "./style.scss";
@@ -11,7 +11,8 @@ const CheckoutAddressForm = ({ onAddressFormSubmit }) => {
         mode: "onBlur",
         defaultValues: {
             // dummy data
-            street: "Some street", 
+            email: "jonhdoe@gmail.com",
+            address: "Some street", 
             city: "Sarajevo",
             zipCode: "123",
             country: "BiH",
@@ -27,7 +28,7 @@ const CheckoutAddressForm = ({ onAddressFormSubmit }) => {
     return (
         <div className="address-form-container">
             <FormContainer 
-                formFields={ addressInformationFields }
+                formFields={ locationShippingFormFields }
                 onSubmit={ methods.handleSubmit(onSubmit) }
                 buttonLabel={ BUTTON_LABELS.NEXT }
                 methods={ methods }
