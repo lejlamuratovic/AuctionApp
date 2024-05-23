@@ -2,19 +2,28 @@ import { useState, useEffect } from "react";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
-import { CheckoutForm, LoadingComponent, ErrorComponent } from "src/components";
-import { STRIPE_PUBLIC_KEY } from "src/constants";
+import { CheckoutAddressForm, CheckoutPaymentForm, LoadingComponent, ErrorComponent } from "src/components";
+import { STRIPE_PUBLIC_KEY, CHECKOUT_STEPS } from "src/constants";
 import { createPaymentIntent } from "src/services";
+
+import "./style.scss";
 
 const stripePromise = loadStripe(STRIPE_PUBLIC_KEY);
 
 const CheckoutComponent = () => {
+    const [step, setStep] = useState(CHECKOUT_STEPS.ADDRESS);
     const [clientSecret, setClientSecret] = useState();
     const [loading, setLoading] = useState();
     const [errorMessage, setErrorMessage] = useState();
+    const [addressInformation, setAddressInformation] = useState({});
+
+    const onAddressFormSubmit = (addressData) => {
+        setAddressInformation(addressData);
+
+        setStep(CHECKOUT_STEPS.PAYMENT);
+    };
 
     const fetchPaymentIntent = () => {
-        // dummy charge request
         const chargeRequest = {
             customerEmail: "johndoe123@example.com",
             customerName: "John Doe",
@@ -33,19 +42,28 @@ const CheckoutComponent = () => {
                 setErrorMessage(error.message);
                 setLoading(false);
             });
-    }
-                    
-    useEffect(() => {
-        fetchPaymentIntent();
-    }, []);
+    };
 
-    if (loading) return <LoadingComponent />
-    if (errorMessage) return <ErrorComponent message={ errorMessage } />
+    useEffect(() => {
+        if (CHECKOUT_STEPS.PAYMENT) {
+            fetchPaymentIntent();
+        }
+    }, [step]);
+
+    if (loading) return <LoadingComponent />;
+    if (errorMessage) return <ErrorComponent message={ errorMessage } />;
 
     return (
-        <Elements stripe={ stripePromise }  options={{ clientSecret }}>
-            <CheckoutForm clientSecret={ clientSecret } />
-        </Elements>
+        <div className="checkout-container">
+            { CHECKOUT_STEPS.ADDRESS === step && (
+                <CheckoutAddressForm onAddressFormSubmit={ onAddressFormSubmit } />
+            ) }
+            { CHECKOUT_STEPS.PAYMENT === step  && clientSecret && (
+                <Elements stripe={ stripePromise } options={{ clientSecret }}>
+                    <CheckoutPaymentForm clientSecret={ clientSecret } />
+                </Elements>
+            ) }
+        </div>
     );
 };
 

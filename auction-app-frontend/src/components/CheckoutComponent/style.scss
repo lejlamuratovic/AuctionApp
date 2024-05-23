@@ -1,0 +1,5 @@
+@import "src/scss/index.scss";
+
+.checkout-container {
+    @include flex-container(column, center, center);
+}

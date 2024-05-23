@@ -6,7 +6,7 @@ import { BUTTON_VARIANTS, BUTTON_LABELS } from "src/constants";
 
 import "./style.scss";
 
-const CheckoutForm = ({ clientSecret }) => {
+const CheckoutPaymentForm = ({ clientSecret }) => {
     const [errorMessage, setErrorMessage] = useState();
     const [successMessage, setSuccessMessage] = useState();
 
@@ -61,4 +61,4 @@ const CheckoutForm = ({ clientSecret }) => {
     );
 };
 
-export default CheckoutForm;
+export default CheckoutPaymentForm;

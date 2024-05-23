@@ -209,3 +209,8 @@ export const FIELD_TYPES = {
   NUMBER: "number",
   DATE: "date",
 };
+
+export const CHECKOUT_STEPS = {
+  ADDRESS: "address",
+  PAYMENT: "payment",
+};
