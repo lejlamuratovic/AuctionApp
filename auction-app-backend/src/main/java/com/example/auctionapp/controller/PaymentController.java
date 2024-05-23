@@ -22,7 +22,7 @@ public class PaymentController {
 
     @PreAuthorize(SecurityRoles.ALL)
     @PostMapping("/add-payment-info")
-    public void addPaymentInformtation(@RequestBody final StripePaymentAddRequest stripePaymentAddRequest) {
+    public void addPaymentInformation(@RequestBody final StripePaymentAddRequest stripePaymentAddRequest) {
          // Nothing to do here yet
     }
 }

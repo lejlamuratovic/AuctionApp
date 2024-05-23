@@ -6,18 +6,21 @@ import { CheckoutAddressForm, CheckoutPaymentForm, LoadingComponent, ErrorCompon
 import { STRIPE_PUBLIC_KEY, CHECKOUT_STEPS } from "src/constants";
 import { createPaymentIntent } from "src/services";
 import { addPaymentInfo } from "src/services/paymentService";
+import { useUser } from "src/store/UserContext";
 
 import "./style.scss";
 
 const stripePromise = loadStripe(STRIPE_PUBLIC_KEY);
 
-const CheckoutComponent = () => {
+const CheckoutComponent = ({ product }) => {
     const [step, setStep] = useState(CHECKOUT_STEPS.ADDRESS);
     const [clientSecret, setClientSecret] = useState();
     const [loading, setLoading] = useState();
     const [errorMessage, setErrorMessage] = useState();
     const [addressInformation, setAddressInformation] = useState({});
 
+    const { userName, email } = useUser();
+    
     const onAddressFormSubmit = (addressData) => {
         setAddressInformation(addressData);
 
@@ -31,16 +34,15 @@ const CheckoutComponent = () => {
         };
 
         addPaymentInfo(paymentInfo);
-        console.log("Payment info: ", paymentInfo);
     };
 
     const fetchPaymentIntent = async () => {
         setLoading(true);
         try {
             const response = await createPaymentIntent({
-                customerEmail: "johndoe123@example.com",
-                customerName: "John Doe",
-                product: { highestBid: 2000 }
+                customerEmail: email,
+                customerName: userName,
+                product: product
             });
             if (response.clientSecret) {
                 setClientSecret(response.clientSecret);

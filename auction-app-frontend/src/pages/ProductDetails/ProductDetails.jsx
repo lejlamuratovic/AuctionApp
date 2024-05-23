@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { Tabs, LoadingComponent, ErrorComponent, FormContainer, Notifications, Button } from "src/components";
 
@@ -15,7 +15,8 @@ import {
   BUTTON_LABELS, 
   BUTTON_VARIANTS, 
   USER_TYPES,
-  PRODUCT_STATUS
+  PRODUCT_STATUS,
+  ROUTE_PATHS
 } from "src/constants";
 import { placeBidsFormFields } from "src/forms/fields";
 import { go } from "src/assets/icons";
@@ -23,6 +24,8 @@ import { go } from "src/assets/icons";
 import "./style.scss";
 
 const ProductDetails = () => {
+  const navigate = useNavigate();
+
   const [activeTab, setActiveTab] = useState(PRODUCT_DETAILS_TABS[0].id);
   const [product, setProduct] = useState(null);
   const [productImages, setProductImages] = useState([]);
@@ -140,6 +143,11 @@ const ProductDetails = () => {
         setBidDataLoading(false);
       });
   };
+
+  const checkout = () => {
+    console.log("checkout"	);
+    navigate(ROUTE_PATHS.CHECKOUT, { state: { product } });
+  };
   
 
   if (loading) return <LoadingComponent />;
@@ -227,7 +235,7 @@ const ProductDetails = () => {
             ) : !isAuctionActive && userIsHighestBidder ? (
               <div className="payment-info">
                 <Button 
-                  onButtonClick={ () => console.log("Payment button")} 
+                  onButtonClick={ checkout } 
                   label={ BUTTON_LABELS.PAY } 
                   variant = { BUTTON_VARIANTS.FILLED }
                 />
