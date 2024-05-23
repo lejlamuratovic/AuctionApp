@@ -1,22 +1,43 @@
 @import "src/scss/index.scss";
 
 .form-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
+    @include flex-container(column, center, center);
+    border: 1px solid $neutral09;
+    padding: 40px;
+    width: 664px;
 
     form {
-        margin-top: 50px;
-        padding: 40px;
-        border: 1px solid $neutral09;
-        width: 560px;
+        width: 100%;
+
+        .input-container {
+            padding: 20px;
+            border: 1px solid $neutral09;
+            margin: 15px 0;
+            position: relative;;
+        }
+
+        .error-message {
+            color: $error;
+            font-size: 16px;
+        }
     }
 
     button {
-        margin-top: 20px;
-        width: 200px;
+        margin-top: 30px;
+        width: 280px;
         float: right;
+    }
+
+    .StripeElement--invalid {
+        color: $error;
+    }
+
+    .form-row {
+        @include flex-container(row, space-between, center);
+        width: 100%;
+        
+        .input-container {
+            width: 280px;
+        }
     }
 }

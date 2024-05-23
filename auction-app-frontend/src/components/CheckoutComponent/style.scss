@@ -2,4 +2,5 @@
 
 .checkout-container {
     @include flex-container(column, center, center);
+    margin-top: 40px;
 }

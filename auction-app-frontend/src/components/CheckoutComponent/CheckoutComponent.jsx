@@ -5,6 +5,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { CheckoutAddressForm, CheckoutPaymentForm, LoadingComponent, ErrorComponent } from "src/components";
 import { STRIPE_PUBLIC_KEY, CHECKOUT_STEPS } from "src/constants";
 import { createPaymentIntent } from "src/services";
+import { addPaymentInfo } from "src/services/paymentService";
 
 import "./style.scss";
 
@@ -23,29 +24,36 @@ const CheckoutComponent = () => {
         setStep(CHECKOUT_STEPS.PAYMENT);
     };
 
-    const fetchPaymentIntent = () => {
-        const chargeRequest = {
-            customerEmail: "johndoe123@example.com",
-            customerName: "John Doe",
-            product: { highestBid: 2000 }
+    const onPaymentSuccess = (token) => {
+        const paymentInfo = {
+            ...addressInformation,
+            stripeToken: token.id
         };
 
-        setLoading(true);
+        //addPaymentInfo(paymentInfo);
+        console.log("Payment info: ", paymentInfo);
+    };
 
-        createPaymentIntent(chargeRequest)
-            .then((response) => {
-                if (response.clientSecret) {
-                    setClientSecret(response.clientSecret);
-                    setLoading(false);
-                }
-            }).catch((error) => {
-                setErrorMessage(error.message);
-                setLoading(false);
+    const fetchPaymentIntent = async () => {
+        setLoading(true);
+        try {
+            const response = await createPaymentIntent({
+                customerEmail: "johndoe123@example.com",
+                customerName: "John Doe",
+                product: { highestBid: 2000 }
             });
+            if (response.clientSecret) {
+                setClientSecret(response.clientSecret);
+            }
+            setLoading(false);
+        } catch (error) {
+            setErrorMessage(error.message);
+            setLoading(false);
+        }
     };
 
     useEffect(() => {
-        if (CHECKOUT_STEPS.PAYMENT) {
+        if (step === CHECKOUT_STEPS.PAYMENT) {
             fetchPaymentIntent();
         }
     }, [step]);
@@ -55,12 +63,12 @@ const CheckoutComponent = () => {
 
     return (
         <div className="checkout-container">
-            { CHECKOUT_STEPS.ADDRESS === step && (
+            { step === CHECKOUT_STEPS.ADDRESS && (
                 <CheckoutAddressForm onAddressFormSubmit={ onAddressFormSubmit } />
             ) }
-            { CHECKOUT_STEPS.PAYMENT === step  && clientSecret && (
+            { step === CHECKOUT_STEPS.PAYMENT && clientSecret && (
                 <Elements stripe={ stripePromise } options={{ clientSecret }}>
-                    <CheckoutPaymentForm clientSecret={ clientSecret } />
+                    <CheckoutPaymentForm clientSecret={ clientSecret } onPaymentSuccess={ onPaymentSuccess } />
                 </Elements>
             ) }
         </div>

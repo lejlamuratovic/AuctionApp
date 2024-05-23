@@ -33,9 +33,14 @@
         }
     }
 
-    button {
-        margin-top: 20px;
-        width: 200px;
-        float: right;
+    .button-container {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+
+        button {
+            margin-top: 20px;
+            width: 200px;
+        }
     }
 }
