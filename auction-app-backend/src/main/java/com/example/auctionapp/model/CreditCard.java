@@ -8,6 +8,7 @@ public class CreditCard {
     private String nameOnCard;
     private String cardNumber;
     private LocalDate expirationDate;
+    private String stripeToken;
 
     public CreditCard() {
     }
@@ -42,5 +43,13 @@ public class CreditCard {
 
     public void setExpirationDate(final LocalDate expirationDate) {
         this.expirationDate = expirationDate;
+    }
+
+    public String getStripeToken() {
+        return this.stripeToken;
+    }
+
+    public void setStripeToken(final String stripeToken) {
+        this.stripeToken = stripeToken;
     }
 }

@@ -1,13 +1,6 @@
 package com.example.auctionapp.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-import org.hibernate.annotations.GenericGenerator;
-
-import java.time.LocalDate;
+import com.example.auctionapp.entity.PaymentInfoEntity;
 import java.util.UUID;
 
 public class PaymentInfo {
@@ -18,6 +11,17 @@ public class PaymentInfo {
     private String zipCode;
 
     public PaymentInfo() {
+    }
+
+    public PaymentInfoEntity toEntity() {
+        PaymentInfoEntity entity = new PaymentInfoEntity();
+
+        entity.setPaymentInfoId(this.paymentInfoId);
+        entity.setCity(this.city);
+        entity.setCountry(this.country);
+        entity.setZipCode(this.zipCode);
+
+        return entity;
     }
 
     public UUID getPaymentInfoId() {

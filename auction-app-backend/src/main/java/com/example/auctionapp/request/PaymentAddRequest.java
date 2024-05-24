@@ -1,5 +1,7 @@
 package com.example.auctionapp.request;
 
+import com.example.auctionapp.entity.PaymentInfoEntity;
+
 import java.time.LocalDate;
 
 public class PaymentAddRequest {
@@ -25,6 +27,17 @@ public class PaymentAddRequest {
         this.nameOnCard = nameOnCard;
         this.cardNumber = cardNumber;
         this.expirationDate = expirationDate;
+    }
+
+    public PaymentInfoEntity toEntity() {
+        PaymentInfoEntity entity = new PaymentInfoEntity();
+
+        entity.setCity(this.city);
+        entity.setCountry(this.country);
+        entity.setAddress(this.address);
+        entity.setZipCode(this.zipCode);
+
+        return entity;
     }
 
     public String getAddress() {

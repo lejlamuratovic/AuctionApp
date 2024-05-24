@@ -32,14 +32,20 @@ public class CreditCardEntity {
     @Temporal(TemporalType.DATE)
     private LocalDate expirationDate;
 
+    @Column(name = "stripe_token")
+    private String stripeToken;
+
     public CreditCardEntity(final UUID creditCardId,
                             final String nameOnCard,
                             final String cardNumber,
-                            final LocalDate expirationDate) {
+                            final LocalDate expirationDate,
+                            final String stripeToken
+    ) {
         this.creditCardId = creditCardId;
         this.nameOnCard = nameOnCard;
         this.cardNumber = cardNumber;
         this.expirationDate = expirationDate;
+        this.stripeToken = stripeToken;
     }
 
     public CreditCardEntity() {
@@ -52,6 +58,7 @@ public class CreditCardEntity {
         creditCard.setCardNumber(this.cardNumber);
         creditCard.setExpirationDate(this.expirationDate);
         creditCard.setNameOnCard(this.nameOnCard);
+        creditCard.setStripeToken(this.stripeToken);
 
         return creditCard;
     }
@@ -86,5 +93,13 @@ public class CreditCardEntity {
 
     public void setExpirationDate(final LocalDate expirationDate) {
         this.expirationDate = expirationDate;
+    }
+
+    public String getStripeToken() {
+        return stripeToken;
+    }
+
+    public void setStripeToken(String stripeToken) {
+        this.stripeToken = stripeToken;
     }
 }
