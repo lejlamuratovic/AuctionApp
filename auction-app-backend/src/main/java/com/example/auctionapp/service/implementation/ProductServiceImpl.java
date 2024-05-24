@@ -24,10 +24,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -155,6 +157,14 @@ public class ProductServiceImpl implements ProductService {
         return this.productRepository
                 .findProductEntityByUserEntity_UserIdAndAndStatus(userId, productStatus, pageable)
                 .map(ProductBidDetailsResponse::new);
+    }
+
+    // used to deactivate products that have expired using scheduled task
+    @Transactional
+    @Scheduled(cron = "0 0 0 * * *", zone = "UTC")
+    public void deactivateExpiredProducts() {
+        LocalDateTime now = LocalDateTime.now();
+        productRepository.updateProductStatus(now);
     }
 
     private void handleCategoryAndUser(ProductEntity productEntity, ProductAddRequest productRequest) {
