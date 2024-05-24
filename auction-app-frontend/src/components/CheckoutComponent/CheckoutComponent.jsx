@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import { useNavigate } from "react-router-dom";
 
 import { CheckoutAddressForm, CheckoutPaymentForm, LoadingComponent, ErrorComponent } from "src/components";
-import { STRIPE_PUBLIC_KEY, CHECKOUT_STEPS } from "src/constants";
+import { STRIPE_PUBLIC_KEY, CHECKOUT_STEPS, ROUTE_PATHS } from "src/constants";
 import { createPaymentIntent } from "src/services";
 import { addPaymentInfo } from "src/services/paymentService";
 import { useUser } from "src/store/UserContext";
@@ -20,6 +21,9 @@ const CheckoutComponent = ({ product }) => {
     const [errorMessage, setErrorMessage] = useState();
     const [addressInformation, setAddressInformation] = useState({});
     const [userData, setUserData] = useState(null);
+    const [successMessage, setSuccessMessage] = useState(null);
+
+    const navigate = useNavigate();
 
     const { userName, email, userId } = useUser();
 
@@ -54,8 +58,17 @@ const CheckoutComponent = ({ product }) => {
             ...addressInformation,
             stripeToken: token.id
         };
+    
+        addPaymentInfo(paymentInfo).then(() => {
+            setSuccessMessage("Thank you for your purchase! Your transaction has been successfully completed.");
 
-        addPaymentInfo(paymentInfo);
+            setTimeout(() => {
+                navigate(ROUTE_PATHS.HOME);
+            }, 5000);
+
+        }).catch((error) => {
+            setErrorMessage("Failed to process payment info. Please try again.");
+        });
     };
 
     const fetchPaymentIntent = async () => {
@@ -89,6 +102,7 @@ const CheckoutComponent = ({ product }) => {
 
     return (
         <div className="checkout-container">
+            { successMessage && <div className="success-message body-bold">{ successMessage }</div> }
             { step === CHECKOUT_STEPS.ADDRESS && (
                 <CheckoutAddressForm 
                     onAddressFormSubmit={ onAddressFormSubmit } 

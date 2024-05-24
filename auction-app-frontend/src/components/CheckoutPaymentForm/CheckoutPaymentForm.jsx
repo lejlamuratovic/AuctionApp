@@ -111,7 +111,6 @@ const CheckoutPaymentForm = ({ clientSecret, onPaymentSuccess }) =>
                         type="submit"
                     />
                 </div>
-                { successMessage && <div>{ successMessage }</div> }
                 { errorMessage && <ErrorComponent message={ errorMessage } /> }
             </form>
         </div>
