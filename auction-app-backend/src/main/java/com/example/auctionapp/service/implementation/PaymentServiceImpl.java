@@ -29,11 +29,16 @@ public class PaymentServiceImpl implements PaymentService {
         CreditCardEntity creditCardEntity = new CreditCardEntity();
 
         creditCardEntity.setStripeToken(stripePaymentAddRequest.getStripeToken());
-        creditCardRepository.save(creditCardEntity);
+        this.creditCardRepository.save(creditCardEntity);
 
         PaymentInfoEntity paymentInfo = new PaymentInfoEntity();
+        paymentInfo.setZipCode(stripePaymentAddRequest.getZipCode());
+        paymentInfo.setAddress(stripePaymentAddRequest.getZipCode());
+        paymentInfo.setCity(stripePaymentAddRequest.getCity());
+        paymentInfo.setCountry(stripePaymentAddRequest.getCountry());
         paymentInfo.setCreditCardEntity(creditCardEntity);
-        paymentInfoRepository.save(paymentInfo);
+
+        this.paymentInfoRepository.save(paymentInfo);
 
         return paymentInfo.toDomainModel();
     }
@@ -48,12 +53,12 @@ public class PaymentServiceImpl implements PaymentService {
         creditCardEntity.setExpirationDate(paymentAddRequest.getExpirationDate());
         creditCardEntity.setNameOnCard(paymentAddRequest.getNameOnCard());
 
-        creditCardRepository.save(creditCardEntity);
+        this.creditCardRepository.save(creditCardEntity);
 
         PaymentInfoEntity paymentInfo = paymentAddRequest.toEntity();
 
         paymentInfo.setCreditCardEntity(creditCardEntity);
-        paymentInfoRepository.save(paymentInfo);
+        this.paymentInfoRepository.save(paymentInfo);
 
         return paymentInfo.toDomainModel();
     }

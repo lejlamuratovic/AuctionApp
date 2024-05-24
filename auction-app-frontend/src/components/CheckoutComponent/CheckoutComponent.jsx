@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
@@ -7,6 +7,7 @@ import { STRIPE_PUBLIC_KEY, CHECKOUT_STEPS } from "src/constants";
 import { createPaymentIntent } from "src/services";
 import { addPaymentInfo } from "src/services/paymentService";
 import { useUser } from "src/store/UserContext";
+import { getUser } from "src/services/userService";
 
 import "./style.scss";
 
@@ -18,12 +19,33 @@ const CheckoutComponent = ({ product }) => {
     const [loading, setLoading] = useState();
     const [errorMessage, setErrorMessage] = useState();
     const [addressInformation, setAddressInformation] = useState({});
+    const [userData, setUserData] = useState(null);
 
-    const { userName, email } = useUser();
+    const { userName, email, userId } = useUser();
+
+    const getInitialData = () => {
+        if (!userId) return;
     
+        setLoading(true);
+        
+        getUser(userId)
+            .then(response => {
+                setUserData(response || {});
+                setLoading(false);
+            })
+            .catch(error => {
+                setErrorMessage(error.message);
+                setLoading(false);
+                setUserData({});
+            });
+    };
+
+    useEffect(() => {
+        getInitialData();
+    }, [userId]);
+
     const onAddressFormSubmit = (addressData) => {
         setAddressInformation(addressData);
-
         setStep(CHECKOUT_STEPS.PAYMENT);
     };
 
@@ -38,6 +60,7 @@ const CheckoutComponent = ({ product }) => {
 
     const fetchPaymentIntent = async () => {
         setLoading(true);
+
         try {
             const response = await createPaymentIntent({
                 customerEmail: email,
@@ -47,6 +70,7 @@ const CheckoutComponent = ({ product }) => {
             if (response.clientSecret) {
                 setClientSecret(response.clientSecret);
             }
+
             setLoading(false);
         } catch (error) {
             setErrorMessage(error.message);
@@ -66,11 +90,17 @@ const CheckoutComponent = ({ product }) => {
     return (
         <div className="checkout-container">
             { step === CHECKOUT_STEPS.ADDRESS && (
-                <CheckoutAddressForm onAddressFormSubmit={ onAddressFormSubmit } />
+                <CheckoutAddressForm 
+                    onAddressFormSubmit={ onAddressFormSubmit } 
+                    initialData={ userData ? userData.paymentInfoEntity : {} }
+                />
             ) }
             { step === CHECKOUT_STEPS.PAYMENT && clientSecret && (
                 <Elements stripe={ stripePromise } options={{ clientSecret }}>
-                    <CheckoutPaymentForm clientSecret={ clientSecret } onPaymentSuccess={ onPaymentSuccess } />
+                    <CheckoutPaymentForm 
+                        clientSecret={ clientSecret } 
+                        onPaymentSuccess={ onPaymentSuccess } 
+                    />
                 </Elements>
             ) }
         </div>

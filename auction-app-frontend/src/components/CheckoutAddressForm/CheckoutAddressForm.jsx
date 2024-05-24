@@ -3,22 +3,21 @@ import { useForm } from "react-hook-form";
 import { FormContainer } from "src/components";
 import { locationShippingFormFields } from "src/forms/fields";
 import { BUTTON_LABELS } from "src/constants";
+import { useUser } from "src/store/UserContext";
 
 import "./style.scss";
 
-const CheckoutAddressForm = ({ onAddressFormSubmit }) => {
+const CheckoutAddressForm = ({ onAddressFormSubmit, initialData }) => {
+    const { email } = useUser();
+
     const methods = useForm({
         mode: "onBlur",
         defaultValues: {
-            // dummy data
-            email: "jonhdoe@gmail.com",
-            address: "Some street", 
-            city: "Sarajevo",
-            zipCode: "123",
-            country: "BiH",
-            state: "BiH"
+            ...initialData,
+            email: email
         }
     });
+
     const onSubmit = () => {
         const formData = methods.getValues();
 
