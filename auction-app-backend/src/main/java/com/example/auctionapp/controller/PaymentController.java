@@ -1,6 +1,7 @@
 package com.example.auctionapp.controller;
 
 import com.example.auctionapp.model.PaymentInfo;
+import com.example.auctionapp.request.PaymentAddRequest;
 import com.example.auctionapp.request.StripePaymentAddRequest;
 import com.example.auctionapp.service.PaymentService;
 import com.example.auctionapp.util.SecurityRoles;
@@ -22,8 +23,14 @@ public class PaymentController {
     }
 
     @PreAuthorize(SecurityRoles.ALL)
+    @PostMapping("/stripe-payment-info")
+    public PaymentInfo addStripePaymentInfo(@RequestBody final StripePaymentAddRequest stripePaymentAddRequest) {
+        return this.paymentService.addStripePaymentInfo(stripePaymentAddRequest);
+    }
+
+    @PreAuthorize(SecurityRoles.ALL)
     @PostMapping("/add-payment-info")
-    public PaymentInfo addPaymentInformation(@RequestBody final StripePaymentAddRequest stripePaymentAddRequest) {
-        return this.paymentService.addNewPaymentInfo(stripePaymentAddRequest);
+    public PaymentInfo addNewPaymentInfo(@RequestBody final PaymentAddRequest paymentAddRequest) {
+        return this.paymentService.addNewPaymentInfo(paymentAddRequest);
     }
 }

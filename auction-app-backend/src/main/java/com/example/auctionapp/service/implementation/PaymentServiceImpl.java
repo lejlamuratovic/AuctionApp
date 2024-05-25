@@ -23,13 +23,11 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     // used for payments with stripe
-    @Transactional
     @Override
-    public PaymentInfo addNewPaymentInfo(StripePaymentAddRequest stripePaymentAddRequest) {
+    public PaymentInfo addStripePaymentInfo(StripePaymentAddRequest stripePaymentAddRequest) {
         CreditCardEntity creditCardEntity = new CreditCardEntity();
 
         creditCardEntity.setStripeToken(stripePaymentAddRequest.getStripeToken());
-        this.creditCardRepository.save(creditCardEntity);
 
         PaymentInfoEntity paymentInfo = new PaymentInfoEntity();
         paymentInfo.setZipCode(stripePaymentAddRequest.getZipCode());
@@ -44,7 +42,6 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     // used for adding payment information to a product
-    @Transactional
     @Override
     public PaymentInfo addNewPaymentInfo(PaymentAddRequest paymentAddRequest) {
         CreditCardEntity creditCardEntity = new CreditCardEntity();
@@ -52,8 +49,6 @@ public class PaymentServiceImpl implements PaymentService {
         creditCardEntity.setCardNumber(paymentAddRequest.getCardNumber());
         creditCardEntity.setExpirationDate(paymentAddRequest.getExpirationDate());
         creditCardEntity.setNameOnCard(paymentAddRequest.getNameOnCard());
-
-        this.creditCardRepository.save(creditCardEntity);
 
         PaymentInfoEntity paymentInfo = paymentAddRequest.toEntity();
 

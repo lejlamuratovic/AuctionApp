@@ -5,6 +5,6 @@ import com.example.auctionapp.request.PaymentAddRequest;
 import com.example.auctionapp.request.StripePaymentAddRequest;
 
 public interface PaymentService {
-    PaymentInfo addNewPaymentInfo(final StripePaymentAddRequest stripePaymentAddRequest);
+    PaymentInfo addStripePaymentInfo(final StripePaymentAddRequest stripePaymentAddRequest);
     PaymentInfo addNewPaymentInfo(final PaymentAddRequest paymentAddRequest);
 }
