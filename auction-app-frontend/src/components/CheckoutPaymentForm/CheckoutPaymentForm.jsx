@@ -51,14 +51,10 @@ const CheckoutPaymentForm = ({ clientSecret, onPaymentSuccess }) => {
         }
 
         try {
-            const { token, error } = await stripe.createToken(cardElement, { name: cardholderName });
-            if (error) {
-                setErrors(prevErrors => ({ ...prevErrors, stripe: error.message }));
-            } else {
-                setSuccessMessage("Payment confirmed successfully");
+            const { token } = await stripe.createToken(cardElement, { name: cardholderName });
 
-                onPaymentSuccess(token);
-            }
+            setSuccessMessage("Payment confirmed successfully");
+            onPaymentSuccess(token);
         } catch (error) {
             setErrors(prevErrors => ({ ...prevErrors, stripe: error.message || "An error occurred during payment confirmation." }));
         }
@@ -70,6 +66,7 @@ const CheckoutPaymentForm = ({ clientSecret, onPaymentSuccess }) => {
 
     const handleNameChange = (event) => {
         const newName = event.target.value;
+        
         setCardholderName(newName);
         setErrors(prevErrors => ({ ...prevErrors, cardholderName: validateCardholderName(newName) }));
     };
