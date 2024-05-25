@@ -12,7 +12,6 @@ import "./style.scss";
 
 const LocationForm = ({ formData, setFormData, handleFinalSubmit }) => {
     const navigate = useNavigate();
-    
     const { userId, email } = useUser();
 
     const [originalPaymentInfo, setOriginalPaymentInfo] = useState(formData);

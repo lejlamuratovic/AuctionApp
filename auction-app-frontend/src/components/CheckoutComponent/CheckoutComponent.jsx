@@ -103,13 +103,13 @@ const CheckoutComponent = ({ product }) => {
     return (
         <div className="checkout-container">
             { successMessage && <div className="success-message body-bold">{ successMessage }</div> }
-            { step === CHECKOUT_STEPS.ADDRESS && (
+            { CHECKOUT_STEPS.ADDRESS === step && (
                 <CheckoutAddressForm 
                     onAddressFormSubmit={ onAddressFormSubmit } 
                     initialData={ userData ? userData.paymentInfoEntity : {} }
                 />
             ) }
-            { step === CHECKOUT_STEPS.PAYMENT && clientSecret && (
+            { CHECKOUT_STEPS.PAYMENT === step && clientSecret && (
                 <Elements stripe={ stripePromise } options={{ clientSecret }}>
                     <CheckoutPaymentForm 
                         clientSecret={ clientSecret } 

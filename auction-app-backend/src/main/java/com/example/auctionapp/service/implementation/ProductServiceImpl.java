@@ -159,14 +159,6 @@ public class ProductServiceImpl implements ProductService {
                 .map(ProductBidDetailsResponse::new);
     }
 
-    // used to deactivate products that have expired using scheduled task
-    @Transactional
-    @Scheduled(cron = "0 0 0 * * *", zone = "UTC")
-    public void deactivateExpiredProducts() {
-        LocalDateTime now = LocalDateTime.now();
-        productRepository.updateProductStatus(now);
-    }
-
     private void handleCategoryAndUser(ProductEntity productEntity, ProductAddRequest productRequest) {
         if (productRequest.getCategoryId() != null) {
             productEntity.setCategory(categoryRepository.findById(productRequest.getCategoryId())

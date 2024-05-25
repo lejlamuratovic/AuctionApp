@@ -24,7 +24,7 @@ const ProductBidsTable = ({ items, buttonLabel, tabId }) => {
           </div>
         )) }
       </div>
-      {hasItems ? (
+      { hasItems ? (
         <div className="table-content body-bold">
           { items.map((item, index) => {
             const auctionEnded = PRODUCT_STATUS.INACTIVE === item.status; 
