@@ -1,62 +1,77 @@
 import { useState } from "react";
-import { useStripe, useElements, CardNumberElement, CardExpiryElement, CardCvcElement } from '@stripe/react-stripe-js';
-
-import { LoadingComponent, Button, ErrorComponent } from "src/components";
+import { useStripe, useElements, CardNumberElement, CardExpiryElement, CardCvcElement } from "@stripe/react-stripe-js";
+import { Button, ErrorComponent } from "src/components";
 import { BUTTON_VARIANTS, BUTTON_LABELS } from "src/constants";
 
 import "./style.scss";
 
-const CheckoutPaymentForm = ({ clientSecret, onPaymentSuccess }) =>
-{
-    const [errorMessage, setErrorMessage] = useState("");
+const CheckoutPaymentForm = ({ clientSecret, onPaymentSuccess }) => {
+    const [errors, setErrors] = useState({
+        stripe: "",
+        cardNumber: "",
+        cardExpiry: "",
+        cardCvc: "",
+        cardholderName: ""
+    });
     const [successMessage, setSuccessMessage] = useState("");
-    const [cardNumberError, setCardNumberError] = useState("");
-    const [cardExpiryError, setCardExpiryError] = useState("");
-    const [cardCvcError, setCardCvcError] = useState("");
     const [cardholderName, setCardholderName] = useState("");
 
     const stripe = useStripe();
     const elements = useElements();
 
-    const handleSubmit = async (event) =>
-    {
+    const validateCardholderName = (name) => {
+        if (!name) return "Name on card is required";
+        if (name.length < 3) return "Name on card must be at least 3 characters";
+        return "";
+    };
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
+        const nameError = validateCardholderName(cardholderName);
+
+        if (nameError) {
+            setErrors(prevErrors => ({ ...prevErrors, cardholderName: nameError }));
+
+            return;
+        }
+
         if (!stripe || !elements) {
-            setErrorMessage("Stripe has not initialized");
+            setErrors(prevErrors => ({ ...prevErrors, stripe: "Stripe has not initialized" }));
+
             return;
         }
 
         const cardElement = elements.getElement(CardNumberElement);
 
         if (!cardElement) {
-            setErrorMessage("Card details not available");
+            setErrors(prevErrors => ({ ...prevErrors, stripe: "Card details not available" }));
+
             return;
         }
 
         try {
             const { token, error } = await stripe.createToken(cardElement, { name: cardholderName });
             if (error) {
-                setErrorMessage(error.message);
+                setErrors(prevErrors => ({ ...prevErrors, stripe: error.message }));
             } else {
                 setSuccessMessage("Payment confirmed successfully");
+
                 onPaymentSuccess(token);
             }
-        } catch (error){
-            setErrorMessage(error.message || "An error occurred during payment confirmation.");
+        } catch (error) {
+            setErrors(prevErrors => ({ ...prevErrors, stripe: error.message || "An error occurred during payment confirmation." }));
         }
     };
 
-    const handleCardNumberChange = (event) => {
-        setCardNumberError(event.error ? event.error.message : "");
+    const handleChange = (type) => (event) => {
+        setErrors(prevErrors => ({ ...prevErrors, [type]: event.error ? event.error.message : "" }));
     };
 
-    const handleCardExpiryChange = (event) => {
-        setCardExpiryError(event.error ? event.error.message : "");
-    };
-
-    const handleCardCvcChange = (event) => {
-        setCardCvcError(event.error ? event.error.message : "");
+    const handleNameChange = (event) => {
+        const newName = event.target.value;
+        setCardholderName(newName);
+        setErrors(prevErrors => ({ ...prevErrors, cardholderName: validateCardholderName(newName) }));
     };
 
     return (
@@ -68,39 +83,39 @@ const CheckoutPaymentForm = ({ clientSecret, onPaymentSuccess }) =>
                         <input
                             type="text"
                             value={ cardholderName }
-                            onChange={ (e) => setCardholderName(e.target.value) }
+                            onChange={ handleNameChange }
                             placeholder="Name on Card"
-                            required
                         />
                     </div>
+                    { errors.cardholderName && <div className="error-message">{ errors.cardholderName }</div> }
                 </label>
                 <label className="body-regular">
                     Card Number
                     <div className="input-container">
                         <CardNumberElement
-                            onChange={ handleCardNumberChange }
+                            onChange={ handleChange("cardNumber") }
                         />
                     </div>
-                    { cardNumberError && <div className="error-message">{ cardNumberError }</div> }
+                    { errors.cardNumber && <div className="error-message">{ errors.cardNumber }</div> }
                 </label>
                 <div className="form-row">
                     <label className="body-regular">
                         Expiration Date
                         <div className="input-container">
                             <CardExpiryElement
-                                onChange={ handleCardExpiryChange }
+                                onChange={ handleChange("cardExpiry") }
                             />
                         </div>
-                        { cardExpiryError && <div className="error-message">{ cardExpiryError }</div> }
+                        { errors.cardExpiry && <div className="error-message">{ errors.cardExpiry }</div> }
                     </label>
                     <label className="body-regular">
                         CVC
                         <div className="input-container">
                             <CardCvcElement
-                                onChange={ handleCardCvcChange }
+                                onChange={ handleChange("cardCvc") }
                             />
                         </div>
-                        { cardCvcError && <div className="error-message">{ cardCvcError }</div> }
+                        { errors.cardCvc && <div className="error-message">{ errors.cardCvc }</div> }
                     </label>
                 </div>
                 <div className="button-container">
@@ -111,7 +126,7 @@ const CheckoutPaymentForm = ({ clientSecret, onPaymentSuccess }) =>
                         type="submit"
                     />
                 </div>
-                { errorMessage && <ErrorComponent message={ errorMessage } /> }
+                { successMessage && <div className="success-message">{ successMessage }</div> }
             </form>
         </div>
     );
