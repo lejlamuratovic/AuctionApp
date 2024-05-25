@@ -1,6 +1,7 @@
 package com.example.auctionapp.request;
 
 import com.example.auctionapp.entity.CreditCardEntity;
+import com.example.auctionapp.util.annotation.LuhnCheck;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -12,6 +13,8 @@ public class CreditCardAddRequest {
     @Size(min = 2, message = "Name on card must be at least 2 characters long")
     private String nameOnCard;
 
+    @LuhnCheck
+    @Size(min = 14, message = "Credit card number should be a valid 14-digit number")
     @NotEmpty(message = "Card number is required")
     private String cardNumber;
 
