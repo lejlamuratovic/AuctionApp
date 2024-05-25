@@ -1,5 +1,6 @@
 package com.example.auctionapp.service.implementation;
 
+import com.example.auctionapp.exceptions.payment.PaymentFailedException;
 import com.example.auctionapp.request.ChargeRequest;
 import com.example.auctionapp.response.PaymentResponse;
 import com.example.auctionapp.util.CustomerUtil;
@@ -47,7 +48,7 @@ public class StripeService {
         } catch (StripeException e) {
             logger.error("Error creating payment intent: {}", e.getMessage(), e);
 
-            return new PaymentResponse(e.getMessage(), false);
+            throw new PaymentFailedException(e.getMessage());
         }
     }
 }

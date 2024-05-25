@@ -12,13 +12,6 @@ public class PaymentResponse {
         this.errorMessage = null;
     }
 
-    // for failure
-    public PaymentResponse(final String errorMessage, final boolean success) {
-        this.success = success;
-        this.clientSecret = null;
-        this.errorMessage = errorMessage;
-    }
-
     public void setSuccess(final boolean success) {
         this.success = success;
     }
