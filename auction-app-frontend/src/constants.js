@@ -203,3 +203,11 @@ export const FIELD_TYPES = {
   NUMBER: "number",
   DATE: "date",
 };
+
+export const SHOP_PAGE_SORTING = [
+  { id: "default", value: "Default Sorting", label: "Default Sorting" },
+  { id: "priceLowToHigh", value: "Price: Low to High", label: "Price: Low to High"},
+  { id: "priceHighToLow", value: "Price: High to Low", label: "Price: High to Low" },
+  { id: "added", value: "Added: New to Old", label: "Added: New to Old" },
+  { id: "timeLeft", value: "Last Chance", label: "Last Chance" },
+];

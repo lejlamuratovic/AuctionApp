@@ -7,12 +7,13 @@ import {
   ProductGrid,
   ErrorComponent,
   LoadingComponent,
+  SelectField
 } from "src/components";
 
 import { getProducts, getCategoriesWithSubcategories } from "src/services";
 import { useSuggestion } from "src/store/SuggestionContext";
 import { collapse, expand } from "src/assets/icons";
-import { SHOP_DEFAULT_PAGE_NUMBER, BUTTON_VARIANTS } from "src/constants";
+import { SHOP_DEFAULT_PAGE_NUMBER, BUTTON_VARIANTS, SHOP_PAGE_SORTING } from "src/constants";
 
 import "./style.scss";
 
@@ -126,6 +127,10 @@ const Shop = () => {
     navigate(url);
   };
 
+  const handleSortingChange = (value) => {
+    console.log(value);
+  };
+
   if (productsError || categoriesError)
     return <ErrorComponent error={ productsError || categoriesError } />;
 
@@ -175,6 +180,17 @@ const Shop = () => {
           </>
         ) }
         <div className="product-list">
+          <div className="product-options">
+            <SelectField
+              name="sort"
+              options={ SHOP_PAGE_SORTING }
+              onSelectChange={ handleSortingChange }
+              label="Sort By"
+              className="sorting-select-field"
+              useForm={ false }
+              defaultValue={ SHOP_PAGE_SORTING[0].value }
+            />
+          </div>
           <ProductGrid items={ items } />
           { hasMore && (
             <div className="explore-btn">
