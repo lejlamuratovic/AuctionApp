@@ -93,7 +93,7 @@ public class ProductServiceImpl implements ProductService {
     public Product addProduct(ProductAddRequest productRequest, List<MultipartFile> images) {
         ProductEntity productEntity = productRequest.toEntity();
 
-        PaymentAddRequest paymentAddRequest = new PaymentAddRequest(
+        final PaymentAddRequest paymentAddRequest = new PaymentAddRequest(
                 productRequest.getAddress(),
                 productRequest.getCity(),
                 productRequest.getCountry(),
@@ -104,8 +104,6 @@ public class ProductServiceImpl implements ProductService {
         );
 
         productEntity.setPaymentInfo(paymentService.addNewPaymentInfo(paymentAddRequest).toEntity());
-        
-        productEntity.setPaymentInfo(paymentService.addNewPaymentInfo(createPaymentAddRequest(productRequest)).toEntity());
         productEntity.setStatus(ProductStatus.ACTIVE);
 
         handleCategoryAndUser(productEntity, productRequest);

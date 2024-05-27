@@ -30,6 +30,7 @@ public class PaymentServiceImpl implements PaymentService {
         creditCardEntity.setStripeToken(stripePaymentAddRequest.getStripeToken());
 
         PaymentInfoEntity paymentInfo = new PaymentInfoEntity();
+
         paymentInfo.setZipCode(stripePaymentAddRequest.getZipCode());
         paymentInfo.setAddress(stripePaymentAddRequest.getZipCode());
         paymentInfo.setCity(stripePaymentAddRequest.getCity());
