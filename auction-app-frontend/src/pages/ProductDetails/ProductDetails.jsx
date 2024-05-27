@@ -258,6 +258,7 @@ const ProductDetails = () => {
                 onRequestClose={ closeCheckoutModal } 
                 contentLabel="Checkout"
                 className="checkout-modal"
+                overlayClassName="modal-overlay"
                 appElement={ document.getElementById('root') }
               >
                 <img src = { close } alt="Close" className="close-icon" onClick={ closeCheckoutModal } />
