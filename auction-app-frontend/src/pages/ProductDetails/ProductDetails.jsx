@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useParams, useNavigate } from "react-router-dom";
+import Modal from "react-modal";
 
-import { Tabs, LoadingComponent, ErrorComponent, FormContainer, Notifications, Button } from "src/components";
+import { Tabs, LoadingComponent, ErrorComponent, FormContainer, Notifications, Button, CheckoutComponent } from "src/components";
 
 import { useBreadcrumb } from "src/store/BreadcrumbContext";
 import { useUser } from "src/store/UserContext";
 import { getProduct, getBidData } from "src/services";
 import { placeBid } from "src/services/bidService";
 import { calculateTimeLeft } from "src/utils/calculateTimeDifference";
+import { close } from "src/assets/icons";
 
 import { 
   PRODUCT_DETAILS_TABS, 
@@ -36,6 +38,7 @@ const ProductDetails = () => {
   const [additionalPlaceBidsFormFields, setAdditionalPlaceBidsFormFields] = useState([]);
   const [bidDataLoading, setBidDataLoading] = useState(false);
   const [bidDataError, setBidDataError] = useState(null);
+  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
 
   const { userType, userId } = useUser(); 
 
@@ -145,11 +148,13 @@ const ProductDetails = () => {
   };
 
   const checkout = () => {
-    console.log("checkout"	);
-    navigate(ROUTE_PATHS.CHECKOUT, { state: { product } });
+    setIsCheckoutModalOpen(true);
   };
-  
 
+  const closeCheckoutModal = () => {
+    setIsCheckoutModalOpen(false);
+  };  
+  
   if (loading) return <LoadingComponent />;
   if (error) return <ErrorComponent message={ error } />;
 
@@ -247,6 +252,18 @@ const ProductDetails = () => {
               <span className="no-active-auction body-bold">You can't bid on your own item</span>
             ) : null 
             }
+            { isCheckoutModalOpen && (
+              <Modal 
+                isOpen={ isCheckoutModalOpen } 
+                onRequestClose={ closeCheckoutModal } 
+                contentLabel="Checkout"
+                className="checkout-modal"
+                appElement={ document.getElementById('root') }
+              >
+                <img src = { close } alt="Close" className="close-icon" onClick={ closeCheckoutModal } />
+                <CheckoutComponent product={ product } closeCheckout={ closeCheckoutModal } />
+              </Modal>
+            ) }
           <div className="product-information">
             <Tabs
               tabs={ PRODUCT_DETAILS_TABS }

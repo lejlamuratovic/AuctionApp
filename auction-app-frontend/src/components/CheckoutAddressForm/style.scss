@@ -2,8 +2,7 @@
 
 .address-form-container {
     @include flex-container(column, center, center);
-    width: 630px;
-    margin-bottom: 32px;
+    width: 100%;
 
     form {
         @include flex-container(row, center, center);
@@ -25,7 +24,7 @@
     
         .input-field-half {
             margin: 0 5px 24px 5px;
-            max-width: 264px;
+            max-width: 281px;
 
             input {
                 width: 100%;

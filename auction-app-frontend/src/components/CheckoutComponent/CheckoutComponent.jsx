@@ -60,7 +60,7 @@ const CheckoutComponent = ({ product }) => {
         };
     
         addPaymentInfo(paymentInfo).then(() => {
-            setSuccessMessage("Thank you for your purchase! Your transaction has been successfully completed.");
+            setSuccessMessage("Your transaction has been successfully completed.");
 
             setTimeout(() => {
                 navigate(ROUTE_PATHS.HOME);
@@ -102,7 +102,6 @@ const CheckoutComponent = ({ product }) => {
 
     return (
         <div className="checkout-container">
-            { successMessage && <div className="success-message body-bold">{ successMessage }</div> }
             { CHECKOUT_STEPS.ADDRESS === step && (
                 <CheckoutAddressForm 
                     onAddressFormSubmit={ onAddressFormSubmit } 
@@ -117,6 +116,7 @@ const CheckoutComponent = ({ product }) => {
                     />
                 </Elements>
             ) }
+            { successMessage && <div className="success-message body-bold">{ successMessage }</div> }
         </div>
     );
 };

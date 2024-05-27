@@ -165,3 +165,16 @@
   }
 }
 
+.checkout-modal {
+  background-color: $white;
+  margin: 0 auto;
+  width: 664px;
+  position: relative;
+
+  img {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+  }
+}
