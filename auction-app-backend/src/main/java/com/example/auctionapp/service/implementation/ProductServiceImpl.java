@@ -58,11 +58,23 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductSearchResponse getProducts(UUID categoryId, String searchProduct, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public ProductSearchResponse getProducts(final UUID categoryId,
+                                             final String searchProduct,
+                                             final String sortField,
+                                             final String sortDirection,
+                                             final int page,
+                                             final int size) {
+        Sort sort = Sort.by(Sort.Direction.ASC, "name");  // default alphabetical sorting
+
+        if (sortField != null && sortDirection != null) {
+            sort = Sort.by(Sort.Direction.fromString(sortDirection), sortField);
+        }
+
+        Pageable pageable = PageRequest.of(page, size, sort);
         Specification<ProductEntity> specification = ProductSpecification.withDynamicQuery(categoryId, searchProduct);
 
         final Page<Product> products = productRepository.findAll(specification, pageable).map(ProductEntity::toDomainModel);
+
         String suggestedQuery = null;
 
         if (products.getTotalElements() < size && searchProduct != null && !searchProduct.isBlank()) {
