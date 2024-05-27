@@ -13,7 +13,12 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ProductService {
-    ProductSearchResponse getProducts(final UUID categoryId, final String searchProduct, final int page, final int size);
+    ProductSearchResponse getProducts(final UUID categoryId,
+                                      final String searchProduct,
+                                      final String sortField,
+                                      final String sortDirection,
+                                      final int page,
+                                      final int size);
     Product getProductById(final UUID id);
     Product addProduct(final ProductAddRequest productRequest, final List<MultipartFile> images);
     void deleteProduct(final UUID id);

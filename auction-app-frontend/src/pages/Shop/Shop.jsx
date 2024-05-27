@@ -32,6 +32,8 @@ const Shop = () => {
   const [categoriesError, setCategoriesError] = useState(null);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
   const [checked, setChecked] = useState({});
+  const [selectedSorting, setSelectedSorting] = useState(SHOP_PAGE_SORTING[0]);
+  const [sortingDirection, setSortingDirection] = useState(selectedSorting.direction);
 
   const { setSuggestion } = useSuggestion();
 
@@ -44,7 +46,7 @@ const Shop = () => {
   const fetchProducts = () => {
     setProductsLoading(true);
 
-    getProducts(page, SHOP_DEFAULT_PAGE_NUMBER, categoryId, searchProduct)
+    getProducts(page, SHOP_DEFAULT_PAGE_NUMBER, categoryId, searchProduct, selectedSorting.criteria, sortingDirection )
       .then((response) => {
         const { products, suggestion } = response;
 
@@ -90,7 +92,7 @@ const Shop = () => {
   // fetch products on page load
   useEffect(() => {
     fetchProducts();
-  }, [page, categoryId, searchProduct]);
+  }, [page, categoryId, searchProduct, selectedSorting, sortingDirection]);
 
   useEffect(() => {
     fetchCategories();
@@ -128,7 +130,8 @@ const Shop = () => {
   };
 
   const handleSortingChange = (value) => {
-    console.log(value);
+    setSelectedSorting(SHOP_PAGE_SORTING.find((sort) => sort.value === value));
+    setSortingDirection(SHOP_PAGE_SORTING.find((sort) => sort.value === value).direction);
   };
 
   if (productsError || categoriesError)
@@ -188,7 +191,7 @@ const Shop = () => {
               label="Sort By"
               className="sorting-select-field"
               useForm={ false }
-              defaultValue={ SHOP_PAGE_SORTING[0].value }
+              defaultValue={ selectedSorting.value }
             />
           </div>
           <ProductGrid items={ items } />
