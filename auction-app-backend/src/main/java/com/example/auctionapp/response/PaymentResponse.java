@@ -5,7 +5,6 @@ public class PaymentResponse {
     private String clientSecret;
     private String errorMessage;
 
-    // for success
     public PaymentResponse(final String clientSecret) {
         this.success = true;
         this.clientSecret = clientSecret;

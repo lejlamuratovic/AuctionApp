@@ -49,12 +49,11 @@ public class ProductServiceImpl implements ProductService {
                               final UserRepository userRepository,
                               final AmazonClient amazonClient,
                               final ProductImageRepository productImageRepository,
-                              final PaymentService paymentService,
-                              PaymentService paymentService1) {
+                              final PaymentService paymentService) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
         this.userRepository = userRepository;
-        this.paymentService = paymentService1;
+        this.paymentService = paymentService;
         this.amazonClient = amazonClient;
         this.productImageRepository = productImageRepository;
     }
@@ -94,6 +93,18 @@ public class ProductServiceImpl implements ProductService {
     public Product addProduct(ProductAddRequest productRequest, List<MultipartFile> images) {
         ProductEntity productEntity = productRequest.toEntity();
 
+        PaymentAddRequest paymentAddRequest = new PaymentAddRequest(
+                productRequest.getAddress(),
+                productRequest.getCity(),
+                productRequest.getCountry(),
+                productRequest.getZipCode(),
+                productRequest.getNameOnCard(),
+                productRequest.getCardNumber(),
+                productRequest.getExpirationDate()
+        );
+
+        productEntity.setPaymentInfo(paymentService.addNewPaymentInfo(paymentAddRequest).toEntity());
+        
         productEntity.setPaymentInfo(paymentService.addNewPaymentInfo(createPaymentAddRequest(productRequest)).toEntity());
         productEntity.setStatus(ProductStatus.ACTIVE);
 
