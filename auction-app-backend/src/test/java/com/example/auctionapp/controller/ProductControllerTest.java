@@ -67,8 +67,8 @@ public class ProductControllerTest {
         UUID productId2 = UUID.randomUUID();
 
         Product product1 = new Product(productId1,
-                                "Test Product 1",
-                                "Test Description 1",
+                                        "Test Product 1",
+                                        "Test Description 1",
                                         BigDecimal.valueOf(200),
                                         LocalDateTime.now(),
                                         LocalDateTime.now().plusDays(1),
