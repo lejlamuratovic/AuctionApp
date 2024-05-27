@@ -89,13 +89,14 @@
   .product-options {
     display: relative;
     height: 50px;
-    background-color: red;
+    margin-bottom: 24px;
   }
 
   .custom-select {
     position: absolute;
     top: -10px; 
-    left: 0;
-    min-width: 220px;
+    left: 5px;
+    min-width: 268px;
+    max-height: 48px;
   }
 }
