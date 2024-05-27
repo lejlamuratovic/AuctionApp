@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useStripe, useElements, CardNumberElement, CardExpiryElement, CardCvcElement } from "@stripe/react-stripe-js";
-import { Button, ErrorComponent } from "src/components";
+import { Button, ErrorComponent, ButtonLoadingIndicator } from "src/components";
 import { BUTTON_VARIANTS, BUTTON_LABELS } from "src/constants";
 
 import "./style.scss";
@@ -15,6 +15,7 @@ const CheckoutPaymentForm = ({ clientSecret, onPaymentSuccess }) => {
     });
     const [successMessage, setSuccessMessage] = useState("");
     const [cardholderName, setCardholderName] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const stripe = useStripe();
     const elements = useElements();
@@ -28,16 +29,20 @@ const CheckoutPaymentForm = ({ clientSecret, onPaymentSuccess }) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        setLoading(true);
+
         const nameError = validateCardholderName(cardholderName);
 
         if (nameError) {
             setErrors(prevErrors => ({ ...prevErrors, cardholderName: nameError }));
+            setLoading(false);
 
             return;
         }
 
         if (!stripe || !elements) {
             setErrors(prevErrors => ({ ...prevErrors, stripe: "Stripe has not initialized" }));
+            setLoading(false);
 
             return;
         }
@@ -46,6 +51,7 @@ const CheckoutPaymentForm = ({ clientSecret, onPaymentSuccess }) => {
 
         if (!cardElement) {
             setErrors(prevErrors => ({ ...prevErrors, stripe: "Card details not available" }));
+            setLoading(false);
 
             return;
         }
@@ -57,6 +63,8 @@ const CheckoutPaymentForm = ({ clientSecret, onPaymentSuccess }) => {
             onPaymentSuccess(token);
         } catch (error) {
             setErrors(prevErrors => ({ ...prevErrors, stripe: error.message || "An error occurred during payment confirmation." }));
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -118,12 +126,11 @@ const CheckoutPaymentForm = ({ clientSecret, onPaymentSuccess }) => {
                 <div className="button-container">
                     <Button
                         variant={ BUTTON_VARIANTS.FILLED }
-                        label={ BUTTON_LABELS.PAY }
-                        disabled={ !stripe || !elements }
+                        label = { loading ? <ButtonLoadingIndicator /> : BUTTON_LABELS.PAY }
+                        disabled={ !stripe || !elements || loading }
                         type="submit"
                     />
                 </div>
-                { successMessage && <div className="success-message">{ successMessage }</div> }
             </form>
         </div>
     );
