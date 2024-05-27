@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useStripe, useElements, CardNumberElement, CardExpiryElement, CardCvcElement } from "@stripe/react-stripe-js";
+
 import { Button, ErrorComponent, ButtonLoadingIndicator } from "src/components";
 import { BUTTON_VARIANTS, BUTTON_LABELS } from "src/constants";
+
+import { validateCardholderName } from "src/forms/rules/validationRules";
 
 import "./style.scss";
 
@@ -19,12 +22,6 @@ const CheckoutPaymentForm = ({ clientSecret, onPaymentSuccess }) => {
 
     const stripe = useStripe();
     const elements = useElements();
-
-    const validateCardholderName = (name) => {
-        if (!name) return "Name on card is required";
-        if (name.length < 3) return "Name on card must be at least 3 characters";
-        return "";
-    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();

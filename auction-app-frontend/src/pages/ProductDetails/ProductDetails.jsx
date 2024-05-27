@@ -109,7 +109,7 @@ const ProductDetails = () => {
       productId: product.id,
       userId: userId
     };
-  
+
     placeBid(bidDetails)
       .then((newBidResponse) => {
         setError(null);
