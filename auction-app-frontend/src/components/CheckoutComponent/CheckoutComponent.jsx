@@ -80,6 +80,7 @@ const CheckoutComponent = ({ product }) => {
                 customerName: userName,
                 product: product
             });
+
             if (response.clientSecret) {
                 setClientSecret(response.clientSecret);
             }

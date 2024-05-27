@@ -35,7 +35,7 @@ public class StripeService {
                     .findOrCreateCustomer(request.getCustomerEmail(), request.getCustomerName());
 
             final PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
-                    .setAmount(Long.parseLong(String.valueOf(request.getProduct().getHighestBid())))
+                    .setAmount(Long.parseLong(String.valueOf(request.getProduct().getHighestBid())) * 100)
                     .setCurrency("usd")
                     .setCustomer(customer.getId())
                     .setAutomaticPaymentMethods(
