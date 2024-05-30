@@ -24,13 +24,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -69,10 +66,8 @@ public class ProductServiceImpl implements ProductService {
 
         final Pageable pageable = PageRequest.of(getProductRequest.getPage(), getProductRequest.getSize(), sort);
 
-        final Specification<ProductEntity> specification = ProductSpecification
-                .withDynamicQuery(getProductRequest.getCategoryId(), getProductRequest.getSearchProduct());
-
-        final Page<Product> products = productRepository.findAll(specification, pageable).map(ProductEntity::toDomainModel);
+        final Page<Product> products = productRepository.findAll(ProductSpecification.buildSpecification(getProductRequest), pageable)
+                                            .map(ProductEntity::toDomainModel);
 
         String suggestedQuery = null;
 
@@ -83,15 +78,14 @@ public class ProductServiceImpl implements ProductService {
 
             suggestedQuery = ComputeSuggestion.suggestCorrection(productNames, getProductRequest.getSearchProduct());
 
-            if (suggestedQuery != null && !suggestedQuery.equalsIgnoreCase(getProductRequest.getSearchProduct())) {
-                suggestedQuery = suggestedQuery;
-            } else {
+            if (suggestedQuery == null || suggestedQuery.equalsIgnoreCase(getProductRequest.getSearchProduct())) {
                 suggestedQuery = null;
             }
         }
 
         return new ProductSearchResponse(products, suggestedQuery);
     }
+
     
     @Override
     public Product getProductById(final UUID id) {
