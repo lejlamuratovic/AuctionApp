@@ -92,4 +92,9 @@ public class ProductController {
             @RequestParam(value = "size", defaultValue = "8") final int size) {
         return this.productService.getProductByUserAndStatus(userId, status, page, size);
     }
+
+    @GetMapping("/featured-products/{id}")
+    public List<Product> getFeaturedProductsByUser(@PathVariable final UUID userId) {
+        return this.productService.getFeaturedProductsByUser(userId);
+    }
 }
