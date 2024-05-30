@@ -2,6 +2,7 @@ package com.example.auctionapp.controller;
 
 import com.example.auctionapp.entity.enums.ProductStatus;
 import com.example.auctionapp.model.Product;
+import com.example.auctionapp.request.GetProductRequest;
 import com.example.auctionapp.response.BidSummaryResponse;
 import com.example.auctionapp.response.ProductBidDetailsResponse;
 import com.example.auctionapp.response.ProductSearchResponse;
@@ -43,10 +44,16 @@ public class ProductController {
             @RequestParam(value = "size", defaultValue = "8") final int size,
             @RequestParam(value = "category_id", required = false) final UUID categoryId,
             @RequestParam(value = "search_product", required = false) final String searchProduct,
-            @RequestParam(value = "sort_criteria", required = false) final String sortField,
-            @RequestParam(value = "sort_direction", required = false) final String sortDirection
+            @RequestParam(value = "sort_criteria", defaultValue = "name") final String sortField,
+            @RequestParam(value = "sort_direction", defaultValue = "ASC") final String sortDirection
     ) {
-        return this.productService.getProducts(categoryId, searchProduct, sortField, sortDirection, page, size);
+        GetProductRequest getProductRequest = new GetProductRequest(categoryId,
+                                                                    searchProduct,
+                                                                    sortField,
+                                                                    sortDirection,
+                                                                    page,
+                                                                    size);
+        return this.productService.getProducts(getProductRequest);
     }
 
     @PreAuthorize(SecurityRoles.ALL)

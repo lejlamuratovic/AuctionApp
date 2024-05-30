@@ -8,6 +8,7 @@ import com.example.auctionapp.external.AmazonClient;
 import com.example.auctionapp.repository.PaymentInfoRepository;
 import com.example.auctionapp.repository.ProductImageRepository;
 import com.example.auctionapp.repository.UserRepository;
+import com.example.auctionapp.request.GetProductRequest;
 import com.example.auctionapp.request.ProductAddRequest;
 import com.example.auctionapp.entity.ProductEntity;
 import com.example.auctionapp.model.Product;
@@ -58,30 +59,30 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductSearchResponse getProducts(final UUID categoryId,
-                                             final String searchProduct,
-                                             final String sortField,
-                                             final String sortDirection,
-                                             final int page,
-                                             final int size) {
-        Sort sort = Sort.by(Sort.Direction.ASC, "name");  // default alphabetical sorting
+    public ProductSearchResponse getProducts(final GetProductRequest getProductRequest) {
+        Sort sort = null;
 
-        if (sortField != null && sortDirection != null) {
-            sort = Sort.by(Sort.Direction.fromString(sortDirection), sortField);
+        if (getProductRequest.getSortField() != null && getProductRequest.getSortDirection() != null) {
+            sort = Sort.by(Sort.Direction.fromString(getProductRequest.getSortDirection()), getProductRequest.getSortField());
         }
 
-        Pageable pageable = PageRequest.of(page, size, sort);
-        Specification<ProductEntity> specification = ProductSpecification.withDynamicQuery(categoryId, searchProduct);
+        final Pageable pageable = PageRequest.of(getProductRequest.getPage(), getProductRequest.getSize(), sort);
+
+        final Specification<ProductEntity> specification = ProductSpecification
+                .withDynamicQuery(getProductRequest.getCategoryId(), getProductRequest.getSearchProduct());
 
         final Page<Product> products = productRepository.findAll(specification, pageable).map(ProductEntity::toDomainModel);
 
         String suggestedQuery = null;
 
-        if (products.getTotalElements() < size && searchProduct != null && !searchProduct.isBlank()) {
-            final List<String> productNames = this.productRepository.findAllProductNames();
-            suggestedQuery = ComputeSuggestion.suggestCorrection(productNames, searchProduct);
+        if (products.getTotalElements() < getProductRequest.getSize()
+                && getProductRequest.getSearchProduct() != null
+                && !getProductRequest.getSearchProduct().isBlank()) {
+            final List<String> productNames = productRepository.findAllProductNames();
 
-            if (suggestedQuery != null && !suggestedQuery.equalsIgnoreCase(searchProduct)) {
+            suggestedQuery = ComputeSuggestion.suggestCorrection(productNames, getProductRequest.getSearchProduct());
+
+            if (suggestedQuery != null && !suggestedQuery.equalsIgnoreCase(getProductRequest.getSearchProduct())) {
                 suggestedQuery = suggestedQuery;
             } else {
                 suggestedQuery = null;
@@ -90,7 +91,7 @@ public class ProductServiceImpl implements ProductService {
 
         return new ProductSearchResponse(products, suggestedQuery);
     }
-
+    
     @Override
     public Product getProductById(final UUID id) {
         final ProductEntity productEntity = this.productRepository.findById(id)

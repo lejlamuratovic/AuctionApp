@@ -8,6 +8,7 @@ import com.example.auctionapp.entity.UserEntity;
 import com.example.auctionapp.entity.enums.ProductStatus;
 import com.example.auctionapp.model.Product;
 import com.example.auctionapp.repository.ProductRepository;
+import com.example.auctionapp.request.GetProductRequest;
 import com.example.auctionapp.response.ProductSearchResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,55 +93,48 @@ public class ProductServiceTest {
 
     @Test
     public void whenGetSortedProductsByName_thenReturnSortedProducts() {
+        UUID categoryId = UUID.randomUUID();
+
+        GetProductRequest getProductRequest = new GetProductRequest(categoryId, "", "name", "ASC", 0, 10);
+
         CategoryEntity categoryEntity = new CategoryEntity();
 
-        categoryEntity.setCategoryId(UUID.randomUUID());
+        categoryEntity.setCategoryId(categoryId);
         categoryEntity.setName("Electronics");
 
         UserEntity userEntity = new UserEntity();
 
-        userEntity.setUserId(UUID.randomUUID());
-        userEntity.setEmail("user@example.com");
         userEntity.setFirstName("John");
         userEntity.setLastName("Doe");
-        userEntity.setPassword("password123");
+        userEntity.setUserId(UUID.randomUUID());
 
-        ProductEntity productA = new ProductEntity();
+        ProductEntity productA = new ProductEntity(UUID.randomUUID(),
+                                                    "A - Product",
+                                                "Product A Description",
+                                                        BigDecimal.valueOf(300),
+                                                        LocalDateTime.now(),
+                                                        LocalDateTime.now().plusDays(2),
+                                                        ProductStatus.ACTIVE,
+                                                        categoryEntity,
+                                                        userEntity,
+                                            null);
+        ProductEntity productB = new ProductEntity(UUID.randomUUID(),
+                                                "B - Product",
+                                            "Product B Description",
+                                                        BigDecimal.valueOf(150),
+                                                        LocalDateTime.now().minusDays(1),
+                                                        LocalDateTime.now().plusDays(1),
+                                                        ProductStatus.ACTIVE,
+                                                        categoryEntity,
+                                                        userEntity,
+                                            null);
 
-        productA.setProductId(UUID.randomUUID());
-        productA.setName("A - Product");
-        productA.setDescription("Product A Description");
-        productA.setStartPrice(BigDecimal.valueOf(300));
-        productA.setStartDate(LocalDateTime.now());
-        productA.setEndDate(LocalDateTime.now().plusDays(2));
-        productA.setStatus(ProductStatus.ACTIVE);
-        productA.setCategory(categoryEntity);
-        productA.setUserEntity(userEntity);
+        List<ProductEntity> sortedProducts = Arrays.asList(productA, productB);
+        Page<ProductEntity> productPage = new PageImpl<>(sortedProducts);
 
-        ProductEntity productB = new ProductEntity();
+        when(productRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(productPage);
 
-        productB.setProductId(UUID.randomUUID());
-        productB.setName("B - Product");
-        productB.setDescription("Product B Description");
-        productB.setStartPrice(BigDecimal.valueOf(150));
-        productB.setStartDate(LocalDateTime.now().minusDays(1));
-        productB.setEndDate(LocalDateTime.now().plusDays(1));
-        productB.setStatus(ProductStatus.ACTIVE);
-        productB.setCategory(categoryEntity);
-        productB.setUserEntity(userEntity);
-
-        List<ProductEntity> sortedProducts = List.of(productA, productB);
-
-        when(productRepository.findAll(any(Specification.class), any(Pageable.class)))
-                .thenReturn(new PageImpl<>(sortedProducts));
-
-        UUID categoryId = categoryEntity.getCategoryId();
-        ProductSearchResponse response = productService.getProducts(categoryId,
-                                                                    "", 
-                                                                    "name", 
-                                                                    "ASC", 
-                                                                    0, 
-                                                                    10);
+        ProductSearchResponse response = productService.getProducts(getProductRequest);
 
         List<Product> results = response.getProducts().getContent();
 
@@ -149,44 +143,45 @@ public class ProductServiceTest {
         assertThat(results.get(1).getName()).isEqualTo("B - Product");
     }
 
+
     @Test
     public void whenGetLatestProducts_thenReturnProductsSortedByStartDateDesc() {
+        UUID categoryId = UUID.randomUUID();
+
+        GetProductRequest getProductRequest = new GetProductRequest(categoryId, "", "startDate", "DESC", 0, 10);
+
         UserEntity userEntity = new UserEntity();
 
         userEntity.setUserId(UUID.randomUUID());
-        userEntity.setEmail("user@example.com");
         userEntity.setFirstName("John");
         userEntity.setLastName("Doe");
-        userEntity.setPassword("password123");
-
-        UUID categoryId = UUID.randomUUID();
 
         CategoryEntity categoryEntity = new CategoryEntity();
 
         categoryEntity.setCategoryId(categoryId);
-        categoryEntity.setName("Category");
+        categoryEntity.setName("Electronics");
 
-        ProductEntity recentProduct = new ProductEntity();
+        ProductEntity recentProduct = new ProductEntity(UUID.randomUUID(),
+                                                "Recent Product",
+                                                "Just launched",
+                                                BigDecimal.valueOf(500),
+                                                LocalDateTime.now(),
+                                                LocalDateTime.now().plusDays(2),
+                                                ProductStatus.ACTIVE,
+                                                categoryEntity,
+                                                userEntity,
+                                                null);
 
-        recentProduct.setProductId(UUID.randomUUID());
-        recentProduct.setName("Recent Product");
-        recentProduct.setDescription("Just launched");
-        recentProduct.setStartPrice(BigDecimal.valueOf(500));
-        recentProduct.setStartDate(LocalDateTime.now());
-        recentProduct.setStatus(ProductStatus.ACTIVE);
-        recentProduct.setCategory(categoryEntity);
-        recentProduct.setUserEntity(userEntity);
-
-        ProductEntity olderProduct = new ProductEntity();
-
-        olderProduct.setProductId(UUID.randomUUID());
-        olderProduct.setName("Older Product");
-        olderProduct.setDescription("Launched last week");
-        olderProduct.setStartPrice(BigDecimal.valueOf(350));
-        olderProduct.setStartDate(LocalDateTime.now().minusWeeks(1));
-        olderProduct.setStatus(ProductStatus.ACTIVE);
-        olderProduct.setCategory(categoryEntity);
-        olderProduct.setUserEntity(userEntity);
+        ProductEntity olderProduct = new ProductEntity(UUID.randomUUID(),
+                                                    "Older Product",
+                                                    "Launched last week",
+                                                    BigDecimal.valueOf(350),
+                                                    LocalDateTime.now().minusWeeks(1),
+                                                    LocalDateTime.now().plusDays(2),
+                                                    ProductStatus.ACTIVE,
+                                                    categoryEntity,
+                                                    userEntity,
+                                                    null);
 
         List<ProductEntity> sortedProducts = Arrays.asList(recentProduct, olderProduct);
 
@@ -195,12 +190,7 @@ public class ProductServiceTest {
         when(productRepository.findAll(any(Specification.class), any(Pageable.class)))
                 .thenReturn(productPage);
 
-        ProductSearchResponse response = productService.getProducts(categoryId, 
-                                                                    "", 
-                                                                    "startDate", 
-                                                                    "DESC", 
-                                                                    0, 
-                                                                    10);
+        ProductSearchResponse response = productService.getProducts(getProductRequest);
 
         List<Product> results = response.getProducts().getContent();
 

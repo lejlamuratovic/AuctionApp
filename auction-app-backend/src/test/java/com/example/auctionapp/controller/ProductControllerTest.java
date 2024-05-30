@@ -3,6 +3,7 @@ package com.example.auctionapp.controller;
 import com.example.auctionapp.AuctionAppBackendApplication;
 import com.example.auctionapp.entity.enums.ProductStatus;
 import com.example.auctionapp.model.Product;
+import com.example.auctionapp.request.GetProductRequest;
 import com.example.auctionapp.response.ProductSearchResponse;
 import com.example.auctionapp.service.ProductService;
 import org.junit.jupiter.api.Test;
@@ -23,8 +24,8 @@ import java.util.Collections;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
@@ -32,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ProductControllerTest {
     @Autowired
     private MockMvc mockMvc;
-
+    
     @MockBean
     private ProductService productService;
 
@@ -67,34 +68,34 @@ public class ProductControllerTest {
         UUID productId2 = UUID.randomUUID();
 
         Product product1 = new Product(productId1,
-                                        "Test Product 1",
-                                        "Test Description 1",
-                                        BigDecimal.valueOf(200),
-                                        LocalDateTime.now(),
-                                        LocalDateTime.now().plusDays(1),
-                                        ProductStatus.ACTIVE,
-                                        categoryId,
-                                        Collections.emptyList(),
-                                  null,
-                               0,
-                                        BigDecimal.ZERO);
+                "Test Product 1",
+                "Test Description 1",
+                BigDecimal.valueOf(200),
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(1),
+                ProductStatus.ACTIVE,
+                categoryId,
+                Collections.emptyList(),
+                null,
+                0,
+                BigDecimal.ZERO);
 
         Product product2 = new Product(productId2,
-                                "Test Product 2",
-                            "Test Description 2",
-                                        BigDecimal.valueOf(100),
-                                        LocalDateTime.now(),
-                                        LocalDateTime.now().plusDays(1),
-                                        ProductStatus.ACTIVE,
-                                        categoryId,
-                                        Collections.emptyList(),
-                                  null,
-                               0,
-                                        BigDecimal.ZERO);
+                "Test Product 2",
+                "Test Description 2",
+                BigDecimal.valueOf(100),
+                LocalDateTime.now(),
+                LocalDateTime.now().plusDays(1),
+                ProductStatus.ACTIVE,
+                categoryId,
+                Collections.emptyList(),
+                null,
+                0,
+                BigDecimal.ZERO);
 
         Page<Product> productPage = new PageImpl<>(Arrays.asList(product2, product1));
 
-        when(productService.getProducts(any(), any(), any(), any(), anyInt(), anyInt()))
+        when(productService.getProducts(any(GetProductRequest.class)))
                 .thenReturn(new ProductSearchResponse(productPage, null));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/products")
