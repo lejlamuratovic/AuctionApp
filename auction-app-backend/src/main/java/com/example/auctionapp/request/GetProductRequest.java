@@ -5,10 +5,10 @@ import java.util.UUID;
 public class GetProductRequest {
     private UUID categoryId;
     private String searchProduct;
-    private String sortField;
-    private String sortDirection;
-    private int page;
-    private int size;
+    private String sortField = "name";
+    private String sortDirection = "ASC";
+    private int page = 0;
+    private int size = 8;
 
     public GetProductRequest() {
     }

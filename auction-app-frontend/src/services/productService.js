@@ -17,13 +17,13 @@ const getProductRandom = () => {
 
 const getProducts = (page, size, categoryId, searchQuery, sortCriteria, sortDirection) => {
   // construct query string based on the presence of categoryId or search query
-  const categoryParam = categoryId ? `&category_id=${ categoryId }` : "";
+  const categoryParam = categoryId ? `&categoryId=${ categoryId }` : "";
   const searchParam = searchQuery
-    ? `&search_product=${ encodeURIComponent(searchQuery) }`
+    ? `&searchProduct=${ encodeURIComponent(searchQuery) }`
     : "";
 
   return getRequest(
-    `/products?page=${ page }&size=${ size }${ categoryParam }${ searchParam }&sort_criteria=${ sortCriteria }&sort_direction=${ sortDirection }`
+    `/products?page=${ page }&size=${ size }${ categoryParam }${ searchParam }&sortField=${ sortCriteria }&sortDirection=${ sortDirection }`
   );
 };
 
