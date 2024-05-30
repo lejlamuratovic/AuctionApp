@@ -214,3 +214,11 @@ export const CHECKOUT_STEPS = {
   ADDRESS: "address",
   PAYMENT: "payment",
 };
+
+export const SHOP_PAGE_SORTING = [
+  { id: "default", value: "Default Sorting", label: "Default Sorting" },
+  { id: "priceLowToHigh", value: "Price: Low to High", label: "Price: Low to High"},
+  { id: "priceHighToLow", value: "Price: High to Low", label: "Price: High to Low" },
+  { id: "added", value: "Added: New to Old", label: "Added: New to Old" },
+  { id: "timeLeft", value: "Last Chance", label: "Last Chance" },
+];
