@@ -32,4 +32,6 @@ public interface ProductRepository extends JpaRepository<ProductEntity, UUID>, J
     @Modifying
     @Query("UPDATE ProductEntity p SET p.status = 'INACTIVE' WHERE p.status = 'ACTIVE' AND p.endDate <= :now")
     int updateProductStatus(final LocalDateTime now);
+
+    List<ProductEntity> findProductEntitiesByUserEntity_UserId(final UUID userId);
 }

@@ -3,6 +3,7 @@ package com.example.auctionapp.service.implementation;
 import com.example.auctionapp.entity.ProductImageEntity;
 import com.example.auctionapp.entity.enums.ProductStatus;
 import com.example.auctionapp.external.AmazonClient;
+import com.example.auctionapp.repository.BidRepository;
 import com.example.auctionapp.repository.ProductImageRepository;
 import com.example.auctionapp.repository.UserRepository;
 import com.example.auctionapp.request.GetProductRequest;
@@ -21,6 +22,7 @@ import com.example.auctionapp.service.ProductService;
 import com.example.auctionapp.specification.ProductSpecification;
 import com.example.auctionapp.util.ComputeSuggestion;
 import com.example.auctionapp.util.PageableUtil;
+import com.example.auctionapp.util.FeaturedProducts;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -42,19 +44,22 @@ public class ProductServiceImpl implements ProductService {
     private final PaymentService paymentService;
     private final AmazonClient amazonClient;
     private final ProductImageRepository productImageRepository;
+    private final BidRepository bidRepository;
 
     public ProductServiceImpl(final ProductRepository productRepository,
                               final CategoryRepository categoryRepository,
                               final UserRepository userRepository,
                               final AmazonClient amazonClient,
                               final ProductImageRepository productImageRepository,
-                              final PaymentService paymentService) {
+                              final PaymentService paymentService,
+                              final BidRepository bidRepository) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
         this.userRepository = userRepository;
         this.paymentService = paymentService;
         this.amazonClient = amazonClient;
         this.productImageRepository = productImageRepository;
+        this.bidRepository = bidRepository;
     }
 
     @Override
@@ -172,6 +177,11 @@ public class ProductServiceImpl implements ProductService {
         return this.productRepository
                 .findProductEntityByUserEntity_UserIdAndAndStatus(userId, productStatus, pageable)
                 .map(ProductBidDetailsResponse::new);
+    }
+
+    @Override
+    public List<Product> getFeaturedProductsByUser(final UUID userId) {
+        return FeaturedProducts.getFeaturedProducts(userId, productRepository, bidRepository);
     }
 
     private void handleCategoryAndUser(ProductEntity productEntity, ProductAddRequest productRequest) {

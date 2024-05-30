@@ -3,13 +3,18 @@ package com.example.auctionapp.service.implementation;
 import com.example.auctionapp.entity.CreditCardEntity;
 import com.example.auctionapp.entity.PaymentInfoEntity;
 import com.example.auctionapp.model.PaymentInfo;
+import com.example.auctionapp.model.Product;
 import com.example.auctionapp.repository.CreditCardRepository;
 import com.example.auctionapp.repository.PaymentInfoRepository;
 import com.example.auctionapp.request.PaymentAddRequest;
 import com.example.auctionapp.request.StripePaymentAddRequest;
 import com.example.auctionapp.service.PaymentService;
+import com.example.auctionapp.util.FeaturedProducts;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
