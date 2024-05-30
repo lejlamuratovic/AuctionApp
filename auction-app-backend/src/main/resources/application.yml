@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/auction_app
-    username: postgres
-    password: root
+    url: jdbc:postgresql://dpg-cp0h51q1hbls73eaktmg-a.frankfurt-postgres.render.com/auction_app_cqgi
+    username: auction_app_cqgi_user
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: validate
@@ -10,12 +10,12 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        format-sql: true;
+        format-sql: true
   flyway:
-    user: postgres
-    password: root
+    user: auction_app_cqgi_user
+    password: ${DB_PASSWORD}
     schemas: auction_app
-    url: jdbc:postgresql://localhost:5432/auction_app
+    url: jdbc:postgresql://dpg-cp0h51q1hbls73eaktmg-a.frankfurt-postgres.render.com/auction_app_cqgi
     locations: classpath:db/migrations
 
 configuration:
@@ -43,3 +43,4 @@ amazonProperties:
 
 stripeProperties:
   secretKey: ${STRIPE_SECRET_KEY}
+  

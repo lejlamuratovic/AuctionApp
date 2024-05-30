@@ -6,6 +6,7 @@ import com.example.auctionapp.external.AmazonClient;
 import com.example.auctionapp.repository.ProductImageRepository;
 import com.example.auctionapp.repository.UserRepository;
 import com.example.auctionapp.request.GetProductRequest;
+import com.example.auctionapp.request.PaymentAddRequest;
 import com.example.auctionapp.request.ProductAddRequest;
 import com.example.auctionapp.entity.ProductEntity;
 import com.example.auctionapp.model.Product;
@@ -210,17 +211,5 @@ public class ProductServiceImpl implements ProductService {
         }).collect(toList());
 
         productEntity.setProductImages(imageEntities);
-    }
-
-    private PaymentAddRequest createPaymentAddRequest(ProductAddRequest productRequest) {
-        return new PaymentAddRequest(
-                productRequest.getAddress(),
-                productRequest.getCity(),
-                productRequest.getCountry(),
-                productRequest.getZipCode(),
-                productRequest.getNameOnCard(),
-                productRequest.getCardNumber(),
-                productRequest.getExpirationDate()
-        );
     }
 }
