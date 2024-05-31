@@ -43,4 +43,3 @@ amazonProperties:
 
 stripeProperties:
   secretKey: ${STRIPE_SECRET_KEY}
-  
