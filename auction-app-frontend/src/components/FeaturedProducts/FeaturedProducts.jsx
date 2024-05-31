@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 import { ProductCard, LoadingComponent, ErrorComponent } from "src/components";
 
-import { findFeaturedProducts } from "src/services";
+import { findFeaturedProducts, findPopularProducts } from "src/services";
 import { useUser } from "src/store/UserContext";
 
 import "./style.scss";
@@ -31,14 +31,27 @@ const FeaturedProducts = () => {
       });
   }
 
-  useEffect(() => {
-    console.log("userId: ", userId);
+  const fetchPopularProducts = ()  => {
+    setLoading(true);
 
+    findPopularProducts()
+      .then((response) => {
+        setProducts(response);
+        setLoading(false);
+      }).catch((error) => {
+        setError(error);
+        setLoading(false);
+      }).finally(() => {
+        setLoading(false);
+      });
+  };
+    
+
+  useEffect(() => {
     if (userId) {
       fetchFeaturedProducts();
     } else {
-      // nothing for now
-      setProducts([]);
+      fetchPopularProducts();
     }
   }, [userId]);
 

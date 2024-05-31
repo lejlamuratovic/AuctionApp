@@ -43,6 +43,10 @@ const findFeaturedProducts = (userId) => {
   return getRequest(`/products/featured-products/${ userId }`);
 };
 
+const findPopularProducts = () => {
+  return getRequest("/products/featured-products");
+}
+
 export { 
   getProducts, 
   getProduct, 
@@ -51,5 +55,6 @@ export {
   getBidData, 
   addProduct,
   findProductsByUserIdAndStatus,
-  findFeaturedProducts
+  findFeaturedProducts,
+  findPopularProducts
 };

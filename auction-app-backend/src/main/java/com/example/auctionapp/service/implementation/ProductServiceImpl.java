@@ -207,6 +207,22 @@ public class ProductServiceImpl implements ProductService {
                 .toList();
     }
 
+    @Override
+    public List<Product> getFeaturedProducts() {
+        Pageable topTen = PageRequest.of(0, 10);
+
+        List<ProductEntity> topProducts = productRepository
+                .findMostPopularProducts(topTen);
+
+        Collections.shuffle(topProducts);
+
+        topProducts = topProducts.subList(0, Math.min(3, topProducts.size()));
+
+        return topProducts.stream()
+                .map(ProductEntity::toDomainModel)
+                .toList();
+    }
+
     private void handleCategoryAndUser(ProductEntity productEntity, ProductAddRequest productRequest) {
         if (productRequest.getCategoryId() != null) {
             productEntity.setCategory(categoryRepository.findById(productRequest.getCategoryId())

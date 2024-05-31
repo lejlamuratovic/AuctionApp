@@ -94,4 +94,9 @@ public class ProductController {
     public List<Product> getFeaturedProductsByUser(@PathVariable final UUID userId) {
         return this.productService.getFeaturedProductsByUser(userId);
     }
+
+    @GetMapping("/featured-products")
+    public List<Product> getFeaturedProducts() {
+        return this.productService.getFeaturedProducts();
+    }
 }

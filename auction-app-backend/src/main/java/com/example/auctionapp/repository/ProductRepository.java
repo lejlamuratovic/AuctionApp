@@ -38,4 +38,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, UUID>, J
     @Query(value = "SELECT p FROM ProductEntity p WHERE p.categoryEntity.categoryId = :categoryId AND p.status = 'ACTIVE' " +
             "ORDER BY p.bidsCount DESC")
     List<ProductEntity> findTopPopularProductEntitiesByCategoryId(final UUID categoryId, final Pageable pageable);
+
+    @Query(value = "SELECT p FROM ProductEntity p WHERE p.status = 'ACTIVE' ORDER BY p.bidsCount DESC")
+    List<ProductEntity> findMostPopularProducts(final Pageable page);
 }
