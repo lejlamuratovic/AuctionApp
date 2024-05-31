@@ -32,6 +32,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -190,9 +191,18 @@ public class ProductServiceImpl implements ProductService {
                                                                     bidRepository,
                                                                     boughtProductRepository);
 
-        return productRepository
-                .findProductEntitiesByCategoryId(categoryId)
-                .stream()
+        // fetch top 10 products with most bids
+        Pageable topTen = PageRequest.of(0, 10);
+
+        List<ProductEntity> topProducts = productRepository
+                .findTopPopularProductEntitiesByCategoryId(categoryId, topTen);
+
+        // randomly pick 3 top products from the list
+        Collections.shuffle(topProducts);
+
+        topProducts = topProducts.subList(0, Math.min(3, topProducts.size()));
+
+        return topProducts.stream()
                 .map(ProductEntity::toDomainModel)
                 .toList();
     }

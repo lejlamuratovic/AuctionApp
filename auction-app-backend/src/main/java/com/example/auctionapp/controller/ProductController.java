@@ -90,7 +90,7 @@ public class ProductController {
         return this.productService.getProductByUserAndStatus(userId, status, page, size);
     }
 
-    @GetMapping("/featured-products/{id}")
+    @GetMapping("/featured-products/{userId}")
     public List<Product> getFeaturedProductsByUser(@PathVariable final UUID userId) {
         return this.productService.getFeaturedProductsByUser(userId);
     }

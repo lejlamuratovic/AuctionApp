@@ -160,7 +160,7 @@ const Home = () => {
           </div>
         ) }
         <div className="featured-products">
-          {/* <FeaturedProducts /> */}
+          <FeaturedProducts />
         </div>
         <div className="products">
           <Tabs
