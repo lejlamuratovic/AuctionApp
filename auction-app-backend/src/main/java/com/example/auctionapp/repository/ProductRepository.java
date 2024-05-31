@@ -34,4 +34,8 @@ public interface ProductRepository extends JpaRepository<ProductEntity, UUID>, J
     int updateProductStatus(final LocalDateTime now);
 
     List<ProductEntity> findProductEntitiesByUserEntity_UserId(final UUID userId);
+
+    @Query(value = "SELECT p FROM ProductEntity p WHERE p.categoryEntity.categoryId = :categoryId AND p.status = 'ACTIVE' " +
+            "ORDER BY RANDOM() LIMIT 1")
+    List<ProductEntity> findProductEntitiesByCategoryId(final UUID categoryId);
 }

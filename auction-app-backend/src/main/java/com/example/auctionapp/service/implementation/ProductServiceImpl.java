@@ -4,6 +4,7 @@ import com.example.auctionapp.entity.ProductImageEntity;
 import com.example.auctionapp.entity.enums.ProductStatus;
 import com.example.auctionapp.external.AmazonClient;
 import com.example.auctionapp.repository.BidRepository;
+import com.example.auctionapp.repository.BoughtProductRepository;
 import com.example.auctionapp.repository.ProductImageRepository;
 import com.example.auctionapp.repository.UserRepository;
 import com.example.auctionapp.request.GetProductRequest;
@@ -44,6 +45,7 @@ public class ProductServiceImpl implements ProductService {
     private final PaymentService paymentService;
     private final AmazonClient amazonClient;
     private final ProductImageRepository productImageRepository;
+    private final BoughtProductRepository boughtProductRepository;
     private final BidRepository bidRepository;
 
     public ProductServiceImpl(final ProductRepository productRepository,
@@ -52,6 +54,7 @@ public class ProductServiceImpl implements ProductService {
                               final AmazonClient amazonClient,
                               final ProductImageRepository productImageRepository,
                               final PaymentService paymentService,
+                              final BoughtProductRepository boughtProductRepository,
                               final BidRepository bidRepository) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
@@ -59,6 +62,7 @@ public class ProductServiceImpl implements ProductService {
         this.paymentService = paymentService;
         this.amazonClient = amazonClient;
         this.productImageRepository = productImageRepository;
+        this.boughtProductRepository = boughtProductRepository;
         this.bidRepository = bidRepository;
     }
 
@@ -181,7 +185,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getFeaturedProductsByUser(final UUID userId) {
-        return FeaturedProducts.getFeaturedProducts(userId, productRepository, bidRepository);
+        final UUID categoryId = FeaturedProducts.getFeaturedProducts(userId,
+                                                                    productRepository,
+                                                                    bidRepository,
+                                                                    boughtProductRepository);
+
+        return productRepository
+                .findProductEntitiesByCategoryId(categoryId)
+                .stream()
+                .map(ProductEntity::toDomainModel)
+                .toList();
     }
 
     private void handleCategoryAndUser(ProductEntity productEntity, ProductAddRequest productRequest) {
