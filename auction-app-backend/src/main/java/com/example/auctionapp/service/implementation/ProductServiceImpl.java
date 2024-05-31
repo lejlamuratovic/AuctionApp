@@ -20,6 +20,7 @@ import com.example.auctionapp.service.PaymentService;
 import com.example.auctionapp.service.ProductService;
 import com.example.auctionapp.specification.ProductSpecification;
 import com.example.auctionapp.util.ComputeSuggestion;
+import com.example.auctionapp.util.PageableUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -58,22 +59,21 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductSearchResponse getProducts(final GetProductRequest getProductRequest) {
-        Sort sort = null;
-
-        if (getProductRequest.getSortField() != null && getProductRequest.getSortDirection() != null) {
-            sort = Sort.by(Sort.Direction.fromString(getProductRequest.getSortDirection()), getProductRequest.getSortField());
-        }
-
-        final Pageable pageable = PageRequest.of(getProductRequest.getPage(), getProductRequest.getSize(), sort);
+        final Pageable pageable = PageableUtil.createPageable(
+                getProductRequest.getPage(),
+                getProductRequest.getSize(),
+                getProductRequest.getSortField(),
+                getProductRequest.getSortDirection()
+        );
 
         final Page<Product> products = productRepository.findAll(ProductSpecification.buildSpecification(getProductRequest), pageable)
                                             .map(ProductEntity::toDomainModel);
 
         String suggestedQuery = null;
+        if (products.getTotalElements() < getProductRequest.getSize() &&
+                getProductRequest.getSearchProduct() != null &&
+                !getProductRequest.getSearchProduct().isBlank()) {
 
-        if (products.getTotalElements() < getProductRequest.getSize()
-                && getProductRequest.getSearchProduct() != null
-                && !getProductRequest.getSearchProduct().isBlank()) {
             final List<String> productNames = productRepository.findAllProductNames();
 
             suggestedQuery = ComputeSuggestion.suggestCorrection(productNames, getProductRequest.getSearchProduct());
@@ -86,7 +86,6 @@ public class ProductServiceImpl implements ProductService {
         return new ProductSearchResponse(products, suggestedQuery);
     }
 
-    
     @Override
     public Product getProductById(final UUID id) {
         final ProductEntity productEntity = this.productRepository.findById(id)
