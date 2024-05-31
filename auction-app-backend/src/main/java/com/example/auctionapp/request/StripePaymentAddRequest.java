@@ -1,5 +1,9 @@
 package com.example.auctionapp.request;
 
+import com.example.auctionapp.entity.PaymentInfoEntity;
+
+import java.util.UUID;
+
 public class StripePaymentAddRequest {
     private String address;
     private String email;
@@ -7,6 +11,19 @@ public class StripePaymentAddRequest {
     private String country;
     private String zipCode;
     private String stripeToken;
+    private UUID productId;
+    private UUID buyerId;
+
+    public PaymentInfoEntity toEntity() {
+        PaymentInfoEntity entity = new PaymentInfoEntity();
+
+        entity.setCity(this.city);
+        entity.setCountry(this.country);
+        entity.setAddress(this.address);
+        entity.setZipCode(this.zipCode);
+
+        return entity;
+    }
 
     public String getAddress() {
         return this.address;
@@ -54,5 +71,21 @@ public class StripePaymentAddRequest {
 
     public void setEmail(final String email) {
         this.email = email;
+    }
+
+    public UUID getProductId() {
+        return this.productId;
+    }
+
+    public void setProductId(final UUID productId) {
+        this.productId = productId;
+    }
+
+    public UUID getBuyerId() {
+        return this.buyerId;
+    }
+
+    public void setBuyerId(final UUID buyerId) {
+        this.buyerId = buyerId;
     }
 }

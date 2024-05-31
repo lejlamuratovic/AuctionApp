@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 public class PaymentAddRequest {
     @NotEmpty(message = "Address is required")
@@ -37,6 +38,8 @@ public class PaymentAddRequest {
 
     @Future(message = "Expiration date must be in the future")
     private LocalDate expirationDate;
+    private UUID productId;
+    private UUID buyerId;
 
     public PaymentAddRequest(final String address,
                              final String city,
@@ -119,5 +122,21 @@ public class PaymentAddRequest {
 
     public void setExpirationDate(final LocalDate expirationDate) {
         this.expirationDate = expirationDate;
+    }
+
+    public UUID getProductId() {
+        return this.productId;
+    }
+
+    public void setProductId(final UUID productId) {
+        this.productId = productId;
+    }
+
+    public UUID getBuyerId() {
+        return this.buyerId;
+    }
+
+    public void setBuyerId(final UUID buyerId) {
+        this.buyerId = buyerId;
     }
 }

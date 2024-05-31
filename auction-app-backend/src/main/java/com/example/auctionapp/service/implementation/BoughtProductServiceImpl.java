@@ -33,16 +33,16 @@ public class BoughtProductServiceImpl implements BoughtProductService {
     }
 
     @Override
-    public BoughtProduct saveBoughtProduct(UUID buyer_id, UUID product_id, UUID payment_info_id) {
+    public BoughtProduct saveBoughtProduct(final UUID productId, final UUID buyerId, final UUID paymentInfoId) {
         BoughtProductEntity boughtProductEntity = new BoughtProductEntity();
 
-        ProductEntity productEntity = this.productRepository.findById(product_id)
+        ProductEntity productEntity = this.productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product with the given ID not found"));
 
-        UserEntity userEntity = this.userRepository.findById(buyer_id)
+        UserEntity userEntity = this.userRepository.findById(buyerId)
                 .orElseThrow(() -> new ResourceNotFoundException("User with the given ID not found"));
 
-        PaymentInfoEntity paymentInfoEntity = this.paymentInfoRepository.findById(payment_info_id)
+        PaymentInfoEntity paymentInfoEntity = this.paymentInfoRepository.findById(paymentInfoId)
                 .orElseThrow(() -> new ResourceNotFoundException("Payment with the given ID not found"));
 
         boughtProductEntity.setUserEntity(userEntity);

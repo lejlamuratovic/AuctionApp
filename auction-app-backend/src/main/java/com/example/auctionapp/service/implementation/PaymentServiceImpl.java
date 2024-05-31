@@ -3,45 +3,43 @@ package com.example.auctionapp.service.implementation;
 import com.example.auctionapp.entity.CreditCardEntity;
 import com.example.auctionapp.entity.PaymentInfoEntity;
 import com.example.auctionapp.model.PaymentInfo;
-import com.example.auctionapp.model.Product;
-import com.example.auctionapp.repository.CreditCardRepository;
 import com.example.auctionapp.repository.PaymentInfoRepository;
 import com.example.auctionapp.request.PaymentAddRequest;
 import com.example.auctionapp.request.StripePaymentAddRequest;
+import com.example.auctionapp.service.BoughtProductService;
 import com.example.auctionapp.service.PaymentService;
-import com.example.auctionapp.util.FeaturedProducts;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.UUID;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
     private final PaymentInfoRepository paymentInfoRepository;
+    private final BoughtProductService boughtProductService;
 
-    public PaymentServiceImpl(final PaymentInfoRepository paymentInfoRepository) {
+    public PaymentServiceImpl(final PaymentInfoRepository paymentInfoRepository,
+                              final BoughtProductService boughtProductService) {
         this.paymentInfoRepository = paymentInfoRepository;
+        this.boughtProductService = boughtProductService;
     }
 
     // used for payments with stripe
+    @Transactional
     @Override
     public PaymentInfo addStripePaymentInfo(StripePaymentAddRequest stripePaymentAddRequest) {
         CreditCardEntity creditCardEntity = new CreditCardEntity();
 
         creditCardEntity.setStripeToken(stripePaymentAddRequest.getStripeToken());
 
-        PaymentInfoEntity paymentInfo = new PaymentInfoEntity();
-
-        paymentInfo.setZipCode(stripePaymentAddRequest.getZipCode());
-        paymentInfo.setAddress(stripePaymentAddRequest.getZipCode());
-        paymentInfo.setCity(stripePaymentAddRequest.getCity());
-        paymentInfo.setCountry(stripePaymentAddRequest.getCountry());
+        PaymentInfoEntity paymentInfo = stripePaymentAddRequest.toEntity();
         paymentInfo.setCreditCardEntity(creditCardEntity);
 
-        this.paymentInfoRepository.save(paymentInfo);
+        PaymentInfoEntity paymentInfoEntity = this.paymentInfoRepository.saveAndFlush(paymentInfo);
 
-        return paymentInfo.toDomainModel();
+        this.boughtProductService.saveBoughtProduct(stripePaymentAddRequest.getProductId(),
+                                                    stripePaymentAddRequest.getBuyerId(),
+                                                    paymentInfoEntity.getPaymentInfoId());
+
+        return paymentInfoEntity.toDomainModel();
     }
 
     // used for adding payment information to a product
@@ -54,10 +52,8 @@ public class PaymentServiceImpl implements PaymentService {
         creditCardEntity.setNameOnCard(paymentAddRequest.getNameOnCard());
 
         PaymentInfoEntity paymentInfo = paymentAddRequest.toEntity();
-
         paymentInfo.setCreditCardEntity(creditCardEntity);
-        this.paymentInfoRepository.save(paymentInfo);
 
-        return paymentInfo.toDomainModel();
+        return this.paymentInfoRepository.save(paymentInfo).toDomainModel();
     }
 }
