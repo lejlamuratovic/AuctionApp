@@ -19,12 +19,9 @@ import java.util.UUID;
 @Service
 public class PaymentServiceImpl implements PaymentService {
     private final PaymentInfoRepository paymentInfoRepository;
-    private final CreditCardRepository creditCardRepository;
 
-    public PaymentServiceImpl(final PaymentInfoRepository paymentInfoRepository,
-                              final CreditCardRepository creditCardRepository) {
+    public PaymentServiceImpl(final PaymentInfoRepository paymentInfoRepository) {
         this.paymentInfoRepository = paymentInfoRepository;
-        this.creditCardRepository = creditCardRepository;
     }
 
     // used for payments with stripe
