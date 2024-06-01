@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { Button, FormContainer, InputField } from "src/components";
@@ -7,19 +7,85 @@ import { userProfilePicture } from "src/assets/images";
 import { dropdownInactive, dropdownActive } from "src/assets/icons";
 import { BUTTON_LABELS, BUTTON_VARIANTS } from "src/constants";
 import { personalInformationFormFields, cardInformationFields, addressInformationFields } from "src/forms/fields";
+import { useUser } from "src/store/UserContext";
+import { getUser } from "src/services/userService"
 
 import "./style.scss";
 
 const ProfileTab = () => {
+    const [user, setUser] = useState();
+    const [loading, setLoading] = useState();
+    const [error, setError] = useState();
+
     const methods = useForm({
-        mode: "onBlur"
+        mode: "onBlur",
+        defaultValues: {
+            firstName: '',
+            lastName: '',
+            email: '',
+            address: '',
+            city: '',
+            country: '',
+            zipCode: '',
+            nameOnCard: '',
+            cardNumber: '',
+            expirationMonth: '',
+            expirationYear: '',
+            cvv: '',
+            month: '',
+            day: '',
+            year: '',
+            street: ''
+        }
     });
+
+    const { reset } = methods;
+    const { userId } = useUser();
 
     const [showCardInfo, setShowCardInfo] = useState(false);
     const [showAddressInfo, setShowAddressInfo] = useState(false);
 
     const toggleCreditCardInfo = () => setShowCardInfo(!showCardInfo);
     const toggleAddressInfo = () => setShowAddressInfo(!showAddressInfo);
+
+    const fetchUserInformation = () => {
+        setLoading(true);
+    
+        getUser(userId)
+          .then((response) => {
+            setUser(response);
+            setLoading(false);
+
+            const expDate = new Date(response.paymentInfoEntity.creditCardEntity.expirationDate);
+            const expMonth = expDate.getMonth() + 1;
+            const expYear = expDate.getFullYear();
+
+            reset({
+                firstName: response.firstName,
+                lastName: response.lastName,
+                email: response.email,
+                street: response.paymentInfoEntity.address,
+                city: response.paymentInfoEntity.city,
+                state: response.paymentInfoEntity.country,
+                zipCode: response.paymentInfoEntity.zipCode,
+                nameOnCard: response.paymentInfoEntity.creditCardEntity.nameOnCard,
+                cardNumber: response.paymentInfoEntity.creditCardEntity.cardNumber,
+                expirationMonth: expMonth,
+                expirationYear: expYear,
+            });
+          })
+          .catch((error) => {
+            setError(error);
+            setLoading(false);
+          })
+          .finally(() => {
+            setLoading(false);
+          });
+      }
+    
+      useEffect(() => {
+        if (userId) fetchUserInformation();
+      }, [userId, reset]);
 
     const onSubmit = (data) => {
         console.log(data);
