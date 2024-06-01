@@ -24,6 +24,8 @@ import com.example.auctionapp.specification.ProductSpecification;
 import com.example.auctionapp.util.ComputeSuggestion;
 import com.example.auctionapp.util.PageableUtil;
 import com.example.auctionapp.util.FeaturedProducts;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -48,6 +50,8 @@ public class ProductServiceImpl implements ProductService {
     private final ProductImageRepository productImageRepository;
     private final BoughtProductRepository boughtProductRepository;
     private final BidRepository bidRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
 
     public ProductServiceImpl(final ProductRepository productRepository,
                               final CategoryRepository categoryRepository,
@@ -191,15 +195,19 @@ public class ProductServiceImpl implements ProductService {
                                                                     bidRepository,
                                                                     boughtProductRepository);
 
-        // fetch top 10 products with most bids
+        if (categoryId == null) {
+            logger.info("No category ID found for user ID: {}, using general featured products", userId);
+            return getFeaturedProducts();
+        }
+
         Pageable topTen = PageRequest.of(0, 10);
+        List<ProductEntity> topProducts = productRepository.findTopPopularProductEntitiesByCategoryId(categoryId, topTen);
 
-        List<ProductEntity> topProducts = productRepository
-                .findTopPopularProductEntitiesByCategoryId(categoryId, topTen);
+        if (topProducts.isEmpty()) {
+            return getFeaturedProducts();
+        }
 
-        // randomly pick 3 top products from the list
         Collections.shuffle(topProducts);
-
         topProducts = topProducts.subList(0, Math.min(3, topProducts.size()));
 
         return topProducts.stream()

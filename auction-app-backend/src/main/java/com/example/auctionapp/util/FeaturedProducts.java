@@ -2,7 +2,6 @@ package com.example.auctionapp.util;
 
 import com.example.auctionapp.entity.BidEntity;
 import com.example.auctionapp.entity.BoughtProductEntity;
-import com.example.auctionapp.entity.CategoryEntity;
 import com.example.auctionapp.entity.ProductEntity;
 import com.example.auctionapp.repository.BidRepository;
 import com.example.auctionapp.repository.BoughtProductRepository;
@@ -13,14 +12,12 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class FeaturedProducts {
     private static final Logger logger = LoggerFactory.getLogger(FeaturedProducts.class);
 
-    // assigning priorities to different actions
     private static final int WEIGHT_BUY = 3;
     private static final int WEIGHT_BID = 2;
     private static final int WEIGHT_SELL = 1;
@@ -77,16 +74,10 @@ public class FeaturedProducts {
     }
 
     private static List<UUID> fetchCategoryIds(final List<ProductEntity> products) {
-        final List<UUID> parentCategoryIds = products.stream()
+        return products.stream()
                 .map(ProductEntity::getCategoryEntity)
-                .map(CategoryEntity::getParentCategory)
-                .filter(Objects::nonNull)
-                .map(CategoryEntity::getCategoryId)
+                .map(category -> category.getParentCategory() != null ? category.getParentCategory().getCategoryId() : category.getCategoryId())
                 .distinct()
                 .collect(Collectors.toList());
-
-        logger.info("Fetched category IDs: {}", parentCategoryIds);
-
-        return parentCategoryIds;
     }
 }

@@ -47,15 +47,11 @@ const FeaturedProducts = () => {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(true);
-      
       if (userId) {
         fetchFeaturedProducts();
       } else {
         fetchPopularProducts();
       }
-    }, 1000);
   }, [userId]);
 
   if(error) return <ErrorComponent message={ error.message } />;
