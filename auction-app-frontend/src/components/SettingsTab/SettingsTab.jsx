@@ -22,7 +22,6 @@ const SettingsTab = () => {
         .then((response) => {
           setUser(response);
           setLoading(false);
-          console.log("User information fetched successfully", response);
         })
         .catch((error) => {
           setError(error);
