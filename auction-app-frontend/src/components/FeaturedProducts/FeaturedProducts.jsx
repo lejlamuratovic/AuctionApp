@@ -45,17 +45,19 @@ const FeaturedProducts = () => {
         setLoading(false);
       });
   };
-    
 
   useEffect(() => {
-    if (userId) {
-      fetchFeaturedProducts();
-    } else {
-      fetchPopularProducts();
-    }
+    setTimeout(() => {
+      setLoading(true);
+      
+      if (userId) {
+        fetchFeaturedProducts();
+      } else {
+        fetchPopularProducts();
+      }
+    }, 1000);
   }, [userId]);
 
-  if(loading) return <LoadingComponent />;
   if(error) return <ErrorComponent message={ error.message } />;
 
   return (

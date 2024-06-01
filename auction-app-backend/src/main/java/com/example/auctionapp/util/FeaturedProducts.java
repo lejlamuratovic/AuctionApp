@@ -2,59 +2,66 @@ package com.example.auctionapp.util;
 
 import com.example.auctionapp.entity.BidEntity;
 import com.example.auctionapp.entity.BoughtProductEntity;
+import com.example.auctionapp.entity.CategoryEntity;
 import com.example.auctionapp.entity.ProductEntity;
 import com.example.auctionapp.repository.BidRepository;
 import com.example.auctionapp.repository.BoughtProductRepository;
 import com.example.auctionapp.repository.ProductRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class FeaturedProducts {
+    private static final Logger logger = LoggerFactory.getLogger(FeaturedProducts.class);
+
+    // assigning priorities to different actions
+    private static final int WEIGHT_BUY = 3;
+    private static final int WEIGHT_BID = 2;
+    private static final int WEIGHT_SELL = 1;
+
     public static UUID getFeaturedProducts(final UUID userId,
                                            final ProductRepository productRepository,
                                            final BidRepository bidRepository,
                                            final BoughtProductRepository boughtProductRepository) {
+        logger.info("Fetching products for user ID: {}", userId);
+
         final List<ProductEntity> seller = productRepository.findProductEntitiesByUserEntity_UserId(userId);
+        logger.info("Fetched {} products for sale by user ID: {}", seller.size(), userId);
+
         final List<BidEntity> bids = bidRepository.findBidEntitiesByUserEntity_UserId(userId);
+        logger.info("Fetched {} bids by user ID: {}", bids.size(), userId);
+
         final List<BoughtProductEntity> bought = boughtProductRepository.findBoughtProductEntitiesByUserEntity_UserId(userId);
+        logger.info("Fetched {} bought products by user ID: {}", bought.size(), userId);
 
-        List<UUID> categoryIdsFromBids = fetchCategoryIds(bids.stream()
-                .map(BidEntity::getProduct)
-                .distinct()
-                .toList());
-        List<UUID> categoryIdsFromBought = fetchCategoryIds(bought.stream()
-                .map(BoughtProductEntity::getProductEntity)
-                .distinct()
-                .toList());
-        List<UUID> categoryIdsFromProducts = fetchCategoryIds(seller);
+        Map<UUID, Integer> frequencyMap = new HashMap<>();
 
+        addToFrequencyMap(fetchCategoryIds(seller), frequencyMap, WEIGHT_SELL);
+        addToFrequencyMap(fetchCategoryIds(bought.stream().map(BoughtProductEntity::getProductEntity).distinct().toList()), frequencyMap, WEIGHT_BUY);
+        addToFrequencyMap(fetchCategoryIds(bids.stream().map(BidEntity::getProduct).distinct().toList()), frequencyMap, WEIGHT_BID);
 
-        List<UUID> joinedList = new ArrayList<>();
-        Stream.of(categoryIdsFromBids, categoryIdsFromBought, categoryIdsFromProducts).forEach(joinedList::addAll);
+        UUID featuredCategoryId = fetchTopCategoryId(frequencyMap);
+        logger.info("Featured category ID for user ID {}: {}", userId, featuredCategoryId);
 
-        return fetchTopCategoryId(joinedList);
+        return featuredCategoryId;
     }
 
-    private static List<UUID> fetchCategoryIds(List<ProductEntity> products) {
-        return products.stream()
-                .map(productEntity -> productEntity.getCategory().getCategoryId())
-                .distinct()
-                .collect(Collectors.toList());
-    }
-
-    private static UUID fetchTopCategoryId(final List<UUID> categoryIds) {
-        HashMap<UUID, Integer> frequencyMap = new HashMap<>();
-
+    private static void addToFrequencyMap(final List<UUID> categoryIds,
+                                          final Map<UUID, Integer> frequencyMap,
+                                          final int weight) {
         for (UUID categoryId : categoryIds) {
-            frequencyMap.put(categoryId, frequencyMap.getOrDefault(categoryId, 0) + 1);
+            frequencyMap.put(categoryId, frequencyMap.getOrDefault(categoryId, 0) + weight);
+            logger.info("Category ID: {} has frequency: {}", categoryId, frequencyMap.get(categoryId));
         }
+    }
 
+    private static UUID fetchTopCategoryId(final Map<UUID, Integer> frequencyMap) {
         UUID mostFrequent = null;
         int maxCount = 0;
 
@@ -65,6 +72,21 @@ public class FeaturedProducts {
             }
         }
 
+        logger.info("Most frequent category ID: {} with count: {}", mostFrequent, maxCount);
         return mostFrequent;
+    }
+
+    private static List<UUID> fetchCategoryIds(final List<ProductEntity> products) {
+        final List<UUID> parentCategoryIds = products.stream()
+                .map(ProductEntity::getCategoryEntity)
+                .map(CategoryEntity::getParentCategory)
+                .filter(Objects::nonNull)
+                .map(CategoryEntity::getCategoryId)
+                .distinct()
+                .collect(Collectors.toList());
+
+        logger.info("Fetched category IDs: {}", parentCategoryIds);
+
+        return parentCategoryIds;
     }
 }
