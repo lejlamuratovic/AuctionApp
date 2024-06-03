@@ -23,12 +23,12 @@ export const addressInformationFields = [
             ...rules.required("Zip Code"),
         }
     }, 
-    {
-        label: "State",
-        type: "text",
-        name: "state",
-        rules: rules.state()
-    },
+    // {
+    //     label: "State",
+    //     type: "text",
+    //     name: "state",
+    //     rules: rules.state()
+    // },
     {
         label: "Country",
         type: "text",
