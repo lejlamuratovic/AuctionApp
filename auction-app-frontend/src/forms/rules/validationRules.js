@@ -50,17 +50,14 @@ export const rules = {
         )
     }), 
     creditCard: () => ({
-        ...rules.required("Credit Card"),
         ...rules.pattern(/^\d{16}$/, "Enter a valid 16-digit number"),
         validate: (value) => checkCardNumberValidity(value) || "Enter a valid credit card number"
     }),
     expirationYear: () => ({
-        ...rules.required("Year"),
         ...rules.pattern(/^\d{2}$/, "Enter a valid year (YY)"),
         validate: (value) => validateYear(value) || "Year cannot be in the past"
     }),
     expirationMonth: () => ({
-        ...rules.required("Month"),
         ...rules.pattern(/^(0[1-9]|1[0-2])$/, "Enter a valid month (MM)")
     }),
     cvv: () => ({
@@ -69,53 +66,44 @@ export const rules = {
         ...rules.pattern(/^\d{3,4}$/, "CVV must be 3 or 4 digits")
     }),        
     street: () => ({
-        ...rules.required("Street"),
         ...rules.minLength(3, "Street"),
         ...rules.maxLength(100, "Street"),
         ...rules.pattern(/^[a-zA-Z0-9\s,."-]{3,100}$/, "Invalid street name")
     }),
     city: () => ({
-        ...rules.required("City"),
         ...rules.minLength(2, "City"),
         ...rules.maxLength(50, "City"),
         ...rules.pattern(/^[a-zA-Z\s]{2,50}$/, "Invalid city name")
     }),
     state: () => ({
-        ...rules.required("State"),
         ...rules.minLength(2, "State"),
         ...rules.maxLength(50, "State"),
         ...rules.pattern(/^[a-zA-Z\s]{2,50}$/, "Invalid state name")
     }),
     country: () => ({
-        ...rules.required("Country"),
         ...rules.minLength(2, "Country"),
         ...rules.maxLength(50, "Country"),
         ...rules.pattern(/^[a-zA-Z\s]{2,50}$/, "Invalid country name")
     }),
     month: () => ({
-        ...rules.required("Month"),
         ...rules.minValue(1, "Month"),
         ...rules.maxValue(12, "Month"),
         ...rules.pattern(/^[0-9]{1,2}$/, "Invalid month")
     }),
     day: () => ({
-        ...rules.required("Day"),
         ...rules.minValue(1, "Day"),
         ...rules.maxValue(31, "Day"),
         ...rules.pattern(/^[0-9]{1,2}$/, "Invalid day")
     }),
     year: () => ({
-        ...rules.required("Year"),
         ...rules.minValue(1930, "Year"),
         ...rules.maxValue(2024, "Year"),
         ...rules.pattern(/^[0-9]{2,4}$/, "Invalid year")
     }),
     startDate: () => ({
-        ...rules.required("Start date"),
         validate: (value) => isDateInPast(value) || "Start date cannot be in the past"
     }),
     endDate: () => ({
-        ...rules.required("End date"),
         validate: (value) => isDateInPast(value) || "End date cannot be in the past"
     }),
 };
