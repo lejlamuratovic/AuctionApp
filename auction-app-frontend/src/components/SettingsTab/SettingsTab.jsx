@@ -1,19 +1,23 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import { Button } from "src/components";
+import { Button, ErrorComponent, LoadingComponent } from "src/components";
 
-import { BUTTON_LABELS } from "src/constants";
+import { BUTTON_LABELS, ROUTE_PATHS, BUTTON_VARIANTS } from "src/constants";
 import { useUser } from "src/store/UserContext";
-import { getUser } from "src/services/userService";
+import { getUser, deactivateAccount } from "src/services/userService";
 
 import "./style.scss"
+import { set } from "react-hook-form";
 
 const SettingsTab = () => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [updateLoading, setUpdateLoading] = useState(false);
     const [error, setError] = useState(null);
 
     const { userId } = useUser();
+    const navigate = useNavigate();
   
     const fetchUserInformation = () => {
       setLoading(true);
@@ -32,9 +36,24 @@ const SettingsTab = () => {
         });
     }
   
+    const handleDeactivateAccount = () => {
+      setUpdateLoading(true);
+
+      deactivateAccount(userId)
+        .then(() => {
+          navigate(ROUTE_PATHS.LOGIN);
+          setUpdateLoading(false);
+        }).catch((error) => {
+          setError(error.message);
+          setUpdateLoading(false);
+        });
+    }
+
     useEffect(() => {
       if (userId) fetchUserInformation();
     }, [userId]);
+
+    if (error) return <ErrorComponent error={ error } />;
 
     return (
         <div className="settings-tab-container">
@@ -47,7 +66,11 @@ const SettingsTab = () => {
                 <div className="box bottom-left">
                     <span className="box-heading">Account Information</span>
                     <span className="box-description">Do you want to deactivate account?</span>
-                    <Button label={ BUTTON_LABELS.DEACTIVATE } disabled={ true }/>
+                    <Button 
+                      label={updateLoading ? <LoadingComponent /> : BUTTON_LABELS.DEACTIVATE}
+                      variant={BUTTON_VARIANTS.OUTLINED} 
+                      onButtonClick={handleDeactivateAccount}
+                    />
                 </div>
             </div>
         </div>

@@ -28,4 +28,8 @@ const updateProfileImage = (userId, data) => {
     return putRequest(`/users/${userId}/profile-image`, data);
 }
 
-export { registerUser, loginUser, logoutUser, getUser, addPaymentInfoToUser, updateUser, updateProfileImage };
+const deactivateAccount = (userId) => {
+    return putRequest(`/users/${userId}/deactivate`);
+}
+
+export { registerUser, loginUser, logoutUser, getUser, addPaymentInfoToUser, updateUser, updateProfileImage, deactivateAccount };
