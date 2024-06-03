@@ -105,6 +105,7 @@ export const BUTTON_LABELS = {
   BACK: "BACK",
   VIEW: "VIEW",
   PAY: "PAY",
+  UPLOAD: "UPLOAD",
 };
 
 export const CONNECTION_STATUSES = {
