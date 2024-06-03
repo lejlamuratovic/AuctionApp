@@ -8,7 +8,7 @@ import { Button, FormContainer, InputField, CustomFileUploader } from "src/compo
 import { userProfilePicture } from "src/assets/images";
 import { dropdownInactive, dropdownActive } from "src/assets/icons";
 import { BUTTON_LABELS, BUTTON_VARIANTS } from "src/constants";
-import { personalInformationFormFields, cardInformationFields, addressInformationFields } from "src/forms/fields";
+import { personalInformationFormFields, profileCardInformationFields, profileAddressInformationFields } from "src/forms/fields";
 import { useUser } from "src/store/UserContext";
 import { getUser, updateUser } from "src/services/userService"
 import { close } from "src/assets/icons";
@@ -229,7 +229,7 @@ const ProfileTab = () => {
                     { showCardInfo && (
                         <div className="collapsable-column">
                             <div className="profile-form">
-                            { cardInformationFields.map(field => (
+                            { profileCardInformationFields.map(field => (
                                 <InputField
                                     key={ field.name } 
                                     name={ field.name }
@@ -251,7 +251,7 @@ const ProfileTab = () => {
                     { showAddressInfo && (
                         <div className="collapsable-column">
                             <div className="profile-form">
-                                { addressInformationFields.map(field => (
+                                { profileAddressInformationFields.map(field => (
                                     <InputField
                                         key={ field.name }
                                         name={ field.name }

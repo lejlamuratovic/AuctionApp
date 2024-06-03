@@ -23,11 +23,9 @@ export const locationShippingFormFields = [
         type: "text",
         name: "city",
         specialClass: "input-field-half",
+        rules: rules.city(),
         rules: {
-            ...rules.required("City"),
-            ...rules.minLength(3, "City"),
-            ...rules.maxLength(50, "City"),
-            ...rules.pattern(/^[a-zA-Z\s]{3,50}$/, "Invalid city")
+            ...rules.required("City")
         }
     }, 
     {
@@ -46,11 +44,9 @@ export const locationShippingFormFields = [
         label: "Country",
         type: "text",
         name: "country",
+        rules: rules.country(),
         rules: {
-            ...rules.required("Country"),
-            ...rules.minLength(3, "Country"),
-            ...rules.maxLength(50, "Country"),
-            ...rules.pattern(/^[a-zA-Z\s]{3,50}$/, "Invalid country")
+            ...rules.required("Country")
         }
     }
 ];
