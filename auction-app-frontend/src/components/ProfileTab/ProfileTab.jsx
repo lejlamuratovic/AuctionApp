@@ -10,7 +10,7 @@ import { dropdownInactive, dropdownActive } from "src/assets/icons";
 import { BUTTON_LABELS, BUTTON_VARIANTS } from "src/constants";
 import { personalInformationFormFields, cardInformationFields, addressInformationFields } from "src/forms/fields";
 import { useUser } from "src/store/UserContext";
-import { getUser } from "src/services/userService"
+import { getUser, updateUser } from "src/services/userService"
 import { close } from "src/assets/icons";
 import { FILE_TYPES } from "src/constants";
 
@@ -65,8 +65,6 @@ const ProfileTab = () => {
                 setProfilePicture(response.profilePicture);
             }
 
-            console.log(response);
-
             setLoading(false);
 
             let expMonth = '';
@@ -113,14 +111,38 @@ const ProfileTab = () => {
           .finally(() => {
             setLoading(false);
           });
-      }
+    };
+
+    const updateUserData = (data) => {
+        // null fields because some fields are optional
+        const userData = {
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+            dob: data.year && data.month && data.day ? new Date(data.year, data.month - 1, data.day) : null,
+            address: data.street || null,
+            city: data.city || null,
+            country: data.country || null,
+            zipCode: data.zipCode || null,
+            nameOnCard: data.nameOnCard || null,
+            cardNumber: data.cardNumber || null,
+            expirationDate: data.expirationYear && data.expirationMonth ? new Date(data.expirationYear, data.expirationMonth - 1, 1) : null
+        };    
+
+        updateUser(userId, userData)
+            .then((response) => {
+                console.log(response);
+            }).catch((error) => {
+                console.log(error);
+            });
+    };
     
-      useEffect(() => {
+    useEffect(() => {
         if (userId) fetchUserInformation();
-      }, [userId, reset]);
+    }, [userId, reset]);
 
     const onSubmit = (data) => {
-        console.log(data);
+        updateUserData(data);
     }
 
     const changeProfilePicture = () => {
@@ -130,6 +152,10 @@ const ProfileTab = () => {
     const closeProfileModal = () => {
         setIsProfileModalOpen(false);
     };  
+
+    const handleFileChange = (file) => {
+        setProfilePicture(URL.createObjectURL(file));
+    }
 
     return (
         <div className="profile-tab-container">
@@ -164,7 +190,7 @@ const ProfileTab = () => {
                                     <img src = { close } alt="Close" className="close-icon" onClick={ closeProfileModal } />
                                     <img src={ profilePicture } alt="Profile Picture" className="user-profile-picture" />
                                     <FileUploader
-                                        handleChange={ (files) => console.log(files) }
+                                        handleChange={ handleFileChange }
                                         name="profilePicture"
                                         types={ FILE_TYPES }
                                         multiple={ false }
