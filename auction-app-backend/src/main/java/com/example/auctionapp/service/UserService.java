@@ -12,4 +12,6 @@ public interface UserService {
     User updateUser(final UUID userId, final UserDetailsRequest userRequest);
 
     User updateProfileImage(final UUID userId, final MultipartFile image);
+
+    void deactivateAccount(final UUID userId);
 }

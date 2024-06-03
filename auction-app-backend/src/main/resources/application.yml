@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://dpg-cp0h51q1hbls73eaktmg-a.frankfurt-postgres.render.com/auction_app_cqgi
-    username: auction_app_cqgi_user
-    password: ${DB_PASSWORD}
+    url: jdbc:postgresql://localhost:5432/auction_app
+    username: postgres
+    password: root
   jpa:
     hibernate:
       ddl-auto: validate
@@ -12,10 +12,10 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format-sql: true
   flyway:
-    user: auction_app_cqgi_user
-    password: ${DB_PASSWORD}
+    user: postgres
+    password: root
     schemas: auction_app
-    url: jdbc:postgresql://dpg-cp0h51q1hbls73eaktmg-a.frankfurt-postgres.render.com/auction_app_cqgi
+    url: jdbc:postgresql://localhost:5432/auction_app
     locations: classpath:db/migrations
 
 configuration:

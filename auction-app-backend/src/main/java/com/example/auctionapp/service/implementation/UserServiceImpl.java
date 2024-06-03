@@ -88,4 +88,14 @@ public class UserServiceImpl implements UserService {
 
         return userEntity.toDomainModel();
     }
+
+    @Override
+    public void deactivateAccount(final UUID userId) {
+        final UserEntity userEntity = this.userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User with the given ID does not exist"));
+
+        userEntity.setActive(false);
+
+        userRepository.save(userEntity);
+    }
 }
