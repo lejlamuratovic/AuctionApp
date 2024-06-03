@@ -21,7 +21,6 @@ const FeaturedProducts = () => {
     findFeaturedProducts(userId)
       .then((response) => {
         setProducts(response);
-        setLoading(false);
       })
       .catch((error) => {
         setError(error);
@@ -37,7 +36,6 @@ const FeaturedProducts = () => {
     findPopularProducts()
       .then((response) => {
         setProducts(response);
-        setLoading(false);
       }).catch((error) => {
         setError(error);
         setLoading(false);
