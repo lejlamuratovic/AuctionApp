@@ -1,3 +1,4 @@
 ALTER TABLE users
 ADD COLUMN dob DATE,
-ADD COLUMN profile_picture VARCHAR(255);
+ADD COLUMN profile_picture VARCHAR(255),
+ADD COLUMN is_active BOOLEAN NOT NULL DEFAULT true;

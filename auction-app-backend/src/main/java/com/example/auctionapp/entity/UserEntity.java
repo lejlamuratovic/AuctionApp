@@ -60,6 +60,9 @@ public class UserEntity implements UserDetails {
     @Temporal(TemporalType.DATE)
     private LocalDate dob;
 
+    @Column(name="is_active")
+    private Boolean isActive;
+
     public UserEntity() {}
 
     public UserEntity(final UUID userId,
@@ -93,6 +96,7 @@ public class UserEntity implements UserDetails {
         user.setPaymentInfoEntity(this.paymentInfoEntity);
         user.setDob(this.dob);
         user.setProfilePicture(this.profilePicture);
+        user.setActive(this.isActive);
 
         return user;
     }
@@ -205,5 +209,13 @@ public class UserEntity implements UserDetails {
 
     public void setDob(final LocalDate dob) {
         this.dob = dob;
+    }
+
+    public Boolean getActive() {
+        return this.isActive;
+    }
+
+    public void setActive(final Boolean active) {
+        isActive = active;
     }
 }
