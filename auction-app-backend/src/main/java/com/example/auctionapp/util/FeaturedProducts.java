@@ -40,8 +40,18 @@ public class FeaturedProducts {
         Map<UUID, Integer> frequencyMap = new HashMap<>();
 
         addToFrequencyMap(fetchCategoryIds(seller), frequencyMap, WEIGHT_SELL);
-        addToFrequencyMap(fetchCategoryIds(bought.stream().map(BoughtProductEntity::getProductEntity).distinct().toList()), frequencyMap, WEIGHT_BUY);
-        addToFrequencyMap(fetchCategoryIds(bids.stream().map(BidEntity::getProduct).distinct().toList()), frequencyMap, WEIGHT_BID);
+        addToFrequencyMap(fetchCategoryIds(bought.stream()
+                                            .map(BoughtProductEntity::getProductEntity)
+                                            .distinct()
+                                            .toList()),
+                                            frequencyMap,
+                                            WEIGHT_BUY);
+        addToFrequencyMap(fetchCategoryIds(bids.stream()
+                                            .map(BidEntity::getProduct)
+                                            .distinct()
+                                            .toList()),
+                                            frequencyMap,
+                                            WEIGHT_BID);
 
         UUID featuredCategoryId = fetchTopCategoryId(frequencyMap);
         logger.info("Featured category ID for user ID {}: {}", userId, featuredCategoryId);
@@ -54,6 +64,7 @@ public class FeaturedProducts {
                                           final int weight) {
         for (UUID categoryId : categoryIds) {
             frequencyMap.put(categoryId, frequencyMap.getOrDefault(categoryId, 0) + weight);
+            
             logger.info("Category ID: {} has frequency: {}", categoryId, frequencyMap.get(categoryId));
         }
     }
@@ -76,7 +87,9 @@ public class FeaturedProducts {
     private static List<UUID> fetchCategoryIds(final List<ProductEntity> products) {
         return products.stream()
                 .map(ProductEntity::getCategoryEntity)
-                .map(category -> category.getParentCategory() != null ? category.getParentCategory().getCategoryId() : category.getCategoryId())
+                .map(category -> category.getParentCategory() != null ?
+                        category.getParentCategory().getCategoryId() :
+                        category.getCategoryId())
                 .distinct()
                 .collect(Collectors.toList());
     }
