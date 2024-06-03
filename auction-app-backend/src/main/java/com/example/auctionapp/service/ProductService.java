@@ -26,6 +26,6 @@ public interface ProductService {
                                                               final int page,
                                                               final int size);
 
-    List<Product> getFeaturedProductsByUser(UUID userId);
-    List<Product> getFeaturedProducts();
+    List<Product> getFeaturedProductsByUser(final UUID userId, final int count);
+    List<Product> getFeaturedProducts(final int count);
 }

@@ -91,12 +91,12 @@ public class ProductController {
     }
 
     @GetMapping("/featured-products/{userId}")
-    public List<Product> getFeaturedProductsByUser(@PathVariable final UUID userId) {
-        return this.productService.getFeaturedProductsByUser(userId);
+    public List<Product> getFeaturedProductsByUser(@PathVariable final UUID userId, @RequestParam final int count) {
+        return this.productService.getFeaturedProductsByUser(userId, count);
     }
 
     @GetMapping("/featured-products")
-    public List<Product> getFeaturedProducts() {
-        return this.productService.getFeaturedProducts();
+    public List<Product> getFeaturedProducts(@RequestParam final int count) {
+        return this.productService.getFeaturedProducts(count);
     }
 }

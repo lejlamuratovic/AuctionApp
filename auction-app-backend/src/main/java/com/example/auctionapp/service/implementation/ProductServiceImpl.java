@@ -189,7 +189,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getFeaturedProductsByUser(final UUID userId) {
+    public List<Product> getFeaturedProductsByUser(final UUID userId, final int count) {
         final UUID categoryId = FeaturedProducts.getFeaturedProducts(userId,
                                                                     productRepository,
                                                                     bidRepository,
@@ -197,18 +197,18 @@ public class ProductServiceImpl implements ProductService {
 
         if (categoryId == null) {
             logger.info("No category ID found for user ID: {}, using general featured products", userId);
-            return getFeaturedProducts();
+            return getFeaturedProducts(count);
         }
 
         Pageable topTen = PageRequest.of(0, 10);
         List<ProductEntity> topProducts = productRepository.findTopPopularProductEntitiesByCategoryId(categoryId, topTen);
 
         if (topProducts.isEmpty()) {
-            return getFeaturedProducts();
+            return getFeaturedProducts(count);
         }
 
         Collections.shuffle(topProducts);
-        topProducts = topProducts.subList(0, Math.min(3, topProducts.size()));
+        topProducts = topProducts.subList(0, Math.min(count, topProducts.size()));
 
         return topProducts.stream()
                 .map(ProductEntity::toDomainModel)
@@ -216,7 +216,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getFeaturedProducts() {
+    public List<Product> getFeaturedProducts(final int count) {
         Pageable topTen = PageRequest.of(0, 10);
 
         List<ProductEntity> topProducts = productRepository
@@ -224,7 +224,7 @@ public class ProductServiceImpl implements ProductService {
 
         Collections.shuffle(topProducts);
 
-        topProducts = topProducts.subList(0, Math.min(3, topProducts.size()));
+        topProducts = topProducts.subList(0, Math.min(count, topProducts.size()));
 
         return topProducts.stream()
                 .map(ProductEntity::toDomainModel)

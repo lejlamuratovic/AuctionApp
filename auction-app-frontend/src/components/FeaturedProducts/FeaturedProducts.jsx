@@ -5,6 +5,7 @@ import { ProductCard, LoadingComponent, ErrorComponent } from "src/components";
 
 import { findFeaturedProducts, findPopularProducts } from "src/services";
 import { useUser } from "src/store/UserContext";
+import { FEATURED_PRODUCTS_COUNT } from "src/constants";
 
 import "./style.scss";
 
@@ -18,7 +19,7 @@ const FeaturedProducts = () => {
   const fetchFeaturedProducts = ()  => {
     setLoading(true);
 
-    findFeaturedProducts(userId)
+    findFeaturedProducts(userId, FEATURED_PRODUCTS_COUNT)
       .then((response) => {
         setProducts(response);
       })
@@ -33,7 +34,7 @@ const FeaturedProducts = () => {
   const fetchPopularProducts = ()  => {
     setLoading(true);
 
-    findPopularProducts()
+    findPopularProducts(FEATURED_PRODUCTS_COUNT)
       .then((response) => {
         setProducts(response);
       }).catch((error) => {
