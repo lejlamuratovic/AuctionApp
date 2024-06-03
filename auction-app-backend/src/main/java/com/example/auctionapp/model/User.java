@@ -15,6 +15,7 @@ public class User {
     private PaymentInfoEntity paymentInfoEntity;
     private String profilePicture;
     private LocalDate dob;
+    private Boolean isActive;
 
     public User() { }
 
@@ -80,5 +81,13 @@ public class User {
 
     public void setDob(final LocalDate dob) {
         this.dob = dob;
+    }
+
+    public Boolean getActive() {
+        return this.isActive;
+    }
+
+    public void setActive(final Boolean active) {
+        isActive = active;
     }
 }
