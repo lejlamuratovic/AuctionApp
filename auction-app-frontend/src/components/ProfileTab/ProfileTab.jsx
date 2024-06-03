@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import Modal from "react-modal";
 import { FileUploader } from "react-drag-drop-files";
 
-import { Button, FormContainer, InputField, CustomFileUploader } from "src/components";
+import { Button, FormContainer, InputField, ButtonLoadingIndicator, LoadingComponent } from "src/components";
 
 import { userProfilePicture } from "src/assets/images";
 import { dropdownInactive, dropdownActive } from "src/assets/icons";
 import { BUTTON_LABELS, BUTTON_VARIANTS } from "src/constants";
 import { personalInformationFormFields, profileCardInformationFields, profileAddressInformationFields } from "src/forms/fields";
 import { useUser } from "src/store/UserContext";
-import { getUser, updateUser } from "src/services/userService"
+import { getUser, updateUser, updateProfileImage } from "src/services/userService"
 import { close } from "src/assets/icons";
 import { FILE_TYPES } from "src/constants";
 
@@ -20,6 +20,13 @@ const ProfileTab = () => {
     const [user, setUser] = useState();
     const [loading, setLoading] = useState();
     const [error, setError] = useState();
+    const [updateLoading, setUpdateLoading] = useState();
+    const [updateError, setUpdateError] = useState();
+    const [showCardInfo, setShowCardInfo] = useState(false);
+    const [showAddressInfo, setShowAddressInfo] = useState(false);
+    const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+    const [profilePicture, setProfilePicture] = useState(userProfilePicture);
+    const [file, setFile] = useState();
 
     const methods = useForm({
         mode: "onBlur",
@@ -45,11 +52,6 @@ const ProfileTab = () => {
 
     const { reset } = methods;
     const { userId } = useUser();
-
-    const [showCardInfo, setShowCardInfo] = useState(false);
-    const [showAddressInfo, setShowAddressInfo] = useState(false);
-    const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
-    const [profilePicture, setProfilePicture] = useState(userProfilePicture);
 
     const toggleCreditCardInfo = () => setShowCardInfo(!showCardInfo);
     const toggleAddressInfo = () => setShowAddressInfo(!showAddressInfo);
@@ -114,6 +116,8 @@ const ProfileTab = () => {
     };
 
     const updateUserData = (data) => {
+        setUpdateLoading(true);
+
         // null fields because some fields are optional
         const userData = {
             firstName: data.firstName,
@@ -129,11 +133,28 @@ const ProfileTab = () => {
             expirationDate: data.expirationYear && data.expirationMonth ? new Date(data.expirationYear, data.expirationMonth - 1, 1) : null
         };    
 
+        setUpdateLoading(true);
+
         updateUser(userId, userData)
             .then((response) => {
-                console.log(response);
+                setUpdateLoading(false);
             }).catch((error) => {
-                console.log(error);
+                setUpdateError(error.message);
+            });
+    };
+
+    const updateUserProfileImage = () => {
+        const formData = new FormData();
+
+        formData.append("image", file);
+
+        setUpdateLoading(true);
+
+        updateProfileImage(userId, formData)
+            .then((response) => {
+                setUpdateLoading(false);
+            }).catch((error) => {
+                setUpdateError(error.message);
             });
     };
     
@@ -155,14 +176,22 @@ const ProfileTab = () => {
 
     const handleFileChange = (file) => {
         setProfilePicture(URL.createObjectURL(file));
-    }
+        setFile(file);
+    };
+
+    const handleFileUpload = () => {
+        updateUserProfileImage();
+        closeProfileModal();
+    };    
+
+    if (loading ) return <LoadingComponent />;
 
     return (
         <div className="profile-tab-container">
             <FormContainer 
                 onSubmit={ onSubmit } 
                 methods={ methods } 
-                buttonLabel={ BUTTON_LABELS.SAVE_INFO }
+                buttonLabel={ updateLoading ? <ButtonLoadingIndicator /> : BUTTON_LABELS.SAVE_INFO }
                 buttonVariant={ BUTTON_VARIANTS.OUTLINED }
             >
                 {/* general information */}
@@ -199,7 +228,7 @@ const ProfileTab = () => {
                                     <Button 
                                         label={ BUTTON_LABELS.UPLOAD } 
                                         variant={ BUTTON_VARIANTS.OUTLINED } 
-                                        onButtonClick={ closeProfileModal }
+                                        onButtonClick={ handleFileUpload }
                                     />
                                 </Modal>
                             ) }

@@ -5,6 +5,10 @@
     gap: 64px;
     width: 100%;
 
+    .success-message {
+        color: $success;
+    }
+
     form {
         width: 100%;
 
