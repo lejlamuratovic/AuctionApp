@@ -12,11 +12,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
@@ -50,6 +53,13 @@ public class UserEntity implements UserDetails {
     @JoinColumn(name = "payment_info_id")
     private PaymentInfoEntity paymentInfoEntity;
 
+    @Column(name = "profile_picture")
+    private String profilePicture;
+
+    @Column(name = "dob")
+    @Temporal(TemporalType.DATE)
+    private LocalDate dob;
+
     public UserEntity() {}
 
     public UserEntity(final UUID userId,
@@ -58,7 +68,9 @@ public class UserEntity implements UserDetails {
                       final String password,
                       final String email,
                       final UserRoles role,
-                      final PaymentInfoEntity paymentInfoEntity) {
+                      final PaymentInfoEntity paymentInfoEntity,
+                      final String profilePicture,
+                      final LocalDate dob) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -66,6 +78,8 @@ public class UserEntity implements UserDetails {
         this.email = email;
         this.role = role;
         this.paymentInfoEntity = paymentInfoEntity;
+        this.profilePicture = profilePicture;
+        this.dob = dob;
     }
 
     public User toDomainModel() {
@@ -77,6 +91,8 @@ public class UserEntity implements UserDetails {
         user.setEmail(this.email);
         user.setRole(this.role);
         user.setPaymentInfoEntity(this.paymentInfoEntity);
+        user.setDob(this.dob);
+        user.setProfilePicture(this.profilePicture);
 
         return user;
     }
@@ -173,5 +189,21 @@ public class UserEntity implements UserDetails {
 
     public void setPaymentInfoEntity(final PaymentInfoEntity paymentInfoEntity) {
         this.paymentInfoEntity = paymentInfoEntity;
+    }
+
+    public String getProfilePicture() {
+        return this.profilePicture;
+    }
+
+    public void setProfilePicture(final String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
+    public LocalDate getDob() {
+        return this.dob;
+    }
+
+    public void setDob(final LocalDate dob) {
+        this.dob = dob;
     }
 }

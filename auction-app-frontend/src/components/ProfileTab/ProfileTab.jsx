@@ -54,24 +54,46 @@ const ProfileTab = () => {
         getUser(userId)
           .then((response) => {
             setUser(response);
+
+            console.log(response);
+
             setLoading(false);
 
-            const expDate = new Date(response.paymentInfoEntity.creditCardEntity.expirationDate);
-            const expMonth = expDate.getMonth() + 1;
-            const expYear = expDate.getFullYear();
+            let expMonth = '';
+            let expYear = '';
+
+            if (response.paymentInfoEntity?.creditCardEntity.expirationDate) {
+                const expDate = new Date(response.paymentInfoEntity?.creditCardEntity.expirationDate);
+                expMonth = expDate?.getMonth() + 1;
+                expYear = expDate?.getFullYear();
+            }
+
+            let month = '';
+            let day = '';
+            let year = '';
+
+            if (response.dob) {
+                const dob = new Date(response.dob);
+                month = dob?.getMonth() + 1;
+                day = dob?.getDate();
+                year = dob?.getFullYear();
+            }
 
             reset({
                 firstName: response.firstName,
                 lastName: response.lastName,
                 email: response.email,
-                street: response.paymentInfoEntity.address,
-                city: response.paymentInfoEntity.city,
-                state: response.paymentInfoEntity.country,
-                zipCode: response.paymentInfoEntity.zipCode,
-                nameOnCard: response.paymentInfoEntity.creditCardEntity.nameOnCard,
-                cardNumber: response.paymentInfoEntity.creditCardEntity.cardNumber,
+                street: response.paymentInfoEntity?.address,
+                city: response.paymentInfoEntity?.city,
+                country: response.paymentInfoEntity?.country,
+                zipCode: response.paymentInfoEntity?.zipCode,
+                nameOnCard: response.paymentInfoEntity?.creditCardEntity?.nameOnCard,
+                cardNumber: response.paymentInfoEntity?.creditCardEntity?.cardNumber,
                 expirationMonth: expMonth,
                 expirationYear: expYear,
+                month: month,
+                day: day,
+                year: year
             });
           })
           .catch((error) => {
@@ -107,7 +129,7 @@ const ProfileTab = () => {
                     <div className="general-information-columns">
                         <div className="general-information-column">
                             <img src={ userProfilePicture } alt="Profile Picture" className="user-profile-picture"/>
-                            <Button label={ BUTTON_LABELS.CHANGE_PHOTO } variant={ BUTTON_VARIANTS.OUTLINED } />
+                            <Button label={ BUTTON_LABELS.CHANGE_PHOTO } variant={ BUTTON_VARIANTS.OUTLINED } type="button" />
                         </div>
                         <div className="general-information-column">
                             <div className="profile-form">
