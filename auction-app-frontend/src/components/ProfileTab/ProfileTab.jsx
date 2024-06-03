@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import Modal from "react-modal";
+import { FileUploader } from "react-drag-drop-files";
 
-import { Button, FormContainer, InputField } from "src/components";
+import { Button, FormContainer, InputField, CustomFileUploader } from "src/components";
 
 import { userProfilePicture } from "src/assets/images";
 import { dropdownInactive, dropdownActive } from "src/assets/icons";
@@ -9,6 +11,8 @@ import { BUTTON_LABELS, BUTTON_VARIANTS } from "src/constants";
 import { personalInformationFormFields, cardInformationFields, addressInformationFields } from "src/forms/fields";
 import { useUser } from "src/store/UserContext";
 import { getUser } from "src/services/userService"
+import { close } from "src/assets/icons";
+import { FILE_TYPES } from "src/constants";
 
 import "./style.scss";
 
@@ -44,6 +48,8 @@ const ProfileTab = () => {
 
     const [showCardInfo, setShowCardInfo] = useState(false);
     const [showAddressInfo, setShowAddressInfo] = useState(false);
+    const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+    const [profilePicture, setProfilePicture] = useState(userProfilePicture);
 
     const toggleCreditCardInfo = () => setShowCardInfo(!showCardInfo);
     const toggleAddressInfo = () => setShowAddressInfo(!showAddressInfo);
@@ -54,6 +60,10 @@ const ProfileTab = () => {
         getUser(userId)
           .then((response) => {
             setUser(response);
+
+            if(response.profilePicture) {
+                setProfilePicture(response.profilePicture);
+            }
 
             console.log(response);
 
@@ -113,6 +123,14 @@ const ProfileTab = () => {
         console.log(data);
     }
 
+    const changeProfilePicture = () => {
+        setIsProfileModalOpen(true);
+    };
+    
+    const closeProfileModal = () => {
+        setIsProfileModalOpen(false);
+    };  
+
     return (
         <div className="profile-tab-container">
             <FormContainer 
@@ -128,8 +146,37 @@ const ProfileTab = () => {
                     </div>
                     <div className="general-information-columns">
                         <div className="general-information-column">
-                            <img src={ userProfilePicture } alt="Profile Picture" className="user-profile-picture"/>
-                            <Button label={ BUTTON_LABELS.CHANGE_PHOTO } variant={ BUTTON_VARIANTS.OUTLINED } type="button" />
+                            <img src={ profilePicture } alt="Profile Picture" className="user-profile-picture"/>
+                            <Button 
+                                label={ BUTTON_LABELS.CHANGE_PHOTO } 
+                                variant={ BUTTON_VARIANTS.OUTLINED } 
+                                onButtonClick={ changeProfilePicture }
+                                type="button" />
+                            { isProfileModalOpen && (
+                                <Modal 
+                                    isOpen={ isProfileModalOpen } 
+                                    onRequestClose={ closeProfileModal } 
+                                    contentLabel="Profile"
+                                    className="profile-modal"
+                                    overlayClassName="modal-overlay"
+                                    appElement={ document.getElementById('root') }
+                                >
+                                    <img src = { close } alt="Close" className="close-icon" onClick={ closeProfileModal } />
+                                    <img src={ profilePicture } alt="Profile Picture" className="user-profile-picture" />
+                                    <FileUploader
+                                        handleChange={ (files) => console.log(files) }
+                                        name="profilePicture"
+                                        types={ FILE_TYPES }
+                                        multiple={ false }
+                                        classes="file-uploader"
+                                    />
+                                    <Button 
+                                        label={ BUTTON_LABELS.UPLOAD } 
+                                        variant={ BUTTON_VARIANTS.OUTLINED } 
+                                        onButtonClick={ closeProfileModal }
+                                    />
+                                </Modal>
+                            ) }
                         </div>
                         <div className="general-information-column">
                             <div className="profile-form">

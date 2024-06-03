@@ -64,7 +64,6 @@ export const rules = {
         ...rules.pattern(/^(0[1-9]|1[0-2])$/, "Enter a valid month (MM)")
     }),
     cvv: () => ({
-        ...rules.required("CVV"),
         ...rules.minLength(3, "CVV"),
         ...rules.maxLength(4, "CVV"),
         ...rules.pattern(/^\d{3,4}$/, "CVV must be 3 or 4 digits")
