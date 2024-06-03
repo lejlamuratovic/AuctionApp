@@ -24,4 +24,8 @@ const updateUser = (userId, data) => {
     return putRequest(`/users/${userId}`, data);
 }
 
-export { registerUser, loginUser, logoutUser, getUser, addPaymentInfoToUser, updateUser };
+const updateProfileImage = (userId, data) => {
+    return putRequest(`/users/${userId}/profile-image`, data);
+}
+
+export { registerUser, loginUser, logoutUser, getUser, addPaymentInfoToUser, updateUser, updateProfileImage };
