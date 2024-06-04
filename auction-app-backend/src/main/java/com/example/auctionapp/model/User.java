@@ -14,7 +14,7 @@ public class User {
     private UserRoles role;
     private PaymentInfoEntity paymentInfoEntity;
     private String profilePicture;
-    private LocalDate dob;
+    private LocalDate dateOfBirth;
     private Boolean isActive;
 
     public User() { }
@@ -75,12 +75,12 @@ public class User {
         this.profilePicture = profilePicture;
     }
 
-    public LocalDate getDob() {
-        return this.dob;
+    public LocalDate getDateOfBirth() {
+        return this.dateOfBirth;
     }
 
-    public void setDob(final LocalDate dob) {
-        this.dob = dob;
+    public void setDateOfBirth(final LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Boolean getActive() {

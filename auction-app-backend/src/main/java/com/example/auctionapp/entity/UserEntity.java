@@ -57,9 +57,9 @@ public class UserEntity implements UserDetails {
     @Column(name = "profile_picture")
     private String profilePicture;
 
-    @Column(name = "dob")
+    @Column(name = "date_of_birth")
     @Temporal(TemporalType.DATE)
-    private LocalDate dob;
+    private LocalDate dateOfBirth;
 
     @Column(name="is_active")
     private Boolean isActive;
@@ -74,7 +74,7 @@ public class UserEntity implements UserDetails {
                       final UserRoles role,
                       final PaymentInfoEntity paymentInfoEntity,
                       final String profilePicture,
-                      final LocalDate dob) {
+                      final LocalDate dateOfBirth) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -83,7 +83,7 @@ public class UserEntity implements UserDetails {
         this.role = role;
         this.paymentInfoEntity = paymentInfoEntity;
         this.profilePicture = profilePicture;
-        this.dob = dob;
+        this.dateOfBirth = dateOfBirth;
     }
 
     public User toDomainModel() {
@@ -199,12 +199,12 @@ public class UserEntity implements UserDetails {
         this.profilePicture = profilePicture;
     }
 
-    public LocalDate getDob() {
-        return this.dob;
+    public LocalDate getDateOfBirth() {
+        return this.dateOfBirth;
     }
 
-    public void setDob(final LocalDate dob) {
-        this.dob = dob;
+    public void setDateOfBirth(final LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Boolean getActive() {

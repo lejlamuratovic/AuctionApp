@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
         userEntity.setFirstName(userRequest.getFirstName());
         userEntity.setLastName(userRequest.getLastName());
         userEntity.setEmail(userRequest.getEmail());
-        userEntity.setDob(userRequest.getDob());
+        userEntity.setDateOfBirth(userRequest.getDateOfBirth());
 
         if (userEntity.getPaymentInfoEntity() == null) {
             userEntity.setPaymentInfoEntity(new PaymentInfoEntity());
@@ -54,6 +54,7 @@ public class UserServiceImpl implements UserService {
         paymentInfoEntity.setCity(userRequest.getCity());
         paymentInfoEntity.setZipCode(userRequest.getZipCode());
         paymentInfoEntity.setCountry(userRequest.getCountry());
+        paymentInfoEntity.setState(userRequest.getState());
 
         if (paymentInfoEntity.getCreditCardEntity() == null) {
             paymentInfoEntity.setCreditCardEntity(new CreditCardEntity());

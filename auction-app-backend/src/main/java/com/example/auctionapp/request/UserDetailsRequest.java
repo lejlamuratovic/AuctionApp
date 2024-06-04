@@ -31,7 +31,7 @@ public class UserDetailsRequest {
 
     @NotEmpty(message = "Date of birth is required")
     @Past(message = "Date of birth must be in the future")
-    private LocalDate dob;
+    private LocalDate dateOfBirth;
 
     @NotEmpty(message = "Address is required")
     @Pattern(regexp = "^[a-zA-Z0-9\\s,.'-]{3,100}$", message = "Invalid address")
@@ -48,6 +48,10 @@ public class UserDetailsRequest {
     @NotEmpty(message = "Country is required")
     @Pattern(regexp = "^[a-zA-Z\\s]{3,50}$", message = "Invalid country")
     private String country;
+
+    @NotEmpty(message = "State is required")
+    @Pattern(regexp = "^[a-zA-Z\\s]{3,50}$", message = "Invalid country")
+    private String state;
 
     @NotEmpty(message = "Name on card is required")
     @Size(min = 2, message = "Name on card must be at least 2 characters long")
@@ -93,12 +97,12 @@ public class UserDetailsRequest {
         this.password = password;
     }
 
-    public LocalDate getDob() {
-        return dob;
+    public LocalDate getDateOfBirth() {
+        return this.dateOfBirth;
     }
 
-    public void setDob(LocalDate dob) {
-        this.dob = dob;
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getAddress() {
@@ -155,5 +159,13 @@ public class UserDetailsRequest {
 
     public void setExpirationDate(LocalDate expirationDate) {
         this.expirationDate = expirationDate;
+    }
+
+    public String getState() {
+        return this.state;
+    }
+
+    public void setState(final String state) {
+        this.state = state;
     }
 }
