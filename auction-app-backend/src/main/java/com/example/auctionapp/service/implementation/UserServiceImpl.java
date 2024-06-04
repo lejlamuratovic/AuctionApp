@@ -3,6 +3,7 @@ package com.example.auctionapp.service.implementation;
 import com.example.auctionapp.entity.CreditCardEntity;
 import com.example.auctionapp.entity.PaymentInfoEntity;
 import com.example.auctionapp.entity.UserEntity;
+import com.example.auctionapp.exceptions.amazon.ImageUploadException;
 import com.example.auctionapp.exceptions.repository.ResourceNotFoundException;
 import com.example.auctionapp.external.AmazonClient;
 import com.example.auctionapp.model.User;
@@ -84,7 +85,7 @@ public class UserServiceImpl implements UserService {
 
             userRepository.save(userEntity);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to upload image", e);
+            throw new ImageUploadException("Failed to upload image");
         }
 
         return userEntity.toDomainModel();
