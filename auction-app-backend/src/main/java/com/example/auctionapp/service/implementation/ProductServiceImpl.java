@@ -2,6 +2,7 @@ package com.example.auctionapp.service.implementation;
 
 import com.example.auctionapp.entity.ProductImageEntity;
 import com.example.auctionapp.entity.enums.ProductStatus;
+import com.example.auctionapp.exceptions.amazon.ImageUploadException;
 import com.example.auctionapp.external.AmazonClient;
 import com.example.auctionapp.repository.BidRepository;
 import com.example.auctionapp.repository.BoughtProductRepository;
@@ -249,7 +250,7 @@ public class ProductServiceImpl implements ProductService {
 
                 return imageEntity;
             } catch (Exception e) {
-                throw new RuntimeException("Failed to upload image", e);
+                throw new ImageUploadException("Failed to upload image");
             }
         }).collect(toList());
 

@@ -41,7 +41,10 @@ const SettingsTab = () => {
       deactivateAccount(userId)
         .then(() => {
           navigate(ROUTE_PATHS.HOME);
+
           setUpdateLoading(false);
+          
+          localStorage.clear();
         }).catch((error) => {
           setError(error.message);
           setUpdateLoading(false);

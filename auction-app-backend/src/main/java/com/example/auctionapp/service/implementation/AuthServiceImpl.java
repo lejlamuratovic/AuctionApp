@@ -4,7 +4,7 @@ import com.example.auctionapp.entity.RefreshTokenEntity;
 import com.example.auctionapp.entity.UserEntity;
 import com.example.auctionapp.entity.enums.UserRoles;
 import com.example.auctionapp.exceptions.authentication.EmailAlreadyInUseException;
-import com.example.auctionapp.exceptions.authentication.InvalidAccount;
+import com.example.auctionapp.exceptions.authentication.DeactivatedAccount;
 import com.example.auctionapp.exceptions.repository.ResourceNotFoundException;
 import com.example.auctionapp.model.RefreshToken;
 import com.example.auctionapp.model.User;
@@ -73,7 +73,7 @@ public class AuthServiceImpl implements AuthService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         if(!user.getActive()) {
-            throw new InvalidAccount("This account has been deactivated");
+            throw new DeactivatedAccount("This account has been deactivated");
         }
 
         // generate access and refresh tokens
