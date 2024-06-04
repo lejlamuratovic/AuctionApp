@@ -212,59 +212,82 @@ const ProfileTab = () => {
 
     return (
         <>
-        { successMessage && <div className="success-message body-bold">{ successMessage }</div> }
-        <div className="profile-tab-container">
-            <FormContainer 
-                onSubmit={ onSubmit } 
-                methods={ methods } 
-                buttonDisabled={ !isDirty }
-                buttonLabel={ updateLoading ? <ButtonLoadingIndicator /> : BUTTON_LABELS.SAVE_INFO }
-                buttonVariant={ BUTTON_VARIANTS.OUTLINED }
-            >
-                {/* general information */}
-                <div className="general-information">
-                    <div className="general-information-header">
-                        <span className="body-semibold">Personal Information</span>
-                    </div>
-                    <div className="general-information-columns">
-                        <div className="general-information-column">
-                            <img src={ profilePicture } alt="Profile Picture" className="user-profile-picture"/>
-                            <Button 
-                                label={ BUTTON_LABELS.CHANGE_PHOTO } 
-                                variant={ BUTTON_VARIANTS.OUTLINED } 
-                                onButtonClick={ openProfileModal }
-                                type="button" />
-                            { isProfileModalOpen && (
-                                <Modal 
-                                    isOpen={ isProfileModalOpen } 
-                                    onRequestClose={ closeProfileModal } 
-                                    contentLabel="Profile"
-                                    className="profile-modal"
-                                    overlayClassName="modal-overlay"
-                                    appElement={ document.getElementById('root') }
-                                >
-                                    <img src = { close } alt="Close" className="close-icon" onClick={ closeProfileModal } />
-                                    <img src={ profilePicture } alt="Profile Picture" className="user-profile-picture" />
-                                    <FileUploader
-                                        handleChange={ handleFileChange }
-                                        name="profilePicture"
-                                        types={ FILE_TYPES }
-                                        multiple={ false }
-                                        classes="file-uploader"
-                                    />
-                                    <Button 
-                                        label={ BUTTON_LABELS.UPLOAD } 
-                                        variant={ BUTTON_VARIANTS.OUTLINED } 
-                                        onButtonClick={ handleFileUpload }
-                                    />
-                                </Modal>
-                            ) }
+            { successMessage && <div className="success-message body-bold">{ successMessage }</div> }
+            <div className="profile-tab-container">
+                <FormContainer 
+                    onSubmit={ onSubmit } 
+                    methods={ methods } 
+                    buttonDisabled={ !isDirty }
+                    buttonLabel={ updateLoading ? <ButtonLoadingIndicator /> : BUTTON_LABELS.SAVE_INFO }
+                    buttonVariant={ BUTTON_VARIANTS.OUTLINED }
+                >
+                    {/* general information */}
+                    <div className="general-information">
+                        <div className="general-information-header">
+                            <span className="body-semibold">Personal Information</span>
                         </div>
-                        <div className="general-information-column">
-                            <div className="profile-form">
-                                { personalInformationFormFields.map(field => (
+                        <div className="general-information-columns">
+                            <div className="general-information-column">
+                                <img src={ profilePicture } alt="Profile Picture" className="user-profile-picture"/>
+                                <Button 
+                                    label={ BUTTON_LABELS.CHANGE_PHOTO } 
+                                    variant={ BUTTON_VARIANTS.OUTLINED } 
+                                    onButtonClick={ openProfileModal }
+                                    type="button" />
+                                { isProfileModalOpen && (
+                                    <Modal 
+                                        isOpen={ isProfileModalOpen } 
+                                        onRequestClose={ closeProfileModal } 
+                                        contentLabel="Profile"
+                                        className="profile-modal"
+                                        overlayClassName="modal-overlay"
+                                        appElement={ document.getElementById('root') }
+                                    >
+                                        <img src = { close } alt="Close" className="close-icon" onClick={ closeProfileModal } />
+                                        <img src={ profilePicture } alt="Profile Picture" className="user-profile-picture" />
+                                        <FileUploader
+                                            handleChange={ handleFileChange }
+                                            name="profilePicture"
+                                            types={ FILE_TYPES }
+                                            multiple={ false }
+                                            classes="file-uploader"
+                                        />
+                                        <Button 
+                                            label={ BUTTON_LABELS.UPLOAD } 
+                                            variant={ BUTTON_VARIANTS.OUTLINED } 
+                                            onButtonClick={ handleFileUpload }
+                                        />
+                                    </Modal>
+                                ) }
+                            </div>
+                            <div className="general-information-column">
+                                <div className="profile-form">
+                                    { personalInformationFormFields.map(field => (
+                                        <InputField
+                                            key={ field.name }
+                                            name={ field.name }
+                                            label={ field.label }
+                                            type={ field.type }
+                                            rules={ field.rules }
+                                            className={ field.specialClass ? field.specialClass : "" }
+                                        />
+                                    )) }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {/* collapsible sections */}
+                    <div className="general-information">
+                        <div className="general-information-header" onClick={ toggleCreditCardInfo }>
+                            <img src={ showCardInfo ? dropdownInactive : dropdownActive } alt="Toggle Additional Information" />
+                            <span className="body-semibold">Card Information (Optional)</span>
+                        </div>
+                        { showCardInfo && (
+                            <div className="collapsable-column">
+                                <div className="profile-form">
+                                { cardInformationFields.map(field => (
                                     <InputField
-                                        key={ field.name }
+                                        key={ field.name } 
                                         name={ field.name }
                                         label={ field.label }
                                         type={ field.type }
@@ -272,57 +295,34 @@ const ProfileTab = () => {
                                         className={ field.specialClass ? field.specialClass : "" }
                                     />
                                 )) }
+                                </div>
                             </div>
+                        ) }
+                    </div>
+                    <div className="general-information">
+                        <div className="general-information-header" onClick={ toggleAddressInfo }>
+                            <img src={ showAddressInfo ? dropdownInactive : dropdownActive } alt="Toggle Additional Information" />
+                            <span className="body-semibold">Shipping Address (Optional)</span>
                         </div>
-                    </div>
-                </div>
-                {/* collapsible sections */}
-                <div className="general-information">
-                    <div className="general-information-header" onClick={ toggleCreditCardInfo }>
-                        <img src={ showCardInfo ? dropdownInactive : dropdownActive } alt="Toggle Additional Information" />
-                        <span className="body-semibold">Card Information (Optional)</span>
-                    </div>
-                    { showCardInfo && (
-                        <div className="collapsable-column">
-                            <div className="profile-form">
-                            { cardInformationFields.map(field => (
-                                <InputField
-                                    key={ field.name } 
-                                    name={ field.name }
-                                    label={ field.label }
-                                    type={ field.type }
-                                    rules={ field.rules }
-                                    className={ field.specialClass ? field.specialClass : "" }
-                                />
-                            )) }
+                        { showAddressInfo && (
+                            <div className="collapsable-column">
+                                <div className="profile-form">
+                                    { profileAddressInformationFields.map(field => (
+                                        <InputField
+                                            key={ field.name }
+                                            name={ field.name }
+                                            label={ field.label }
+                                            type={ field.type } 
+                                            rules={ field.rules }
+                                            className={ field.specialClass ? field.specialClass : "" }
+                                        />
+                                    )) }
+                                </div>
                             </div>
-                        </div>
-                    ) }
-                </div>
-                <div className="general-information">
-                    <div className="general-information-header" onClick={ toggleAddressInfo }>
-                        <img src={ showAddressInfo ? dropdownInactive : dropdownActive } alt="Toggle Additional Information" />
-                        <span className="body-semibold">Shipping Address (Optional)</span>
+                        ) }
                     </div>
-                    { showAddressInfo && (
-                        <div className="collapsable-column">
-                            <div className="profile-form">
-                                { profileAddressInformationFields.map(field => (
-                                    <InputField
-                                        key={ field.name }
-                                        name={ field.name }
-                                        label={ field.label }
-                                        type={ field.type } 
-                                        rules={ field.rules }
-                                        className={ field.specialClass ? field.specialClass : "" }
-                                    />
-                                )) }
-                            </div>
-                        </div>
-                    ) }
-                </div>
-            </FormContainer>
-        </div>
+                </FormContainer>
+            </div>
         </>
     );
 }
