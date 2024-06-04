@@ -51,8 +51,6 @@ public class ProductServiceImpl implements ProductService {
     private final BoughtProductRepository boughtProductRepository;
     private final BidRepository bidRepository;
 
-    private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
-
     public ProductServiceImpl(final ProductRepository productRepository,
                               final CategoryRepository categoryRepository,
                               final UserRepository userRepository,
@@ -196,38 +194,33 @@ public class ProductServiceImpl implements ProductService {
                                                                     boughtProductRepository);
 
         if (categoryId == null) {
-            logger.info("No category ID found for user ID: {}, using general featured products", userId);
             return getFeaturedProducts(count);
         }
 
-        Pageable topTen = PageRequest.of(0, 10);
-        List<ProductEntity> topProducts = productRepository.findTopPopularProductEntitiesByCategoryId(categoryId, topTen);
+        List<ProductEntity> topProducts = productRepository
+                .findTopPopularProductEntitiesByCategoryId(categoryId, PageRequest.of(0, 10));
 
         if (topProducts.isEmpty()) {
             return getFeaturedProducts(count);
         }
 
         Collections.shuffle(topProducts);
-        topProducts = topProducts.subList(0, Math.min(count, topProducts.size()));
-
         return topProducts.stream()
                 .map(ProductEntity::toDomainModel)
+                .limit(count)
                 .toList();
     }
 
     @Override
     public List<Product> getFeaturedProducts(final int count) {
-        Pageable topTen = PageRequest.of(0, 10);
-
         List<ProductEntity> topProducts = productRepository
-                .findMostPopularProducts(topTen);
+                .findMostPopularProducts(PageRequest.of(0, 10));
 
         Collections.shuffle(topProducts);
 
-        topProducts = topProducts.subList(0, Math.min(count, topProducts.size()));
-
         return topProducts.stream()
                 .map(ProductEntity::toDomainModel)
+                .limit(count)
                 .toList();
     }
 

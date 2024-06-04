@@ -64,7 +64,7 @@ public class FeaturedProducts {
                                           final int weight) {
         for (UUID categoryId : categoryIds) {
             frequencyMap.put(categoryId, frequencyMap.getOrDefault(categoryId, 0) + weight);
-            
+
             logger.info("Category ID: {} has frequency: {}", categoryId, frequencyMap.get(categoryId));
         }
     }
