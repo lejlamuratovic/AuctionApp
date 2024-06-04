@@ -175,6 +175,20 @@ public class ProductServiceImpl implements ProductService {
                 .map(ProductBidDetailsResponse::new);
     }
 
+    @Override
+    public Boolean hasActiveProducts(final UUID userId) {
+        final List<ProductEntity> activeProducts = this.productRepository
+                .findProductEntityByUserEntity_UserIdAndAndStatusAndBidsCountIsGreaterThan(userId, ProductStatus.ACTIVE, 0);
+
+        return activeProducts.isEmpty();
+    }
+
+    @Transactional
+    @Override
+    public void deleteActiveProducts(final UUID userId) {
+        this.productRepository.deleteAllByUserEntity_UserIdAndStatus(userId, ProductStatus.ACTIVE);
+    }
+
     private void handleCategoryAndUser(ProductEntity productEntity, ProductAddRequest productRequest) {
         if (productRequest.getCategoryId() != null) {
             productEntity.setCategory(categoryRepository.findById(productRequest.getCategoryId())

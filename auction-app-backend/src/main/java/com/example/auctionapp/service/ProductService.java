@@ -25,4 +25,7 @@ public interface ProductService {
                                                               final ProductStatus productStatus,
                                                               final int page,
                                                               final int size);
+
+    Boolean hasActiveProducts(final UUID userId);
+    void deleteActiveProducts(final UUID userId);
 }

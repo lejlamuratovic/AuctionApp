@@ -29,7 +29,13 @@ public interface ProductRepository extends JpaRepository<ProductEntity, UUID>, J
                                                                          final ProductStatus status,
                                                                          Pageable page);
 
+    List<ProductEntity> findProductEntityByUserEntity_UserIdAndAndStatusAndBidsCountIsGreaterThan(final UUID userId,
+                                                                                                  final ProductStatus status,
+                                                                                                  final int bidsCount);
+
     @Modifying
     @Query("UPDATE ProductEntity p SET p.status = 'INACTIVE' WHERE p.status = 'ACTIVE' AND p.endDate <= :now")
     int updateProductStatus(final LocalDateTime now);
+
+    void deleteAllByUserEntity_UserIdAndStatus(final UUID userId, final ProductStatus status);
 }
