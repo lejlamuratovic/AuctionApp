@@ -26,6 +26,7 @@ const ProfileTab = () => {
     const [showAddressInfo, setShowAddressInfo] = useState(false);
     const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
     const [profilePicture, setProfilePicture] = useState(userProfilePicture);
+    const [successMessage, setSuccessMessage] = useState();
     const [file, setFile] = useState();
 
     const methods = useForm({
@@ -53,6 +54,7 @@ const ProfileTab = () => {
 
     const { reset } = methods;
     const { userId } = useUser();
+    const { isDirty } = methods.formState;
 
     const toggleCreditCardInfo = () => setShowCardInfo(!showCardInfo);
     const toggleAddressInfo = () => setShowAddressInfo(!showAddressInfo);
@@ -116,16 +118,15 @@ const ProfileTab = () => {
             setLoading(false);
           });
     };
-
     const updateUserData = (data) => {
         setUpdateLoading(true);
-
-        // null fields because some fields are optional
+    
+        // Define user data for update, handle null for optional fields
         const userData = {
             firstName: data.firstName,
             lastName: data.lastName,
             email: data.email,
-            dateOfBirth: data.year && data.month && data.day ? new Date(data.year, data.month - 1, data.day) : null,
+            dateOfBirth: data.year && data.month && data.day ? new Date(data.year, data.month - 1, data.day).toISOString() : null,
             address: data.street || null,
             city: data.city || null,
             country: data.country || null,
@@ -133,18 +134,38 @@ const ProfileTab = () => {
             zipCode: data.zipCode || null,
             nameOnCard: data.nameOnCard || null,
             cardNumber: data.cardNumber || null,
-            expirationDate: data.expirationYear && data.expirationMonth ? new Date(data.expirationYear, data.expirationMonth - 1, 1) : null
-        };    
-
-        setUpdateLoading(true);
-
+            expirationDate: data.expirationYear && data.expirationMonth ? new Date(data.expirationYear, data.expirationMonth - 1, 1).toISOString() : null
+        };
+    
         updateUser(userId, userData)
             .then((response) => {
-                setUpdateLoading(false);
+                setSuccessMessage("Profile updated successfully"); 
+                setUpdateLoading(false);  
+
+                reset({
+                    firstName: response.firstName || '',
+                    lastName: response.lastName || '',
+                    email: response.email || '',
+                    street: response.address || '',
+                    city: response.city || '',
+                    country: response.country || '',
+                    state: response.state || '',
+                    zipCode: response.zipCode || '',
+                    nameOnCard: response.nameOnCard || '',
+                    cardNumber: response.cardNumber || '',
+                    expirationMonth: response.expirationDate ? new Date(response.expirationDate).getMonth() + 1 : '',
+                    expirationYear: response.expirationDate ? new Date(response.expirationDate).getFullYear() : '',
+                    month: response.dateOfBirth ? new Date(response.dateOfBirth).getMonth() + 1 : '',
+                    day: response.dateOfBirth ? new Date(response.dateOfBirth).getDate() : '',
+                    year: response.dateOfBirth ? new Date(response.dateOfBirth).getFullYear() : ''
+                });
+    
+                fetchUserInformation();
             }).catch((error) => {
-                setUpdateError(error.message);
+                setUpdateError(error.message); 
+                setUpdateLoading(false); 
             });
-    };
+    };    
 
     const updateUserProfileImage = () => {
         const formData = new FormData();
@@ -190,10 +211,13 @@ const ProfileTab = () => {
     if (loading ) return <LoadingComponent />;
 
     return (
+        <>
+        { successMessage && <div className="success-message body-bold">{ successMessage }</div> }
         <div className="profile-tab-container">
             <FormContainer 
                 onSubmit={ onSubmit } 
                 methods={ methods } 
+                buttonDisabled={ !isDirty }
                 buttonLabel={ updateLoading ? <ButtonLoadingIndicator /> : BUTTON_LABELS.SAVE_INFO }
                 buttonVariant={ BUTTON_VARIANTS.OUTLINED }
             >
@@ -299,6 +323,7 @@ const ProfileTab = () => {
                 </div>
             </FormContainer>
         </div>
+        </>
     );
 }
 
