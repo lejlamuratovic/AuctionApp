@@ -169,7 +169,7 @@ const ProfileTab = () => {
         updateUserData(data);
     }
 
-    const changeProfilePicture = () => {
+    const openProfileModal = () => {
         setIsProfileModalOpen(true);
     };
     
@@ -208,7 +208,7 @@ const ProfileTab = () => {
                             <Button 
                                 label={ BUTTON_LABELS.CHANGE_PHOTO } 
                                 variant={ BUTTON_VARIANTS.OUTLINED } 
-                                onButtonClick={ changeProfilePicture }
+                                onButtonClick={ openProfileModal }
                                 type="button" />
                             { isProfileModalOpen && (
                                 <Modal 

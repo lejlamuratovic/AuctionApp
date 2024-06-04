@@ -8,7 +8,6 @@ import { useUser } from "src/store/UserContext";
 import { getUser, deactivateAccount } from "src/services/userService";
 
 import "./style.scss"
-import { set } from "react-hook-form";
 
 const SettingsTab = () => {
     const [user, setUser] = useState(null);
@@ -41,7 +40,7 @@ const SettingsTab = () => {
 
       deactivateAccount(userId)
         .then(() => {
-          navigate(ROUTE_PATHS.LOGIN);
+          navigate(ROUTE_PATHS.HOME);
           setUpdateLoading(false);
         }).catch((error) => {
           setError(error.message);
