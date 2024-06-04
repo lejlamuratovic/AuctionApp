@@ -14,6 +14,7 @@ const SettingsTab = () => {
     const [loading, setLoading] = useState(true);
     const [updateLoading, setUpdateLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [warning, setWarning] = useState(null);
 
     const { userId } = useUser();
     const navigate = useNavigate();
@@ -46,7 +47,12 @@ const SettingsTab = () => {
           
           localStorage.clear();
         }).catch((error) => {
-          setError(error.message);
+          if ((error.response.data.trace).startsWith("com.example.auctionapp.exceptions.authentication.CannotDeactivateAccount")) {
+            setError("You have active products with bids, you cannot deactivate your account yet.")
+          } else {
+            setError(error.message);
+          }
+
           setUpdateLoading(false);
         });
     }
@@ -55,10 +61,11 @@ const SettingsTab = () => {
       if (userId) fetchUserInformation();
     }, [userId]);
 
-    if (error) return <ErrorComponent error={ error } />;
+    if (loading) return <LoadingComponent />;
 
     return (
         <div className="settings-tab-container">
+          { error && <ErrorComponent message={ error } /> }
             <div className="box-container body-semibold">
                 <div className="box top-right">
                     <span className="box-heading">Contact Information</span>

@@ -27,5 +27,10 @@ public interface ProductService {
                                                               final int size);
 
     List<Product> getFeaturedProductsByUser(final UUID userId, final int count);
+
     List<Product> getFeaturedProducts(final int count);
+
+    Boolean hasActiveProducts(final UUID userId);
+    
+    void deleteActiveProducts(final UUID userId);
 }

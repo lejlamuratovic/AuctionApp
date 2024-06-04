@@ -4,11 +4,13 @@ import com.example.auctionapp.entity.CreditCardEntity;
 import com.example.auctionapp.entity.PaymentInfoEntity;
 import com.example.auctionapp.entity.UserEntity;
 import com.example.auctionapp.exceptions.amazon.ImageUploadException;
+import com.example.auctionapp.exceptions.authentication.CannotDeactivateAccount;
 import com.example.auctionapp.exceptions.repository.ResourceNotFoundException;
 import com.example.auctionapp.external.AmazonClient;
 import com.example.auctionapp.model.User;
 import com.example.auctionapp.repository.UserRepository;
 import com.example.auctionapp.request.UserDetailsRequest;
+import com.example.auctionapp.service.ProductService;
 import com.example.auctionapp.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,10 +22,14 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final AmazonClient amazonClient;
+    private final ProductService productService;
 
-    public UserServiceImpl(final UserRepository userRepository, final AmazonClient amazonClient) {
+    public UserServiceImpl(final UserRepository userRepository,
+                           final AmazonClient amazonClient,
+                           final ProductService productService) {
         this.userRepository = userRepository;
         this.amazonClient = amazonClient;
+        this.productService = productService;
     }
 
     @Override
@@ -91,13 +97,20 @@ public class UserServiceImpl implements UserService {
         return userEntity.toDomainModel();
     }
 
+    @Transactional
     @Override
     public void deactivateAccount(final UUID userId) {
         final UserEntity userEntity = this.userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User with the given ID does not exist"));
 
+        if(!this.productService.hasActiveProducts(userId)) {
+            throw new CannotDeactivateAccount("User has active products with bids");
+        }
+
         userEntity.setActive(false);
 
-        userRepository.save(userEntity);
+        this.productService.deleteActiveProducts(userId);
+
+        this.userRepository.save(userEntity);
     }
 }
