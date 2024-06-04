@@ -32,6 +32,9 @@ public class PaymentInfoEntity {
     @Column(name = "country")
     private String country;
 
+    @Column(name = "state")
+    private String state;
+
     @Column(name = "zip_code")
     private String zipCode;
 
@@ -51,6 +54,7 @@ public class PaymentInfoEntity {
         paymentInfo.setCity(this.city);
         paymentInfo.setCountry(this.country);
         paymentInfo.setZipCode(this.zipCode);
+        paymentInfo.setState(this.state);
 
         return paymentInfo;
     }
@@ -101,5 +105,13 @@ public class PaymentInfoEntity {
 
     public void setCreditCardEntity(final CreditCardEntity creditCardEntity) {
         this.creditCardEntity = creditCardEntity;
+    }
+
+    public String getState() {
+        return this.state;
+    }
+
+    public void setState(final String state) {
+        this.state = state;
     }
 }

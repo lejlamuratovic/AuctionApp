@@ -46,7 +46,8 @@ const ProfileTab = () => {
             month: '',
             day: '',
             year: '',
-            street: ''
+            street: '',
+            state: ''
         }
     });
 
@@ -82,11 +83,11 @@ const ProfileTab = () => {
             let day = '';
             let year = '';
 
-            if (response.dob) {
-                const dob = new Date(response.dob);
-                month = dob?.getMonth() + 1;
-                day = dob?.getDate();
-                year = dob?.getFullYear();
+            if (response.dateOfBirth) {
+                const date_of_birth = new Date(response.dateOfBirth);
+                month = date_of_birth ?.getMonth() + 1;
+                day = date_of_birth ?.getDate();
+                year = date_of_birth ?.getFullYear();
             }
 
             reset({
@@ -96,6 +97,7 @@ const ProfileTab = () => {
                 street: response.paymentInfoEntity?.address,
                 city: response.paymentInfoEntity?.city,
                 country: response.paymentInfoEntity?.country,
+                state: response.paymentInfoEntity?.state,
                 zipCode: response.paymentInfoEntity?.zipCode,
                 nameOnCard: response.paymentInfoEntity?.creditCardEntity?.nameOnCard,
                 cardNumber: response.paymentInfoEntity?.creditCardEntity?.cardNumber,
@@ -103,7 +105,7 @@ const ProfileTab = () => {
                 expirationYear: expYear,
                 month: month,
                 day: day,
-                year: year
+                year: year,
             });
           })
           .catch((error) => {
@@ -123,10 +125,11 @@ const ProfileTab = () => {
             firstName: data.firstName,
             lastName: data.lastName,
             email: data.email,
-            dob: data.year && data.month && data.day ? new Date(data.year, data.month - 1, data.day) : null,
+            dateOfBirth: data.year && data.month && data.day ? new Date(data.year, data.month - 1, data.day) : null,
             address: data.street || null,
             city: data.city || null,
             country: data.country || null,
+            state: data.state || null,
             zipCode: data.zipCode || null,
             nameOnCard: data.nameOnCard || null,
             cardNumber: data.cardNumber || null,

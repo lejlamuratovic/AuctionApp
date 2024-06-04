@@ -20,12 +20,12 @@ export const profileAddressInformationFields = [
         name: "zipCode",
         specialClass: "input-field-half",
     }, 
-    // {
-    //     label: "State",
-    //     type: "text",
-    //     name: "state",
-    //     rules: rules.state()
-    // },
+    {
+        label: "State",
+        type: "text",
+        name: "state",
+        rules: rules.state()
+    },
     {
         label: "Country",
         type: "text",

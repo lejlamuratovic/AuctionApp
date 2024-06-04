@@ -9,6 +9,7 @@ public class PaymentInfo {
     private String city;
     private String country;
     private String zipCode;
+    private String state;
 
     public PaymentInfo() {
     }
@@ -20,6 +21,7 @@ public class PaymentInfo {
         entity.setCity(this.city);
         entity.setCountry(this.country);
         entity.setZipCode(this.zipCode);
+        entity.setState(this.state);
 
         return entity;
     }
@@ -62,5 +64,13 @@ public class PaymentInfo {
 
     public void setZipCode(final String zipCode) {
         this.zipCode = zipCode;
+    }
+
+    public String getState() {
+        return this.state;
+    }
+
+    public void setState(final String state) {
+        this.state = state;
     }
 }
