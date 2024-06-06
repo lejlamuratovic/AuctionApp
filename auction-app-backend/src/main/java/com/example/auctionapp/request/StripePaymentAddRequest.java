@@ -1,6 +1,7 @@
 package com.example.auctionapp.request;
 
 import com.example.auctionapp.entity.PaymentInfoEntity;
+import com.example.auctionapp.util.builderpattern.GenericBuilder;
 
 import java.util.UUID;
 
@@ -15,14 +16,12 @@ public class StripePaymentAddRequest {
     private UUID buyerId;
 
     public PaymentInfoEntity toEntity() {
-        PaymentInfoEntity entity = new PaymentInfoEntity();
-
-        entity.setCity(this.city);
-        entity.setCountry(this.country);
-        entity.setAddress(this.address);
-        entity.setZipCode(this.zipCode);
-
-        return entity;
+        return GenericBuilder.of(PaymentInfoEntity::new)
+                .with(PaymentInfoEntity::setCity, this.city)
+                .with(PaymentInfoEntity::setCountry, this.country)
+                .with(PaymentInfoEntity::setAddress, this.address)
+                .with(PaymentInfoEntity::setZipCode, this.zipCode)
+                .build();
     }
 
     public String getAddress() {

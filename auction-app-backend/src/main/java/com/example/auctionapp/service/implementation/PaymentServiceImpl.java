@@ -8,6 +8,7 @@ import com.example.auctionapp.request.PaymentAddRequest;
 import com.example.auctionapp.request.StripePaymentAddRequest;
 import com.example.auctionapp.service.BoughtProductService;
 import com.example.auctionapp.service.PaymentService;
+import com.example.auctionapp.util.builderpattern.GenericBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,15 +46,16 @@ public class PaymentServiceImpl implements PaymentService {
     // used for adding payment information to a product
     @Override
     public PaymentInfo addNewPaymentInfo(PaymentAddRequest paymentAddRequest) {
-        CreditCardEntity creditCardEntity = new CreditCardEntity();
-
-        creditCardEntity.setCardNumber(paymentAddRequest.getCardNumber());
-        creditCardEntity.setExpirationDate(paymentAddRequest.getExpirationDate());
-        creditCardEntity.setNameOnCard(paymentAddRequest.getNameOnCard());
+        final CreditCardEntity creditCardEntity = GenericBuilder.of(CreditCardEntity::new)
+                .with(CreditCardEntity::setCardNumber, paymentAddRequest.getCardNumber())
+                .with(CreditCardEntity::setExpirationDate, paymentAddRequest.getExpirationDate())
+                .with(CreditCardEntity::setNameOnCard, paymentAddRequest.getNameOnCard())
+                .build();
 
         PaymentInfoEntity paymentInfo = paymentAddRequest.toEntity();
         paymentInfo.setCreditCardEntity(creditCardEntity);
 
         return this.paymentInfoRepository.save(paymentInfo).toDomainModel();
     }
+
 }

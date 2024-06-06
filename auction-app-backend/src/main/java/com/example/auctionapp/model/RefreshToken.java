@@ -2,6 +2,7 @@ package com.example.auctionapp.model;
 
 import com.example.auctionapp.entity.RefreshTokenEntity;
 import com.example.auctionapp.entity.UserEntity;
+import com.example.auctionapp.util.builderpattern.GenericBuilder;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -13,14 +14,12 @@ public class RefreshToken {
     private UserEntity userEntity;
 
     public RefreshTokenEntity toEntity() {
-        RefreshTokenEntity entity = new RefreshTokenEntity();
-
-        entity.setTokenId(this.tokenId);
-        entity.setToken(this.token);
-        entity.setExpiryDate(this.expiryDate);
-        entity.setUserEntity(this.userEntity);
-
-        return entity;
+        return GenericBuilder.of(RefreshTokenEntity::new)
+                .with(RefreshTokenEntity::setTokenId, this.tokenId)
+                .with(RefreshTokenEntity::setToken, this.token)
+                .with(RefreshTokenEntity::setExpiryDate, this.expiryDate)
+                .with(RefreshTokenEntity::setUserEntity, this.userEntity)
+                .build();
     }
 
     public UUID getTokenId() {

@@ -9,6 +9,7 @@ import com.example.auctionapp.repository.RefreshTokenRepository;
 import com.example.auctionapp.repository.UserRepository;
 import com.example.auctionapp.service.RefreshTokenService;
 import com.example.auctionapp.util.HashRefreshToken;
+import com.example.auctionapp.util.builderpattern.GenericBuilder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -31,26 +32,24 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
                 .orElseThrow(() -> new ResourceNotFoundException("User does not exist."));
 
         // if no valid token found create a new one and save to db
-        final RefreshTokenEntity refreshToken = new RefreshTokenEntity();
-        refreshToken.setUserEntity(userEntity);
-
         final String rawToken = UUID.randomUUID().toString();
         final String hashedToken = HashRefreshToken.hashToken(rawToken);
 
-        refreshToken.setToken(hashedToken);
-        refreshToken.setExpiryDate(LocalDateTime.now().plusDays(7));
+        final RefreshTokenEntity refreshToken = GenericBuilder.of(RefreshTokenEntity::new)
+                        .with(RefreshTokenEntity::setUserEntity, userEntity)
+                        .with(RefreshTokenEntity::setToken, hashedToken)
+                        .with(RefreshTokenEntity::setExpiryDate, LocalDateTime.now().plusDays(7))
+                        .build();
 
         refreshTokenRepository.save(refreshToken);
 
         // domain model with raw token
-        final RefreshToken refreshTokenModel = new RefreshToken();
-
-        refreshTokenModel.setToken(rawToken);
-        refreshTokenModel.setTokenId(refreshToken.getTokenId());
-        refreshTokenModel.setExpiryDate(refreshToken.getExpiryDate());
-        refreshTokenModel.setUserEntity(userEntity);
-
-        return refreshTokenModel;
+        return GenericBuilder.of(RefreshToken::new)
+                .with(RefreshToken::setToken, rawToken)
+                .with(RefreshToken::setTokenId, refreshToken.getTokenId())
+                .with(RefreshToken::setExpiryDate, refreshToken.getExpiryDate())
+                .with(RefreshToken::setUserEntity, userEntity)
+                .build();
     }
 
     @Override

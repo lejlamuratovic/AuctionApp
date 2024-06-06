@@ -1,6 +1,7 @@
 package com.example.auctionapp.entity;
 
 import com.example.auctionapp.model.RefreshToken;
+import com.example.auctionapp.util.builderpattern.GenericBuilder;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -49,14 +50,12 @@ public class RefreshTokenEntity {
     }
 
     public RefreshToken toDomainModel() {
-        RefreshToken refreshToken = new RefreshToken();
-
-        refreshToken.setTokenId(this.tokenId);
-        refreshToken.setToken(this.token);
-        refreshToken.setExpiryDate(this.expiryDate);
-        refreshToken.setUserEntity(this.userEntity);
-
-        return refreshToken;
+        return GenericBuilder.of(RefreshToken::new)
+                .with(RefreshToken::setTokenId, this.tokenId)
+                .with(RefreshToken::setToken, this.token)
+                .with(RefreshToken::setExpiryDate, this.expiryDate)
+                .with(RefreshToken::setUserEntity, this.userEntity)
+                .build();
     }
 
     public UUID getTokenId() {

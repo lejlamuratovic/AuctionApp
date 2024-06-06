@@ -7,7 +7,7 @@ import "./style.scss";
 
 const SelectField = ({ name, options = [], rules, label, onSelectChange, className, useForm = true, defaultValue }) => {
     const formContext = useForm ? useFormContext() : null;
-    const { register, setValue, watch, formState } = formContext || {};
+    const { register, setValue, watch, formState: { errors } } = formContext || {};
 
     useEffect(() => {
         if (useForm) {

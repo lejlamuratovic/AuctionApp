@@ -3,6 +3,7 @@ package com.example.auctionapp.entity;
 import com.example.auctionapp.entity.enums.ProductStatus;
 import com.example.auctionapp.model.Product;
 import com.example.auctionapp.model.ProductImage;
+import com.example.auctionapp.util.builderpattern.GenericBuilder;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -109,33 +110,30 @@ public class ProductEntity {
     }
 
     public Product toDomainModel() {
-        Product product = new Product();
-
-        product.setId(this.productId);
-        product.setName(this.name);
-        product.setDescription(this.description);
-        product.setStartPrice(this.startPrice);
-        product.setStartDate(this.startDate);
-        product.setEndDate(this.endDate);
-        product.setStatus(this.status);
-        product.setCategoryId(this.categoryEntity.getCategoryId());
+        GenericBuilder<Product> builder = GenericBuilder.of(Product::new)
+                .with(Product::setId, this.productId)
+                .with(Product::setName, this.name)
+                .with(Product::setDescription, this.description)
+                .with(Product::setStartPrice, this.startPrice)
+                .with(Product::setStartDate, this.startDate)
+                .with(Product::setEndDate, this.endDate)
+                .with(Product::setStatus, this.status)
+                .with(Product::setCategoryId, this.categoryEntity.getCategoryId())
+                .with(Product::setUserId, this.userEntity.getUserId())
+                .with(Product::setBidsCount, this.bidsCount)
+                .with(Product::setHighestBid, this.highestBid)
+                .with(Product::setHighestBidderId, this.highestBidderId);
 
         if (this.productImages != null) {
             final List<ProductImage> productImageList = this.productImages.stream()
                     .map(ProductImageEntity::toDomainModel)
-                    .collect(toList());
-            
-            product.setProductImages(productImageList);
+                    .toList();
+            builder = builder.with(Product::setProductImages, productImageList);
         } else {
-            product.setProductImages(new ArrayList<>());
+            builder = builder.with(Product::setProductImages, new ArrayList<>());
         }
 
-        product.setUserId(this.userEntity.getUserId());
-        product.setBidsCount(this.bidsCount);
-        product.setHighestBid(this.highestBid);
-        product.setHighestBidderId(this.highestBidderId);
-
-        return product;
+        return builder.build();
     }
 
     public UUID getProductId() {
