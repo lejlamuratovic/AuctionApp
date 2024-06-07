@@ -188,7 +188,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-<<<<<<< HEAD
     public List<Product> getFeaturedProductsByUser(final UUID userId, final int count) {
         final UUID categoryId = FeaturedProducts.getFeaturedProducts(userId,
                                                                     productRepository,
@@ -224,10 +223,9 @@ public class ProductServiceImpl implements ProductService {
                 .map(ProductEntity::toDomainModel)
                 .limit(count)
                 .toList();
-    public Boolean hasActiveProducts(final UUID userId) {
-=======
+    }
+
     public boolean hasActiveProducts(final UUID userId) {
->>>>>>> e15c691 (boolean)
         final List<ProductEntity> activeProducts = this.productRepository
                 .findProductEntityByUserEntity_UserIdAndAndStatusAndBidsCountIsGreaterThan(userId, ProductStatus.ACTIVE, 0);
 
