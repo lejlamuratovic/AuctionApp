@@ -120,6 +120,9 @@ const ProfileTab = () => {
     };
     const updateUserData = (data) => {
         setUpdateLoading(true);
+
+        const fullExpirationYear = parseInt(data.expirationYear, 10) < 100 ?
+                               2000 + parseInt(data.expirationYear, 10) : parseInt(data.expirationYear, 10);
     
         // Define user data for update, handle null for optional fields
         const userData = {
@@ -134,7 +137,7 @@ const ProfileTab = () => {
             zipCode: data.zipCode || null,
             nameOnCard: data.nameOnCard || null,
             cardNumber: data.cardNumber || null,
-            expirationDate: data.expirationYear && data.expirationMonth ? new Date(data.expirationYear, data.expirationMonth - 1, 1).toISOString() : null
+            expirationDate: data.expirationYear && data.expirationMonth ? new Date(fullExpirationYear, data.expirationMonth - 1, 1).toISOString() : null
         };
     
         updateUser(userId, userData)
