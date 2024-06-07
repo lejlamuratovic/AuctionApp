@@ -62,7 +62,7 @@ public class UserEntity implements UserDetails {
     private LocalDate dateOfBirth;
 
     @Column(name="is_active")
-    private Boolean isActive;
+    private boolean isActive;
 
     public UserEntity() {}
 
@@ -207,11 +207,11 @@ public class UserEntity implements UserDetails {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Boolean getActive() {
+    public boolean getActive() {
         return this.isActive;
     }
 
-    public void setActive(final Boolean active) {
+    public void setActive(final boolean active) {
         isActive = active;
     }
 }

@@ -15,7 +15,7 @@ public class User {
     private PaymentInfoEntity paymentInfoEntity;
     private String profilePicture;
     private LocalDate dateOfBirth;
-    private Boolean isActive;
+    private boolean isActive;
 
     public User() { }
 
@@ -83,11 +83,11 @@ public class User {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Boolean getActive() {
+    public boolean getActive() {
         return this.isActive;
     }
 
-    public void setActive(final Boolean active) {
+    public void setActive(final boolean active) {
         isActive = active;
     }
 }
