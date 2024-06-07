@@ -25,7 +25,6 @@ const SettingsTab = () => {
       getUser(userId)
         .then((response) => {
           setUser(response);
-          setLoading(false);
         })
         .catch((error) => {
           setError(error);
@@ -76,14 +75,14 @@ const SettingsTab = () => {
                     <span className="box-heading">Account Information</span>
                     <span className="box-description">Do you want to deactivate account?</span>
                     <Button 
-                      label={updateLoading ? <LoadingComponent /> : BUTTON_LABELS.DEACTIVATE}
-                      variant={BUTTON_VARIANTS.OUTLINED} 
-                      onButtonClick={handleDeactivateAccount}
+                      label={ updateLoading ? <LoadingComponent /> : BUTTON_LABELS.DEACTIVATE }
+                      variant={ BUTTON_VARIANTS.OUTLINED } 
+                      onButtonClick={ handleDeactivateAccount }
                     />
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
 export default SettingsTab;
