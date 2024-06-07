@@ -20,24 +20,21 @@ const LocationForm = ({ formData, setFormData, handleFinalSubmit }) => {
     const [paymentInfo, setPaymentInfo] = useState({});
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [cardInformation, setCardInformation] = useState([...cardInformationFields]);
+
+    const [cardInformation, setCardInformation] = useState(
+        cardInformationFields.map(field => ({
+            ...field,
+            rules: {
+                ...field.rules,
+                ...rules.required(field.label || field.name)
+             }
+        } ))
+    );
 
     const methods = useForm({
         mode: "onBlur", 
         defaultValues: formData
     });
-
-    useEffect(() => {
-        const cardFieldsWithRequiredRule = cardInformationFields.map(field => ({
-            ...field,
-            rules: {
-                ...field.rules,
-                ...rules.required(field.label || field.name)
-            }
-        }));
-        
-        setCardInformation(cardFieldsWithRequiredRule);
-    }, []);
 
     const fetchPaymentInfo = () => {
         if (!userId) return;
