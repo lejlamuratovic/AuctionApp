@@ -176,7 +176,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Boolean hasActiveProducts(final UUID userId) {
+    public boolean hasActiveProducts(final UUID userId) {
         final List<ProductEntity> activeProducts = this.productRepository
                 .findProductEntityByUserEntity_UserIdAndAndStatusAndBidsCountIsGreaterThan(userId, ProductStatus.ACTIVE, 0);
 

@@ -26,6 +26,6 @@ public interface ProductService {
                                                               final int page,
                                                               final int size);
 
-    Boolean hasActiveProducts(final UUID userId);
+    boolean hasActiveProducts(final UUID userId);
     void deleteActiveProducts(final UUID userId);
 }
