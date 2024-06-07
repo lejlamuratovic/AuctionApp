@@ -1,10 +1,13 @@
 package com.example.auctionapp.specification;
 
 import com.example.auctionapp.entity.ProductEntity;
+import com.example.auctionapp.entity.CategoryEntity;
 import com.example.auctionapp.entity.enums.ProductStatus;
 import com.example.auctionapp.request.GetProductRequest;
-import org.springframework.data.jpa.domain.Specification;
 import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Subquery;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +19,20 @@ public class ProductSpecification {
             List<Predicate> predicates = new ArrayList<>();
 
             if (categoryId != null) {
-                predicates.add(criteriaBuilder.equal(root.join("categoryEntity").get("categoryId"), categoryId));
+                // get subcategories
+                Subquery<UUID> subquery = query.subquery(UUID.class);
+                Root<CategoryEntity> categoryRoot = subquery.from(CategoryEntity.class);
+
+                subquery.select(categoryRoot.get("categoryId")).distinct(true);
+
+                subquery.where(
+                        criteriaBuilder.or(
+                                criteriaBuilder.equal(categoryRoot.get("categoryId"), categoryId),
+                                criteriaBuilder.equal(categoryRoot.get("parentCategory").get("categoryId"), categoryId)
+                        )
+                );
+
+                predicates.add(root.join("categoryEntity").get("categoryId").in(subquery));
             }
 
             if (searchProduct != null && !searchProduct.isEmpty()) {

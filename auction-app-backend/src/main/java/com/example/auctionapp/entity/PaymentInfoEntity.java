@@ -1,6 +1,7 @@
 package com.example.auctionapp.entity;
 
 import com.example.auctionapp.model.PaymentInfo;
+import com.example.auctionapp.util.builderpattern.GenericBuilder;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -44,15 +45,13 @@ public class PaymentInfoEntity {
     }
 
     public PaymentInfo toDomainModel() {
-        PaymentInfo paymentInfo = new PaymentInfo();
-
-        paymentInfo.setPaymentInfoId(this.paymentInfoId);
-        paymentInfo.setAddress(this.address);
-        paymentInfo.setCity(this.city);
-        paymentInfo.setCountry(this.country);
-        paymentInfo.setZipCode(this.zipCode);
-
-        return paymentInfo;
+        return GenericBuilder.of(PaymentInfo::new)
+                .with(PaymentInfo::setPaymentInfoId, this.paymentInfoId)
+                .with(PaymentInfo::setAddress, this.address)
+                .with(PaymentInfo::setCity, this.city)
+                .with(PaymentInfo::setCountry, this.country)
+                .with(PaymentInfo::setZipCode, this.zipCode)
+                .build();
     }
 
     public UUID getPaymentInfoId() {

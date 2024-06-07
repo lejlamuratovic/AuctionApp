@@ -13,6 +13,7 @@ import com.example.auctionapp.request.UserRequest;
 import com.example.auctionapp.response.JwtResponse;
 import com.example.auctionapp.service.AuthService;
 import com.example.auctionapp.service.RefreshTokenService;
+import com.example.auctionapp.util.builderpattern.GenericBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -51,13 +52,13 @@ public class AuthServiceImpl implements AuthService {
             throw new EmailAlreadyInUseException("This email is already in use");
         }
 
-        UserEntity userEntity = new UserEntity();
-
-        userEntity.setFirstName(userRequest.getFirstName());
-        userEntity.setLastName(userRequest.getLastName());
-        userEntity.setEmail(userRequest.getEmail());
-        userEntity.setRole(UserRoles.USER);
-        userEntity.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        final UserEntity userEntity = GenericBuilder.of(UserEntity::new)
+                .with(UserEntity::setFirstName, userRequest.getFirstName())
+                .with(UserEntity::setLastName, userRequest.getLastName())
+                .with(UserEntity::setEmail, userRequest.getEmail())
+                .with(UserEntity::setRole, UserRoles.USER)
+                .with(UserEntity::setPassword, passwordEncoder.encode(userRequest.getPassword()))
+                .build();
 
         return userRepository.save(userEntity).toDomainModel();
     }

@@ -1,6 +1,7 @@
 package com.example.auctionapp.entity;
 
 import com.example.auctionapp.model.Category;
+import com.example.auctionapp.util.builderpattern.GenericBuilder;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,7 +17,6 @@ import org.hibernate.annotations.GenericGenerator;
 import java.util.UUID;
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
 
 @Entity
 @Table(name = "category", schema="auction_app")
@@ -50,20 +50,19 @@ public class CategoryEntity {
     }
 
     public Category toDomainModel() {
-        Category category = new Category();
-
-        category.setId(this.categoryId);
-        category.setName(this.name);
-        category.setProductCount(this.productCount);
+        GenericBuilder<Category> builder = GenericBuilder.of(Category::new)
+                .with(Category::setId, this.categoryId)
+                .with(Category::setName, this.name)
+                .with(Category::setProductCount, this.productCount);
 
         if (this.subCategories != null && !this.subCategories.isEmpty()) {
-            List<Category> subCategoryModels = this.subCategories.stream()
+            final List<Category> subCategoryModels = this.subCategories.stream()
                     .map(CategoryEntity::toDomainModel)
-                    .collect(toList());
-            category.setSubCategories(subCategoryModels);
+                    .toList();
+            builder = builder.with(Category::setSubCategories, subCategoryModels);
         }
 
-        return category;
+        return builder.build();
     }
 
     public UUID getCategoryId() {

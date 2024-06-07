@@ -34,3 +34,4 @@ export { default as ButtonLoadingIndicator } from "./ButtonLoadingIndicator/Butt
 export { default as CheckoutComponent } from "./CheckoutComponent/CheckoutComponent";
 export { default as CheckoutPaymentForm } from "./CheckoutPaymentForm/CheckoutPaymentForm";
 export { default as CheckoutAddressForm } from "./CheckoutAddressForm/CheckoutAddressForm";
+export { default as FeaturedProducts } from "./FeaturedProducts/FeaturedProducts";

@@ -32,4 +32,15 @@ public interface ProductRepository extends JpaRepository<ProductEntity, UUID>, J
     @Modifying
     @Query("UPDATE ProductEntity p SET p.status = 'INACTIVE' WHERE p.status = 'ACTIVE' AND p.endDate <= :now")
     int updateProductStatus(final LocalDateTime now);
+
+    List<ProductEntity> findProductEntitiesByUserEntity_UserId(final UUID userId);
+
+    @Query(value = "SELECT p FROM ProductEntity p WHERE p.categoryEntity.categoryId IN " +
+            "(SELECT c.categoryId FROM CategoryEntity c " +
+            "WHERE c.parentCategory.categoryId = :categoryId OR c.categoryId = :categoryId) AND p.status = 'ACTIVE' " +
+            "ORDER BY p.bidsCount DESC, p.endDate ASC")
+    List<ProductEntity> findTopPopularProductEntitiesByCategoryId(final UUID categoryId, final Pageable pageable);
+
+    @Query(value = "SELECT p FROM ProductEntity p WHERE p.status = 'ACTIVE' ORDER BY p.bidsCount DESC")
+    List<ProductEntity> findMostPopularProducts(final Pageable page);
 }

@@ -2,6 +2,7 @@ package com.example.auctionapp.request;
 
 import com.example.auctionapp.entity.ProductEntity;
 import com.example.auctionapp.util.annotation.LuhnCheck;
+import com.example.auctionapp.util.builderpattern.GenericBuilder;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
@@ -74,15 +75,13 @@ public class ProductAddRequest {
     }
 
     public ProductEntity toEntity() {
-        ProductEntity productEntity = new ProductEntity();
-
-        productEntity.setName(this.name);
-        productEntity.setDescription(this.description);
-        productEntity.setStartPrice(this.startPrice);
-        productEntity.setStartDate(this.startDate);
-        productEntity.setEndDate(this.endDate);
-
-        return productEntity;
+        return GenericBuilder.of(ProductEntity::new)
+                .with(ProductEntity::setName, this.name)
+                .with(ProductEntity::setDescription, this.description)
+                .with(ProductEntity::setStartPrice, this.startPrice)
+                .with(ProductEntity::setStartDate, this.startDate)
+                .with(ProductEntity::setEndDate, this.endDate)
+                .build();
     }
 
     public String getName() {

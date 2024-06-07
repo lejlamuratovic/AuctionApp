@@ -2,12 +2,14 @@ package com.example.auctionapp.request;
 
 import com.example.auctionapp.entity.PaymentInfoEntity;
 import com.example.auctionapp.util.annotation.LuhnCheck;
+import com.example.auctionapp.util.builderpattern.GenericBuilder;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 public class PaymentAddRequest {
     @NotEmpty(message = "Address is required")
@@ -37,6 +39,8 @@ public class PaymentAddRequest {
 
     @Future(message = "Expiration date must be in the future")
     private LocalDate expirationDate;
+    private UUID productId;
+    private UUID buyerId;
 
     public PaymentAddRequest(final String address,
                              final String city,
@@ -55,14 +59,12 @@ public class PaymentAddRequest {
     }
 
     public PaymentInfoEntity toEntity() {
-        PaymentInfoEntity entity = new PaymentInfoEntity();
-
-        entity.setCity(this.city);
-        entity.setCountry(this.country);
-        entity.setAddress(this.address);
-        entity.setZipCode(this.zipCode);
-
-        return entity;
+        return GenericBuilder.of(PaymentInfoEntity::new)
+                .with(PaymentInfoEntity::setCity, this.city)
+                .with(PaymentInfoEntity::setCountry, this.country)
+                .with(PaymentInfoEntity::setAddress, this.address)
+                .with(PaymentInfoEntity::setZipCode, this.zipCode)
+                .build();
     }
 
     public String getAddress() {
@@ -119,5 +121,21 @@ public class PaymentAddRequest {
 
     public void setExpirationDate(final LocalDate expirationDate) {
         this.expirationDate = expirationDate;
+    }
+
+    public UUID getProductId() {
+        return this.productId;
+    }
+
+    public void setProductId(final UUID productId) {
+        this.productId = productId;
+    }
+
+    public UUID getBuyerId() {
+        return this.buyerId;
+    }
+
+    public void setBuyerId(final UUID buyerId) {
+        this.buyerId = buyerId;
     }
 }

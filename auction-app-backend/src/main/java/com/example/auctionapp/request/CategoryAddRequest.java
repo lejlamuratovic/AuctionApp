@@ -1,6 +1,8 @@
 package com.example.auctionapp.request;
 
 import com.example.auctionapp.entity.CategoryEntity;
+import com.example.auctionapp.util.builderpattern.GenericBuilder;
+
 import java.util.UUID;
 
 public class CategoryAddRequest {
@@ -11,11 +13,9 @@ public class CategoryAddRequest {
     }
 
     public CategoryEntity toEntity() {
-        CategoryEntity categoryEntity = new CategoryEntity();
-
-        categoryEntity.setName(this.name);
-
-        return categoryEntity;
+        return GenericBuilder.of(CategoryEntity::new)
+                .with(CategoryEntity::setName, this.name)
+                .build();
     }
 
     public CategoryAddRequest(final String name, final UUID parentCategoryId) {

@@ -25,4 +25,7 @@ public interface ProductService {
                                                               final ProductStatus productStatus,
                                                               final int page,
                                                               final int size);
+
+    List<Product> getFeaturedProductsByUser(final UUID userId, final int count);
+    List<Product> getFeaturedProducts(final int count);
 }

@@ -39,6 +39,14 @@ const findProductsByUserIdAndStatus = (userId, status, page, size) => {
   return getRequest(`/products/user-products?userId=${ userId }&status=${ status }&page=${ page }&size=${ size }`);
 }
 
+const findFeaturedProducts = (userId, count) => {
+  return getRequest(`/products/featured-products/${ userId }?count=${ count }`);
+};
+
+const findPopularProducts = (count) => {
+  return getRequest(`/products/featured-products?count=${ count }`);
+}
+
 export { 
   getProducts, 
   getProduct, 
@@ -46,5 +54,7 @@ export {
   getProductsByCriteria, 
   getBidData, 
   addProduct,
-  findProductsByUserIdAndStatus
+  findProductsByUserIdAndStatus,
+  findFeaturedProducts,
+  findPopularProducts
 };

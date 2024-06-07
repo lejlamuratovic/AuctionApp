@@ -3,59 +3,59 @@ package com.example.auctionapp.service.implementation;
 import com.example.auctionapp.entity.CreditCardEntity;
 import com.example.auctionapp.entity.PaymentInfoEntity;
 import com.example.auctionapp.model.PaymentInfo;
-import com.example.auctionapp.repository.CreditCardRepository;
 import com.example.auctionapp.repository.PaymentInfoRepository;
 import com.example.auctionapp.request.PaymentAddRequest;
 import com.example.auctionapp.request.StripePaymentAddRequest;
+import com.example.auctionapp.service.BoughtProductService;
 import com.example.auctionapp.service.PaymentService;
+import com.example.auctionapp.util.builderpattern.GenericBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
     private final PaymentInfoRepository paymentInfoRepository;
-    private final CreditCardRepository creditCardRepository;
+    private final BoughtProductService boughtProductService;
 
     public PaymentServiceImpl(final PaymentInfoRepository paymentInfoRepository,
-                              final CreditCardRepository creditCardRepository) {
+                              final BoughtProductService boughtProductService) {
         this.paymentInfoRepository = paymentInfoRepository;
-        this.creditCardRepository = creditCardRepository;
+        this.boughtProductService = boughtProductService;
     }
 
     // used for payments with stripe
+    @Transactional
     @Override
     public PaymentInfo addStripePaymentInfo(StripePaymentAddRequest stripePaymentAddRequest) {
         CreditCardEntity creditCardEntity = new CreditCardEntity();
 
         creditCardEntity.setStripeToken(stripePaymentAddRequest.getStripeToken());
 
-        PaymentInfoEntity paymentInfo = new PaymentInfoEntity();
-
-        paymentInfo.setZipCode(stripePaymentAddRequest.getZipCode());
-        paymentInfo.setAddress(stripePaymentAddRequest.getZipCode());
-        paymentInfo.setCity(stripePaymentAddRequest.getCity());
-        paymentInfo.setCountry(stripePaymentAddRequest.getCountry());
+        PaymentInfoEntity paymentInfo = stripePaymentAddRequest.toEntity();
         paymentInfo.setCreditCardEntity(creditCardEntity);
 
-        this.paymentInfoRepository.save(paymentInfo);
+        PaymentInfoEntity paymentInfoEntity = this.paymentInfoRepository.saveAndFlush(paymentInfo);
 
-        return paymentInfo.toDomainModel();
+        this.boughtProductService.saveBoughtProduct(stripePaymentAddRequest.getProductId(),
+                                                    stripePaymentAddRequest.getBuyerId(),
+                                                    paymentInfoEntity.getPaymentInfoId());
+
+        return paymentInfoEntity.toDomainModel();
     }
 
     // used for adding payment information to a product
     @Override
     public PaymentInfo addNewPaymentInfo(PaymentAddRequest paymentAddRequest) {
-        CreditCardEntity creditCardEntity = new CreditCardEntity();
-
-        creditCardEntity.setCardNumber(paymentAddRequest.getCardNumber());
-        creditCardEntity.setExpirationDate(paymentAddRequest.getExpirationDate());
-        creditCardEntity.setNameOnCard(paymentAddRequest.getNameOnCard());
+        final CreditCardEntity creditCardEntity = GenericBuilder.of(CreditCardEntity::new)
+                .with(CreditCardEntity::setCardNumber, paymentAddRequest.getCardNumber())
+                .with(CreditCardEntity::setExpirationDate, paymentAddRequest.getExpirationDate())
+                .with(CreditCardEntity::setNameOnCard, paymentAddRequest.getNameOnCard())
+                .build();
 
         PaymentInfoEntity paymentInfo = paymentAddRequest.toEntity();
-
         paymentInfo.setCreditCardEntity(creditCardEntity);
-        this.paymentInfoRepository.save(paymentInfo);
 
-        return paymentInfo.toDomainModel();
+        return this.paymentInfoRepository.save(paymentInfo).toDomainModel();
     }
+
 }

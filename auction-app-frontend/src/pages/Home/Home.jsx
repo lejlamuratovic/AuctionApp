@@ -8,6 +8,7 @@ import {
   LoadingComponent,
   Button,
   Tabs,
+  FeaturedProducts
 } from "src/components";
 
 import {
@@ -158,6 +159,9 @@ const Home = () => {
             </div>
           </div>
         ) }
+        <div className="featured-products">
+          <FeaturedProducts />
+        </div>
         <div className="products">
           <Tabs
             tabs={ HOME_TABS }

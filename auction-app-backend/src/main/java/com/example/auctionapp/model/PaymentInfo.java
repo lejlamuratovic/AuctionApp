@@ -1,6 +1,8 @@
 package com.example.auctionapp.model;
 
 import com.example.auctionapp.entity.PaymentInfoEntity;
+import com.example.auctionapp.util.builderpattern.GenericBuilder;
+
 import java.util.UUID;
 
 public class PaymentInfo {
@@ -14,14 +16,12 @@ public class PaymentInfo {
     }
 
     public PaymentInfoEntity toEntity() {
-        PaymentInfoEntity entity = new PaymentInfoEntity();
-
-        entity.setPaymentInfoId(this.paymentInfoId);
-        entity.setCity(this.city);
-        entity.setCountry(this.country);
-        entity.setZipCode(this.zipCode);
-
-        return entity;
+        return GenericBuilder.of(PaymentInfoEntity::new)
+                .with(PaymentInfoEntity::setPaymentInfoId, this.paymentInfoId)
+                .with(PaymentInfoEntity::setCity, this.city)
+                .with(PaymentInfoEntity::setCountry, this.country)
+                .with(PaymentInfoEntity::setZipCode, this.zipCode)
+                .build();
     }
 
     public UUID getPaymentInfoId() {

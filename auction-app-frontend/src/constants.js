@@ -222,3 +222,5 @@ export const SHOP_PAGE_SORTING = [
   { id: "added", value: "Added: New to Old", label: "Added: New to Old", direction: "DESC", criteria: "startDate" },
   { id: "timeLeft", value: "Last Chance", label: "Last Chance", direction: "ASC", criteria: "endDate" },
 ];
+
+export const FEATURED_PRODUCTS_COUNT = 3;

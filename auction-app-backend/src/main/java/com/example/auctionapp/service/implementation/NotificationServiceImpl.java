@@ -10,6 +10,7 @@ import com.example.auctionapp.repository.ProductRepository;
 import com.example.auctionapp.repository.UserRepository;
 import com.example.auctionapp.response.NotificationResponse;
 import com.example.auctionapp.service.NotificationService;
+import com.example.auctionapp.util.builderpattern.GenericBuilder;
 import com.example.auctionapp.websockets.MainSocketHandler;
 import org.springframework.stereotype.Service;
 
@@ -36,20 +37,18 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void notifyUser(final UUID userId, final NotificationType notificationType, final UUID productId) {
-        NotificationEntity notificationEntity = new NotificationEntity();
-
-        notificationEntity.setNotificationType(notificationType);
-        notificationEntity.setNotificationTime(LocalDateTime.now());
-
         final UserEntity userEntity = userRepository.findById(userId).orElseThrow(() ->
                 new ResourceNotFoundException("User with the given ID does not exist"));
-
-        notificationEntity.setUser(userEntity);
 
         final ProductEntity productEntity = productRepository.findById(productId).orElseThrow(() ->
                 new ResourceNotFoundException("Product with the given ID does not exist"));
 
-        notificationEntity.setProductEntity(productEntity);
+        final NotificationEntity notificationEntity = GenericBuilder.of(NotificationEntity::new)
+                .with(NotificationEntity::setNotificationType, notificationType)
+                .with(NotificationEntity::setNotificationTime, LocalDateTime.now())
+                .with(NotificationEntity::setUser, userEntity)
+                .with(NotificationEntity::setProductEntity, productEntity)
+                .build();
 
         this.notificationRepository.save(notificationEntity);
         this.mainSocketHandler.sendMessage(String.valueOf(userId), notificationType.label);

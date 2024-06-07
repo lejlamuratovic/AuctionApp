@@ -1,6 +1,7 @@
 package com.example.auctionapp.entity;
 
 import com.example.auctionapp.model.CreditCard;
+import com.example.auctionapp.util.builderpattern.GenericBuilder;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -52,15 +53,12 @@ public class CreditCardEntity {
     }
 
     public CreditCard toDomainModel() {
-        CreditCard creditCard = new CreditCard();
-
-        creditCard.setCreditCardId(this.creditCardId);
-        creditCard.setCardNumber(this.cardNumber);
-        creditCard.setExpirationDate(this.expirationDate);
-        creditCard.setNameOnCard(this.nameOnCard);
-        creditCard.setStripeToken(this.stripeToken);
-
-        return creditCard;
+        return GenericBuilder.of(CreditCard::new)
+                .with(CreditCard::setCreditCardId, this.creditCardId)
+                .with(CreditCard::setCardNumber, this.nameOnCard)
+                .with(CreditCard::setNameOnCard, this.nameOnCard)
+                .with(CreditCard::setStripeToken, this.stripeToken)
+                .build();
     }
 
     public UUID getCreditCardId() {

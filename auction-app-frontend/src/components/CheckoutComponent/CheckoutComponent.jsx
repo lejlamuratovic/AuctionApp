@@ -56,7 +56,9 @@ const CheckoutComponent = ({ product }) => {
     const onPaymentSuccess = (token) => {
         const paymentInfo = {
             ...addressInformation,
-            stripeToken: token.id
+            stripeToken: token.id,
+            productId: product.id,
+            buyerId: userId
         };
     
         addPaymentInfo(paymentInfo).then(() => {

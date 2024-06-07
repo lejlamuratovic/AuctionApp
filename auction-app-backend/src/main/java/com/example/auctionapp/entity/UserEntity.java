@@ -2,6 +2,7 @@ package com.example.auctionapp.entity;
 
 import com.example.auctionapp.entity.enums.UserRoles;
 import com.example.auctionapp.model.User;
+import com.example.auctionapp.util.builderpattern.GenericBuilder;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -69,16 +70,14 @@ public class UserEntity implements UserDetails {
     }
 
     public User toDomainModel() {
-        User user = new User();
-
-        user.setUserId(this.userId);
-        user.setFirstName(this.firstName);
-        user.setLastName(this.lastName);
-        user.setEmail(this.email);
-        user.setRole(this.role);
-        user.setPaymentInfoEntity(this.paymentInfoEntity);
-
-        return user;
+        return GenericBuilder.of(User::new)
+                .with(User::setUserId, this.userId)
+                .with(User::setFirstName, this.firstName)
+                .with(User::setLastName, this.lastName)
+                .with(User::setEmail, this.email)
+                .with(User::setRole, this.role)
+                .with(User::setPaymentInfoEntity, this.paymentInfoEntity)
+                .build();
     }
 
     public UUID getUserId() {
