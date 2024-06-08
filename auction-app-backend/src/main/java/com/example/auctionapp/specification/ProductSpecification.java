@@ -5,6 +5,7 @@ import com.example.auctionapp.entity.CategoryEntity;
 import com.example.auctionapp.entity.enums.ProductStatus;
 import com.example.auctionapp.request.GetProductRequest;
 import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Subquery;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -36,7 +37,7 @@ public class ProductSpecification {
             }
 
             if (subcategoryIds != null && !subcategoryIds.isEmpty()) {
-                // Adding subcategory filter; this assumes subcategory IDs are directly related to category IDs
+                // adding subcategory filter
                 predicates.add(root.join("categoryEntity").get("categoryId").in(subcategoryIds));
             }
 

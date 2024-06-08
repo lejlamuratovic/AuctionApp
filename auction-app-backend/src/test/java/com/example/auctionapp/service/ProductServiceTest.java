@@ -22,6 +22,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -40,7 +41,6 @@ public class ProductServiceTest {
     @Autowired
     private ProductService productService;
 
-    /*
     @Test
     public void whenGetLastChance_thenReturnProductsSortedByEndDateAsc() {
         CategoryEntity categoryEntity = new CategoryEntity();
@@ -96,7 +96,7 @@ public class ProductServiceTest {
     public void whenGetSortedProductsByName_thenReturnSortedProducts() {
         UUID categoryId = UUID.randomUUID();
 
-        GetProductRequest getProductRequest = new GetProductRequest(categoryId, "", "name", "ASC", 0, 10);
+        GetProductRequest getProductRequest = new GetProductRequest(categoryId, "", "name", "ASC", 0, 10, new ArrayList<>());
 
         CategoryEntity categoryEntity = new CategoryEntity();
 
@@ -149,7 +149,7 @@ public class ProductServiceTest {
     public void whenGetLatestProducts_thenReturnProductsSortedByStartDateDesc() {
         UUID categoryId = UUID.randomUUID();
 
-        GetProductRequest getProductRequest = new GetProductRequest(categoryId, "", "startDate", "DESC", 0, 10);
+        GetProductRequest getProductRequest = new GetProductRequest(categoryId, "", "startDate", "DESC", 0, 10, new ArrayList<>());
 
         UserEntity userEntity = new UserEntity();
 
@@ -198,5 +198,5 @@ public class ProductServiceTest {
         assertThat(results).hasSize(2);
         assertThat(results.get(0).getName()).isEqualTo("Recent Product");
         assertThat(results.get(1).getName()).isEqualTo("Older Product");
-    } */
+    }
 }
