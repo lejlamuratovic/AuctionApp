@@ -44,18 +44,19 @@ const Shop = () => {
   const searchProduct = query.get("search_product");
 
   const fetchProducts = () => {
+    const subcategoryIds = Object.keys(checked).filter(key => checked[key]);
     setProductsLoading(true);
-
-    getProducts(page, SHOP_DEFAULT_PAGE_NUMBER, categoryId, searchProduct, selectedSorting.criteria, sortingDirection )
+  
+    getProducts(page, SHOP_DEFAULT_PAGE_NUMBER, categoryId, searchProduct, selectedSorting.criteria, sortingDirection, subcategoryIds)
       .then((response) => {
         const { products, suggestion } = response;
-
+  
         if (suggestion) {
           setSuggestion(suggestion);
         } else {
           setSuggestion(null);
         }
-
+  
         setItems((prevItems) =>
           page === 0
             ? [...products.content]
@@ -89,10 +90,9 @@ const Shop = () => {
       });
   };
 
-  // fetch products on page load
   useEffect(() => {
     fetchProducts();
-  }, [page, categoryId, searchProduct, selectedSorting, sortingDirection]);
+  }, [checked, page, categoryId, searchProduct, selectedSorting, sortingDirection]);
 
   useEffect(() => {
     fetchCategories();
@@ -102,37 +102,46 @@ const Shop = () => {
     setPage((prevPage) => prevPage + 1);
   };
 
-  const handleCheckboxChange = (id, checked) => {
-    setChecked((prev) => ({ ...prev, [id]: checked }));
+  const handleCheckboxChange = (categoryId, subcategoryId, checkedState) => {
+    setChecked((prev) => ({
+      ...prev,
+      [subcategoryId]: checkedState
+    }));
   };
 
   const handleCategoryChange = (categoryId) => {
     let url = "/shop";
     const queryParams = new URLSearchParams();
-
-    if (
-      activeCategory === categories.find((cat) => cat.id === categoryId).name
-    ) {
+  
+    const isSameCategory = activeCategory === categories.find((cat) => cat.id === categoryId).name;
+    
+    if (isSameCategory) {
       queryParams.delete("category");
       setActiveCategory(null);
     } else {
       queryParams.set("category", categoryId);
       setActiveCategory(categories.find((cat) => cat.id === categoryId).name);
     }
-
+  
     if (searchProduct) {
       queryParams.set("search_product", searchProduct);
     }
-
-    url += queryParams.toString() ? `?${ queryParams.toString() }` : "";
-
+  
+    url += queryParams.toString() ? `?${queryParams.toString()}` : "";
+    
+    setChecked({});
+  
     navigate(url);
   };
+  
 
   const handleSortingChange = (value) => {
-    setSelectedSorting(SHOP_PAGE_SORTING.find((sort) => sort.value === value));
-    setSortingDirection(SHOP_PAGE_SORTING.find((sort) => sort.value === value).direction);
-  };
+    const newSorting = SHOP_PAGE_SORTING.find((sort) => sort.value === value);
+
+    setSelectedSorting(newSorting);
+    setSortingDirection(newSorting.direction);
+};
+
 
   if (productsError || categoriesError)
     return <ErrorComponent error={ productsError || categoriesError } />;
@@ -166,13 +175,13 @@ const Shop = () => {
                       category.subCategories && (
                         <div className="subcategory-list">
                           { category.subCategories.map((subcategory) => (
-                            <Checkbox
-                              key={ subcategory.id }
-                              label={ `${ subcategory.name } (${ subcategory.productCount })` }
-                              onChange={ (checked) =>
-                                handleCheckboxChange(subcategory.id, checked)
-                              }
-                            />
+                          <Checkbox
+                            key={ subcategory.id }
+                            label={ `${subcategory.name} (${subcategory.productCount})` }
+                            onChange={ (checked) =>
+                              handleCheckboxChange(category.id, subcategory.id, checked)
+                            }
+                          />
                           )) }
                         </div>
                       ) }

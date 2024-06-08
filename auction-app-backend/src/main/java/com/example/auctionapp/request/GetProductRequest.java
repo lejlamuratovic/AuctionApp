@@ -1,5 +1,6 @@
 package com.example.auctionapp.request;
 
+import java.util.List;
 import java.util.UUID;
 
 public class GetProductRequest {
@@ -9,6 +10,7 @@ public class GetProductRequest {
     private String sortDirection = "ASC";
     private int page = 0;
     private int size = 8;
+    private List<UUID> subcategoryIds;
 
     public GetProductRequest() {
     }
@@ -18,13 +20,15 @@ public class GetProductRequest {
                              final String sortField,
                              final String sortDirection,
                              final int page,
-                             final int size) {
+                             final int size,
+                             final List<UUID> subcategoryIds) {
         this.categoryId = categoryId;
         this.searchProduct = searchProduct;
         this.sortField = sortField;
         this.sortDirection = sortDirection;
         this.page = page;
         this.size = size;
+        this.subcategoryIds = subcategoryIds;
     }
 
     public UUID getCategoryId() {
@@ -73,5 +77,13 @@ public class GetProductRequest {
 
     public void setSize(final int size) {
         this.size = size;
+    }
+
+    public List<UUID> getSubcategoryIds() {
+        return this.subcategoryIds;
+    }
+
+    public void setSubcategoryIds(final List<UUID> subcategoryIds) {
+        this.subcategoryIds = subcategoryIds;
     }
 }
