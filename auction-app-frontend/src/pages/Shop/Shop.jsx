@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import RangeSlider from "react-range-slider-input";
+import 'react-range-slider-input/dist/style.css';
 
 import {
   Button,
@@ -34,6 +36,8 @@ const Shop = () => {
   const [checked, setChecked] = useState({});
   const [selectedSorting, setSelectedSorting] = useState(SHOP_PAGE_SORTING[0]);
   const [sortingDirection, setSortingDirection] = useState(selectedSorting.direction);
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(100);
 
   const { setSuggestion } = useSuggestion();
 
@@ -46,17 +50,17 @@ const Shop = () => {
   const fetchProducts = () => {
     const subcategoryIds = Object.keys(checked).filter(key => checked[key]);
     setProductsLoading(true);
-  
+
     getProducts(page, SHOP_DEFAULT_PAGE_NUMBER, categoryId, searchProduct, selectedSorting.criteria, sortingDirection, subcategoryIds)
       .then((response) => {
         const { products, suggestion } = response;
-  
+
         if (suggestion) {
           setSuggestion(suggestion);
         } else {
           setSuggestion(null);
         }
-  
+
         setItems((prevItems) =>
           page === 0
             ? [...products.content]
@@ -136,12 +140,31 @@ const Shop = () => {
   
 
   const handleSortingChange = (value) => {
-    const newSorting = SHOP_PAGE_SORTING.find((sort) => sort.value === value);
+      const newSorting = SHOP_PAGE_SORTING.find((sort) => sort.value === value);
 
-    setSelectedSorting(newSorting);
-    setSortingDirection(newSorting.direction);
-};
+      setSelectedSorting(newSorting);
+      setSortingDirection(newSorting.direction);
+  };
 
+  const handleMinPriceChange = (event) => {
+    const value = Math.max(Number(event.target.value.replace(/\D/g, '')), 0);
+    
+    setMinPrice(value);
+  };
+
+  const handleMaxPriceChange = (event) => {
+    const value = Math.max(Number(event.target.value.replace(/\D/g, '')), minPrice);
+
+    setMaxPrice(value);
+  };
+
+  const onRangeChange = (range) => {
+    setMinPrice(range.min);
+    setMaxPrice(range.max);
+
+    handleMaxPriceChange({ target: { value: range.max } });
+    handleMinPriceChange({ target: { value: range.min } });
+  };
 
   if (productsError || categoriesError)
     return <ErrorComponent error={ productsError || categoriesError } />;
@@ -152,7 +175,7 @@ const Shop = () => {
         { categoriesLoading ? (
           <LoadingComponent />
         ) : (
-          <>
+          <div className="filters">
             <div className="categories">
               <span className="body-regular">PRODUCT CATEGORIES</span>
               <div className="category-list body-regular">
@@ -189,7 +212,31 @@ const Shop = () => {
                 )) }
               </div>
             </div>
-          </>
+            <div className="price-range">
+              <span className="body-regular"> Price Range </span>
+              <div className="price-range-inputs">
+                <input
+                    type="text"
+                    value={`$${ minPrice }`}
+                    onChange={ handleMinPriceChange }
+                    placeholder="Min"
+                  />
+                  <span className="body-regular"> - </span>
+                  <input
+                    type="text"
+                    value={`$${ maxPrice }`}
+                    onChange={ handleMaxPriceChange }
+                    placeholder="Max"
+                  />
+                </div>
+                <RangeSlider
+                  min={ minPrice }
+                  max={ maxPrice }
+                  step={ 1 }
+                  onChange={({ min, max }) => onRangeChange({ min, max })}
+                />
+            </div>
+          </div>
         ) }
         <div className="product-list">
           <div className="product-options">

@@ -53,6 +53,53 @@
     }
   }
 
+  .price-range {
+    @include flex-container(column, flex-start, flex-start);
+    width: 262px;
+    padding: 24px;
+    gap: 32px;
+    border: 1px solid $neutral09;
+    border-top: none;
+
+    span {
+      color: $primary;
+    }
+
+    .range-slider {
+      height: 2px;
+      margin: 32px 0;
+    }
+
+    .range-slider__thumb {
+      width: 12px;
+      height: 12px;
+      background-color: $primary;
+      border-radius: 50%;
+      border: none;
+    }
+
+    .range-slider__range {
+      background-color: $neutral09;
+    }
+
+    .range-slider__thumb:active {
+      background-color: $primary;
+    }
+
+    .price-range-inputs {
+      @include flex-container(row, space-between, center);
+      width: 100%;
+
+      input {
+        width: 88px;
+        height: 48px;
+        border: 2px solid $neutral09;
+        padding: 5px;
+        text-align: center;
+      }
+    }
+  }
+
   .product-list {
     width: 100%;
     padding-left: 30px;
