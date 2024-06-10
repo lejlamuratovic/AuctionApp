@@ -9,6 +9,7 @@ import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Subquery;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -17,7 +18,9 @@ public class ProductSpecification {
 
     public static Specification<ProductEntity> withDynamicQuery(final UUID categoryId,
                                                                 final List<UUID> subcategoryIds,
-                                                                final String searchProduct) {
+                                                                final String searchProduct,
+                                                                final BigDecimal minPrice,
+                                                                final BigDecimal maxPrice) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -45,6 +48,15 @@ public class ProductSpecification {
                 predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + searchProduct.toLowerCase() + "%"));
             }
 
+            // adding predicates for price range
+            if (minPrice != null) {
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("startPrice"), minPrice));
+            }
+
+            if (maxPrice != null) {
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("startPrice"), maxPrice));
+            }
+
             predicates.add(criteriaBuilder.equal(root.get("status"), ProductStatus.ACTIVE));
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
@@ -52,6 +64,12 @@ public class ProductSpecification {
     }
 
     public static Specification<ProductEntity> buildSpecification(final GetProductRequest getProductRequest) {
-        return withDynamicQuery(getProductRequest.getCategoryId(), getProductRequest.getSubcategoryIds(), getProductRequest.getSearchProduct());
+        return withDynamicQuery(
+                getProductRequest.getCategoryId(),
+                getProductRequest.getSubcategoryIds(),
+                getProductRequest.getSearchProduct(),
+                getProductRequest.getMinPrice(),
+                getProductRequest.getMaxPrice()
+        );
     }
 }

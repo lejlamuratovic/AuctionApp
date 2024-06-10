@@ -65,26 +65,38 @@ const Shop = () => {
     const subcategoryIds = Object.keys(checked).filter(key => checked[key]);
     setProductsLoading(true);
 
-    getProducts(page, SHOP_DEFAULT_PAGE_NUMBER, categoryId, searchProduct, selectedSorting.criteria, sortingDirection, subcategoryIds)
-      .then((response) => {
-        const { products, suggestion } = response;
-        if (suggestion) {
-          setSuggestion(suggestion);
-        } else {
-          setSuggestion(null);
-        }
+    setTimeout(() => {
+      getProducts(
+        page, 
+        SHOP_DEFAULT_PAGE_NUMBER, 
+        categoryId, 
+        searchProduct, 
+        selectedSorting.criteria, 
+        sortingDirection, 
+        subcategoryIds,
+        minPrice,
+        maxPrice
+      )
+        .then((response) => {
+          const { products, suggestion } = response;
+          if (suggestion) {
+            setSuggestion(suggestion);
+          } else {
+            setSuggestion(null);
+          }
 
-        setItems((prevItems) =>
-          page === 0 ? [...products.content] : [...prevItems, ...products.content]
-        );
-        setHasMore(!products.last);
-      })
-      .catch((error) => {
-        setProductsError(error.message);
-      })
-      .finally(() => {
-        setProductsLoading(false);
-      });
+          setItems((prevItems) =>
+            page === 0 ? [...products.content] : [...prevItems, ...products.content]
+          );
+          setHasMore(!products.last);
+        })
+        .catch((error) => {
+          setProductsError(error.message);
+        })
+        .finally(() => {
+          setProductsLoading(false);
+        });
+    }, 1000);
   };
 
   const fetchCategories = () => {
@@ -106,7 +118,7 @@ const Shop = () => {
 
   useEffect(() => {
     fetchProducts();
-  }, [checked, page, categoryId, searchProduct, selectedSorting, sortingDirection]);
+  }, [checked, page, categoryId, searchProduct, selectedSorting, sortingDirection, minPrice, maxPrice]);
 
   useEffect(() => {
     fetchCategories();
