@@ -96,7 +96,7 @@ public class ProductServiceTest {
     public void whenGetSortedProductsByName_thenReturnSortedProducts() {
         UUID categoryId = UUID.randomUUID();
 
-        GetProductRequest getProductRequest = new GetProductRequest(categoryId, "", "name", "ASC", 0, 10, new ArrayList<>());
+        GetProductRequest getProductRequest = new GetProductRequest(categoryId, "", "name", "ASC", 0, 10, new ArrayList<>(), BigDecimal.ZERO, BigDecimal.valueOf(10000));
 
         CategoryEntity categoryEntity = new CategoryEntity();
 
@@ -149,7 +149,7 @@ public class ProductServiceTest {
     public void whenGetLatestProducts_thenReturnProductsSortedByStartDateDesc() {
         UUID categoryId = UUID.randomUUID();
 
-        GetProductRequest getProductRequest = new GetProductRequest(categoryId, "", "startDate", "DESC", 0, 10, new ArrayList<>());
+        GetProductRequest getProductRequest = new GetProductRequest(categoryId, "", "startDate", "DESC", 0, 10, new ArrayList<>(), BigDecimal.ZERO, BigDecimal.valueOf(10000));
 
         UserEntity userEntity = new UserEntity();
 
