@@ -7,6 +7,7 @@ import { locationShippingFormFields, cardInformationFields } from "src/forms/fie
 import { BUTTON_LABELS, ROUTE_PATHS } from "src/constants";
 import { getUser } from "src/services";
 import { useUser } from "src/store/UserContext";
+import { rules } from "src/forms/rules";
 
 import "./style.scss";
 
@@ -19,6 +20,16 @@ const LocationForm = ({ formData, setFormData, handleFinalSubmit }) => {
     const [paymentInfo, setPaymentInfo] = useState({});
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+
+    const [cardInformation, setCardInformation] = useState(
+        cardInformationFields.map(field => ({
+            ...field,
+            rules: {
+                ...field.rules,
+                ...rules.required(field.label || field.name)
+             }
+        } ))
+    );
 
     const methods = useForm({
         mode: "onBlur", 
@@ -109,7 +120,7 @@ const LocationForm = ({ formData, setFormData, handleFinalSubmit }) => {
     };
 
     const combinedFormFields = showCardInfo ? 
-        [...locationShippingFormFields, ...cardInformationFields] : locationShippingFormFields;
+        [...locationShippingFormFields, ...cardInformation] : locationShippingFormFields;
 
     if (loading) return <LoadingComponent />;
     if (error) return <ErrorComponent message={error} />;

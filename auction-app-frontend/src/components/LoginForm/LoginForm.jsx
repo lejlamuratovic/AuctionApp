@@ -54,7 +54,7 @@ const LoginForm = () => {
     });
   }
 
-  const errorMessage = error ? `${ error }. Please enter your credentials again.` : null;
+  const errorMessage = error ? `${ error }` : null;
 
   return (
     <div className="login-form-container">

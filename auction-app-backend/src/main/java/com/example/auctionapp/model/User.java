@@ -3,6 +3,7 @@ package com.example.auctionapp.model;
 import com.example.auctionapp.entity.PaymentInfoEntity;
 import com.example.auctionapp.entity.enums.UserRoles;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 public class User {
@@ -12,6 +13,9 @@ public class User {
     private String email;
     private UserRoles role;
     private PaymentInfoEntity paymentInfoEntity;
+    private String profilePicture;
+    private LocalDate dateOfBirth;
+    private boolean isActive;
 
     public User() { }
 
@@ -61,5 +65,29 @@ public class User {
 
     public void setPaymentInfoEntity(final PaymentInfoEntity paymentInfoEntity) {
         this.paymentInfoEntity = paymentInfoEntity;
+    }
+
+    public String getProfilePicture() {
+        return this.profilePicture;
+    }
+
+    public void setProfilePicture(final String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return this.dateOfBirth;
+    }
+
+    public void setDateOfBirth(final LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public boolean getActive() {
+        return this.isActive;
+    }
+
+    public void setActive(final boolean active) {
+        isActive = active;
     }
 }

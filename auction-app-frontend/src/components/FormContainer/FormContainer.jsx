@@ -11,6 +11,7 @@ const FormContainer = ({
   methods,
   error,
   buttonVariant = BUTTON_VARIANTS.FILLED,
+  buttonDisabled,
   buttonIcon,
   children,
   onCancel,
@@ -84,7 +85,7 @@ const FormContainer = ({
           { onCancel && <Button type="button" label={ cancelLabel } onButtonClick={ onCancel } /> }
           <div className="btn-navigation">
             { onBack && <Button type="button" label={ backLabel } onButtonClick={ onBack } /> }
-            <Button type="submit" variant={ buttonVariant } label={ buttonLabel } iconSrc={ buttonIcon } />
+            <Button type="submit" variant={ buttonVariant } label={ buttonLabel } iconSrc={ buttonIcon } disabled= { buttonDisabled } />
           </div>
         </div>
       </form>

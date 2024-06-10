@@ -11,6 +11,7 @@ public class PaymentInfo {
     private String city;
     private String country;
     private String zipCode;
+    private String state;
 
     public PaymentInfo() {
     }
@@ -62,5 +63,13 @@ public class PaymentInfo {
 
     public void setZipCode(final String zipCode) {
         this.zipCode = zipCode;
+    }
+
+    public String getState() {
+        return this.state;
+    }
+
+    public void setState(final String state) {
+        this.state = state;
     }
 }

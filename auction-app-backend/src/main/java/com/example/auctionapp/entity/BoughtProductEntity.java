@@ -1,6 +1,7 @@
 package com.example.auctionapp.entity;
 
 import com.example.auctionapp.model.BoughtProduct;
+import com.example.auctionapp.util.builderpattern.GenericBuilder;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -35,14 +36,12 @@ public class BoughtProductEntity {
     private PaymentInfoEntity paymentInfoEntity;
 
     public BoughtProduct toDomainModel() {
-        BoughtProduct boughtProduct = new BoughtProduct();
-
-        boughtProduct.setBoughtProductId(this.boughtProductId);
-        boughtProduct.setProductId(this.productEntity.getProductId());
-        boughtProduct.setBuyerId(this.userEntity.getUserId());
-        boughtProduct.setPaymentInfoIid(this.paymentInfoEntity.getPaymentInfoId());
-
-        return boughtProduct;
+        return GenericBuilder.of(BoughtProduct::new)
+                .with(BoughtProduct::setBoughtProductId, this.boughtProductId)
+                .with(BoughtProduct::setProductId, this.productEntity.getProductId())
+                .with(BoughtProduct::setPaymentInfoIid, this.paymentInfoEntity.getPaymentInfoId())
+                .with(BoughtProduct::setBuyerId, this.userEntity.getUserId())
+                .build();
     }
 
     public UUID getBoughtProductId() {

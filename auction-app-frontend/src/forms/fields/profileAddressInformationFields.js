@@ -1,11 +1,11 @@
 import { rules } from 'src/forms/rules';
 
-export const addressInformationFields = [
+export const profileAddressInformationFields = [
     {
         label: "Street",
         type: "text",
         name: "street",
-        rules: rules.street()  
+        rules: rules.street()
     },
     {
         label: "City",
@@ -19,9 +19,6 @@ export const addressInformationFields = [
         type: "number",
         name: "zipCode",
         specialClass: "input-field-half",
-        rules: {
-            ...rules.required("Zip Code"),
-        }
     }, 
     {
         label: "State",

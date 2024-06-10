@@ -1,4 +1,4 @@
-import { postRequest, getRequest } from "src/utils/httpUtils";
+import { postRequest, getRequest, putRequest } from "src/utils/httpUtils";
 
 const registerUser = (data) => {
     return postRequest("/auth/register", data);
@@ -20,4 +20,16 @@ const addPaymentInfoToUser = (userId, data) => {
     return postRequest(`/users/${userId}/payment-info`, data);
 }
 
-export { registerUser, loginUser, logoutUser, getUser, addPaymentInfoToUser };
+const updateUser = (userId, data) => {
+    return putRequest(`/users/${userId}`, data);
+}
+
+const updateProfileImage = (userId, data) => {
+    return putRequest(`/users/${userId}/profile-image`, data);
+}
+
+const deactivateAccount = (userId) => {
+    return putRequest(`/users/${userId}/deactivate`);
+}
+
+export { registerUser, loginUser, logoutUser, getUser, addPaymentInfoToUser, updateUser, updateProfileImage, deactivateAccount };
