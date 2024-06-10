@@ -30,12 +30,10 @@ public interface ProductService {
     List<Product> getFeaturedProductsByUser(final UUID userId, final int count);
 
     List<Product> getFeaturedProducts(final int count);
-<<<<<<< HEAD
     
     boolean hasActiveProducts(final UUID userId);
     
     void deleteActiveProducts(final UUID userId);
-=======
+
     ProductPrices getProductPrices();
->>>>>>> 0707d5e (price range)
 }
