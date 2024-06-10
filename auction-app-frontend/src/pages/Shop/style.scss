@@ -54,36 +54,14 @@
   }
 
   .price-range {
-    @include flex-container(column, flex-start, flex-start);
-    width: 262px;
-    padding: 24px;
-    gap: 32px;
+    @include flex-container(column, center, flex-start);
+    gap: 30px;
     border: 1px solid $neutral09;
     border-top: none;
+    padding: 24px;
 
     span {
       color: $primary;
-    }
-
-    .range-slider {
-      height: 2px;
-      margin: 32px 0;
-    }
-
-    .range-slider__thumb {
-      width: 12px;
-      height: 12px;
-      background-color: $primary;
-      border-radius: 50%;
-      border: none;
-    }
-
-    .range-slider__range {
-      background-color: $neutral09;
-    }
-
-    .range-slider__thumb:active {
-      background-color: $primary;
     }
 
     .price-range-inputs {
