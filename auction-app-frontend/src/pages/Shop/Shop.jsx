@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import RangeSlider from "react-range-slider-input";
-import 'react-range-slider-input/dist/style.css';
 
 import {
   Button,
@@ -9,7 +7,8 @@ import {
   ProductGrid,
   ErrorComponent,
   LoadingComponent,
-  SelectField
+  SelectField,
+  MultiRangeSlider
 } from "src/components";
 
 import { getProducts, getCategoriesWithSubcategories } from "src/services";
@@ -36,14 +35,15 @@ const Shop = () => {
   const [checked, setChecked] = useState({});
   const [selectedSorting, setSelectedSorting] = useState(SHOP_PAGE_SORTING[0]);
   const [sortingDirection, setSortingDirection] = useState(selectedSorting.direction);
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(100);
+  
+  const [initialMinPrice, setInitialMinPrice] = useState(0);
+  const [initialMaxPrice, setInitialMaxPrice] = useState(100);
+  const [minPrice, setMinPrice] = useState(initialMinPrice);
+  const [maxPrice, setMaxPrice] = useState(initialMaxPrice);
 
   const { setSuggestion } = useSuggestion();
-
   const navigate = useNavigate();
   const query = useQuery();
-
   const categoryId = query.get("category");
   const searchProduct = query.get("search_product");
 
@@ -54,7 +54,6 @@ const Shop = () => {
     getProducts(page, SHOP_DEFAULT_PAGE_NUMBER, categoryId, searchProduct, selectedSorting.criteria, sortingDirection, subcategoryIds)
       .then((response) => {
         const { products, suggestion } = response;
-
         if (suggestion) {
           setSuggestion(suggestion);
         } else {
@@ -62,9 +61,7 @@ const Shop = () => {
         }
 
         setItems((prevItems) =>
-          page === 0
-            ? [...products.content]
-            : [...prevItems, ...products.content]
+          page === 0 ? [...products.content] : [...prevItems, ...products.content]
         );
         setHasMore(!products.last);
       })
@@ -83,7 +80,6 @@ const Shop = () => {
       .then((categories) => {
         setCategories(categories);
         const activeCat = categories.find((cat) => cat.id === categoryId);
-
         !!activeCat && setActiveCategory(activeCat.name);
       })
       .catch((err) => {
@@ -116,9 +112,9 @@ const Shop = () => {
   const handleCategoryChange = (categoryId) => {
     let url = "/shop";
     const queryParams = new URLSearchParams();
-  
+
     const isSameCategory = activeCategory === categories.find((cat) => cat.id === categoryId).name;
-    
+
     if (isSameCategory) {
       queryParams.delete("category");
       setActiveCategory(null);
@@ -126,45 +122,58 @@ const Shop = () => {
       queryParams.set("category", categoryId);
       setActiveCategory(categories.find((cat) => cat.id === categoryId).name);
     }
-  
+
     if (searchProduct) {
       queryParams.set("search_product", searchProduct);
     }
-  
+
     url += queryParams.toString() ? `?${queryParams.toString()}` : "";
-    
     setChecked({});
-  
     navigate(url);
   };
-  
 
   const handleSortingChange = (value) => {
-      const newSorting = SHOP_PAGE_SORTING.find((sort) => sort.value === value);
-
-      setSelectedSorting(newSorting);
-      setSortingDirection(newSorting.direction);
+    const newSorting = SHOP_PAGE_SORTING.find((sort) => sort.value === value);
+    setSelectedSorting(newSorting);
+    setSortingDirection(newSorting.direction);
   };
 
   const handleMinPriceChange = (event) => {
-    const value = Math.max(Number(event.target.value.replace(/\D/g, '')), 0);
-    
+    const value = parseInt(event.target.value.replace(/\D/g, '')) || 0;
     setMinPrice(value);
+    
+    if (value >= maxPrice) {
+      setMaxPrice(value + 1);
+    }
   };
-
+  
   const handleMaxPriceChange = (event) => {
-    const value = Math.max(Number(event.target.value.replace(/\D/g, '')), minPrice);
+    const value = parseInt(event.target.value.replace(/\D/g, '')) || minPrice;
+    setMaxPrice(Math.max(value, minPrice + 1));
+  };  
 
-    setMaxPrice(value);
+  useEffect(() => {
+    onRangeChange({min: minPrice, max: maxPrice});
+  }, [minPrice, maxPrice]);
+
+  const onBlurFormat = (event) => {
+    event.target.value = formatPriceInput(event.target.value.replace(/\D/g, ''));
   };
-
+  
+  const onFocusUnformat = (event) => {
+    event.target.value = event.target.value.replace(/\D/g, '');
+  };
+  
+  const formatPriceInput = (value) => `$${ value }`;
+  
   const onRangeChange = (range) => {
     setMinPrice(range.min);
     setMaxPrice(range.max);
-
-    handleMaxPriceChange({ target: { value: range.max } });
-    handleMinPriceChange({ target: { value: range.min } });
   };
+
+  useEffect(() => {
+    onRangeChange({ min: minPrice, max: maxPrice });
+  }, [minPrice, maxPrice]);
 
   if (productsError || categoriesError)
     return <ErrorComponent error={ productsError || categoriesError } />;
@@ -182,9 +191,7 @@ const Shop = () => {
                 { categories.map((category) => (
                   <div key={ category.id } className="category-item body-regular">
                     <button
-                      className={ `category-name ${
-                        activeCategory === category.name ? "active" : ""
-                      }` }
+                      className={ `category-name ${ activeCategory === category.name ? "active" : "" }` }
                       onClick={ () => handleCategoryChange(category.id) }
                     >
                       { category.name }
@@ -192,49 +199,52 @@ const Shop = () => {
                         <img src={ collapse } alt="Collapse" />
                       ) : (
                         <img src={ expand } alt="Expand" />
-                      )}
+                      ) }
                     </button>
-                    { activeCategory === category.name &&
-                      category.subCategories && (
-                        <div className="subcategory-list">
-                          { category.subCategories.map((subcategory) => (
+                    { activeCategory === category.name && category.subCategories && (
+                      <div className="subcategory-list">
+                        { category.subCategories.map((subcategory) => (
                           <Checkbox
                             key={ subcategory.id }
-                            label={ `${subcategory.name} (${subcategory.productCount})` }
+                            label={ `${ subcategory.name } (${ subcategory.productCount })` }
                             onChange={ (checked) =>
                               handleCheckboxChange(category.id, subcategory.id, checked)
                             }
                           />
-                          )) }
-                        </div>
-                      ) }
+                        )) }
+                      </div>
+                    ) }
                   </div>
                 )) }
               </div>
             </div>
             <div className="price-range">
-              <span className="body-regular"> Price Range </span>
+              <span className="body-regular">Price Range</span>
               <div className="price-range-inputs">
-                <input
-                    type="text"
-                    value={`$${ minPrice }`}
-                    onChange={ handleMinPriceChange }
-                    placeholder="Min"
-                  />
-                  <span className="body-regular"> - </span>
-                  <input
-                    type="text"
-                    value={`$${ maxPrice }`}
-                    onChange={ handleMaxPriceChange }
-                    placeholder="Max"
-                  />
-                </div>
-                <RangeSlider
-                  min={ minPrice }
-                  max={ maxPrice }
-                  step={ 1 }
-                  onChange={({ min, max }) => onRangeChange({ min, max })}
-                />
+              <input
+                type="text"
+                value={ formatPriceInput(minPrice) }
+                onChange={ handleMinPriceChange }
+                onBlur={ event => onBlurFormat(event, minPrice) }
+                onFocus={ onFocusUnformat}
+                placeholder="Min"
+              />
+              <input
+                type="text"
+                value={ formatPriceInput(maxPrice) }
+                onChange={ handleMaxPriceChange }
+                onBlur={ event => onBlurFormat(event, maxPrice) }
+                onFocus={ onFocusUnformat }
+                placeholder="Max"
+              />
+              </div>
+              <MultiRangeSlider
+                  min={ initialMinPrice }
+                  max={ initialMaxPrice }
+                  minValue={ minPrice }
+                  maxValue={ maxPrice }
+                  onChange={ onRangeChange }
+                /> 
             </div>
           </div>
         ) }
