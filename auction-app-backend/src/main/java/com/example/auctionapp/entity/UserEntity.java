@@ -3,6 +3,7 @@ package com.example.auctionapp.entity;
 import com.example.auctionapp.entity.enums.UserRoles;
 import com.example.auctionapp.model.User;
 import com.example.auctionapp.util.builderpattern.GenericBuilder;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -50,7 +51,7 @@ public class UserEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRoles role;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "payment_info_id")
     private PaymentInfoEntity paymentInfoEntity;
 
