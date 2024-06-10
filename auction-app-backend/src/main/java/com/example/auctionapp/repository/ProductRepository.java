@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -43,4 +44,8 @@ public interface ProductRepository extends JpaRepository<ProductEntity, UUID>, J
 
     @Query(value = "SELECT p FROM ProductEntity p WHERE p.status = 'ACTIVE' ORDER BY p.bidsCount DESC")
     List<ProductEntity> findMostPopularProducts(final Pageable page);
+
+    @Query("SELECT COALESCE(MIN(p.startPrice), 0), COALESCE(MAX(p.startPrice), 0) " +
+            "FROM ProductEntity p WHERE p.status = 'ACTIVE'")
+    List<BigDecimal[]> findMinAndMaxPrices();
 }
