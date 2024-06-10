@@ -15,7 +15,7 @@ const getProductRandom = () => {
   return getRequest("/products/random");
 };
 
-const getProducts = (page, size, categoryId, searchQuery, sortCriteria, sortDirection, subcategoryIds) => {
+const getProducts = (page, size, categoryId, searchQuery, sortCriteria, sortDirection, subcategoryIds, minPrice, maxPrice) => {
   // construct query string based on the presence of categoryId or search query
   const categoryParam = categoryId ? `&categoryId=${ categoryId }` : "";
   const searchParam = searchQuery
@@ -29,7 +29,7 @@ const getProducts = (page, size, categoryId, searchQuery, sortCriteria, sortDire
   }
 
   return getRequest(
-    `/products?page=${ page }&size=${ size }${ categoryParam }${ subcategoryParams }${ searchParam }&sortField=${ sortCriteria }&sortDirection=${ sortDirection }`
+    `/products?page=${ page }&size=${ size }${ categoryParam }${ subcategoryParams }${ searchParam }&sortField=${ sortCriteria }&sortDirection=${ sortDirection }&minPrice=${ minPrice }&maxPrice=${ maxPrice }`
   );
 };
 

@@ -9,11 +9,6 @@ const MultiRangeSlider = ({ min, max, minValue, maxValue, onChange }) => {
   const maxValRef = useRef(null);
   const range = useRef(null);
 
-  const getPercent = useCallback(
-    (value) => Math.round(((value - min) / (max - min)) * 100),
-    [min, max]
-  );
-
   useEffect(() => {
     setMinVal(minValue);
   }, [minValue]);
@@ -22,57 +17,31 @@ const MultiRangeSlider = ({ min, max, minValue, maxValue, onChange }) => {
     setMaxVal(maxValue);
   }, [maxValue]);
 
-  useEffect(() => {
-    if (maxValRef.current) {
-      const minPercent = getPercent(minVal);
-      const maxPercent = getPercent(+maxValRef.current.value);
-
-      if (range.current) {
-        range.current.style.left = `${ minPercent }%`;
-        range.current.style.width = `${ maxPercent - minPercent }%`;
-      }
-    }
-  }, [minVal, getPercent]);
-
-  useEffect(() => {
-    if (minValRef.current) {
-      const minPercent = getPercent(+minValRef.current.value);
-      const maxPercent = getPercent(maxVal);
-
-      if (range.current) {
-        range.current.style.width = `${ maxPercent - minPercent }%`;
-      }
-    }
-  }, [maxVal, getPercent]);
-
-  useEffect(() => {
+  const handleFinalChange = () => {
     onChange({ min: minVal, max: maxVal });
-  }, [minVal, maxVal, onChange]);
-  
-  const onMinInputChange = (event) => {
-    const value = Math.min(+event.target.value, maxVal - 1);
+  };
 
-    setMinVal(value);
-    event.target.value = value.toString();
-  }
+  const handleMinChange = (e) => {
+    setMinVal(Number(e.target.value));
+  };
 
-  const onMaxInputChange = (event) => {
-    const value = Math.max(+event.target.value, minVal + 1);
-
-    setMaxVal(value);
-    event.target.value = value.toString();
-  }
+  const handleMaxChange = (e) => {
+    setMaxVal(Number(e.target.value));
+  };
 
   return (
     <div className="range-container">
       <input
         type="range"
-        min={ min }
-        max={ max }
-        value={ minVal }
-        ref={ minValRef }
-        onChange={ onMinInputChange }
-        className={`thumb thumb--zindex-3 ${minVal > max - 100 ? "thumb--zindex-5" : ""}`}
+        min={ min}
+        max={ max}
+        value={ minVal}
+        ref={ minValRef}
+        onChange={ handleMinChange }
+        onMouseUp={ handleFinalChange } 
+        onTouchEnd={ handleFinalChange } 
+        className={ `thumb thumb--zindex-3 ${minVal > max - 100 ? "thumb--zindex-5" : ""}` }
+        step= {0.1}
       />
       <input
         type="range"
@@ -80,10 +49,12 @@ const MultiRangeSlider = ({ min, max, minValue, maxValue, onChange }) => {
         max={ max }
         value={ maxVal }
         ref={ maxValRef }
-        onChange={ onMaxInputChange }
+        onChange={ handleMaxChange }
+        onMouseUp={ handleFinalChange } 
+        onTouchEnd={ handleFinalChange }
         className="thumb thumb--zindex-4"
+        step={ 0.1 }
       />
-
       <div className="slider">
         <div className="slider__track" />
         <div ref={ range } className="slider__range" />
