@@ -53,6 +53,10 @@ const findPopularProducts = (count) => {
   return getRequest(`/products/featured-products?count=${ count }`);
 }
 
+const findMinAndMaxPrice = () => {
+  return getRequest("/products/prices");
+}
+
 export { 
   getProducts, 
   getProduct, 
@@ -62,5 +66,6 @@ export {
   addProduct,
   findProductsByUserIdAndStatus,
   findFeaturedProducts,
-  findPopularProducts
+  findPopularProducts,
+  findMinAndMaxPrice
 };

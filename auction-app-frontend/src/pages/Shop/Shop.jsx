@@ -15,6 +15,7 @@ import { getProducts, getCategoriesWithSubcategories } from "src/services";
 import { useSuggestion } from "src/store/SuggestionContext";
 import { collapse, expand } from "src/assets/icons";
 import { SHOP_DEFAULT_PAGE_NUMBER, BUTTON_VARIANTS, SHOP_PAGE_SORTING } from "src/constants";
+import { findMinAndMaxPrice } from "src/services/productService";
 
 import "./style.scss";
 
@@ -46,6 +47,19 @@ const Shop = () => {
   const query = useQuery();
   const categoryId = query.get("category");
   const searchProduct = query.get("search_product");
+
+  const fetchPriceRange = () => {
+    findMinAndMaxPrice()
+      .then((response) => {
+        setInitialMinPrice(response.minPrice);
+        setInitialMaxPrice(response.maxPrice);
+        setMinPrice(response.minPrice);
+        setMaxPrice(response.maxPrice);
+      })
+      .catch((error) => {
+        setProductsError(error.message);
+      });
+  };
 
   const fetchProducts = () => {
     const subcategoryIds = Object.keys(checked).filter(key => checked[key]);
@@ -97,6 +111,10 @@ const Shop = () => {
   useEffect(() => {
     fetchCategories();
   }, [categoryId]);
+
+  useEffect(() => {
+    fetchPriceRange();
+  }, []);
 
   const fetchNextPage = () => {
     setPage((prevPage) => prevPage + 1);

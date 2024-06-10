@@ -18,6 +18,7 @@ import com.example.auctionapp.repository.CategoryRepository;
 import com.example.auctionapp.repository.ProductRepository;
 import com.example.auctionapp.response.BidSummaryResponse;
 import com.example.auctionapp.response.ProductBidDetailsResponse;
+import com.example.auctionapp.response.ProductPrices;
 import com.example.auctionapp.response.ProductSearchResponse;
 import com.example.auctionapp.service.PaymentService;
 import com.example.auctionapp.service.ProductService;
@@ -25,6 +26,7 @@ import com.example.auctionapp.specification.ProductSpecification;
 import com.example.auctionapp.util.ComputeSuggestion;
 import com.example.auctionapp.util.PageableUtil;
 import com.example.auctionapp.util.FeaturedProducts;
+import com.example.auctionapp.util.builderpattern.GenericBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -35,8 +37,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static java.util.stream.Collectors.toList;
@@ -225,6 +229,7 @@ public class ProductServiceImpl implements ProductService {
                 .toList();
     }
 
+<<<<<<< HEAD
     public boolean hasActiveProducts(final UUID userId) {
         final List<ProductEntity> activeProducts = this.productRepository
                 .findProductEntityByUserEntity_UserIdAndAndStatusAndBidsCountIsGreaterThan(userId, ProductStatus.ACTIVE, 0);
@@ -236,6 +241,25 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteActiveProducts(final UUID userId) {
         this.productRepository.deleteAllByUserEntity_UserIdAndStatus(userId, ProductStatus.ACTIVE);
+=======
+    @Override
+    public ProductPrices getProductPrices() {
+        final List<BigDecimal[]> pricesList = productRepository.findMinAndMaxPrices();
+
+        if (!pricesList.isEmpty()) {
+            final BigDecimal[] prices = pricesList.get(0);
+
+            return GenericBuilder.of(ProductPrices::new)
+                    .with(ProductPrices::setMinPrice, prices[0])
+                    .with(ProductPrices::setMaxPrice, prices[1])
+                    .build();
+        } else {
+            return GenericBuilder.of(ProductPrices::new)
+                    .with(ProductPrices::setMinPrice, BigDecimal.ZERO)
+                    .with(ProductPrices::setMaxPrice, BigDecimal.ZERO)
+                    .build();
+        }
+>>>>>>> 0707d5e (price range)
     }
 
     private void handleCategoryAndUser(ProductEntity productEntity, ProductAddRequest productRequest) {

@@ -6,6 +6,7 @@ import com.example.auctionapp.request.GetProductRequest;
 import com.example.auctionapp.request.ProductAddRequest;
 import com.example.auctionapp.response.BidSummaryResponse;
 import com.example.auctionapp.response.ProductBidDetailsResponse;
+import com.example.auctionapp.response.ProductPrices;
 import com.example.auctionapp.response.ProductSearchResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,8 +30,12 @@ public interface ProductService {
     List<Product> getFeaturedProductsByUser(final UUID userId, final int count);
 
     List<Product> getFeaturedProducts(final int count);
+<<<<<<< HEAD
     
     boolean hasActiveProducts(final UUID userId);
     
     void deleteActiveProducts(final UUID userId);
+=======
+    ProductPrices getProductPrices();
+>>>>>>> 0707d5e (price range)
 }
