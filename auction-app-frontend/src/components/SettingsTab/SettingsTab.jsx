@@ -46,12 +46,8 @@ const SettingsTab = () => {
           
           localStorage.clear();
         }).catch((error) => {
-          if ((error.response.data.trace).startsWith("com.example.auctionapp.exceptions.authentication.CannotDeactivateAccount")) {
-            setError("You have active products with bids, you cannot deactivate your account yet.")
-          } else {
-            setError(error.message);
-          }
-
+          setError(error.response.data.message);
+          
           setUpdateLoading(false);
         });
     }
