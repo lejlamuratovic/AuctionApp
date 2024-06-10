@@ -229,7 +229,6 @@ public class ProductServiceImpl implements ProductService {
                 .toList();
     }
 
-<<<<<<< HEAD
     public boolean hasActiveProducts(final UUID userId) {
         final List<ProductEntity> activeProducts = this.productRepository
                 .findProductEntityByUserEntity_UserIdAndAndStatusAndBidsCountIsGreaterThan(userId, ProductStatus.ACTIVE, 0);
@@ -241,7 +240,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteActiveProducts(final UUID userId) {
         this.productRepository.deleteAllByUserEntity_UserIdAndStatus(userId, ProductStatus.ACTIVE);
-=======
+    }
+    
     @Override
     public ProductPrices getProductPrices() {
         final List<BigDecimal[]> pricesList = productRepository.findMinAndMaxPrices();
@@ -259,7 +259,6 @@ public class ProductServiceImpl implements ProductService {
                     .with(ProductPrices::setMaxPrice, BigDecimal.ZERO)
                     .build();
         }
->>>>>>> 0707d5e (price range)
     }
 
     private void handleCategoryAndUser(ProductEntity productEntity, ProductAddRequest productRequest) {
