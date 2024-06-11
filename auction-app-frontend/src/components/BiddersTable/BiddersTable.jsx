@@ -4,6 +4,7 @@ import moment from "moment";
 import { findBidsByProductId } from "src/services/bidService";
 import { BIDDERS_TABLE_ROWS, BIDDERS_TABLE_DEFAULT_PAGE_SIZE } from "src/constants";
 import { BUTTON_LABELS, BUTTON_VARIANTS } from "src/constants";
+import { userProfilePicture } from "src/assets/images";
 
 import { Button, ButtonLoadingIndicator, ErrorComponent } from "src/components";
 
@@ -51,6 +52,10 @@ const BiddersTable = ({ productId }) => {
         return moment(dateString, "YYYY-MM-DD").format("D MMMM YYYY");
     };
 
+    const formatProfilePicture = (profilePicture) => {
+        return profilePicture || userProfilePicture;
+    };
+
     if (error) return <ErrorComponent message={ error } />;
 
     return (
@@ -58,8 +63,8 @@ const BiddersTable = ({ productId }) => {
         <table>
             <thead>
             <tr>
-                { BIDDERS_TABLE_ROWS.map(row => (
-                    <th key={ row }>{ row.name }</th>
+                { BIDDERS_TABLE_ROWS.map((row, index) => (
+                    <th key={ row + index }>{ row.name }</th>
                 )) }
             </tr>
             </thead>
@@ -68,7 +73,7 @@ const BiddersTable = ({ productId }) => {
                 <tr key={ bidder.id } className="bid-row">
                 <td>
                     <div className="bidder-info">
-                    <img src={ bidder.user.profilePicture } alt="profile picture" />
+                    <img src={ formatProfilePicture(bidder.user.profilePicture) } alt="profile picture" />
                     <span>{ bidder.user.firstName } { bidder.user.lastName }</span>
                     </div>
                 </td>
