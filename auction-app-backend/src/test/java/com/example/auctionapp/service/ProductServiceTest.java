@@ -41,6 +41,8 @@ public class ProductServiceTest {
     @Autowired
     private ProductService productService;
 
+    private static final int MAX_PRICE = 10000;
+
     @Test
     public void whenGetLastChance_thenReturnProductsSortedByEndDateAsc() {
         CategoryEntity categoryEntity = new CategoryEntity();
@@ -96,7 +98,7 @@ public class ProductServiceTest {
     public void whenGetSortedProductsByName_thenReturnSortedProducts() {
         UUID categoryId = UUID.randomUUID();
 
-        GetProductRequest getProductRequest = new GetProductRequest(categoryId, "", "name", "ASC", 0, 10, new ArrayList<>(), BigDecimal.ZERO, BigDecimal.valueOf(10000));
+        GetProductRequest getProductRequest = new GetProductRequest(categoryId, "", "name", "ASC", 0, 10, new ArrayList<>(), BigDecimal.ZERO, BigDecimal.valueOf(MAX_PRICE));
 
         CategoryEntity categoryEntity = new CategoryEntity();
 
@@ -149,7 +151,7 @@ public class ProductServiceTest {
     public void whenGetLatestProducts_thenReturnProductsSortedByStartDateDesc() {
         UUID categoryId = UUID.randomUUID();
 
-        GetProductRequest getProductRequest = new GetProductRequest(categoryId, "", "startDate", "DESC", 0, 10, new ArrayList<>(), BigDecimal.ZERO, BigDecimal.valueOf(10000));
+        GetProductRequest getProductRequest = new GetProductRequest(categoryId, "", "startDate", "DESC", 0, 10, new ArrayList<>(), BigDecimal.ZERO, BigDecimal.valueOf(MAX_PRICE));
 
         UserEntity userEntity = new UserEntity();
 
