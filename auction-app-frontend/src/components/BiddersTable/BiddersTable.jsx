@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import moment from "moment";
 
 import { findBidsByProductId } from "src/services/bidService";
 import { BIDDERS_TABLE_ROWS, BIDDERS_TABLE_DEFAULT_PAGE_SIZE } from "src/constants";
@@ -47,8 +48,7 @@ const BiddersTable = ({ productId }) => {
     }
 
     const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toISOString().split('T')[0]; // remove time part
+        return moment(dateString, "YYYY-MM-DD").format("D MMMM YYYY");
     };
 
     return (
