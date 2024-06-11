@@ -24,10 +24,18 @@
 
       img {
         border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        margin-right: 10px;
+        width: 64px;
+        height: 64px;
+        margin-right: 16px;
       }
+    }
+
+    .first-bid {
+      color: $success;
+    }
+
+    .other-bid {
+      color: $neutral05;
     }
   }
 }

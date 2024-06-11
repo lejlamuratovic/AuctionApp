@@ -5,7 +5,7 @@ import { findBidsByProductId } from "src/services/bidService";
 import { BIDDERS_TABLE_ROWS, BIDDERS_TABLE_DEFAULT_PAGE_SIZE } from "src/constants";
 import { BUTTON_LABELS, BUTTON_VARIANTS } from "src/constants";
 
-import { Button } from "src/components";
+import { Button, ButtonLoadingIndicator, ErrorComponent } from "src/components";
 
 import "./style.scss";
 
@@ -51,6 +51,8 @@ const BiddersTable = ({ productId }) => {
         return moment(dateString, "YYYY-MM-DD").format("D MMMM YYYY");
     };
 
+    if (error) return <ErrorComponent message={ error } />;
+
     return (
         <div className="bidders-table-container body-semibold">
         <table>
@@ -62,7 +64,7 @@ const BiddersTable = ({ productId }) => {
             </tr>
             </thead>
             <tbody>
-            { biddersList.map(bidder => (
+            { biddersList.map((bidder, index) => (
                 <tr key={ bidder.id } className="bid-row">
                 <td>
                     <div className="bidder-info">
@@ -71,7 +73,7 @@ const BiddersTable = ({ productId }) => {
                     </div>
                 </td>
                 <td>{ formatDate(bidder.bidTime) }</td>
-                <td>${ bidder.bidAmount }</td>
+                <td className={ index === 0 ? 'first-bid' : 'other-bid' }>${ bidder.bidAmount }</td>
                 </tr>
             )) }
             </tbody>
@@ -79,7 +81,7 @@ const BiddersTable = ({ productId }) => {
         <div className="load-more-btn">
             { hasMore &&
                 <Button 
-                    label = { BUTTON_LABELS.LOAD_MORE } 
+                    label = { loading ? <ButtonLoadingIndicator /> : BUTTON_LABELS.LOAD_MORE }
                     onButtonClick = { () => handlePageChange(page) } 
                     variant = { BUTTON_VARIANTS.FILLED }
                     className = "load-more-button"

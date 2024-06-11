@@ -101,7 +101,7 @@ public class BidServiceImpl implements BidService {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<Bid> bidPage = this.bidRepository.findBidEntitiesByProductEntity_ProductId(productId, pageable)
+        Page<Bid> bidPage = this.bidRepository.findBidEntitiesByProductEntity_ProductIdOrderByBidAmountDesc(productId, pageable)
                 .map(BidEntity::toDomainModel);
 
         return new PageImpl<>(bidPage.getContent(), pageable, bidPage.getTotalElements());
