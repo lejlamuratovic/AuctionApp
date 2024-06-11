@@ -32,7 +32,7 @@ security:
 JWT_SECURE: true
 
 cookie:
-  accessExpiry: 604800000 # 2 minutes in milliseconds
+  accessExpiry: 120000 # 2 minutes in milliseconds
   refreshExpiry: 604800000 # 7 days in milliseconds
 
 amazonProperties:
