@@ -105,4 +105,9 @@ public class ProductController {
     public ProductPrices getProductPrices() {
         return this.productService.getProductPrices();
     }
+
+    @GetMapping("/random/{categoryId}")
+    public List<Product> getThreeRandomProductsByCategoryId(@PathVariable  final UUID categoryId) {
+        return this.productService.getThreeRandomProductsByCategoryId(categoryId);
+    }
 }
