@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 
 import { findBidsByProductId } from "src/services/bidService";
 import { BIDDERS_TABLE_ROWS, BIDDERS_TABLE_DEFAULT_PAGE_SIZE } from "src/constants";
+import { BUTTON_LABELS, BUTTON_VARIANTS } from "src/constants";
+
+import { Button } from "src/components";
 
 import "./style.scss";
 
@@ -11,13 +14,20 @@ const BiddersTable = ({ productId }) => {
     const [biddersList, setBiddersList] = useState([]);
     const [page, setPage] = useState(0);
     const [size, setSize] = useState(BIDDERS_TABLE_DEFAULT_PAGE_SIZE);
+    const [hasMore, setHasMore] = useState(true);
 
     const fetchBiddersList = () => {
         setLoading(true);
 
         findBidsByProductId(productId, page, size)
             .then(response => {
-                setBiddersList(response.content);
+                setBiddersList((prevItems) => 
+                    page === 0 
+                        ? [...response.content]
+                        : [...prevItems, ...response.content]
+                );
+
+                setHasMore(response.last !== true);
             })
             .catch(error => {
                 setError(error);
@@ -30,7 +40,11 @@ const BiddersTable = ({ productId }) => {
 
     useEffect(() => {
         if(productId) fetchBiddersList();
-    }, [productId]);
+    }, [productId, page]);
+
+    const handlePageChange = (page) => {
+        setPage((prevPage) => prevPage + 1);
+    }
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -62,6 +76,16 @@ const BiddersTable = ({ productId }) => {
             )) }
             </tbody>
         </table>
+        <div className="load-more-btn">
+            { hasMore &&
+                <Button 
+                    label = { BUTTON_LABELS.LOAD_MORE } 
+                    onButtonClick = { () => handlePageChange(page) } 
+                    variant = { BUTTON_VARIANTS.FILLED }
+                    className = "load-more-button"
+                />
+            }
+        </div>
         </div>
     );
 }

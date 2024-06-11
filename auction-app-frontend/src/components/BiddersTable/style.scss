@@ -1,6 +1,13 @@
 @import "src/scss/index.scss"; 
 
 .bidders-table-container {
+  @include flex-container(column, center, center);
+  width: 100%;
+
+  .load-more-btn {
+    margin-top: 20px;
+  }
+
   table {
     width: 100%;
     border-collapse: collapse;
