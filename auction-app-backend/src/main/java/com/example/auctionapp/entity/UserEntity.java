@@ -94,6 +94,7 @@ public class UserEntity implements UserDetails {
                 .with(User::setLastName, this.lastName)
                 .with(User::setEmail, this.email)
                 .with(User::setRole, this.role)
+                .with(User::setProfilePicture, this.profilePicture)
                 .with(User::setPaymentInfoEntity, this.paymentInfoEntity)
                 .build();
     }
