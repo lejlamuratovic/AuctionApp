@@ -11,7 +11,8 @@ import {
   Notifications, 
   Button, 
   CheckoutComponent, 
-  ProductCard
+  ProductCard,
+  BiddersTable
 } from "src/components";
 
 import { useBreadcrumb } from "src/store/BreadcrumbContext";
@@ -309,6 +310,17 @@ const ProductDetails = () => {
           </div>
         </div>
       </div>
+      { userIsSeller ? (
+      <div className="bidders-container">
+        <h5 className="bidders-title">
+          Bidders
+        <hr />
+        </h5>
+        <div className="bidders">
+          <BiddersTable productId={ id }/>
+        </div>
+      </div>
+      ) : (
       <div className="related-products-container">
         <h5 className="related-products-title">
           Related Products
@@ -320,6 +332,7 @@ const ProductDetails = () => {
           )) }
         </div>
       </div>
+      ) }
     </>
   );
 };

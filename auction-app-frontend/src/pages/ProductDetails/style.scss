@@ -223,3 +223,16 @@
   }
 }
   
+.bidders-container {
+  margin: 64px 0;
+
+  .bidders-title {
+    text-align: center;
+    margin: 64px 0;
+  }
+
+  hr {
+    width: 100%;
+    border: 1px solid $neutral09;
+  }
+}

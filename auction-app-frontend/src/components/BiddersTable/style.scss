@@ -1,0 +1,26 @@
+@import "src/scss/index.scss"; 
+
+.bidders-table-container {
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid $neutral09;
+
+    th, td {
+      text-align: left;
+      padding: 24px;
+    }
+
+    .bidder-info {
+      display: flex;
+      align-items: center;
+
+      img {
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+      }
+    }
+  }
+}

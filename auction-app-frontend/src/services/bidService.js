@@ -8,4 +8,8 @@ const findBidsByUserId = (userId, page, size) => {
     return getRequest(`/bids/${ userId }?page=${ page }&size=${ size }`);
 }
 
-export { placeBid, findBidsByUserId };
+const findBidsByProductId = (productId, page, size) => {
+    return getRequest(`/bids/product/${ productId }?page=${ page }&size=${ size }`);
+}
+
+export { placeBid, findBidsByUserId, findBidsByProductId };

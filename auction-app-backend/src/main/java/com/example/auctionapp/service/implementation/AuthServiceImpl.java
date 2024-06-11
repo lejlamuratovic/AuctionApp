@@ -59,6 +59,7 @@ public class AuthServiceImpl implements AuthService {
                 .with(UserEntity::setEmail, userRequest.getEmail())
                 .with(UserEntity::setRole, UserRoles.USER)
                 .with(UserEntity::setPassword, passwordEncoder.encode(userRequest.getPassword()))
+                .with(UserEntity::setActive, true)
                 .build();
 
         return userRepository.save(userEntity).toDomainModel();
