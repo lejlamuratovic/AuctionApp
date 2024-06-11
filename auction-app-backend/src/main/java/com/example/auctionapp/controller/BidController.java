@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -42,5 +43,15 @@ public class BidController {
             @RequestParam(value = "size", defaultValue = "8") final int size
     ) {
         return bidService.getBidsForUser(userId, page, size);
+    }
+
+    @PreAuthorize(SecurityRoles.ALL)
+    @GetMapping("/product/{productId}")
+    public Page<Bid> getBidsByProduct(
+            @PathVariable final UUID productId,
+            @RequestParam(value = "page", defaultValue = "0") final int page,
+            @RequestParam(value = "size", defaultValue = "5") final int size
+    ) {
+        return this.bidService.getBidsByProductId(productId, page, size);
     }
 }

@@ -2,7 +2,6 @@ package com.example.auctionapp.service.implementation;
 
 import com.example.auctionapp.entity.BidEntity;
 import com.example.auctionapp.entity.ProductEntity;
-import com.example.auctionapp.entity.ProductImageEntity;
 import com.example.auctionapp.entity.enums.NotificationType;
 import com.example.auctionapp.exceptions.repository.ResourceNotFoundException;
 import com.example.auctionapp.model.Bid;
@@ -15,12 +14,14 @@ import com.example.auctionapp.service.BidService;
 import com.example.auctionapp.service.NotificationService;
 import com.example.auctionapp.util.ValidationUtility;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -91,5 +92,18 @@ public class BidServiceImpl implements BidService {
 
         return bidRepository.findBidEntitiesByUserEntity_UserIdOrderByBidTimeDesc(userId, pageable)
                 .map(bidEntity -> new ProductBidDetailsResponse(bidEntity.getProduct(), bidEntity.getBidAmount()));
+    }
+
+    @Override
+    public Page<Bid> getBidsByProductId(final UUID productId, final int page, final int size) {
+        this.productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product with given ID does not exist"));
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Bid> bidPage = this.bidRepository.findBidEntitiesByProductEntity_ProductId(productId, pageable)
+                .map(BidEntity::toDomainModel);
+
+        return new PageImpl<>(bidPage.getContent(), pageable, bidPage.getTotalElements());
     }
 }

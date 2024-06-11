@@ -36,3 +36,4 @@ export { default as CheckoutPaymentForm } from "./CheckoutPaymentForm/CheckoutPa
 export { default as CheckoutAddressForm } from "./CheckoutAddressForm/CheckoutAddressForm";
 export { default as FeaturedProducts } from "./FeaturedProducts/FeaturedProducts";
 export { default as MultiRangeSlider } from "./MultiRangeSlider/MultiRangeSlider";
+export { default as BiddersTable } from "./BiddersTable/BiddersTable";
