@@ -35,3 +35,4 @@ export { default as CheckoutComponent } from "./CheckoutComponent/CheckoutCompon
 export { default as CheckoutPaymentForm } from "./CheckoutPaymentForm/CheckoutPaymentForm";
 export { default as CheckoutAddressForm } from "./CheckoutAddressForm/CheckoutAddressForm";
 export { default as FeaturedProducts } from "./FeaturedProducts/FeaturedProducts";
+export { default as MultiRangeSlider } from "./MultiRangeSlider/MultiRangeSlider";

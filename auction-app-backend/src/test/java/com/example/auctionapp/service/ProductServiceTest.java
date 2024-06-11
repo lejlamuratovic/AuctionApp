@@ -22,6 +22,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -39,6 +40,8 @@ public class ProductServiceTest {
 
     @Autowired
     private ProductService productService;
+
+    private static final int MAX_PRICE = 10000;
 
     @Test
     public void whenGetLastChance_thenReturnProductsSortedByEndDateAsc() {
@@ -95,7 +98,7 @@ public class ProductServiceTest {
     public void whenGetSortedProductsByName_thenReturnSortedProducts() {
         UUID categoryId = UUID.randomUUID();
 
-        GetProductRequest getProductRequest = new GetProductRequest(categoryId, "", "name", "ASC", 0, 10);
+        GetProductRequest getProductRequest = new GetProductRequest(categoryId, "", "name", "ASC", 0, 10, new ArrayList<>(), BigDecimal.ZERO, BigDecimal.valueOf(MAX_PRICE));
 
         CategoryEntity categoryEntity = new CategoryEntity();
 
@@ -148,7 +151,7 @@ public class ProductServiceTest {
     public void whenGetLatestProducts_thenReturnProductsSortedByStartDateDesc() {
         UUID categoryId = UUID.randomUUID();
 
-        GetProductRequest getProductRequest = new GetProductRequest(categoryId, "", "startDate", "DESC", 0, 10);
+        GetProductRequest getProductRequest = new GetProductRequest(categoryId, "", "startDate", "DESC", 0, 10, new ArrayList<>(), BigDecimal.ZERO, BigDecimal.valueOf(MAX_PRICE));
 
         UserEntity userEntity = new UserEntity();
 

@@ -5,6 +5,7 @@ import com.example.auctionapp.model.Product;
 import com.example.auctionapp.request.GetProductRequest;
 import com.example.auctionapp.response.BidSummaryResponse;
 import com.example.auctionapp.response.ProductBidDetailsResponse;
+import com.example.auctionapp.response.ProductPrices;
 import com.example.auctionapp.response.ProductSearchResponse;
 import com.example.auctionapp.service.ProductService;
 import com.example.auctionapp.request.ProductAddRequest;
@@ -98,5 +99,10 @@ public class ProductController {
     @GetMapping("/featured-products")
     public List<Product> getFeaturedProducts(@RequestParam final int count) {
         return this.productService.getFeaturedProducts(count);
+    }
+
+    @GetMapping("/prices")
+    public ProductPrices getProductPrices() {
+        return this.productService.getProductPrices();
     }
 }

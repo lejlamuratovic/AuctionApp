@@ -53,6 +53,31 @@
     }
   }
 
+  .price-range {
+    @include flex-container(column, center, flex-start);
+    gap: 30px;
+    border: 1px solid $neutral09;
+    border-top: none;
+    padding: 24px;
+
+    span {
+      color: $primary;
+    }
+
+    .price-range-inputs {
+      @include flex-container(row, space-between, center);
+      width: 100%;
+
+      input {
+        width: 88px;
+        height: 48px;
+        border: 2px solid $neutral09;
+        padding: 5px;
+        text-align: center;
+      }
+    }
+  }
+
   .product-list {
     width: 100%;
     padding-left: 30px;
