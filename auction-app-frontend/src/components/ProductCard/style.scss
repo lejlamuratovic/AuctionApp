@@ -33,4 +33,19 @@
       color: $primary;
     }
   }
+
+  &.list-view {
+    @include flex-container(row, flex-start, flex-start);
+    gap: 24px;
+
+    .product-description {
+      width: 524px;
+      color: $neutral05;
+      padding-bottom: 24px;
+    }
+
+    .product-info {
+      padding: 0;
+    }
+  }
 }

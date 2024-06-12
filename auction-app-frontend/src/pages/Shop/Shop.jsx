@@ -13,7 +13,7 @@ import {
 
 import { getProducts, getCategoriesWithSubcategories } from "src/services";
 import { useSuggestion } from "src/store/SuggestionContext";
-import { collapse, expand } from "src/assets/icons";
+import { collapse, expand, grid, list } from "src/assets/icons";
 import { SHOP_DEFAULT_PAGE_NUMBER, BUTTON_VARIANTS, SHOP_PAGE_SORTING } from "src/constants";
 import { findMinAndMaxPrice } from "src/services/productService";
 
@@ -36,6 +36,7 @@ const Shop = () => {
   const [checked, setChecked] = useState({});
   const [selectedSorting, setSelectedSorting] = useState(SHOP_PAGE_SORTING[0]);
   const [sortingDirection, setSortingDirection] = useState(selectedSorting.direction);
+  const [viewMode, setViewMode] = useState("grid");
   
   const [initialMinPrice, setInitialMinPrice] = useState(0);
   const [initialMaxPrice, setInitialMaxPrice] = useState(100);
@@ -169,7 +170,7 @@ const Shop = () => {
   };
 
   const handleMinPriceChange = (event) => {
-    const value = parseInt(event.target.value.replace(/\D/g, '')) || 0;
+    const value = parseInt(event.target.value.replace(/\D/g, "")) || 0;
     setMinPrice(value);
     
     if (value >= maxPrice) {
@@ -178,7 +179,7 @@ const Shop = () => {
   };
   
   const handleMaxPriceChange = (event) => {
-    const value = parseInt(event.target.value.replace(/\D/g, '')) || minPrice;
+    const value = parseInt(event.target.value.replace(/\D/g, "")) || minPrice;
     setMaxPrice(Math.max(value, minPrice + 1));
   };  
 
@@ -187,11 +188,11 @@ const Shop = () => {
   }, [minPrice, maxPrice]);
 
   const onBlurFormat = (event) => {
-    event.target.value = formatPriceInput(event.target.value.replace(/\D/g, ''));
+    event.target.value = formatPriceInput(event.target.value.replace(/\D/g, ""));
   };
   
   const onFocusUnformat = (event) => {
-    event.target.value = event.target.value.replace(/\D/g, '');
+    event.target.value = event.target.value.replace(/\D/g, "");
   };
   
   const formatPriceInput = (value) => `$${ value }`;
@@ -199,6 +200,10 @@ const Shop = () => {
   const onRangeChange = (range) => {
     setMinPrice(range.min);
     setMaxPrice(range.max);
+  };
+
+  const toggleViewMode = (mode) => {
+    setViewMode(mode);
   };
 
   useEffect(() => {
@@ -289,8 +294,22 @@ const Shop = () => {
               useForm={ false }
               defaultValue={ selectedSorting.value }
             />
+          <div className="preview-switch body-regular">
+            <div className={ `option ${ viewMode === "grid" ? "active" : "" }` } onClick={ () => toggleViewMode("grid") }>
+              <img src={grid} alt="Grid" />
+              <span>Grid</span>
+            </div>
+            <div className={ `option ${ viewMode === "list" ? "active" : "" }` } onClick={ () => toggleViewMode("list") }>
+              <img src={ list } alt="List" />
+              <span>List</span>
+            </div>
           </div>
-          <ProductGrid items={ items } />
+          </div>
+          <ProductGrid 
+            className={ `product-grid ${ viewMode === "list" ? "list-active" : "" }` } 
+            items={ items } 
+            showDescription={ viewMode === "list" }
+          />
           { hasMore && (
             <div className="explore-btn">
               <Button
