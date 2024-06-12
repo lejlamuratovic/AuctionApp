@@ -1,12 +1,12 @@
-import { ProductCard } from 'src/components';
+import { ProductCard } from "src/components";
 
-import './style.scss';
+import "./style.scss";
 
-const ProductGrid = ({ items }) => {
+const ProductGrid = ({ items, className, showDescription  }) => {
   return (
-    <div className="product-grid">
+    <div className={ `product-grid ${ className }` }>
       { items.map((item) => (
-        <ProductCard key={ item.id } { ...item } />
+        <ProductCard key={ item.id } showDescription={ showDescription } { ...item } />
       )) }
     </div>
   );
