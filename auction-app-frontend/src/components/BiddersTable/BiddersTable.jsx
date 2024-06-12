@@ -33,7 +33,6 @@ const BiddersTable = ({ productId }) => {
             })
             .catch(error => {
                 setError(error);
-                setLoading(false);
             })
             .finally(() => {
                 setLoading(false);
