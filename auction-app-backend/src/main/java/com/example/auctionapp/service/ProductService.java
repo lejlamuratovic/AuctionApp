@@ -36,5 +36,5 @@ public interface ProductService {
     void deleteActiveProducts(final UUID userId);
 
     ProductPrices getProductPrices();
-    List<Product> getThreeRandomProductsByCategoryId(final UUID categoryId);
+    List<Product> getRandomProductsByCategoryId(final UUID categoryId, final int count);
 }

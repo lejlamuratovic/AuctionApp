@@ -29,7 +29,7 @@ import {
   BUTTON_VARIANTS, 
   USER_TYPES,
   PRODUCT_STATUS,
-  ROUTE_PATHS
+  FEATURED_PRODUCTS_COUNT
 } from "src/constants";
 import { placeBidsFormFields } from "src/forms/fields";
 import { go } from "src/assets/icons";
@@ -84,7 +84,7 @@ const ProductDetails = () => {
   const fetchRelatedProducts = () => {
     setLoading(true);
 
-    findRandomProductsByCategory(product?.categoryId)
+    findRandomProductsByCategory(product?.categoryId, FEATURED_PRODUCTS_COUNT)
       .then((relatedProducts) => {
         setRelatedProducts(relatedProducts);
       })

@@ -54,9 +54,4 @@ public interface ProductRepository extends JpaRepository<ProductEntity, UUID>, J
     @Query("SELECT COALESCE(MIN(p.startPrice), 0), COALESCE(MAX(p.startPrice), 0) " +
             "FROM ProductEntity p WHERE p.status = 'ACTIVE'")
     List<BigDecimal[]> findMinAndMaxPrices();
-
-    @Query(value = "SELECT p FROM ProductEntity p " +
-            "WHERE p.categoryEntity.categoryId = :categoryId " +
-            "ORDER BY RANDOM() LIMIT 3")
-    List<ProductEntity> findRandomProductsByCategoryId(final UUID categoryId);
 }
