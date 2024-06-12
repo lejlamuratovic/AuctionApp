@@ -8,7 +8,11 @@ import {
   settingsActive,
   bidsActive,
   gavel,
-  cart
+  cart, 
+  grid,
+  list, 
+  activeGrid,
+  activeList
 } from "src/assets/icons";
 
 export const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -225,3 +229,13 @@ export const SHOP_PAGE_SORTING = [
 ];
 
 export const FEATURED_PRODUCTS_COUNT = 3;
+
+export const PRODUCT_PREVIEW = [
+  { id: "grid", label: "Grid", icon: grid, activeIcon: activeGrid},
+  { id: "list", label: "List", icon: list, activeIcon: activeList},
+];
+
+export const PRODUCT_PREVIEW_MAP = {
+  GRID: "grid",
+  LIST: "list",
+};
