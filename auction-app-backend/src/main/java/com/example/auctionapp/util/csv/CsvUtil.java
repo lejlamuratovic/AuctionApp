@@ -1,4 +1,4 @@
-package com.example.auctionapp.util;
+package com.example.auctionapp.util.csv;
 
 import com.example.auctionapp.entity.CategoryEntity;
 import com.example.auctionapp.entity.CreditCardEntity;
@@ -7,15 +7,11 @@ import com.example.auctionapp.entity.ProductEntity;
 import com.example.auctionapp.entity.UserEntity;
 import com.example.auctionapp.entity.enums.ProductStatus;
 import com.example.auctionapp.exceptions.repository.ResourceNotFoundException;
-import com.example.auctionapp.model.Product;
 import com.example.auctionapp.repository.CategoryRepository;
-import com.example.auctionapp.repository.UserRepository;
-import com.example.auctionapp.request.ProductAddRequest;
 import com.example.auctionapp.util.builderpattern.GenericBuilder;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.HeaderColumnNameMappingStrategy;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,18 +27,15 @@ import java.util.stream.Collectors;
 
 @Component
 public class CsvUtil {
-    @Autowired
-    private CategoryRepository categoryRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    public List<ProductEntity> uploadProduct(final MultipartFile file) throws IOException {
+    public static List<ProductEntity> uploadProduct(final MultipartFile file,
+                                                    final UserEntity user,
+                                                    final CategoryRepository categoryRepository) throws IOException {
         try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
-            HeaderColumnNameMappingStrategy<ProductAddRequest> strategy = new HeaderColumnNameMappingStrategy<>();
-            strategy.setType(ProductAddRequest.class);
+            HeaderColumnNameMappingStrategy<ProductCsvRepresentation> strategy = new HeaderColumnNameMappingStrategy<>();
 
-            CsvToBean<ProductAddRequest> csvToBean = new CsvToBeanBuilder<ProductAddRequest>(reader)
+            strategy.setType(ProductCsvRepresentation.class);
+
+            final CsvToBean<ProductCsvRepresentation> csvToBean = new CsvToBeanBuilder<ProductCsvRepresentation>(reader)
                     .withMappingStrategy(strategy)
                     .withIgnoreEmptyLine(true)
                     .withIgnoreLeadingWhiteSpace(true)
@@ -52,9 +45,6 @@ public class CsvUtil {
                     .map(csvLine -> {
                         final CategoryEntity category = categoryRepository.findByName(csvLine.getCategoryName())
                                 .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
-
-                        final UserEntity user = userRepository.findByEmail(csvLine.getEmail())
-                                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
                         final CreditCardEntity creditCard = GenericBuilder.of(CreditCardEntity::new)
                                 .with(CreditCardEntity::setNameOnCard, csvLine.getNameOnCard())
@@ -81,8 +71,7 @@ public class CsvUtil {
                                 .with(ProductEntity::setStatus, ProductStatus.ACTIVE)
                                 .with(ProductEntity::setPaymentInfo, paymentInfo)
                                 .build();
-                    })
-                    .collect(Collectors.toList());
+                    }).toList();
         }
     }
 }

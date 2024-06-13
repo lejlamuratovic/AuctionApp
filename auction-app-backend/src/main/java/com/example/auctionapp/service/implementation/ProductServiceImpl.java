@@ -1,6 +1,7 @@
 package com.example.auctionapp.service.implementation;
 
 import com.example.auctionapp.entity.ProductImageEntity;
+import com.example.auctionapp.entity.UserEntity;
 import com.example.auctionapp.entity.enums.ProductStatus;
 import com.example.auctionapp.exceptions.amazon.ImageUploadException;
 import com.example.auctionapp.external.AmazonClient;
@@ -24,12 +25,10 @@ import com.example.auctionapp.service.PaymentService;
 import com.example.auctionapp.service.ProductService;
 import com.example.auctionapp.specification.ProductSpecification;
 import com.example.auctionapp.util.ComputeSuggestion;
-import com.example.auctionapp.util.CsvUtil;
 import com.example.auctionapp.util.PageableUtil;
 import com.example.auctionapp.util.FeaturedProducts;
 import com.example.auctionapp.util.builderpattern.GenericBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.example.auctionapp.util.csv.CsvUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -38,10 +37,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static java.util.stream.Collectors.toList;
@@ -279,8 +278,14 @@ public class ProductServiceImpl implements ProductService {
                 .toList();
     }
 
-    public List<Product> uploadProducts(final MultipartFile file) {
-        return CsvUtil.uploadProduct(file);
+    public List<Product> uploadProducts(final MultipartFile file, final UUID userId) throws IOException {
+        final UserEntity user = this.userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User with the given ID does not exist"));
+
+        return CsvUtil.uploadProduct(file, user, categoryRepository)
+                .stream()
+                .map(ProductEntity::toDomainModel)
+                .toList();
     }
 
     private void handleCategoryAndUser(ProductEntity productEntity, ProductAddRequest productRequest) {

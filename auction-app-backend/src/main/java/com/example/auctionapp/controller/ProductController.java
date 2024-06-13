@@ -1,6 +1,7 @@
 package com.example.auctionapp.controller;
 
 import com.example.auctionapp.entity.enums.ProductStatus;
+import com.example.auctionapp.exceptions.security.InvalidTokenException;
 import com.example.auctionapp.model.Product;
 import com.example.auctionapp.request.GetProductRequest;
 import com.example.auctionapp.request.ProductAddRequest;
@@ -9,8 +10,10 @@ import com.example.auctionapp.response.ProductBidDetailsResponse;
 import com.example.auctionapp.response.ProductPrices;
 import com.example.auctionapp.response.ProductSearchResponse;
 import com.example.auctionapp.service.ProductService;
+import com.example.auctionapp.service.implementation.JwtService;
 import com.example.auctionapp.util.SecurityRoles;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,9 +40,11 @@ public class ProductController {
     private static final int DEFAULT_PAGE_SIZE = 8;
 
     private final ProductService productService;
+    private final JwtService jwtService;
 
-    public ProductController(final ProductService productService) {
+    public ProductController(final ProductService productService, final JwtService jwtService) {
         this.productService = productService;
+        this.jwtService = jwtService;
     }
 
     @GetMapping
@@ -115,7 +121,25 @@ public class ProductController {
     }
 
     @PostMapping(value = "/csv", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public List<Product> uploadStudents(@RequestPart("file") final MultipartFile file) {
-        return this.productService.uploadProducts(file);
+    public List<Product> uploadProduct(@RequestPart("file") final MultipartFile file, HttpServletRequest request) throws IOException {
+        UUID userId = null;
+        final String authorizationHeader = request.getHeader("Authorization");
+
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            final String token = authorizationHeader.substring(7);
+
+            try {
+                userId = UUID.fromString
+                        (jwtService.extractClaim(token, claims -> claims.get("id", String.class)));
+            } catch (Exception e) {
+                throw new InvalidTokenException("Token is not valid");
+            }
+        }
+
+        if (userId == null) {
+            throw new InvalidTokenException("Token is not valid");
+        }
+
+        return this.productService.uploadProducts(file, userId);
     }
 }
