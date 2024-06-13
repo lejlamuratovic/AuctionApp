@@ -113,4 +113,9 @@ public class ProductController {
     public List<Product> getRandomProductsByCategoryId(@PathVariable final UUID categoryId, @RequestParam final int count) {
         return this.productService.getRandomProductsByCategoryId(categoryId, count);
     }
+
+    @PostMapping(value = "/csv", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public List<Product> uploadStudents(@RequestPart("file") final MultipartFile file) {
+        return this.productService.uploadProducts(file);
+    }
 }

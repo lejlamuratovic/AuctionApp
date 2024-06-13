@@ -24,6 +24,7 @@ import com.example.auctionapp.service.PaymentService;
 import com.example.auctionapp.service.ProductService;
 import com.example.auctionapp.specification.ProductSpecification;
 import com.example.auctionapp.util.ComputeSuggestion;
+import com.example.auctionapp.util.CsvUtil;
 import com.example.auctionapp.util.PageableUtil;
 import com.example.auctionapp.util.FeaturedProducts;
 import com.example.auctionapp.util.builderpattern.GenericBuilder;
@@ -262,6 +263,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+<<<<<<< HEAD
     public List<Product> getRandomProductsByCategoryId(final UUID categoryId, final int count) {
         this.categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Category with the given ID does not exist"));
@@ -276,6 +278,10 @@ public class ProductServiceImpl implements ProductService {
                 .map(ProductEntity::toDomainModel)
                 .limit(count)
                 .toList();
+=======
+    public List<Product> uploadProducts(final MultipartFile file) {
+        return CsvUtil.uploadProduct(file);
+>>>>>>> 3e78cb7 (csv util)
     }
 
     private void handleCategoryAndUser(ProductEntity productEntity, ProductAddRequest productRequest) {
