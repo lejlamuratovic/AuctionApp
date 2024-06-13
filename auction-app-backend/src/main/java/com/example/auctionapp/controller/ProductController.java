@@ -105,4 +105,9 @@ public class ProductController {
     public ProductPrices getProductPrices() {
         return this.productService.getProductPrices();
     }
+
+    @PostMapping(value = "/csv", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public List<Product> uploadStudents(@RequestPart("file") final MultipartFile file) {
+        return this.productService.uploadProducts(file);
+    }
 }

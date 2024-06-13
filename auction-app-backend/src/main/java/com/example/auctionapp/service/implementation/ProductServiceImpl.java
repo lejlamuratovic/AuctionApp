@@ -24,6 +24,7 @@ import com.example.auctionapp.service.PaymentService;
 import com.example.auctionapp.service.ProductService;
 import com.example.auctionapp.specification.ProductSpecification;
 import com.example.auctionapp.util.ComputeSuggestion;
+import com.example.auctionapp.util.CsvUtil;
 import com.example.auctionapp.util.PageableUtil;
 import com.example.auctionapp.util.FeaturedProducts;
 import com.example.auctionapp.util.builderpattern.GenericBuilder;
@@ -259,6 +260,11 @@ public class ProductServiceImpl implements ProductService {
                     .with(ProductPrices::setMaxPrice, BigDecimal.ZERO)
                     .build();
         }
+    }
+
+    @Override
+    public List<Product> uploadProducts(final MultipartFile file) {
+        return CsvUtil.uploadProduct(file);
     }
 
     private void handleCategoryAndUser(ProductEntity productEntity, ProductAddRequest productRequest) {

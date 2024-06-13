@@ -32,8 +32,10 @@ public interface ProductService {
     List<Product> getFeaturedProducts(final int count);
     
     boolean hasActiveProducts(final UUID userId);
-    
+
     void deleteActiveProducts(final UUID userId);
 
     ProductPrices getProductPrices();
+
+    List<Product> uploadProducts(final MultipartFile file);
 }
