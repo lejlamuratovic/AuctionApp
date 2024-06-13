@@ -1,0 +1,41 @@
+@import "src/scss/index.scss"; 
+
+.bidders-table-container {
+  @include flex-container(column, center, center);
+  width: 100%;
+
+  .load-more-btn {
+    margin-top: 20px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid $neutral09;
+
+    th, td {
+      text-align: left;
+      padding: 24px;
+    }
+
+    .bidder-info {
+      display: flex;
+      align-items: center;
+
+      img {
+        border-radius: 50%;
+        width: 64px;
+        height: 64px;
+        margin-right: 16px;
+      }
+    }
+
+    .first-bid {
+      color: $success;
+    }
+
+    .other-bid {
+      color: $neutral05;
+    }
+  }
+}

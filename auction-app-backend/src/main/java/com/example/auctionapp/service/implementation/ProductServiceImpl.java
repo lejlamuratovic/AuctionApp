@@ -261,6 +261,23 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Override
+    public List<Product> getRandomProductsByCategoryId(final UUID categoryId, final int count) {
+        this.categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Category with the given ID does not exist"));
+
+        final List<ProductEntity> products =
+                this.productRepository.findTopPopularProductEntitiesByCategoryId(categoryId, PageRequest.of(0, 10));
+
+        Collections.shuffle(products);
+
+        return products
+                .stream()
+                .map(ProductEntity::toDomainModel)
+                .limit(count)
+                .toList();
+    }
+
     private void handleCategoryAndUser(ProductEntity productEntity, ProductAddRequest productRequest) {
         if (productRequest.getCategoryId() != null) {
             productEntity.setCategory(categoryRepository.findById(productRequest.getCategoryId())

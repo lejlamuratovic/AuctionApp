@@ -57,6 +57,10 @@ const findMinAndMaxPrice = () => {
   return getRequest("/products/prices");
 }
 
+const findRandomProductsByCategory = (categoryId, count) => {
+  return getRequest(`/products/random/${ categoryId }?count=${ count }`);
+}
+
 export { 
   getProducts, 
   getProduct, 
@@ -67,5 +71,6 @@ export {
   findProductsByUserIdAndStatus,
   findFeaturedProducts,
   findPopularProducts,
-  findMinAndMaxPrice
+  findMinAndMaxPrice,
+  findRandomProductsByCategory
 };

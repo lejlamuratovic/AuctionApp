@@ -22,6 +22,10 @@ import java.util.UUID;
 @RequestMapping("/api/v1/bids")
 @SecurityRequirement(name = "JWT Security")
 public class BidController {
+    private static final int DEFAULT_PAGE_NUMBER = 0;
+    private static final int DEFAULT_PAGE_SIZE_FOR_USER = 8;
+    private static final int DEFAULT_PAGE_SIZE_FOR_PRODUCT = 5;
+
     private final BidService bidService;
 
     public BidController(BidService bidService) {
@@ -38,9 +42,19 @@ public class BidController {
     @GetMapping("/{userId}")
     public Page<ProductBidDetailsResponse> getBidsForUser(
             @PathVariable final UUID userId,
-            @RequestParam(value = "page", defaultValue = "0") final int page,
-            @RequestParam(value = "size", defaultValue = "8") final int size
+            @RequestParam(value = "page", defaultValue = "" + DEFAULT_PAGE_NUMBER) final int page,
+            @RequestParam(value = "size", defaultValue = "" + DEFAULT_PAGE_SIZE_FOR_USER) final int size
     ) {
         return bidService.getBidsForUser(userId, page, size);
+    }
+
+    @PreAuthorize(SecurityRoles.ALL)
+    @GetMapping("/product/{productId}")
+    public Page<Bid> getBidsByProduct(
+            @PathVariable final UUID productId,
+            @RequestParam(value = "page", defaultValue = "" + DEFAULT_PAGE_NUMBER) final int page,
+            @RequestParam(value = "size", defaultValue = "" + DEFAULT_PAGE_SIZE_FOR_PRODUCT) final int size
+    ) {
+        return this.bidService.getBidsByProductId(productId, page, size);
     }
 }

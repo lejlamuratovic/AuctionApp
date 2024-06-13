@@ -1,6 +1,8 @@
 package com.example.auctionapp.entity;
 
 import com.example.auctionapp.model.Bid;
+import com.example.auctionapp.model.Product;
+import com.example.auctionapp.util.builderpattern.GenericBuilder;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -56,15 +58,13 @@ public class BidEntity {
     public BidEntity() { }
 
     public Bid toDomainModel() {
-        Bid bid = new Bid();
-
-        bid.setId(this.bidId);
-        bid.setBidAmount(this.bidAmount);
-        bid.setBidTime(this.bidTime);
-        bid.setUserId(this.userEntity.getUserId());
-        bid.setProduct(this.productEntity.toDomainModel());
-
-        return bid;
+        return GenericBuilder.of(Bid::new)
+                .with(Bid::setId, this.bidId)
+                .with(Bid::setBidAmount, this.bidAmount)
+                .with(Bid::setBidTime, this.bidTime)
+                .with(Bid::setUser, this.userEntity.toDomainModel())
+                .with(Bid::setProduct, this.productEntity.toDomainModel())
+                .build();
     }
 
     public UUID getBidId() {

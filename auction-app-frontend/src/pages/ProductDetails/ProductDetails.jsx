@@ -3,7 +3,17 @@ import { useForm } from "react-hook-form";
 import { useParams, useNavigate } from "react-router-dom";
 import Modal from "react-modal";
 
-import { Tabs, LoadingComponent, ErrorComponent, FormContainer, Notifications, Button, CheckoutComponent } from "src/components";
+import { 
+  Tabs, 
+  LoadingComponent, 
+  ErrorComponent, 
+  FormContainer, 
+  Notifications, 
+  Button, 
+  CheckoutComponent, 
+  ProductCard,
+  BiddersTable
+} from "src/components";
 
 import { useBreadcrumb } from "src/store/BreadcrumbContext";
 import { useUser } from "src/store/UserContext";
@@ -11,6 +21,7 @@ import { getProduct, getBidData } from "src/services";
 import { placeBid } from "src/services/bidService";
 import { calculateTimeLeft } from "src/utils/calculateTimeDifference";
 import { close } from "src/assets/icons";
+import { findRandomProductsByCategory } from "src/services/productService";
 
 import { 
   PRODUCT_DETAILS_TABS, 
@@ -18,7 +29,7 @@ import {
   BUTTON_VARIANTS, 
   USER_TYPES,
   PRODUCT_STATUS,
-  ROUTE_PATHS
+  FEATURED_PRODUCTS_COUNT
 } from "src/constants";
 import { placeBidsFormFields } from "src/forms/fields";
 import { go } from "src/assets/icons";
@@ -39,6 +50,7 @@ const ProductDetails = () => {
   const [bidDataLoading, setBidDataLoading] = useState(false);
   const [bidDataError, setBidDataError] = useState(null);
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
+  const [relatedProducts, setRelatedProducts] = useState([]);
 
   const { userType, userId } = useUser(); 
 
@@ -68,6 +80,25 @@ const ProductDetails = () => {
         });
     }, 500);
   };
+
+  const fetchRelatedProducts = () => {
+    setLoading(true);
+
+    findRandomProductsByCategory(product?.categoryId, FEATURED_PRODUCTS_COUNT)
+      .then((relatedProducts) => {
+        setRelatedProducts(relatedProducts);
+      })
+      .catch((error) => {
+        setError(error.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    if (product?.categoryId != null) fetchRelatedProducts();
+  }, [product]);
 
   useEffect(() => {
     fetchInitialData();
@@ -279,6 +310,29 @@ const ProductDetails = () => {
           </div>
         </div>
       </div>
+      { userIsSeller ? (
+      <div className="bidders-container">
+        <h5 className="bidders-title">
+          Bidders
+        <hr />
+        </h5>
+        <div className="bidders">
+          <BiddersTable productId={ id }/>
+        </div>
+      </div>
+      ) : (
+      <div className="related-products-container">
+        <h5 className="related-products-title">
+          Related Products
+        </h5>
+        <hr />
+        <div className="related-products">
+          { relatedProducts.map((product) => (
+            <ProductCard key={ product.id } { ...product } />
+          )) }
+        </div>
+      </div>
+      ) }
     </>
   );
 };

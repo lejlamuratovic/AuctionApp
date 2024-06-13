@@ -1,5 +1,7 @@
 package com.example.auctionapp.model;
 
+import com.example.auctionapp.entity.UserEntity;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -8,7 +10,7 @@ public class Bid {
     private UUID id;
     private BigDecimal bidAmount;
     private LocalDateTime bidTime;
-    private UUID userId;
+    private User user;
     private Product product;
 
     public Bid() {}
@@ -37,12 +39,12 @@ public class Bid {
         this.bidTime = bidTime;
     }
 
-    public UUID getUserId() {
-        return this.userId;
+    public User getUser() {
+        return this.user;
     }
 
-    public void setUserId(final UUID userId) {
-        this.userId = userId;
+    public void setUser(final User user) {
+        this.user = user;
     }
 
     public Product getProduct() {

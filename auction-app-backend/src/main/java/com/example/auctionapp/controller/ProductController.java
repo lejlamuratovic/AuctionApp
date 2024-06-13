@@ -3,12 +3,12 @@ package com.example.auctionapp.controller;
 import com.example.auctionapp.entity.enums.ProductStatus;
 import com.example.auctionapp.model.Product;
 import com.example.auctionapp.request.GetProductRequest;
+import com.example.auctionapp.request.ProductAddRequest;
 import com.example.auctionapp.response.BidSummaryResponse;
 import com.example.auctionapp.response.ProductBidDetailsResponse;
 import com.example.auctionapp.response.ProductPrices;
 import com.example.auctionapp.response.ProductSearchResponse;
 import com.example.auctionapp.service.ProductService;
-import com.example.auctionapp.request.ProductAddRequest;
 import com.example.auctionapp.util.SecurityRoles;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.data.domain.Page;
@@ -32,6 +32,9 @@ import java.util.UUID;
 @RequestMapping("/api/v1/products")
 @SecurityRequirement(name = "JWT Security")
 public class ProductController {
+    private static final int DEFAULT_PAGE_NUMBER = 0;
+    private static final int DEFAULT_PAGE_SIZE = 8;
+
     private final ProductService productService;
 
     public ProductController(final ProductService productService) {
@@ -52,7 +55,7 @@ public class ProductController {
         return productService.addProduct(productRequest, images);
     }
 
-    @GetMapping( "/{id}")
+    @GetMapping("/{id}")
     public Product getProductById(@PathVariable final UUID id) {
         return this.productService.getProductById(id);
     }
@@ -65,8 +68,8 @@ public class ProductController {
 
     @GetMapping("/criteria")
     public Page<Product> getProductsByCriteria(
-            @RequestParam(value = "page", defaultValue = "0") final int page,
-            @RequestParam(value = "size", defaultValue = "8") final int size,
+            @RequestParam(value = "page", defaultValue = "" + DEFAULT_PAGE_NUMBER) final int page,
+            @RequestParam(value = "size", defaultValue = "" + DEFAULT_PAGE_SIZE) final int size,
             @RequestParam(value = "type", defaultValue = "newArrivals") final String type) {
         return productService.getProductsByCriteria(page, size, type);
     }
@@ -86,8 +89,8 @@ public class ProductController {
     public Page<ProductBidDetailsResponse> getProductsByUserAndStatus(
             @RequestParam(value = "userId") final UUID userId,
             @RequestParam(value = "status") final ProductStatus status,
-            @RequestParam(value = "page", defaultValue = "0") final int page,
-            @RequestParam(value = "size", defaultValue = "8") final int size) {
+            @RequestParam(value = "page", defaultValue = "" + DEFAULT_PAGE_NUMBER) final int page,
+            @RequestParam(value = "size", defaultValue = "" + DEFAULT_PAGE_SIZE) final int size) {
         return this.productService.getProductByUserAndStatus(userId, status, page, size);
     }
 
@@ -104,5 +107,10 @@ public class ProductController {
     @GetMapping("/prices")
     public ProductPrices getProductPrices() {
         return this.productService.getProductPrices();
+    }
+
+    @GetMapping("/random/{categoryId}")
+    public List<Product> getRandomProductsByCategoryId(@PathVariable final UUID categoryId, @RequestParam final int count) {
+        return this.productService.getRandomProductsByCategoryId(categoryId, count);
     }
 }

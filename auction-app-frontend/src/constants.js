@@ -225,3 +225,11 @@ export const SHOP_PAGE_SORTING = [
 ];
 
 export const FEATURED_PRODUCTS_COUNT = 3;
+
+export const BIDDERS_TABLE_ROWS = [
+  { name: "Bidder" },
+  { name: "Date" },
+  { name: "Bid" },
+];
+
+export const BIDDERS_TABLE_DEFAULT_PAGE_SIZE = 5;
