@@ -8,7 +8,11 @@ import {
   settingsActive,
   bidsActive,
   gavel,
-  cart
+  cart, 
+  grid,
+  list, 
+  activeGrid,
+  activeList
 } from "src/assets/icons";
 
 export const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -233,3 +237,13 @@ export const BIDDERS_TABLE_ROWS = [
 ];
 
 export const BIDDERS_TABLE_DEFAULT_PAGE_SIZE = 5;
+
+export const PRODUCT_PREVIEW = [
+  { id: "grid", label: "Grid", icon: grid, activeIcon: activeGrid},
+  { id: "list", label: "List", icon: list, activeIcon: activeList},
+];
+
+export const PRODUCT_PREVIEW_MAP = {
+  GRID: "grid",
+  LIST: "list",
+};

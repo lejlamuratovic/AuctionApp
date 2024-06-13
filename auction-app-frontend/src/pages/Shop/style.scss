@@ -115,6 +115,29 @@
     display: relative;
     height: 50px;
     margin-bottom: 24px;
+
+    .preview-switch {
+      @include flex-container(row, space-between, center);
+      gap: 24px;
+      float: right;
+
+      .option {
+        @include flex-container(row, center, center);
+        gap: 8px;
+        color: $neutral05;
+        padding-top: 14px;
+        padding-right: 8px;
+
+        &.active {
+          color: $primary;
+        }
+
+        img {
+          height: 19px;
+          width: 19px;
+        }
+      }
+    }
   }
 
   .custom-select {
