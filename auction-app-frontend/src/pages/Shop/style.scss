@@ -131,6 +131,11 @@
         &.active {
           color: $primary;
         }
+
+        img {
+          height: 19px;
+          width: 19px;
+        }
       }
     }
   }

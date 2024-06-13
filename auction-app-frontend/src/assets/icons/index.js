@@ -22,6 +22,8 @@ import dropdownActive from "./dropdown-active.svg";
 import close from "./close.svg";
 import grid from "./grid.svg";
 import list from "./list.svg";
+import activeGrid from "./activeGrid.svg";
+import activeList from "./activeList.svg";
 
 export { 
     facebook, 
@@ -47,5 +49,7 @@ export {
     dropdownActive, 
     close,
     grid,
-    list
+    list,
+    activeGrid,
+    activeList,
 };
