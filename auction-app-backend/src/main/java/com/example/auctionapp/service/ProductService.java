@@ -36,10 +36,8 @@ public interface ProductService {
     void deleteActiveProducts(final UUID userId);
 
     ProductPrices getProductPrices();
-<<<<<<< HEAD
-    List<Product> getRandomProductsByCategoryId(final UUID categoryId, final int count);
-=======
 
+    List<Product> getRandomProductsByCategoryId(final UUID categoryId, final int count);
+    
     List<Product> uploadProducts(final MultipartFile file);
->>>>>>> 3e78cb7 (csv util)
 }
