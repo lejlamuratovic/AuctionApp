@@ -67,7 +67,7 @@ public class ProductEntity {
     @JoinColumn(name = "seller_id")
     private UserEntity userEntity;
 
-    @OneToMany(mappedBy = "productEntity", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "productEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductImageEntity> productImages;
 
     @Formula("(SELECT COUNT(*) FROM auction_app.bid b WHERE b.product_id = product_id)")

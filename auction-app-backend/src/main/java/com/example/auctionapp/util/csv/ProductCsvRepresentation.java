@@ -57,6 +57,8 @@ public class ProductCsvRepresentation {
     @Pattern(regexp = "^[a-zA-Z\\s]{3,50}$", message = "Invalid country")
     private String country;
 
+    private String images;
+
     private String expirationDate;
 
     public String getName() {
@@ -161,5 +163,13 @@ public class ProductCsvRepresentation {
 
     public void setExpirationDate(String expirationDate) {
         this.expirationDate = expirationDate;
+    }
+
+    public String getImages() {
+        return images;
+    }
+
+    public void setImages(String images) {
+        this.images = images;
     }
 }
