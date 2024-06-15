@@ -12,7 +12,6 @@ import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 public class ProductCsvRepresentation {
     @NotEmpty(message = "Product name is required")
@@ -24,14 +23,11 @@ public class ProductCsvRepresentation {
     private String description;
 
     @NotNull(message = "Start price is required")
-    @DecimalMin(value = "0.01", message = "Start price must be at least 0.01")
-    private BigDecimal startPrice;
+    private String startPrice;
 
-    @FutureOrPresent(message = "Start date must be in the present or future")
-    private LocalDateTime startDate;
+    private String startDate;
 
-    @Future(message = "End date must be in the future")
-    private LocalDateTime endDate;
+    private String endDate;
 
     @NotNull(message = "Category is required")
     private String categoryName;
@@ -61,8 +57,7 @@ public class ProductCsvRepresentation {
     @Pattern(regexp = "^[a-zA-Z\\s]{3,50}$", message = "Invalid country")
     private String country;
 
-    @Future(message = "Expiration date must be in the future")
-    private LocalDate expirationDate;
+    private String expirationDate;
 
     public String getName() {
         return name;
@@ -80,27 +75,27 @@ public class ProductCsvRepresentation {
         this.description = description;
     }
 
-    public BigDecimal getStartPrice() {
+    public String getStartPrice() {
         return startPrice;
     }
 
-    public void setStartPrice(BigDecimal startPrice) {
+    public void setStartPrice(String startPrice) {
         this.startPrice = startPrice;
     }
 
-    public LocalDateTime getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDateTime getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDateTime endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
@@ -160,11 +155,11 @@ public class ProductCsvRepresentation {
         this.country = country;
     }
 
-    public LocalDate getExpirationDate() {
+    public String getExpirationDate() {
         return expirationDate;
     }
 
-    public void setExpirationDate(LocalDate expirationDate) {
+    public void setExpirationDate(String expirationDate) {
         this.expirationDate = expirationDate;
     }
 }
