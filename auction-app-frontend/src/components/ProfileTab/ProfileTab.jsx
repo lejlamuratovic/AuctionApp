@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Modal from "react-modal";
 import { FileUploader } from "react-drag-drop-files";
 

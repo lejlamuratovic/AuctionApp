@@ -61,6 +61,10 @@ const findRandomProductsByCategory = (categoryId, count) => {
   return getRequest(`/products/random/${ categoryId }?count=${ count }`);
 }
 
+const addProductUsingCsv = (formData) => {
+  return postRequest("/products/csv", formData);
+};
+
 export { 
   getProducts, 
   getProduct, 
@@ -72,5 +76,6 @@ export {
   findFeaturedProducts,
   findPopularProducts,
   findMinAndMaxPrice,
-  findRandomProductsByCategory
+  findRandomProductsByCategory,
+  addProductUsingCsv,
 };

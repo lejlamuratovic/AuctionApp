@@ -31,10 +31,22 @@
                 }
             }
         }
-    
-        button {
-            width: 262px;
-            padding: 16px 32px;
+
+        .add-item-button {
+            position: relative;
+
+            button {
+                width: 262px;
+                padding: 16px 32px;
+            }
+
+            span {
+                text-decoration: underline;
+                font-size: 14px;
+                position: absolute;
+                right: 0;
+                cursor: pointer;
+            }
         }
 
         .load-more-btn {
@@ -45,4 +57,58 @@
             }
         }
     }
+}
+
+.csv-modal {
+    @include flex-container(column, center, center);
+    gap: 32px;
+    background-color: $white;
+    margin: 0 auto;
+    padding: 32px;
+    max-width: 500px;
+    position: relative;
+    top: 30%;
+
+    .error-message {
+        color: $error;
+        font-size: 14px;
+    }
+
+    .csv-modal-content {
+        @include flex-container(column, center, center);
+        gap: 32px;
+        width: 100%;
+    }
+
+    .close-icon {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        cursor: pointer;
+    }
+
+    .file-uploader {
+        border: 2px dashed $primary;
+        font-family: $font-family-lato;
+        padding: 12px;
+        min-height: 60px;
+        
+        span {
+            font-size: 14px;
+            color: $neutral00;
+        }
+
+        svg {
+            display: none;
+        }
+    }
+}
+
+.csv-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75); 
 }
