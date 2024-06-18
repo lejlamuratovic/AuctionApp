@@ -278,14 +278,15 @@ public class ProductServiceImpl implements ProductService {
                 .toList();
     }
 
+    @Transactional
     @Override
     public List<Product> uploadProducts(final MultipartFile file, final UUID userId) throws IOException {
-        final CsvUtil csvUtil = new CsvUtil();
-
         final UserEntity user = this.userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User with the given ID does not exist"));
 
-        return this.productRepository.saveAll(csvUtil.uploadProduct(file, user, categoryRepository, productImageRepository, productRepository))
+        List<ProductEntity> productEntities = CsvUtil.uploadProduct(file, user, categoryRepository);
+
+        return this.productRepository.saveAll(productEntities)
                 .stream()
                 .map(ProductEntity::toDomainModel)
                 .toList();

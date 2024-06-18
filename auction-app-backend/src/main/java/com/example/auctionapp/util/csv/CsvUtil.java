@@ -9,14 +9,12 @@ import com.example.auctionapp.entity.UserEntity;
 import com.example.auctionapp.entity.enums.ProductStatus;
 import com.example.auctionapp.exceptions.repository.ResourceNotFoundException;
 import com.example.auctionapp.repository.CategoryRepository;
-import com.example.auctionapp.repository.ProductImageRepository;
-import com.example.auctionapp.repository.ProductRepository;
 import com.example.auctionapp.util.builderpattern.GenericBuilder;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.HeaderColumnNameMappingStrategy;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
@@ -26,7 +24,6 @@ import java.io.Reader;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,12 +31,10 @@ import java.util.List;
 public class CsvUtil {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    @Transactional
-    public List<ProductEntity> uploadProduct(final MultipartFile file,
+    public static List<ProductEntity> uploadProduct(final MultipartFile file,
                                              final UserEntity user,
-                                             final CategoryRepository categoryRepository,
-                                             final ProductImageRepository productImageRepository,
-                                             final ProductRepository productRepository) throws IOException {
+                                             final CategoryRepository categoryRepository
+    ) throws IOException {
         try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
             HeaderColumnNameMappingStrategy<ProductCsvRepresentation> strategy = new HeaderColumnNameMappingStrategy<>();
             strategy.setType(ProductCsvRepresentation.class);
@@ -51,19 +46,17 @@ public class CsvUtil {
 
             return csvToBean.parse().stream()
                     .map(csvLine -> {
-                        final ProductEntity productEntity = productRepository
-                                .saveAndFlush(buildProductEntity(csvLine, user, categoryRepository));
-
-                        handleProductImagesFromUrls(productEntity, csvLine.getImages(), productImageRepository);
-
+                        final ProductEntity productEntity = buildProductEntity(csvLine, user, categoryRepository);
+                        handleProductImagesFromUrls(productEntity, csvLine.getImages());
                         return productEntity;
-                    }).toList();
+                    })
+                    .toList();
         }
     }
 
-    private ProductEntity buildProductEntity(ProductCsvRepresentation csvLine,
-                                             UserEntity user,
-                                             CategoryRepository categoryRepository) {
+    private static ProductEntity buildProductEntity(final ProductCsvRepresentation csvLine,
+                                             final UserEntity user,
+                                             final CategoryRepository categoryRepository) {
         LocalDate startDate = LocalDate.parse(csvLine.getStartDate(), FORMATTER);
         LocalDate endDate = LocalDate.parse(csvLine.getEndDate(), FORMATTER);
 
@@ -97,20 +90,17 @@ public class CsvUtil {
                 .build();
     }
 
-    private void handleProductImagesFromUrls(final ProductEntity productEntity,
-                                             final String imageUrls,
-                                             final ProductImageRepository productImageRepository) {
-        final List<ProductImageEntity> imageEntities = Arrays.stream(imageUrls.split(";"))
+    private static void handleProductImagesFromUrls(final ProductEntity productEntity, final String imageUrls) {
+        List<ProductImageEntity> imageEntities = Arrays.stream(imageUrls.split(";"))
                 .map(url -> {
                     ProductImageEntity imageEntity = new ProductImageEntity();
                     imageEntity.setImageUrl(url);
                     imageEntity.setProductEntity(productEntity);
-
+                    
                     return imageEntity;
-                }).toList();
+                })
+                .toList();
 
-        productImageRepository.saveAll(imageEntities);
-
-        productEntity.setProductImages(new ArrayList<>(imageEntities));
+        productEntity.setProductImages(imageEntities);
     }
 }
