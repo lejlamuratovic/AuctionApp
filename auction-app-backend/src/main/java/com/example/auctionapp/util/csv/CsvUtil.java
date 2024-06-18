@@ -8,12 +8,12 @@ import com.example.auctionapp.entity.ProductImageEntity;
 import com.example.auctionapp.entity.UserEntity;
 import com.example.auctionapp.entity.enums.ProductStatus;
 import com.example.auctionapp.exceptions.repository.ResourceNotFoundException;
+import com.example.auctionapp.exceptions.validation.ValidationException;
 import com.example.auctionapp.repository.CategoryRepository;
 import com.example.auctionapp.util.builderpattern.GenericBuilder;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.HeaderColumnNameMappingStrategy;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,9 +32,8 @@ public class CsvUtil {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public static List<ProductEntity> uploadProduct(final MultipartFile file,
-                                             final UserEntity user,
-                                             final CategoryRepository categoryRepository
-    ) throws IOException {
+                                                    final UserEntity user,
+                                                    final CategoryRepository categoryRepository) throws IOException {
         try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
             HeaderColumnNameMappingStrategy<ProductCsvRepresentation> strategy = new HeaderColumnNameMappingStrategy<>();
             strategy.setType(ProductCsvRepresentation.class);
@@ -46,17 +45,40 @@ public class CsvUtil {
 
             return csvToBean.parse().stream()
                     .map(csvLine -> {
+                        validateDates(csvLine.getStartDate(), csvLine.getEndDate(), csvLine.getExpirationDate());
+
                         final ProductEntity productEntity = buildProductEntity(csvLine, user, categoryRepository);
+
                         handleProductImagesFromUrls(productEntity, csvLine.getImages());
+                        
                         return productEntity;
                     })
                     .toList();
         }
     }
 
+    private static void validateDates(String startDateStr, String endDateStr, String expirationDateStr) {
+        final LocalDate startDate = LocalDate.parse(startDateStr, FORMATTER);
+        final LocalDate endDate = LocalDate.parse(endDateStr, FORMATTER);
+        final LocalDate expirationDate = LocalDate.parse(expirationDateStr, FORMATTER);
+        final LocalDate today = LocalDate.now();
+
+        if (startDate.isBefore(today)) {
+            throw new ValidationException("Start date must be today or in the future");
+        }
+
+        if (endDate.isBefore(today) || endDate.equals(today) || endDate.isBefore(startDate)) {
+            throw new ValidationException("End date must be in the future");
+        }
+
+        if (expirationDate.isBefore(today)) {
+            throw new ValidationException("Expiration date must be in the future");
+        }
+    }
+
     private static ProductEntity buildProductEntity(final ProductCsvRepresentation csvLine,
-                                             final UserEntity user,
-                                             final CategoryRepository categoryRepository) {
+                                                    final UserEntity user,
+                                                    final CategoryRepository categoryRepository) {
         LocalDate startDate = LocalDate.parse(csvLine.getStartDate(), FORMATTER);
         LocalDate endDate = LocalDate.parse(csvLine.getEndDate(), FORMATTER);
 
@@ -96,7 +118,7 @@ public class CsvUtil {
                     ProductImageEntity imageEntity = new ProductImageEntity();
                     imageEntity.setImageUrl(url);
                     imageEntity.setProductEntity(productEntity);
-                    
+
                     return imageEntity;
                 })
                 .toList();

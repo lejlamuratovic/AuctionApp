@@ -69,7 +69,7 @@ const MyAccount = () => {
       .then(() => {
         closeCsvModal();
       }).catch((error) => {
-        setUploadError(error);
+        setUploadError(error.response?.data?.message);
       }).finally(() => {
         setUploadLoading(false);
       });
@@ -113,7 +113,7 @@ const MyAccount = () => {
             <div className="csv-modal-content">
               <img src = { close } alt="Close" className="close-icon" onClick={ closeCsvModal } />
               <span className="body-semibold">Upload CSV File</span>
-              { uploadError && <span className="error-message">{ uploadError }</span> }
+              { uploadError && <span className="error-message body-bold">{ uploadError }</span> }
               <FileUploader
                   handleChange={ handleFileChange }
                   name="csvFile"

@@ -1,17 +1,10 @@
 package com.example.auctionapp.util.csv;
 
 import com.example.auctionapp.util.annotation.LuhnCheck;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class ProductCsvRepresentation {
     @NotEmpty(message = "Product name is required")
@@ -25,8 +18,10 @@ public class ProductCsvRepresentation {
     @NotNull(message = "Start price is required")
     private String startPrice;
 
+    @NotEmpty(message = "Start date is required")
     private String startDate;
 
+    @NotEmpty(message = "End date is required")
     private String endDate;
 
     @NotNull(message = "Category is required")
@@ -57,8 +52,10 @@ public class ProductCsvRepresentation {
     @Pattern(regexp = "^[a-zA-Z\\s]{3,50}$", message = "Invalid country")
     private String country;
 
+    @NotEmpty(message = "Images are required")
     private String images;
 
+    @NotEmpty(message = "Expiration date is required")
     private String expirationDate;
 
     public String getName() {
