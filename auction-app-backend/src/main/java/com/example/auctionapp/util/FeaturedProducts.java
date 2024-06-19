@@ -28,7 +28,7 @@ public class FeaturedProducts {
                                            final BoughtProductRepository boughtProductRepository) {
         logger.info("Fetching products for user ID: {}", userId);
 
-        final List<ProductEntity> seller = productRepository.findProductEntitiesByUserEntity_UserId(userId);
+        final List<ProductEntity> seller = productRepository.findProductEntitiesByUserEntity_UserIdOrderByStartDateDesc(userId);
         logger.info("Fetched {} products for sale by user ID: {}", seller.size(), userId);
 
         final List<BidEntity> bids = bidRepository.findBidEntitiesByUserEntity_UserId(userId);

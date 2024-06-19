@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Modal from "react-modal";
 import { FileUploader } from "react-drag-drop-files";
 
@@ -124,7 +124,6 @@ const ProfileTab = () => {
         const fullExpirationYear = parseInt(data.expirationYear, 10) < 100 ?
                                2000 + parseInt(data.expirationYear, 10) : parseInt(data.expirationYear, 10);
     
-        // Define user data for update, handle null for optional fields
         const userData = {
             firstName: data.firstName,
             lastName: data.lastName,

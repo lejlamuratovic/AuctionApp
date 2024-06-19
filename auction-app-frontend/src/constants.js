@@ -247,3 +247,5 @@ export const PRODUCT_PREVIEW_MAP = {
   GRID: "grid",
   LIST: "list",
 };
+
+export const CSV_FILE_TYPES = ["csv"];

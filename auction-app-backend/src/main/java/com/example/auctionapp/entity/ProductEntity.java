@@ -4,6 +4,7 @@ import com.example.auctionapp.entity.enums.ProductStatus;
 import com.example.auctionapp.model.Product;
 import com.example.auctionapp.model.ProductImage;
 import com.example.auctionapp.util.builderpattern.GenericBuilder;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -66,7 +67,7 @@ public class ProductEntity {
     @JoinColumn(name = "seller_id")
     private UserEntity userEntity;
 
-    @OneToMany(mappedBy = "productEntity", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "productEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductImageEntity> productImages;
 
     @Formula("(SELECT COUNT(*) FROM auction_app.bid b WHERE b.product_id = product_id)")
@@ -75,7 +76,7 @@ public class ProductEntity {
     @Formula("(SELECT MAX(b.bid_amount) FROM auction_app.bid b WHERE b.product_id = product_id)")
     private BigDecimal highestBid;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "payment_info_id")
     private PaymentInfoEntity paymentInfo;
 
