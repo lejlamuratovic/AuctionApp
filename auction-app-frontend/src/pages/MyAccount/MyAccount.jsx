@@ -21,6 +21,7 @@ const MyAccount = () => {
   const [file, setFile] = useState(null);
   const [uploadLoading, setUploadLoading] = useState(false);
   const [uploadError, setUploadError] = useState(null);
+  const [fileName, setFileName] = useState("");
 
   const appendHash = (newActiveTab) => {
     const hash = location.hash.replace('#', '');
@@ -56,6 +57,7 @@ const MyAccount = () => {
 
   const handleFileChange = (file) => {
       setFile(file);
+      setFileName(file ? file.name : "");
   }  
 
   const handleFileUpload = () => {
@@ -120,7 +122,19 @@ const MyAccount = () => {
                   multiple={ false }
                   classes="file-uploader"
                   types={ CSV_FILE_TYPES }
-              />
+              >
+                { fileName ? 
+                  <span className="body-regular">
+                    { fileName }
+                    <br />
+                    or <span className="file-upload-span">upload</span> a different file
+                  </span>
+                  : 
+                  <span className="body-regular">
+                    <span className="file-upload-span">Upload</span> or drag and drop a file
+                  </span>
+                }
+              </FileUploader>
               <Button 
                   label={ uploadLoading ? <ButtonLoadingIndicator /> : BUTTON_LABELS.UPLOAD }
                   variant={ BUTTON_VARIANTS.OUTLINED } 

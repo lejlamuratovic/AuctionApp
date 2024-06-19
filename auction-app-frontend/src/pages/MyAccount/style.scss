@@ -88,6 +88,7 @@
     }
 
     .file-uploader {
+        @include flex-container(column, center, center);
         border: 2px dashed $primary;
         font-family: $font-family-lato;
         padding: 12px;
@@ -101,6 +102,10 @@
         svg {
             display: none;
         }
+    }
+
+    .file-upload-span {
+        text-decoration: underline;
     }
 }
 
